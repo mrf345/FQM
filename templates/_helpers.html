@@ -1,0 +1,21 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+   
+{% macro render_field(field) %}
+  {% if field.type != "HiddenField" %}
+    <dt class="ar1">
+    {{ field.label }}
+  {% endif %}
+    <dd class="ar1">{{ field(**kwargs)|safe }}
+	{% if field.errors %}
+	<ul class="errors well">
+	    {% for error in field.errors %}
+	    <br>
+	    <li class="text-center text-danger h4 ar1">{{ error }}</li>
+	    <br>
+	    {% endfor %}
+	</ul>
+	{% endif %}
+    </dd>
+{% endmacro %}

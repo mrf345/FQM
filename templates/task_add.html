@@ -1,0 +1,83 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+{% extends "base.html" %}
+{% block title %} FQM - {{ ptitle  }} {% endblock %}
+
+{%- from "sb_manage.html" import sb_manage with context %}
+{% block sidebar %}
+{{ sb_manage() }}
+{% endblock %}
+
+{% block page_content %}
+{% from "_helpers.html" import render_field %}
+<div class="col-md-12">
+    <form method="POST" enctype="multipart/form-data" id="fm">
+	<div class="panel panel-default">
+	    <div class="panel-heading text-center">
+    {% if ar %}
+    <h3 class="text-muted"><span class="fa fa-plus"></span><strong class="ar1"> المكتب - إضافة مهمة جديدة </strong></h3>
+    {% else %}
+    <h3 class="text-muted"><strong><span class="fa fa-plus"></span>  Office - Add new task </strong></h3>
+    {% endif %}
+	    </div>
+	    <div class="panel-body">
+    {{ brp * 4 }}
+		{{ form.csrf_token }}
+		<a data-toggle="modal" data-target="#mym">
+		    <center><img class="img-responsive img-thumbnail" id="map" width="40%" src="{{ url_for('static', filename='images/manage_task.jpg') }}"></center>
+		</a><br><br />
+    {% if ar %}
+    <p class="h4 text-center text-muted ar2">
+      | مهمة : عبارة عن عنوان نصي حيث يتم إصدار التذاكر عن طريقه و يتيح إدارة و تنظيم التذاكر
+      للمستخدميين |
+		</p>
+    {% else %}
+		<p class="h4 text-center text-muted">
+		    | Task : the option that its title appears to the user on the Touch screen to choose from and dispatch a ticket for it |
+		</p>
+    {% endif %}
+		<br /><hr /><br />
+		{{ render_field(form.name, class="form-control") }}<br>
+		<br><br>
+		<center>
+    {% if ar %}
+      {{ form.submit(class_="btn btn-md btn-danger ar1") }}
+    {% else %}
+      {{ form.submit(class_="btn btn-md btn-danger") }}
+    {% endif %}
+    </center>
+    {{ brp * 4 }}
+	    </div>
+	</div>
+    </form>
+    <br>
+</div>
+<div class="modal fade" id="mym">
+    <div class="modal-dialog">
+	<div class="modal-content">
+	    <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">&times;</button>
+    {% if ar %}
+		<h4 class="modal-title ar1">خاركة التنظيم</h4>
+    {% else %}
+		<h4 class="modal-title">Management template</h4>
+    {% endif %}
+	    </div>
+	    <div class="modal-body">
+		<center>
+		    <img class="img-thumbnail img-responsive" src="{{ url_for('static', filename='images/manage_map.jpg') }}" alt="Map image">
+		</center>
+	    </div>
+	    <div class="modal-footer">
+        {% if ar %}
+    		<button type="button" class="close ar1" data-dismiss="modal">إلغاء</button>
+        {% else %}
+    		<button type="button" class="close" data-dismiss="modal">Close</button>
+        {% endif %}
+	    </div>
+	</div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+{% extends "base.html" %}
+{% block title %} FQM - {{ ptitle  }} {% endblock %}
+
+{% block page_content %}
+{% from "_helpers.html" import render_field %}
+<div class="col-md-12">
+    <form method="POST" enctype="multipart/form-data" id="fm">
+	<div class="panel panel-default">
+	    <div class="panel-heading text-center">
+		<h3 class="text-muted">
+			<span class="fa fa-database"></span>
+      {% if ar %}
+      <strong class="ar1">
+      إستخراج ملف البيانات
+      </strong>
+      {% else %}
+        <strong>
+        Export CSV
+		    </strong>
+      {% endif %}
+		</h3>
+	    </div>
+	    <div class="panel-body">
+    {{ brp * 5 }}
+		{{ form.csrf_token }}
+    {% if ar %}
+    <h4 class="text text-center text-muted ar2">
+      | ملف البينات هوا عبارة عن ملف نصي يحتوي على البيانات المخزنة في القاعدة ,
+      يمكن إختيار القوائم المعينة التي سيتم إستخراجها |
+    </h4>
+    {% else %}
+    <h4 class="text text-center text-muted">
+      | CSV is a basic text files that is used to export database columns
+      and rows into a simple text format, in-which each value is saparated
+      by a comma |
+    </h4>
+    {% endif %}
+    {{ brp * 2 }}
+    {% if ar %}
+    <h4 class="text text-center text-muted ar2">
+      | الغاية الرئيسية من هذه الميزة هيا تمكين مدير النظام و مستخدميه من إستخراج و إراد البينات
+      إلى برامج خارجية مختصة بتحليل و معالجة البيانات النصية |
+    </h4>
+    {% else %}
+    <h4 class="text text-center text-muted">
+      | The main purpose for this feature is to allow the
+      administrator to import and anayize the data into other specilized software |
+    </h4>
+    {% endif %}
+    {{ brp * 3 }}
+    {% if ar %}
+		{{ render_field(form.table, class="form-control ar1") }}
+    {% else %}
+		{{ render_field(form.table, class="form-control") }}
+    {% endif %}
+    {{ brp * 4 }}
+		<center>
+      {% if ar %}
+		    {{ form.submit(class_="btn btn-md btn-danger ar1") }}
+      {% else %}
+		    {{ form.submit(class_="btn btn-md btn-danger") }}
+      {% endif %}
+		</center>
+    {{ brp * 5 }}
+	    </div>
+	</div>
+    </form>
+    <br>
+</div>
+{% endblock %}

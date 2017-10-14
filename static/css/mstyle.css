@@ -1,0 +1,28 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ 
+ hide {
+     display: none;
+ }
+ i:hover {
+     filter: brightness(2.5);
+ }
+ #map:hover {
+     opacity: 0.5;
+ }
+ #blogo:hover {
+     filter: brightness(2.5);
+ }
+ .navbar-inverse {
+     background-color: rgba(0,0,0,0.7);
+     border: 0;
+     font-size: large;
+     box-shadow: none;
+     z-index: 999;
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+     -webkit-transition: background .5s ease-in-out, opacity .5s ease;
+     -moz-transition: background .5s ease-in-out, opacity .5s ease;
+     transition: background .5s ease-in-out, opacity .5s ease;
+ }

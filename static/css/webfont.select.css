@@ -1,0 +1,41 @@
+.webfont-wrapper {
+  position: relative;
+  display: inline-block; }
+  .webfont-wrapper .ui-icon {
+    cursor: pointer;
+    position: absolute;
+    top: 6px;
+    right: 6px; }
+
+.webfont-input, .webfont-list {
+  font-size: 18px;
+  line-height: 1em; }
+
+.webfont-input {
+  cursor: pointer;
+  border: 1px solid #ccc;
+  width: 12em;
+  height: 1.5em;
+  padding: 0 1.5em 0 0.5em; }
+
+.webfont-list {
+  background: #fff;
+  color: #000;
+  border: 1px solid #ccc;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  width: 14em;
+  max-height: 12em;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: absolute;
+  top: 28px;
+  left: 0; }
+  .webfont-list li {
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 0.25em 0.5em; }
+    .webfont-list li.selected {
+      background: #339;
+      color: #fff; }

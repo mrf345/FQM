@@ -1,0 +1,161 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+{% extends "base.html" %}
+{% block title %} FQM - {{ ptitle }} {% endblock %}
+{% block head %}
+{{ super() }}
+{{ pagedown.include_pagedown() }}
+{% endblock %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{%- from "sb_manage.html" import sb_manage with context %}
+{% block sidebar %}
+{{ sb_manage() }}
+{% endblock %}
+
+{% block page_content %}
+{% from "_helpers.html" import render_field %}
+<div class="col-md-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+	    <h2 class="text text-center">
+        {% if ar %}
+        <strong class="ar1">نتائج البحث </strong>
+        {% else %}
+        <strong> Search results </strong>
+        {% endif %}
+      </h2>
+        </div>
+        <div class="panel-body">
+	    <div class="row text-center h3 text-muted hidden-xs">
+    {% if ar %}
+    <div class="col-xs-2 ar2">
+        (التذكرة)
+    </div>
+    <div class="col-xs-2 ar2">
+        (الإصدار)
+    </div>
+    <div class="col-xs-3 ar2">
+        (السحب)
+    </div>
+    <div class="col-xs-3 ar2">
+        (الإسم)
+    </div>
+    <div class="col-xs-2 ar2">
+        (نوع التذكرة)
+    </div>
+    {% else %}
+		<div class="col-xs-2">
+		    (Ticket)
+		</div>
+		<div class="col-xs-2">
+		    (Issued)
+		</div>
+		<div class="col-xs-3">
+		    (Pulled)
+		</div>
+		<div class="col-xs-3">
+		    (Name)
+		</div>
+		<div class="col-xs-2">
+		    (Ticket Type)
+		</div>
+    {% endif %}
+	    </div>
+	    {% for o in serialsp %}
+	    <div class="row well {% if o.p %} text-primary {% else %} text-danger {% endif %} h4  text-center">
+		<div class="col-xs-12 col-sm-2">
+		    <b> {{ offices.filter_by(id=o.office_id).first().prefix }}{{ o.number }}.</b>
+		</div>
+		<div class="col-xs-12 col-sm-2">
+		    <u>{{ moment(o.timestamp).format('L') }}</u>
+		</div>
+		<div class="col-xs-12 col-sm-3">
+		    {% if o.p %}<u>{{ moment(o.pdt).fromNow() }}</u>
+		    {% else %}
+        {% if ar %} <u class="ar1"> في الإنتظار</u> {% else %}<u>Waiting ..</u> {% endif %}
+        {% endif %}
+		</div>
+		<div class="col-xs-12 col-sm-3">
+		    {% if o.n %}<u> {{ o.name }} </u> {% else %}
+		    {% if ar %} <u class="ar1"> لا إسم</u> {% else %} <u> None </u> {% endif %}{% endif %}
+		</div>
+		<div class="col-xs-12 col-sm-2">
+        {% if ar %}
+          <u class="ar1"> {% if o.n %} مسجلة {% else %} مطبوعة {% endif %} </u>
+        {% else %}
+          <u> {% if o.n %} Registered {% else %} Printed {% endif %} </u>
+        {% endif %}
+		</div>
+	    </div>
+	    {% endfor %}
+      {% if len(serialsp) <= 1 %}
+      {{ brp * 25 }}
+      {% elif len(serialsp) <= 3 %}
+	    {{ brp * 20 }}
+	    {% elif len(serialsp) <= 5 %}
+	    {{ brp * 15 }}
+	    {% endif %}
+	</div>
+	<div class="panel-footer">
+	    <div class="row text-center">
+    {% if ar %}
+    <div class="col-xs-12 col-sm-4 h4 ar1">
+      إجمالي التذاكر :
+      <br />
+      <br />
+		    <span class="label label-info">
+			<i> {{ serials.count() }}</i>
+		    </span>
+		</div>
+		<div class="col-xs-12 col-sm-4 h4 ar1">
+      تم سحبه :
+      <br />
+      <br />
+		    <span class="label label-info">
+			<i>{{ serials.filter_by(p=True).count() }}</i>
+		    </span>
+		</div>
+		<div class="col-xs-12 col-sm-4 h4 ar1">
+      في الإنتظار :
+      <br />
+      <br />
+		    <span class="label label-danger">
+			<i>{{ serials.filter_by(p=None).count() }}</i>
+		    </span>
+		</div>
+    {% else %}
+		<div class="col-xs-12 col-sm-4 h4">
+		    Tickets total :
+		    <span class="label label-info">
+			<i> {{ serials.count() }}</i>
+		    </span>
+		</div>
+		<div class="col-xs-12 col-sm-4 h4">
+		    Proccessed :
+		    <span class="label label-info">
+			<i>{{ serials.filter_by(p=True).count() }}</i>
+		    </span>
+		</div>
+		<div class="col-xs-12 col-sm-4 h4">
+		    Waiting :
+		    <span class="label label-danger">
+			<i>{{ serials.filter_by(p=None).count() }}</i>
+		    </span>
+		</div>
+    {% endif %}
+	    </div>
+	    <div class="row text-center">
+		<div class="pagination">
+		    {{ macros.pagination_widget(pagination, '.search') }}
+		</div>
+	    </div>
+	</div>
+	</div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,127 @@
+/* arabic */
+@font-face {
+  font-family: 'Amiri';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/gfonts/Amiri-Regular.ttf') format('truetype');
+}
+
+/* arabic */
+@font-face {
+  font-family: 'Aref Ruqaa';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/gfonts/ArefRuqaa-Regular.ttf') format('truetype');
+}
+
+/* arabic */
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/gfonts/Cairo-Regular.ttf') format('truetype');
+}
+/* arabic */
+@font-face {
+  font-family: 'Changa';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/gfonts/Changa-Regular.ttf') format('truetype');
+}
+
+/* arabic */
+@font-face {
+  font-family: 'El Messiri';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/gfonts/Elmessiri-Regular.ttf') format('truetype');
+}
+
+/* arabic */
+@font-face {
+  font-family: 'Harmattan';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/gfonts/Harmattan-Regular.ttf') format('truetype');
+
+}
+
+/* arabic */
+@font-face {
+  font-family: 'Jomhuria';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/gfonts/-Jomhuria-Regular.ttf') format('truetype');
+
+}
+
+/* arabic */
+@font-face {
+  font-family: 'Katibeh';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/gfonts/Katibeh-Regular.ttf') format('truetype');
+}
+
+/* arabic */
+@font-face {
+  font-family: 'Lalezar';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/gfonts/Lalezar-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Lateef';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/gfonts/Lateef-Regular.ttf') format('truetype');
+}
+
+/* arabic */
+@font-face {
+  font-family: 'Lemonada';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/gfonts/Lemonada-Regular.ttf') format('truetype');
+}
+
+/* arabic */
+@font-face {
+  font-family: 'Mada';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/gfonts/Mada-Regular.ttf') format('truetype');
+}
+
+/* arabic */
+@font-face {
+  font-family: 'Mirza';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/gfonts/Mirza-Regular.ttf') format('truetype');
+}
+
+/* arabic */
+@font-face {
+  font-family: 'Rakkas';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/gfonts/Rakkas-Regular.ttf') format('truetype');
+}
+
+/* arabic */
+@font-face {
+  font-family: 'Reem Kufi';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/gfonts/ReemKufi-Regular.ttf') format('truetype');
+}
+
+/* arabic */
+@font-face {
+  font-family: 'Scheherazade';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/static/gfonts/Scheherazade-Regular.ttf') format('truetype');
+}

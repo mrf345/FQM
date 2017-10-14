@@ -1,0 +1,516 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+   
+{% extends "base.html" %}
+{% block title %} FQM - {{ ptitle  }} {% endblock %}
+{% import "_macros.html" as macros %}
+
+{%- from "sb_cust.html" import sb_cust with context %}
+{% block sidebar %}
+{{ sb_cust() }}
+{% endblock %}
+
+{% block head %}
+{{ super() }}
+<script>
+ $(document).ready(function() {
+
+     $('#nff').on('submit', function(event) {
+	 event.preventDefault();
+	 var formData = new FormData($('#nff')[0]);
+	 $.ajax({
+	     xhr : function () {
+		 var xhr = new window.XMLHttpRequest();
+		 xhr.upload.addEventListener('progress', function(e) {
+		     if (e.lengthComputable) {
+			 var percent = Math.round((e.loaded / e.total) * 100);
+			 console.log("The percentage : " + percent);
+			 $("#pgbarc").attr('aria-valuenow', percent).css('width', percent + '%').text(percent + "%  Completed");
+		     }
+		 });
+		 $('#cancel').on('click', function(){
+		     xhr.abort();
+		 });
+		 return xhr;
+	     },
+	     type : 'POST',
+	     url : "{{ url_for('cust_app.multimedia', aa=1) }}",
+	     data : formData,
+	     processData : false,
+	     contentType : false,
+	     success : function () {
+		 window.location.replace("{{ url_for('cust_app.multimedia', aa=0) }}");
+	     },
+	     error : function () {
+		 window.location.replace("{{ url_for('cust_app.multimedia', aa=0) }}");
+	     }
+	 });
+     });
+ });
+</script>
+{% if form.errors %}
+<script type="text/javascript">
+ window.onload = function(){
+     $('#mym').modal('show')
+ }
+</script>
+{% endif %}
+{% endblock %}
+
+{% block page_content %}
+{% from "_helpers.html" import render_field %}
+<style>
+ span.fa:hover {
+     filter: brightness(1.5);
+ }
+</style>
+<script type="text/javascript">
+ function pp(p,t){
+     if (p==1){
+	 document.getElementById(t).play();
+     }
+     if (p==2){
+	 document.getElementById(t).pause();
+     }
+ }
+</script>
+<div class="col-md-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+	    <h3 class="text text-center">
+    {% if ar %}
+		<strong class="ar1">الوسائط المتعددة</strong>
+    {% else %}
+		<strong>Multimedia</strong>
+    {% endif %}
+	    </h3>
+	    <div class="row">
+		<div class="col-xs-12 text-center">
+		    <div class="btn-group-justified">
+			<a class="btn btn-primary" data-toggle="modal" data-target="#mym">
+			    <span class="fa fa-plus hidden-xs"></span>
+          {% if ar %}
+			    <strong class="ar1">إضافة ملف</strong>
+          {% else %}
+			    <strong>Add media</strong>
+          {% endif %}
+			</a>
+			<a data-toggle="modal" data-target="#dall" class="btn btn-danger">
+			    <span class="fa fa-trash hidden-xs"></span>
+            {% if ar %}
+			      <strong class="ar1">حذف الجميع</strong>
+            {% else %}
+  			    <strong>Delete all</strong>
+            {% endif %}
+			</a>
+		    </div>
+		</div>
+	    </div>
+        </div>
+        <div class="panel-body">
+	    <div class="row text-center h3 text-muted hidden-xs">
+    {% if ar %}
+    <div class="col-sm-4 ar2">
+		    (إسم الملف)
+		</div>
+		<div class="col-sm-2 ar2">
+		    (نوع الملف)
+		</div>
+		<div class="col-sm-4 ar2">
+		    (حالة الملف)
+		</div>
+		<div class="col-sm-2 ar2">
+		    (خيارات)
+		</div>
+    {% else %}
+		<div class="col-sm-4">
+		    (ID.Name)
+		</div>
+		<div class="col-sm-2">
+		    (Type)
+		</div>
+		<div class="col-sm-4">
+		    (Status)
+		</div>
+		<div class="col-sm-2">
+		    (Actions)
+		</div>
+    {% endif %}
+	    </div>
+	    {% if len(mmmp) > 0 %}
+	    {% for mfile in mmmp %}
+	    <div class="row well {% if mfile.used %} text-danger {% else %} text-primary {% endif %} h4 text-center">
+		<div class="col-xs-12 col-sm-4">
+		    <strong {% if ar %} class="ar1" {% endif %}>{{ mfile.id }}.  {{ mfile.name }}</strong>
+		</div>
+		<div class="col-xs-12 col-sm-2">
+      {% if ar %}
+      	<u class="ar1">{% if mfile.audio %} ملف صوتي {% elif mfile.img %} ملف صوري {% else %} ملف فيديو {% endif %}</u>
+      {% else %}
+		    <u>{% if mfile.audio %} Audio file {% elif mfile.img %} Image file {% else %} Video file {% endif %}</u>
+      {% endif %}
+		</div>
+		<div class="col-xs-12 col-sm-4">
+      {% if ar %}
+      <u class="ar1">
+      {% if mfile.used %}
+			مستخدم من :
+			<em>
+			    {% if  mfile.audio %}
+			    {% if tc.filter_by(akey=mfile.id).first() is not none %}
+			    شاشة اللمس ,
+			    {% endif %}
+			    {% if dc.filter_by(akey=mfile.id).first() is not none %}
+			    شاشة العرض ,
+			    {% endif %}
+			    {% else %}
+			    {% if tc.filter_by(ikey=mfile.id).first() is not none %}
+			    شاشة اللمس ,
+			    {% endif %}
+			    {% if dc.filter_by(ikey=mfile.id).first() is not none %}
+			    شاشة العرض ,
+			    {% endif %}
+			    {% if sl.filter_by(ikey=mfile.id).first() is not none %}
+			    شاشة شرائح العرض ,
+			    {% endif %}
+			    {% endif %}
+          {% if mfile.vid %}
+          شاشة الفيديو ,
+          {% endif %}
+			</em>
+			{% else %} ليس مستخدم
+      {% endif %}
+      </u>
+      {% else %}
+      <u>
+			{% if mfile.used %}
+			Used by :
+			<em>
+			    {% if  mfile.audio %}
+			    {% if tc.filter_by(akey=mfile.id).first() is not none %}
+			    Touch Screen,
+			    {% endif %}
+			    {% if dc.filter_by(akey=mfile.id).first() is not none %}
+			    Display Screen,
+			    {% endif %}
+			    {% else %}
+			    {% if tc.filter_by(ikey=mfile.id).first() is not none %}
+			    Touch Screen,
+			    {% endif %}
+			    {% if dc.filter_by(ikey=mfile.id).first() is not none %}
+			    Display Screen,
+			    {% endif %}
+			    {% if sl.filter_by(ikey=mfile.id).first() is not none %}
+			    Slideshow,
+			    {% endif %}
+			    {% endif %}
+          {% if mfile.vid %}
+          Video display,
+          {% endif %}
+			</em>
+			{% else %} Not used
+			{% endif %}
+      </u>
+      {% endif %}
+		</div>
+
+		<div class="col-xs-12 col-sm-2">
+		    {% if mfile.img or mfile.vid %}<a href="#" data-toggle="modal" data-target="#pre-view{{ mfile.id }}" data-toggle="tooltip" title="{% if ar %} إستعراض الملف {% else %} View the file {% endif %}"><span class="fa fa-eye text-primary"></span></a>{% endif %}
+		    {% if mfile.audio %}<a href="javascript:pp(1,'audio_{{ mfile.id }}');" data-toggle="tooltip" title="{% if ar %} تشغيل ملف الصوت {% else %} Play audio file {% endif %}"><span class="fa fa-play text-primary"></span></a>
+        <a href="javascript:pp(2,'audio_{{ mfile.id }}');" data-toggle="tooltip" title="{% if ar %} إيقاف ملف الصوت {% else %} Stop audio file {% endif %}"><span class="fa fa-stop text-primary"></span></a>
+        <audio id="audio_{{ mfile.id }}" src="{{ url_for('static', filename='multimedia/'+mfile.name) }}"></audio>{% endif %}
+		    {% if not mfile.used %}<a href="#" data-toggle="modal" data-target="#dell{{ mfile.id }}" data-toggle="tooltip" title="{% if ar %} حذف الملف {% else %} Delete media file {% endif %}"><span class="fa fa-trash text-warning"></span></a>{% endif %}
+		</div>
+	    </div>
+	    {% if mfile.img %}
+	    <div class="modal fade" id="pre-view{{ mfile.id }}">
+		<div class="modal-dialog">
+		    <div class="modal-content">
+			<div class="modal-header">
+			    <button type="button" class="close" data-dismiss="modal">&times;</button>
+            {% if ar %}
+            <h4 class="modal-title text-center ar1"> عرض {{ mfile.name }} </h4>
+            {% else %}
+            <h4 class="modal-title text-center"> Preview {{ mfile.name }} </h4>
+            {% endif %}
+			</div>
+			<div class="modal-body">
+			    <img class="img-responsive img-thumbnail" src="{{ url_for('static', filename='multimedia/'+mfile.name) }}">
+			</div>
+			<div class="modal-footer">
+          {% if ar %}
+			    <button type="button" class="close btn btn-md btn-danger pull-right ar1" data-dismiss="modal">إلغاء</button>
+          {% else %}
+			    <button type="button" class="close btn btn-md btn-danger pull-right" data-dismiss="modal">Close</button>
+          {% endif %}
+			</div>
+		    </div>
+		</div>
+	    </div>
+	    {% endif %}
+      {% if mfile.vid %}
+      <div class="modal fade" id="pre-view{{ mfile.id }}">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              {% if ar %}
+              <h4 class="modal-title text-center ar1"> عرض {{ mfile.name }} </h4>
+              {% else %}
+              <h4 class="modal-title text-center"> Preview {{ mfile.name }} </h4>
+              {% endif %}
+            </div>
+            <div class="modal-body">
+              <video src="{{ url_for('static', filename='multimedia/'+mfile.name) }}" controls class='img-responsive'>
+              </video>
+            </div>
+            <div class="modal-footer">
+              {% if ar %}
+              <button type="button" class="close btn btn-md btn-danger pull-right ar1" data-dismiss="modal">إلغاء</button>
+              {% else %}
+              <button type="button" class="close btn btn-md btn-danger pull-right" data-dismiss="modal">Close</button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+	    {% if not mfile.used %}
+	    <div class="modal fade" id="dell{{ mfile.id }}">
+		<div class="modal-dialog">
+		    <div class="modal-content">
+			<div class="modal-header">
+			    <button type="button" class="close" data-dismiss="modal">&times;</button>
+          {% if ar %}
+			    <h4 class="modal-title text-center ar1">تنبيه حذف  {{ mfile.name }} </h4>
+          {% else %}
+			    <h4 class="modal-title text-center">Warning : Delete {{ mfile.name }} </h4>
+          {% endif %}
+			</div>
+			<div class="modal-body">
+			    <h4 class="text-danger text-center text-warning">
+            {% if ar %}
+            <strong class="ar2">
+            تحاول القيام بحذف ملف وسائط متعددة من النظام ,
+            الملف سيتم حذفه نهائياً , اتريد الإستمرار في ذالك ؟
+            </strong>
+            {% else %}
+				  <strong>
+            You are attempting to delete {{ mfile.name }}
+				    which won't be retrievable , Are you sure of that ?
+          </strong>
+          {% endif %}
+          <br><br>
+			    </h4>
+			</div>
+			<div class="modal-footer">
+          {% if ar %}
+          <button type="button" class="close btn btn-md btn-warning pull-left ar1" data-dismiss="modal">إلغاء</button>
+			    <a href="{{ url_for('cust_app.multi_del', f_id=mfile.id) }}"><button type="button" class="close btn btn-md btn-danger ar1">إستمرار</button></a>
+          {% else %}
+			    <button type="button" class="close btn btn-md btn-warning pull-left" data-dismiss="modal">No, don't</button>
+			    <a href="{{ url_for('cust_app.multi_del', f_id=mfile.id) }}"><button type="button" class="close btn btn-md btn-danger">Yes, sure</button></a>
+          {% endif %}
+			</div>
+		    </div>
+		</div>
+	    </div>
+	    {% endif %}
+	    {% endfor %}
+	    {% endif %}
+	    {% if len(mmmp) == 0 %}
+	    <div class="well">
+		{{ brp*11 }}
+		<center>
+      {% if ar %}
+        <h3 class="text-danger ar1">لم يتم إضافة أي ملفات وسائط متعددة بعد </h3>
+      {% else %}
+        <h3 class="text-danger">No multimedia files exist to display ..</h3>
+      {% endif %}
+    </center>
+		{{ brp*11 }}
+	    </div>
+      {% elif len(mmmp) <= 1 %}
+        {{ brp * 25 }}
+      {% elif len(mmmp) <= 3 %}
+        {{ brp * 20 }}
+	    {% elif len(mmmp) <= 5 %}
+	    {{ brp*15 }}
+	    {% endif %}
+	</div>
+        <div class="panel-footer">
+            <div class="row text-center">
+              {% if ar %}
+              <div class="col-xs-12 col-sm-6 h4 ar1">
+                  عدد الملفات
+                  <br /><br />
+                  {% if mmm.count() <= nofl/3 %}<span class="label label-info">
+                  {% elif mmm.count() <= nofl/2 %}<span class="label label-warning">
+                  {% else %}<span class="label label-danger">
+                  {% endif %}{{ mmm.count() }}</span>
+               </div>
+              <div class="col-xs-12 col-sm-6 h4 ar1">
+                  حجم المجلد
+                  <br /><br />
+                  {% if fs <= sfl/3 %}<span class="label label-info">
+                  {% elif fs <= sfl/2 %}<span class="label label-warning">
+                  {% else %}<span class="label label-danger">
+                  {% endif %}{{ fs }} MB</span>
+              </div>
+              {% else %}
+                <div class="col-xs-12 col-sm-6 h4">
+                    Files Count
+		                {% if mmm.count() <= nofl/3 %}<span class="label label-info">
+		                {% elif mmm.count() <= nofl/2 %}<span class="label label-warning">
+		                {% else %}<span class="label label-danger">
+		                {% endif %}{{ mmm.count() }}</span>
+		             </div>
+                <div class="col-xs-12 col-sm-6 h4">
+                    Folder Size
+		                {% if fs <= sfl/3 %}<span class="label label-info">
+		                {% elif fs <= sfl/2 %}<span class="label label-warning">
+		                {% else %}<span class="label label-danger">
+		                {% endif %}{{ fs }} MB</span>
+                </div>
+              {% endif %}
+	            </div>
+	    <div class="row text-center {% if ar %} ar1 {% endif %}">
+        {% if ar %}
+        <div class="col-xs-12 col-sm-6 h4">
+          ملفات مستخدمة
+            <br /><br />
+           <span class="label label-danger"> {{ mmm.filter_by(used=True).count() }} </span>
+         </div>
+        <div class="col-xs-12 col-sm-6 h4">
+            ملفات غير مستخدمة
+            <br />
+            <br />
+            <span class="label label-info"> {{ mmm.filter_by(used=False).count() }} </span>
+        </div>
+        <div class="col-xs-12 text-center h4 text-danger">
+          | تذكر : عليك تعطيل إستخدام الملفات المستخدمة لتتمكن من حذفها |
+        </div>
+        {% else %}
+		      <div class="col-xs-12 col-sm-6 h4">
+		        Used Files
+		         <span class="label label-danger"> {{ mmm.filter_by(used=True).count() }} </span>
+		       </div>
+		      <div class="col-xs-12 col-sm-6 h4">
+		          Unused Files
+		          <span class="label label-info"> {{ mmm.filter_by(used=False).count() }} </span>
+		      </div>
+		      <div class="col-xs-12 text-center h4 text-danger">
+		        | Reminder : must unuse the media file to be able to delete it |
+		      </div>
+       {% endif %}
+         </div>
+	    <div class="row text-center">
+		<div class="pagination">
+		    {{ macros.pagination_widget(pagination, '.multimedia', aa=1) }}
+		</div>
+	    </div>
+	</div>
+    </div>
+</div>
+</div>
+</div>
+<br>
+<div class="modal fade" id="mym">
+    <div class="modal-dialog">
+	<div class="modal-content">
+	    <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">&times;</button>
+    {% if ar %}
+		<h4 class="modal-title text-center ar1">رفع ملف وسائط متعددة</h4>
+    {% else %}
+		<h4 class="modal-title text-center">Upload multimedia file</h4>
+    {% endif %}
+	    </div>
+	    <form id="nff" method="POST" enctype="multipart/form-data" action="{{ url_for('cust_app.multimedia', aa=1) }}">
+		<div class="modal-body">
+        {% if ar %}
+        <p class="h4 text-danger text-center ar2">
+        | ملفات الوسائط المتعددة المسموح برفعها :
+        {% for mf in ml %}
+        {% for mff in mf %}
+        {{ mff }},
+        {% endfor %}
+        {% endfor %}
+        |
+		    </p>
+        {% else %}
+		    <p class="h4 text-danger text-center">
+        | Only media files type allowed to be uploaded are :
+        {% for mf in ml %}
+        {% for mff in mf %}
+        {{ mff }},
+        {% endfor %}
+        {% endfor %}
+        |
+		    </p>
+        {% endif %}
+		    <br>
+		    <center>
+			{{ form.csrf_token }}
+			{{ render_field(form.mf, class="form-control btn-primary btn-md") }}
+			<br>
+			<div class="progress">
+			    <div id="pgbarc" class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+			</div>
+		    </center>
+		</div>
+		<div class="modal-footer">
+      {% if ar %}
+      <button type="button" id="cancel" class="close btn-danger pull-left ar1" data-dismiss="modal">إلغاء الرفع</button>
+      <button type="submit" class="close btn-primary ar1">إرفع</button>
+      {% else %}
+		    <button type="button" id="cancel" class="close btn-danger pull-left" data-dismiss="modal">Cancel upload</button>
+		    <button type="submit" class="close btn-primary">Upload</button>
+      {% endif %}
+		</div>
+	    </form>
+	</div>
+    </div>
+</div>
+<div class="modal fade" id="dall">
+    <div class="modal-dialog">
+	<div class="modal-content">
+	    <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">&times;</button>
+    {% if ar %}
+		<h4 class="modal-title text-center ar1">تحذير : حذف جميع الملفات</h4>
+    {% else %}
+		<h4 class="modal-title text-center">Warning : Delete all </h4>
+    {% endif %}
+	    </div>
+	    <div class="modal-body">
+    {% if ar %}
+    <h4 class="text-danger text-center text-warning">
+		    <strong class="ar2">
+        تحاول القيام بحذف جميع ملغات الوسائط المتعددة غير المستخدمة ,
+        سيتم حذفها مع عدم إمكانية إسترجاع أي منها فيما بعد , تريد الإستمرار
+        في ذالك ؟
+        </strong><br><br>
+		</h4>
+    {% else %}
+		<h4 class="text-danger text-center text-warning">
+		    <strong> You are attempting to delete all multimedia files
+			which won't be retrievable , Are you sure of that ? </strong><br><br>
+		</h4>
+    {% endif %}
+	    </div>
+	    <div class="modal-footer">
+        {% if ar %}
+        <button type="button" class="close btn btn-md btn-warning pull-left ar1" data-dismiss="modal">إلغاء</button>
+		    <a href="{{ url_for('cust_app.multi_del', f_id=00) }}"><button type="button" class="close btn btn-md btn-danger ar1">إستمرار</button></a>
+        {% else %}
+		    <button type="button" class="close btn btn-md btn-warning pull-left" data-dismiss="modal">No, don't</button>
+		    <a href="{{ url_for('cust_app.multi_del', f_id=00) }}"><button type="button" class="close btn btn-md btn-danger">Yes, sure</button></a>
+        {% endif %}
+	    </div>
+	</div>
+    </div>
+</div>
+
+{% endblock %}

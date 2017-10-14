@@ -1,0 +1,246 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+{% extends "base.html" %}
+{% block title %} FQM - {{ ptitle  }} {% endblock %}
+
+{% block head %}
+{{ super() }}
+<link href="{{ url_for('static', filename='css/spectrum.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/jquery-ui.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/gfonts.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/webfont.select.css') }}" rel="stylesheet">
+<script src="{{ url_for('static', filename='jquery-ui.min.js') }}"></script>
+<script src="{{ url_for('static', filename='spectrum.js') }}" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='jquery.are-you-sure.js') }}"></script>
+<script src="{{ url_for('static', filename='webfont.js') }}"></script>
+<script src="{{ url_for('static', filename='webfont.select.js') }}"></script>
+<script type="text/javascript">
+$(document).ready( function() {
+  $(".spa").spectrum({
+      color: "#000",
+      showAlpha: true,
+      preferredFormat: "rgb",
+      showInput: true,
+      showButtons: false,
+      allowEmpty: false,
+      move: function(color) {
+ 	 this.val(color.toRgbString());
+      },
+  });
+  $(".sp").spectrum({
+      color: "#ff0",
+      preferredFormat: "rgb",
+      showButtons: false,
+      showInput: true,
+      allowEmpty: false,
+      move: function(color) {
+ 	 this.val(color.toRgbString());
+      },
+  });
+  $('#hfont').wfselect({
+  fonts: {
+    google: {
+      families: ['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade'],
+      url_generation: {base_url: "{{ url_for('static', filename='css/gfonts.css') }}", space_char: '+'}
+    }
+  },
+  load_all_fonts: true,
+  default_font_name: {type: 'google', name: String($('#hfont').val())}
+ }).on('wfselectchange', function (event, fontInfo){
+   var af = $('#hfont').css('font-family');
+   $('#hbfont').val(String(af));
+ });
+ $('#tfont').wfselect({
+ fonts: {
+   google: {
+     families: ['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade'],
+     url_generation: {base_url: "{{ url_for('static', filename='css/gfonts.css') }}", space_char: '+'}
+   }
+ },
+ load_all_fonts: true,
+  default_font_name: {type: 'google', name: String($('#tfont').val())}
+ }).on('wfselectchange', function (event, fontInfo){
+  var bf = $('#tfont').css('font-family');
+  $('#tbfont').val(String(bf));
+ });
+  $("#fm").areYouSure();
+  $('#hbfont').val(String($('#hfont').css('font-family')));
+  $('#tbfont').val(String($('#tfont').css('font-family')));
+});
+</script>
+{% endblock %}
+
+{%- from "sb_cust.html" import sb_cust with context %}
+{% block sidebar %}
+{{ sb_cust() }}
+{% endblock %}
+
+{% block page_content %}
+{% from "_helpers.html" import render_field %}
+<script type="text/javascript">
+ function hide(a){
+     if (a == "#p1"){
+	 $(a).addClass('hide');
+	 $('#p2').removeClass('hide');
+     }
+     if (a == "#p2"){
+	 $(a).addClass('hide');
+	 $('#p1').removeClass('hide');
+     }
+ }
+
+</script>
+<div class="col-md-12">
+    <div class="panel panel-default" id="waiting2">
+	<div class="panel-body">
+	    <div class="well">
+		{{ brp*8 }}
+		<center><i class="fa fa-5x fa-refresh fa-spin text-danger"></i></center>
+		<br/>
+    {% if ar %}
+		<h3 class="text-danger text-center ar1"> الرجاء الإنتظار لدقيقة , يتم اللآن التحميل</h3>
+    {% else %}
+		<h3 class="text-danger text-center">Wait a minute please, loading ..</h3>
+    {% endif %}
+		{{ brp*8 }}
+	    </div>
+	</div>
+    </div>
+    <form method="POST" enctype="multipart/form-data" id="fm">
+	<div class="panel panel-default hide" id="p1">
+	    <div class="panel-heading text-center">
+		<h3 class="text-muted">
+      <span class="fa fa-plus"></span>
+      {% if ar %}
+      <strong class="ar1">
+        عرض الشرائح - إضافة شريحة
+      </strong>
+      {% else %}
+      <strong>
+        Slide-show -   Add slide
+      </strong>
+      {% endif %}
+    </h3>
+	    </div>
+	    <div class="panel-body">
+		<br><br>
+    {{ brp * 3 }}
+		{{ form.csrf_token }}
+		<a data-toggle="modal" data-target="#mym">
+		    <center><img class="img-responsive img-thumbnail" id="map" src="{{ url_for('static', filename='images/slideshow_title.jpg') }}"></center>
+		</a><br>
+    {% if ar %}
+		<p class="h4 text-center text-danger ar2">
+      | العنوان : الحقل النصي الرئيسي في الشريحة المضافة |
+		</p>
+    {% else %}
+    <p class="h4 text-center text-danger">
+		    | Title : Main text box that displays main heading of a slide |
+		</p>
+    {% endif %}
+		<br>
+		{{ render_field(form.title, class="form-control") }}<br>
+		{{ render_field(form.hsize, class="form-control") }}<br>
+		{{ render_field(form.hcolor, class="sp", value="rgb(255,255,0)") }}<br>
+		{{ render_field(form.hbg, class="spa", value="rgba(0,0,0,0.5)") }}<br>
+		{{ render_field(form.hfont, class="form-control") }}<br>
+		{{ render_field(form.hbfont) }}
+    {{ brp * 5 }}
+		<center>
+      {% if ar %}
+		    <a href="javascript:hide('#p1');"><button type="button" class="btn btn-md btn-primary ar1">تقدم</button></a>
+      {% else %}
+		    <a href="javascript:hide('#p1');"><button type="button" class="btn btn-md btn-primary">Next</button></a>
+      {% endif %}
+		</center>
+        {{ brp * 2 }}
+	    </div>
+	</div>
+	<div class="panel panel-default hide" id="p2">
+	    <div class="panel-heading text-center">
+		<h3 class="text-muted">
+      <span class="fa fa-plus"></span>
+      {% if ar %}
+      <strong class="ar1">  عرض الشرائح - إضافة شريحة  </strong>
+      {% else %}
+      <strong> Slide-show -   Add slide </strong>
+      {% endif %}
+    </h3>
+	    </div>
+	    <div class="panel-body">
+		<br><br>
+		<a data-toggle="modal" data-target="#mym">
+		    <center><img class="img-responsive img-thumbnail" id="map"  src="{{ url_for('static', filename='images/slideshow_subtitle.jpg') }}"></center>
+		</a><br>
+    {% if ar %}
+		<p class="h4 text-center text-danger ar2">
+        | العنوان الجانبي : حقل نصي لإضافة تعليمات نصية بأسفل العنوان الرئيسي |
+		</p>
+    {% else %}
+    <p class="h4 text-center text-danger">
+        | Subtitle : Secondary text box will be displayed under main title |
+    </p>
+    {% endif %}
+		<br>
+		{{ render_field(form.subti, class="form-control") }}<br>
+		{{ render_field(form.tsize, class="form-control") }}<br>
+		{{ render_field(form.tcolor, class="sp", value="rgb(255,255,0)") }}<br>
+		{{ render_field(form.tbg, class="spa", value="rgba(0,0,0,0.5)") }}<br>
+  	{{ render_field(form.tfont, class="form-control") }}<br>
+		{{ render_field(form.tbfont) }}
+		<br><hr><br>
+    {% if ar %}
+    <p class="h4 text-center text-danger ar2">
+        | لإختيار خلفية صورية أو ملونة ليعرض عليها الحقول النصية |
+		</p>
+    {% else %}
+		<p class="h4 text-center text-danger">
+		    | To select a background on-which slide content be displayed  |
+		</p>
+    {% endif %}
+		<br>
+		{{ render_field(form.background, class="btn btn-md btn-primary form-control") }}
+		<br><br>
+		<center>{{ form.bgcolor(class_="sp", value="rgb(255,0,0)") }}</center>
+		<br><br><br><br>
+		<center>
+      {% if ar %}
+      <a href="javascript:hide('#p2');"><button type="button" class="btn btn-md btn-primary ar1">تراجع</button></a>
+      {{ form.submit(class_="btn btn-md btn-danger ar1") }}
+      {% else %}
+		    <a href="javascript:hide('#p2');"><button type="button" class="btn btn-md btn-primary">Previous</button></a>
+		    {{ form.submit(class_="btn btn-md btn-danger") }}
+      {% endif %}
+		</center>
+	    </div>
+	</div>
+    </form>
+</div>
+<br>
+<div class="modal fade" id="mym">
+    <div class="modal-dialog">
+	<div class="modal-content">
+	    <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">&times;</button>
+    {% if ar %}
+		<h4 class="modal-title ar1">خارطة عرض الشرائح</h4>
+    {% else %}
+		<h4 class="modal-title">Slideshow template</h4>
+    {% endif %}
+	    </div>
+	    <div class="modal-body">
+		<center><img class="img-thumbnail img-responsive" src="{{ url_for('static', filename='images/slideshow.jpg') }}" alt="Map image"></center>
+	    </div>
+	    <div class="modal-footer">
+    {% if ar %}
+		<button type="button" class="close ar1" data-dismiss="modal">إلغاء</button>
+    {% else %}
+		<button type="button" class="close" data-dismiss="modal">Close</button>
+    {% endif %}
+	    </div>
+	</div>
+    </div>
+</div>
+{% endblock %}

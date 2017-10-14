@@ -1,0 +1,164 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+{% extends "base.html" %}
+{% block title %} FQM - {{ ptitle  }} {% endblock %}
+
+{%- from "sb_cust.html" import sb_cust with context %}
+{% block sidebar %}
+{{ sb_cust() }}
+{% endblock %}
+
+{% block head %}
+{{ super() }}
+<script>
+$(document).ready(function() {
+  var tcs = $('#langu option:selected').val()
+  if (tcs=='2') {
+    $('#warn').removeClass('hide');
+  }
+  var wcs = $('#kind option:selected').val()
+  if (wcs=='2') {
+    $('#warn2').removeClass('hide');
+    $('#warn3').removeClass('hide');
+  }
+  $('#langu').change(function(){
+    var ncs = $('#langu option:selected').val()
+    if (ncs=='2') {
+      $('#warn').removeClass('hide');
+    }
+    if (ncs!='2') {
+      $('#warn').addClass('hide');
+    }
+  });
+  $('#kind').change(function(){
+    var gcs = $('#kind option:selected').val()
+    if (gcs=='2') {
+      $('#warn2').removeClass('hide');
+      $('#warn3').removeClass('hide');
+    }
+    if (gcs!='2') {
+      $('#warn2').addClass('hide');
+      $('#warn3').addClass('hide');
+    }
+  });
+});
+</script>
+{% endblock %}
+
+{% block page_content %}
+{% from "_helpers.html" import render_field %}
+<div class="col-md-12">
+    <form method="POST" enctype="multipart/form-data">
+	    <div class="panel panel-default" id="p1">
+	      <div class="panel-heading text-center">
+		      <h3 class="text-muted">
+            <span class="fa fa-print"></span>
+            {% if ar %}
+            <strong class="ar1">التذاكر</strong>
+            {% else %}
+            <strong> Tickets  </strong>
+            {% endif %}
+          </h3>
+	      </div>
+	      <div class="panel-body">
+          {{ brp * 2 }}
+		      {{ form.csrf_token }}
+          <center>
+          <a data-toggle="modal" data-target="#mym">
+              <img class="img-responsive img-thumbnail pic" id="map" width="40%" src="{{ url_for('static', filename='images/manage_task.jpg') }}">
+          </a>
+          {{ brp * 4 }}
+          {% if ar %}
+          <p class="h4 text-danger ar2">
+            | مسجلة : نوع التذكرة هذه تسمح للعميل بتسجيل إسمه بعد إختياره
+            لي مهمة معينة و سيستخدم الإسم للإشارة إلى العميل كبديل لرقم التذكرة |
+		      </p>
+          <p class="h4 text-danger ar2">
+            | مطبوعة : نوع التذكرة المتعارف عليها و التي تتطلب توفر طابعة معرفة |
+          </p>
+          {% else %}
+		      <p class="h4 text-danger">
+		        | Registered : allows the customer
+            to register his name and that will be used to refere with
+            instead of a printed ticket |
+		      </p>
+          <p class="h4 text-danger">
+            | Printed : the typical printed unique customer ticket number  |
+          </p>
+          {% endif %}
+          </center>
+          {{ brp * 2 }}
+		      {{ render_field(form.kind, class="form-control touch") }}
+          {{ brp * 2 }}
+          {% if ar %}
+          <h4 id="warn2" class="text-center text-muted hide ar2">
+            | تنبيه : لإستخدام التذاكر المطبوعة يتطلب منك توفير و تعريف طابعة |
+          </h4>
+          <h4 id="warn3" class="text-center text-muted hide ar2">
+            | تنبيه : طابعات اليو إس بي , الطابعات الوحيدة التي يمكن لنظام التعرف عليها |
+          </h4>
+          {% else %}
+          <h4 id="warn2" class="text-center text-muted hide">
+            | Reminder: to use printed tickets you must assign available printer |
+          </h4>
+          <h4 id="warn3" class="text-center text-muted hide">
+            | Reminder: Only supported printers currently are usb printers |
+          </h4>
+          {% endif %}
+          {{ brp * 2 }}
+          {{ render_field(form.langu, class="form-control") }}
+          {{ brp * 2 }}
+          {% if ar %}
+          <h4 id="warn" class="text-center text-muted ar2 hide">
+            | تنبيه : الطباعة باللغة العربية لازلت قيد التجريب و إستخدامها
+            قد يحدث أخطاء غير متوقعة |
+          </h4>
+          {% else %}
+          <h4 id="warn" class="text-center text-muted hide">
+            | Reminder : printing with Arabic , is still under testing and might
+            cause unintended errors |
+          </h4>
+          {% endif %}
+          {{ brp * 2 }}
+		      {{ render_field(form.printers, class="form-control") }}
+          {{ brp * 4 }}
+		    <center>
+          {% if ar %}
+		      {{ form.submit(class_="btn btn-md btn-danger ar1") }}
+          {% else %}
+		      {{ form.submit(class_="btn btn-md btn-danger") }}
+          {% endif %}
+		    </center>
+        {{ brp * 3 }}
+	    </div>
+	  </div>
+  </form>
+</div>
+<br>
+<div class="modal fade" id="mym">
+    <div class="modal-dialog">
+	<div class="modal-content">
+	    <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">&times;</button>
+    {% if ar %}
+		<h4 class="modal-title ar1">خارطة التذاكر</h4>
+    {% else %}
+		<h4 class="modal-title">Tickets template</h4>
+    {% endif %}
+	    </div>
+	    <div class="modal-body">
+		<center><img class="img-thumbnail img-responsive pic" src="{{ url_for('static', filename='images/manage_map.jpg') }}" alt="Map image"></center>
+	    </div>
+	    <div class="modal-footer">
+    {% if ar %}
+		<button type="button" class="close ar1" data-dismiss="modal">إلغاء</button>
+    {% else %}
+		<button type="button" class="close" data-dismiss="modal">Close</button>
+    {% endif %}
+	    </div>
+	</div>
+    </div>
+</div>
+{% endblock %}

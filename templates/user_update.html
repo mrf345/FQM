@@ -1,0 +1,73 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+{% extends "base.html" %}
+{% block title %} FQM - {{ ptitle  }} {% endblock %}
+
+
+{% block page_content %}
+{% from "_helpers.html" import render_field %}
+<div class="col-md-12">
+    <form method="POST" enctype="multipart/form-data" id="fm">
+	<div class="panel panel-default">
+	    <div class="panel-heading text-center">
+		<h3 class="text-muted">
+      {% if ar %}
+      <strong class="ar1">
+    <span class="fa fa-user"></span>  تحديث المستخدم : {{ u.name }}
+      </strong>
+      {% else %}
+		    <strong>
+			<span class="fa fa-user"></span>  Update user : {{ u.name }}
+		    </strong>
+      {% endif %}
+		</h3>
+	    </div>
+	    <div class="panel-body">
+    {{ brp*4 }}
+		{{ form.csrf_token }}
+		<br>
+		{{ render_field(form.name, class="form-control") }}<br>
+		{{ render_field(form.password, class="form-control") }}<br><br>
+    {% if ar %}
+    <p class="h4 text-center text-muted ar2">
+      | Admin : حساب المدير لديه المقدرة على تنظيم و إدارة كل شي , بما في
+      ذالك إضافة و حذف المستخدميين |
+    </p>
+    <p class="h4 text-center text-muted ar2">
+      | Monitor : حساب المنظم لديه المقدرة على تنظيم و تخصيص كل شيئ , لكن
+      ليس لديه المقدرة على الإدارة بما في ذالك إدارة المستخدميين |
+    </p>
+    <p class="h4 text-center text-muted ar2">
+      | Operator : حساب المشغل لديه المقدرة على تشغيل و تنظيم مكتب معين ,
+      يتم تعينه عن طريق حساب المدير و لا يملك أي من صلاحيات الإدارة و التخصيص |
+    </p>
+    {% else %}
+    <p class="h4 text-center text-muted">
+        |  Admin : has the permissions to access and monitor everything  |
+    </p>
+    <p class="h4 text-center text-muted">
+        |  Monitor : has permissions to monitor and access everything except Administrate  |
+    </p>
+    <p class="h4 text-center text-muted">
+      | Operator : has limited permissions only to access and monitor the office assigned to |
+    </p>
+    {% endif %}
+		<br>
+		{{ render_field(form.role, class="form-control") }}<br>
+		<br><br>
+		<center>
+        {% if ar %}
+		    <button type="submit" class="btn btn-md btn-danger ar1">تحديث</button>
+        {% else %}
+		    <button type="submit" class="btn btn-md btn-danger">Update</button>
+        {% endif %}
+		</center>
+        {{ brp*4 }}
+	    </div>
+	</div>
+    </form>
+    <br>
+</div>
+{% endblock %}

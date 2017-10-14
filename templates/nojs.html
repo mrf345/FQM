@@ -1,0 +1,152 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<html>
+<title>{% block title %} FQM - {{ ptitle }} {% endblock %}</title>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-compatible" content="IE=edge">
+<link href="{{ url_for('static', filename='css/gfonts.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='backstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet">
+<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/x-icon">
+<link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/x-icon">
+<link href="{{ url_for('static', filename='css/afade.css') }}" rel="stylesheet">
+<script src="{{ url_for('static', filename='backstrap/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='backstrap/js/bootstrap.min.js') }}"></script>
+<style>
+ body {
+     background-color: black;
+     background-image: url('/static/images/dbg.jpg');
+     background-repeat: no-repeat;
+     background-attachment: fixed;
+     background-position: center;
+     background-size: cover;
+ }
+
+ @keyframes fadein {
+     from { opacity: 0; }
+     to   { opacity: 1; }
+ }
+
+ /* Firefox < 16 */
+ @-moz-keyframes fadein {
+     from { opacity: 0; }
+     to   { opacity: 1; }
+ }
+
+ /* Safari, Chrome and Opera > 12.1 */
+ @-webkit-keyframes fadein {
+     from { opacity: 0; }
+     to   { opacity: 1; }
+ }
+
+ /* Internet Explorer */
+ @-ms-keyframes fadein {
+     from { opacity: 0; }
+     to   { opacity: 1; }
+ }
+
+ /* Opera < 12.1 */
+ @-o-keyframes fadein {
+     from { opacity: 0; }
+     to   { opacity: 1; }
+ }
+ .vertical-center {
+     min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+     min-height: 100vh; /* These two lines are counted as one :-)       */
+     display: flex;
+     align-items: center;
+ }
+ i:hover {
+     filter: brightness(2.5);
+ }
+ #blogo:hover {
+     filter: brightness(2.5);
+ }
+ .ar1 {
+   font-family: 'Changa';
+ }
+ #ar1 {
+   font-family: 'Changa';
+ }
+ .ar2 {
+   font-family: 'Amiri';
+ }
+ #ar2 {
+   font-family: 'Amiri';
+ }
+</style>
+<!--[if IE]>
+<style>
+body {
+    background-color: black;
+    background-image: url('/static/images/dbgo.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+}
+</style>
+<![endif]-->
+</head>
+
+<body>
+<div class="cover vertical-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 text-center" style="background: rgba(0,0,0,0.9);"><br>
+              <a href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">
+                <img src="{{ url_for('static', filename='images/nojs.png') }}" class="image-responsive" id="blogo" width="35%">
+                {% if ar %}
+                <h1 class="text text-danger ar1">لم يتم العثور على جافاسكربت</h1>
+                <br />
+                    <h3 class='text text-muted i ar1'><a href="{{ url_for('lang_switch', lang=2) }}">إنجليزي</a> | <a href="{{ url_for('lang_switch', lang=1) }}">عربي</a></h3>
+              </a>
+		          <br><br />
+		          <h3 class="text text-warning ar2">
+		            بعض من ميزات هذا البرنامج تتعتمد بشكل كلي على لغة جافاسكربت
+                المتوفرة في جميع المتصفحات الحديثة , قد يكون عدم توفرها في
+                متصفحك بسبب إضافة تقوم تلقائياً بتعطيلها , أو لستخدامك لمتصفح قديم جداً
+		          </h3>
+              <br />
+	           	<h3 class="text text-muted ar1">
+	           	    لذالك ننصح بتفعيل جافاسكربت في المتصفح , أو القيام بتنصيب آخر نسخة
+                  متوفرة من متصفح يدعم اللغة كمتصفح فيرفوكس
+	           	</h3>
+	           	<br><br>
+	           	<a class="btn btn-lg btn-warning" href="{{ url_for('core.root') }}">
+	           	    <strong class="ar1">نعم , قمت بتفعيلها</strong>
+	           	</a>
+                {% else %}
+                <h1 class="text text-danger" >Javascript is disabled</h1>
+                <br />
+                <h3 class='text text-muted i'><a href="{{ url_for('lang_switch', lang=2) }}">English</a> | <a href="{{ url_for('lang_switch', lang=1) }}">Arabic</a></h3>
+              </a>
+		          <br><br>
+		          <h3 class="text text-warning">
+		            This application relays haveily on Javascript, it seems you have it disabled,
+		            for some reason : you might be using an old out-dated browser or might be using a browser
+		            that intentionlly does not support Javascript. Browsing this application without
+		            Javascript enabled will result in unintentional dysfunctions.
+		          </h3>
+	           	<h3 class="text text-muted">
+	           	    <u>So we recommend you to enable Javascript or to use an equiped with
+                    Javascript browser like Firefox.</u>
+	           	</h3>
+	           	<br><br>
+	           	<a class="btn btn-lg btn-warning" href="{{ url_for('errorsh_app.nojs', ino=1) }}">
+	           	    <strong>Sure, I have Javascript enabled</strong>
+	           	</a>
+              {% endif %}
+	           	<br><br><br>
+            </div>
+	        </div>
+    </div>
+</div>
+</body>
+</html>
