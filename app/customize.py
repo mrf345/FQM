@@ -22,7 +22,7 @@ cust_app = Blueprint('cust_app', __name__)
 
 # Midia files allowed used by forms and customize
 mdal = [['jpg', 'JPG', 'png', 'PNG'], ['wav', 'WAV'], [
-    'mp4', 'MP4', 'AVI', 'avi']]
+    'mp4', 'MP4', 'AVI', 'avi', 'webm', 'WEBM']]
 
 
 @cust_app.route('/customize')
@@ -350,18 +350,19 @@ def multimedia(aa):
         from sqlalchemy.sql import or_
         for me in mmm:
             if os.path.isfile(dire + me.name):
-                a = data.Display_store.query.filter(or_(
+                dl = [data.Display_store.query.filter(or_(
                     data.Display_store.ikey == me.id,
-                    data.Display_store.akey == me.id)).first()
-                b = data.Touch_store.query.filter(or_(
-                    data.Touch_store.ikey == me.id,
-                    data.Touch_store.akey == me.id)).first()
-                c = data.Slides.query.filter_by(ikey=me.id).first()
-                v = data.Vid.query.filter_by(vkey=me.id).first()
-                if a is None and b is None and c is None and v is None:
-                    me.used = False
-                else:
-                    me.used = True
+                    data.Display_store.akey == me.id)).first(),
+                    data.Touch_store.query.filter(or_(
+                        data.Touch_store.ikey == me.id,
+                        data.Touch_store.akey == me.id)).first(),
+                    data.Slides.query.filter_by(ikey=me.id).first(),
+                    data.Vid.query.filter_by(vkey=me.id).first()]
+                me.used = False
+                for d in dl:
+                    if d is not None:
+                        me.used = True
+                        break
                 db.session.add(me)
                 db.session.commit()
             else:
@@ -528,6 +529,7 @@ def displayscreen_c(stab):
         au = form.naudio.data
         if au == 00:
             touch_s.audio = "false"
+            touch_s.akey = None
         else:
             touch_s.audio = data.Media.query.filter_by(id=form.naudio
                                                        .data).first().name
@@ -627,6 +629,7 @@ def touchscreen_c(stab):
         au = form.naudio.data
         if au == 00:
             touch_s.audio = "false"
+            touch_s.akey = None
         else:
             touch_s.audio = data.Media.query.filter_by(id=form.naudio
                                                        .data).first().name
