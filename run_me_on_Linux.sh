@@ -1,7 +1,7 @@
 #!/bin/bash
 # Read me : this script will install FQM requirements and your user into the
-# printing group. this script only meant to be run once before you run FQM for
-# the first time
+# printing group. this script purpose is to ease the process of installing, uninstalling 
+# and running FQM on linux
 
 # checking if pip exist
 pip_exi=`command -v pip`
