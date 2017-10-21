@@ -15,7 +15,7 @@ from netifaces import interfaces, ifaddresses
 from random import randint
 from PySide.QtGui import QWidget, QApplication, QIcon, QLabel
 from PySide.QtGui import QFont, QToolTip, QPushButton, QMessageBox
-from PySide.QtGui import QDesktopWidget, QPixmap, QGridLayout
+from PySide.QtGui import QDesktopWidget, QPixmap
 from PySide.QtGui import QComboBox, QVBoxLayout, QHBoxLayout, QFontDatabase
 from PySide.QtCore import QCoreApplication, QSize, Qt, QThread, SIGNAL
 from socket import socket, AF_INET, SOCK_STREAM

@@ -4,12 +4,12 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from app import run_app
-from sys import exit
+from sys import exit, exc_info
 
 try:
     run_app()
 except Exception:
-    print sys.exc_info()[1]
+    print exc_info()[1]
     print 'Error runtime: please, help us improve by reporting to us on :'
     print "\n\thttps://fqms.github.io/"
     exit(0)

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Read me : this script will install FQM requirements and your user into the
-# printing group. this script purpose is to ease the process of installing, uninstalling 
+# printing group. this script purpose is to ease the process of installing, uninstalling
 # and running FQM on linux
 
 # checking if pip exist
@@ -17,14 +17,14 @@ cmake=`command -v cmake`
 virtenv=`command -v virtualenv`
 virtenv2=`command -v virtualenv2`
 
-if [ "$pip_exi" == "" ] && [ "$pip2_exi" == "" ]
-then
-  echo "Error: please install python-pip or python2-pip, from your package manager"
-  exit 0
-fi
 if [ "$python" == "" ] && [ "$python2" == "" ]
 then
   echo "Error: please install python or python2, from your package manager"
+  exit 0
+fi
+if [ "$pip_exi" == "" ] && [ "$pip2_exi" == "" ]
+then
+  echo "Error: please install python-pip or python2-pip, from your package manager"
   exit 0
 fi
 if [ "$cmake" == "" ]
