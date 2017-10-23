@@ -271,6 +271,7 @@ class Display_c_ar(FlaskForm):
                            choices=[("en-us",
                                     u"إنجليزي"),
                                     ("ar", u"عربي"),
+                                    ("both", u"إنجليزي و عربي"),
                                     ("false", u"تعطيل")],
                            coerce=str)
     anr = SelectField(u'عدد مرات تكرار المناداة الصوتي :',

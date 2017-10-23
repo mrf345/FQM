@@ -97,7 +97,7 @@ def csvd(t_name):
         t_name = eval('data.' + t_name)
         fn = 'csvd.csv'
         ffn = r_path(fn)
-        of = open(ffn, 'wb')
+        of = open(ffn, 'w+')
         outcsv = csv.writer(of)
         outcsv.writerow([column.name
                          for column in t_name.__mapper__.columns
