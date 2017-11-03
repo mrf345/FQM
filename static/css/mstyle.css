@@ -1,18 +1,33 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
- 
+
  hide {
      display: none;
  }
  i:hover {
      filter: brightness(2.5);
+     transition: all 0.2s ease-in-out;
+     transition-property: all;
+     transition-duration: 0.2s;
+     transition-timing-function: ease-in-out;
+     transition-delay: 0s;
  }
  #map:hover {
      opacity: 0.5;
+     transition: all 0.2s ease-in-out;
+     transition-property: all;
+     transition-duration: 0.2s;
+     transition-timing-function: ease-in-out;
+     transition-delay: 0s;
  }
  #blogo:hover {
      filter: brightness(2.5);
+     transition: all 0.2s ease-in-out;
+     transition-property: all;
+     transition-duration: 0.2s;
+     transition-timing-function: ease-in-out;
+     transition-delay: 0s;
  }
  .navbar-inverse {
      background-color: rgba(0,0,0,0.7);

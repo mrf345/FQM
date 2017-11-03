@@ -61,7 +61,9 @@ def ticket():
     if form.validate_on_submit():
         if form.kind.data == 1:
             tc.n = True
+            pr.value = form.value.data
             db.session.add(tc)
+            db.session.add(pr)
         else:
             if form.printers.data == "00":
                 flash(get_lang(19),
@@ -78,6 +80,7 @@ def ticket():
             tc.n = False
             pr.active = True
             pr.langu = int(form.langu.data)
+            pr.value = form.value.data
             db.session.add(tc)
             db.session.add(pr)
         db.session.commit()
@@ -91,6 +94,7 @@ def ticket():
     form.printers.data = pr.vendor + '_' + pr.product
     form.printers.data += '_' + str(pr.in_ep) + '_' + str(pr.out_ep)
     form.langu.data = pr.langu
+    form.value.data = pr.value
     return render_template('ticket.html', snb='#snb2',
                            ptitle='Tickets',
                            vtrue=data.Vid.query.first().enable,

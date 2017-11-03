@@ -652,21 +652,21 @@ class Multimedia_ar(FlaskForm):
 # Add name to ticket form
 
 class Touch_name(FlaskForm):
-    name = StringField("Full name : ",
+    name = StringField(" ",
                        validators=[InputRequired
                                    ("Required not less than " +
                                     "5 nor more than 300 letters"),
-                                   Length(5, 300)])
+                                   Length(3, 300)])
     submit = SubmitField("Register")
 
 
 class Touch_name_ar(FlaskForm):
     name = StringField(
-        u"أدخل الإسم الكامل :",
+        u" ",
         validators=[
             InputRequired(
                 u"الحد الأدنى 5 حروف و الحد الأقصى 300 حرف"),
-            Length(5, 300)])
+            Length(3, 300)])
     submit = SubmitField(u"تسجيل")
 
 
@@ -848,6 +848,9 @@ class Printer_f(FlaskForm):
                        choices=[(1, 'Registered'),
                                 (2, 'Printed')],
                        coerce=int)
+    value = SelectField("Select a value of registering : ",
+                        choices=[(1, 'Name'), (2, 'Number')],
+                        coerce=int)
     langu = SelectField("Select language of printed ticket : ",
                         choices=[
                             (1, 'English'),
@@ -881,6 +884,10 @@ class Printer_f_ar(FlaskForm):
         choices=[(1, u'مسجلة'),
                  (2, u'مطبوعة')],
         coerce=int)
+    value = SelectField(u" إختر نوع القيمة التسجيلية : ",
+                        choices=[(1, u'إسم'),
+                                 (2, u'رقم')],
+                        coerce=int)
     langu = SelectField(u"إختر لغة التذكرة المطبوعة :",
                         choices=[
                             (1, u'الإنجليزية'),

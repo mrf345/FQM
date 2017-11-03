@@ -12,8 +12,9 @@
 <link href="{{ url_for('static', filename='backstrap/css/bootstrap-theme.min.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='backstrap/css/bootstrap-theme.min.css.map') }}" rel="stylesheet">
-<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/x-icon">
-<link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/x-icon">
+<link rel="icon"
+    type="image/png"
+    href="{{ url_for('static', filename='images/favicon.png') }}">
 <link href="{{ url_for('static', filename='css/afade.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/gfonts.css') }}" rel="stylesheet">
 <style>
@@ -62,9 +63,19 @@
  }
  i:hover {
      filter: brightness(2.5);
+     transition: all 0.2s ease-in-out;
+     transition-property: all;
+     transition-duration: 0.2s;
+     transition-timing-function: ease-in-out;
+     transition-delay: 0s;
  }
  #blogo:hover {
      filter: brightness(2.5);
+     transition: all 0.2s ease-in-out;
+     transition-property: all;
+     transition-duration: 0.2s;
+     transition-timing-function: ease-in-out;
+     transition-delay: 0s;
  }
  .ar1 {
    font-family: 'Changa';

@@ -17,6 +17,7 @@ window.onload = function() {
     $("#msgl").fadeOut({{ ts.mduration }}/2);
   }, {{ ts.mduration }});
 {% endif %}
+{% if a != 4 %}
 // implementing pure js autoreload if customized or mnaaged
 var currenthtml;
 var latesthtml;
@@ -32,6 +33,7 @@ setInterval(function() {
         window.location = '/touch/0'
     }
 }, 2000);
+{% endif %}
 }
 </script>
 {% endblock %}
@@ -62,16 +64,28 @@ setInterval(function() {
       <div class="col-xs-12 well">
   	<form method="POST" enctype="multipart/form-data" id="fm">
   	    {{ form.csrf_token }}
-  	    <br>
-        {% if ar %}
-        <p class="h2 text-center text-danger ar2">
-  		  | الرجاء إدخال الإسم الكامل ليتم تسجيله مع التذكرة الإفتارضية |
-  	    </p>
-        {% else %}
-  	    <p class="h2 text-center text-danger">
-  		| Please, enter your full name to be registered along with your ticket |
-  	    </p>
-        {% endif %}
+  	      <br>
+          {% if tnumber %}
+            {% if ar %}
+              <p class="h2 text-center text-danger ar2">
+  		          | الرجاء إدخال الرقم ليتم تسجيله مع التذكرة الإفتارضية |
+              </p>
+            {% else %}
+              <p class="h2 text-center text-danger">
+               | Please, enter the number to be registered along with your ticket |
+              </p>
+            {% endif %}
+          {% else %}
+            {% if ar %}
+              <p class="h2 text-center text-danger ar2">
+  		          | الرجاء إدخال الإسم ليتم تسجيله مع التذكرة الإفتارضية |
+              </p>
+            {% else %}
+  	          <p class="h2 text-center text-danger">
+  		         | Please, enter the name to be registered along with your ticket |
+  	          </p>
+            {% endif %}
+          {% endif %}
   	    <br>{{ render_field(form.name, class="form-control") }}<br>
   	    <center>
         {% if ar %}

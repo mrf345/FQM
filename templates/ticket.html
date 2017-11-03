@@ -22,6 +22,9 @@ $(document).ready(function() {
   if (wcs=='2') {
     $('#warn2').removeClass('hide');
     $('#warn3').removeClass('hide');
+    $('.tohide').removeClass('hide');
+  } else {
+    $('.nhide').removeClass('hide');
   }
   $('#langu').change(function(){
     var ncs = $('#langu option:selected').val()
@@ -37,10 +40,14 @@ $(document).ready(function() {
     if (gcs=='2') {
       $('#warn2').removeClass('hide');
       $('#warn3').removeClass('hide');
+      $('.tohide').removeClass('hide');
+      $('.nhide').addClass('hide');
     }
     if (gcs!='2') {
       $('#warn2').addClass('hide');
       $('#warn3').addClass('hide');
+      $('.tohide').addClass('hide');
+      $('.nhide').removeClass('hide');
     }
   });
 });
@@ -79,12 +86,12 @@ $(document).ready(function() {
             | مطبوعة : نوع التذكرة المتعارف عليها و التي تتطلب توفر طابعة معرفة |
           </p>
           {% else %}
-		      <p class="h4 text-danger">
+		      <p class="h4 text-muted">
 		        | Registered : allows the customer
             to register his name and that will be used to refere with
             instead of a printed ticket |
 		      </p>
-          <p class="h4 text-danger">
+          <p class="h4 text-muted">
             | Printed : the typical printed unique customer ticket number  |
           </p>
           {% endif %}
@@ -93,37 +100,46 @@ $(document).ready(function() {
 		      {{ render_field(form.kind, class="form-control touch") }}
           {{ brp * 2 }}
           {% if ar %}
-          <h4 id="warn2" class="text-center text-muted hide ar2">
+          <h4 id="warn2" class="text-center text-danger hide ar2">
             | تنبيه : لإستخدام التذاكر المطبوعة يتطلب منك توفير و تعريف طابعة |
           </h4>
-          <h4 id="warn3" class="text-center text-muted hide ar2">
+          <h4 id="warn3" class="text-center text-danger hide ar2">
             | تنبيه : طابعات اليو إس بي , الطابعات الوحيدة التي يمكن لنظام التعرف عليها |
           </h4>
           {% else %}
-          <h4 id="warn2" class="text-center text-muted hide">
+          <h4 id="warn2" class="text-center text-danger hide">
             | Reminder: to use printed tickets you must assign available printer |
           </h4>
-          <h4 id="warn3" class="text-center text-muted hide">
+          <h4 id="warn3" class="text-center text-danger hide">
             | Reminder: Only supported printers currently are usb printers |
           </h4>
           {% endif %}
-          {{ brp * 2 }}
-          {{ render_field(form.langu, class="form-control") }}
-          {{ brp * 2 }}
+          <div class="nhide hide">
+            {{ brp * 2 }}
+            {{ render_field(form.value, class="form-control") }}
+            {{ brp * 3 }}
+          </div>
+          <div class="tohide hide">
+            {{ brp * 2 }}
+            {{ render_field(form.langu, class="form-control") }}
+            {{ brp * 2 }}
+          </div>
           {% if ar %}
-          <h4 id="warn" class="text-center text-muted ar2 hide">
+          <h4 id="warn" class="text-center text-danger ar2 hide">
             | تنبيه : الطباعة باللغة العربية لازلت قيد التجريب و إستخدامها
             قد يحدث أخطاء غير متوقعة |
           </h4>
           {% else %}
-          <h4 id="warn" class="text-center text-muted hide">
+          <h4 id="warn" class="text-center text-danger hide">
             | Reminder : printing with Arabic , is still under testing and might
             cause unintended errors |
           </h4>
           {% endif %}
-          {{ brp * 2 }}
-		      {{ render_field(form.printers, class="form-control") }}
-          {{ brp * 4 }}
+          <div class="tohide hide">
+            {{ brp * 2 }}
+  		      {{ render_field(form.printers, class="form-control") }}
+            {{ brp * 4 }}
+          </div>
 		    <center>
           {% if ar %}
 		      {{ form.submit(class_="btn btn-md btn-danger ar1") }}

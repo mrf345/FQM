@@ -104,7 +104,10 @@ def serial(t_id):
         return redirect(url_for('core.root'))
     if not form.validate_on_submit() and data.Touch_store.query.first().n:
         ts = data.Touch_store.query.filter_by(id=0).first()
-        return render_template("touch.html", title=ts.title,
+        tnumber = False
+        if data.Printer.query.first().value == 2:
+            tnumber = True
+        return render_template("touch.html", title=ts.title, tnumber=tnumber,
                                ts=ts, done=False, bgcolor=ts.bgcolor,
                                ptitle="Touch Screen - Enter name ",
                                a=4, dire='multimedia/', form=form)
@@ -347,6 +350,7 @@ def pull(o_id):
     db.session.commit()
     # Adding text to speech
     lang = data.Display_store.query.first()
+    tnumber = data.Printer.query.first().value
     office = cl.oname
     if lang.announce != "false":
         if os.path.isdir(path):
@@ -355,25 +359,37 @@ def pull(o_id):
         if cl.n:
             ticket = cl.name
             if lang.announce == "ar":
-                ms = "الرجاء من المدعوا "
+                if tnumber == 1:
+                    ms = "الرجاء من المدعوا "
+                else:
+                    ms = "الرجاء من الرقم "
                 ms += (ticket).encode('utf-8')
                 ms += " , التوجه إلى مكتب رقم "
                 ms += (office).encode('utf-8')
                 ms += " ."
             elif lang.announce == "en-us":
-                ms = (ticket
-                      ).encode('utf-8'
-                               ) + " , please proceed to the office number : "
+                if tnumber == 1:
+                    ms = "The name "
+                else:
+                    ms = "The number "
+                ms += (ticket).encode('utf-8')
+                ms += " , please proceed to the office number : "
                 ms += str(office) + " ."
             elif lang.announce == "both":
-                ms = "الرجاء من المدعوا "
+                if tnumber == 1:
+                    ms = "الرجاء من المدعوا "
+                else:
+                    ms = "الرجاء من الرقم "
                 ms += (ticket).encode('utf-8')
                 ms += " , التوجه إلى مكتب رقم "
                 ms += (office).encode('utf-8')
                 ms += " ."
-                ms2 = (ticket
-                       ).encode('utf-8'
-                                ) + " , please proceed to the office number : "
+                if tnumber == 1:
+                    ms2 = "The name "
+                else:
+                    ms2 = "The number "
+                ms2 += (ticket).encode('utf-8')
+                ms2 += " , please proceed to the office number : "
                 ms2 += str(office) + " ."
         else:
             ticket = cl.ticket
@@ -527,7 +543,10 @@ def touch(a):
         t = data.Task.query.order_by(data.Task.timestamp)
     else:
         t = 0
+    tnumber = False
+    if data.Printer.query.first().value == 2:
+        tnumber = True
     return render_template("touch.html",
-                           ts=ts, tasks=t,
+                           ts=ts, tasks=t, tnumber=tnumber,
                            ptitle="Touch Screen",
                            form=form, a=ts.tmp, d=d)
