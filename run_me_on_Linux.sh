@@ -84,7 +84,7 @@ then
     echo "Error: must --install enviroment first .."
     exit 0
   fi
-  echo "##### Running FQM 0.2 #####"
+  echo "##### Running FQM 0.2.6 #####"
   if [ -f run.py ]
   then
     python run.py

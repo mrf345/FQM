@@ -52,12 +52,14 @@ class Serial(db.Model):
     def __init__(self, number=100,
                  office_id=1,
                  task_id=1,
-                 name=None, n=False):
+                 name=None, n=False, p=False):
         self.number = number
         self.office_id = office_id
         self.task_id = task_id
         self.name = name
         self.n = n
+        # fixing mass use tickets multi operators conflict
+        self.p = p
 
 
 class Waiting(db.Model):

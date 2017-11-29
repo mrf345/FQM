@@ -224,7 +224,7 @@ $(document).ready(function() {
         <br />
         <br />
 		    <span class="label label-danger">
-			<i>{{ serial.filter_by(p=None).count() }}</i>
+			<i>{{ serial.filter_by(p=False).count() }}</i>
 		    </span>
 		</div>
     {% else %}
@@ -237,7 +237,7 @@ $(document).ready(function() {
 		<div class="col-xs-12 col-sm-6 h4">
 		    Waiting :
 		    <span class="label label-danger">
-			<i>{{ serial.filter_by(p=None).count() }}</i>
+			<i>{{ serial.filter_by(p=False).count() }}</i>
 		    </span>
 		</div>
     {% endif %}

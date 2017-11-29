@@ -53,9 +53,9 @@
 				<span class="fa fa-desktop"></span>
 				{{ office.id }}.{% if ar %}مكتب{% else %}office{% endif %}  {{ office.prefix }}{{ office.name }}
 				<span class="caret"></span>
-				{% if serial.filter_by(p=None, office_id=office.id).count() != 0 %}
+				{% if serial.filter_by(p=False, office_id=office.id).count() != 0 %}
 				<span class="badge pull-right">
-				    {{ serial.filter_by(p=None, office_id=office.id).count() }}
+				    {{ serial.filter_by(p=False, office_id=office.id).count() }}
 				</span>
 				{% endif %}
 			    </a>
@@ -81,9 +81,9 @@
             {% else %}
 						Pull a ticket
             {% endif %}
-						{% if serial.filter_by(p=None, office_id=office.id).count() != 0 %}
+						{% if serial.filter_by(p=False, office_id=office.id).count() != 0 %}
 						<span class="badge pull-right">
-						    {{ serial.filter_by(p=None, office_id=office.id).count() }}
+						    {{ serial.filter_by(p=False, office_id=office.id).count() }}
 						</span>
 						{% endif %}
 					    </a>

@@ -125,7 +125,7 @@
       <br />
       <br />
 		    <span class="label label-danger">
-			<i>{{ serials.filter_by(p=None).count() }}</i>
+			<i>{{ serials.filter_by(p=False).count() }}</i>
 		    </span>
 		</div>
     {% else %}
@@ -144,7 +144,7 @@
 		<div class="col-xs-12 col-sm-4 h4">
 		    Waiting :
 		    <span class="label label-danger">
-			<i>{{ serials.filter_by(p=None).count() }}</i>
+			<i>{{ serials.filter_by(p=False).count() }}</i>
 		    </span>
 		</div>
     {% endif %}

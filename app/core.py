@@ -10,11 +10,11 @@ import os
 from random import randint
 from gtts import gTTS as gt
 from datetime import datetime
-import ex_functions
 import forms
 import data
 import printer as ppp
 from database import db
+import ex_functions
 from ex_functions import get_lang, say_it
 from shutil import rmtree
 from multiprocessing.pool import ThreadPool
@@ -112,10 +112,7 @@ def serial(t_id):
                                ptitle="Touch Screen - Enter name ",
                                a=4, dire='multimedia/', form=form)
     nm = form.name.data
-    if nm is None:
-        n = False
-    else:
-        n = True
+    n = False if nm is None else True
     o_id = data.Task.query.filter_by(id=t_id).first().office_id
     ln = data.Serial.query.filter_by(
         office_id=o_id).order_by(data.Serial
@@ -132,9 +129,9 @@ def serial(t_id):
             q = data.Printer.query.first()
             ppt = data.Task.query.filter_by(id=t_id).first()
             oot = data.Office.query.filter_by(id=o_id).first()
-            tnum = data.Serial.query.filter_by(office_id=o_id, p=None).count()
+            tnum = data.Serial.query.filter_by(office_id=o_id, p=False).count()
             cuticket = data.Serial.query.filter_by(
-                office_id=o_id, p=None).first()
+                office_id=o_id, p=False).first()
             tnum -= 1
             langu = data.Printer.query.first().langu
             # to solve Linux printer permissions
@@ -199,7 +196,7 @@ def serial(t_id):
         return redirect(url_for('core.root'))
     for a in range(data.Waiting.query.count(), 11):
         for b in data.Serial.query.filter_by(
-                p=None).order_by(data.Serial.timestamp):
+                p=False).order_by(data.Serial.timestamp):
             if data.Waiting.query.filter_by(office_id=b.office_id,
                                             number=b.number, task_id=b.task_id
                                             ).first() is None:
@@ -319,9 +316,9 @@ def pull(o_id):
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
-    if data.Serial.query.filter_by(p=None).count() >= 0:
+    if data.Serial.query.filter_by(p=False).count() >= 0:
         for a in range(data.Waiting.query.count(), 11):
-            for b in data.Serial.query.filter_by(p=None).order_by(
+            for b in data.Serial.query.filter_by(p=False).order_by(
                     data.Serial.timestamp):
                 if data.Waiting.query.filter_by(office_id=b.office_id,
                                                 number=b.number,
@@ -427,6 +424,12 @@ def pull(o_id):
         pool.close()
         pool.join()
     # last check for available tickets and final commit
+    # attempt to fix overlpoading issue " Waiting istance is already deleated"
+    # --- Reassiging cs seems to fix it
+    cs = data.Waiting.query.filter_by(office_id=o_id).first()
+    if cs is None:
+        flash(get_lang(25), "danger")
+        return redirect(url_for("manage_app.offices", o_id=o_id))
     sr = data.Serial.query.filter_by(office_id=cs.office_id,
                                      task_id=cs.task_id,
                                      number=cs.number).first()
@@ -435,8 +438,8 @@ def pull(o_id):
         return redirect(url_for("manage_app.offices", o_id=o_id))
     sr.p = True
     sr.pdt = datetime.utcnow()
-    db.session.delete(cs)
     db.session.add(sr)
+    db.session.delete(cs)
     db.session.commit()
     flash(get_lang(26), "info")
     return redirect(url_for("manage_app.offices", o_id=o_id))

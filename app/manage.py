@@ -71,7 +71,7 @@ def offices(o_id):
     if ofc is None:
         flash(get_lang(4),
               "danger")
-        return redirect(url_for("manage_app.all_office"))
+        return redirect(url_for("manage_app.all_offices"))
     if current_user.role_id == 3 and ofc.operator_id != current_user.id:
         flash(get_lang(17),
               "danger")
