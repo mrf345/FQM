@@ -2,42 +2,64 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
- hide {
-     display: none;
- }
- i:hover {
+hide {
+  display: none;
+}
+
+i:hover {
+  filter: brightness(2.5);
+  transition: all 0.2s ease-in-out;
+  transition-property: all;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+  transition-delay: 0s;
+}
+
+#map:hover {
+  opacity: 0.5;
+  transition: all 0.2s ease-in-out;
+  transition-property: all;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+  transition-delay: 0s;
+}
+
+#blogo:hover {
      filter: brightness(2.5);
      transition: all 0.2s ease-in-out;
      transition-property: all;
      transition-duration: 0.2s;
      transition-timing-function: ease-in-out;
      transition-delay: 0s;
- }
- #map:hover {
-     opacity: 0.5;
-     transition: all 0.2s ease-in-out;
-     transition-property: all;
-     transition-duration: 0.2s;
-     transition-timing-function: ease-in-out;
-     transition-delay: 0s;
- }
- #blogo:hover {
-     filter: brightness(2.5);
-     transition: all 0.2s ease-in-out;
-     transition-property: all;
-     transition-duration: 0.2s;
-     transition-timing-function: ease-in-out;
-     transition-delay: 0s;
- }
- .navbar-inverse {
-     background-color: rgba(0,0,0,0.7);
-     border: 0;
-     font-size: large;
-     box-shadow: none;
-     z-index: 999;
-     -webkit-font-smoothing: antialiased;
-     -moz-osx-font-smoothing: grayscale;
-     -webkit-transition: background .5s ease-in-out, opacity .5s ease;
-     -moz-transition: background .5s ease-in-out, opacity .5s ease;
-     transition: background .5s ease-in-out, opacity .5s ease;
- }
+}
+
+.navbar-inverse {
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0,0,0,0.7);
+  border: 0;
+  font-size: large;
+  box-shadow: none;
+  z-index: 999;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-transition: background .5s ease-in-out, opacity .5s ease;
+  -moz-transition: background .5s ease-in-out, opacity .5s ease;
+  transition: background .5s ease-in-out, opacity .5s ease;
+}
+
+footer > .row {
+  width: 100% !important;
+}
+
+.ar1 {
+  font-family: Changa;
+}
+#ar1 {
+  font-family: Changa;
+}
+.ar2 {
+  font-family: Amiri;
+}
+#ar2 {
+  font-family: Amiri;
+}

@@ -21,6 +21,7 @@
         href="{{ url_for('static', filename='images/favicon.png') }}">
     <link href="{{ url_for('static', filename='css/gfonts.css') }}" rel="stylesheet">
     <style>
+    /* To solve header footer background compatiblity cross browsers */
     .widw2 {
         background: url({{ url_for('static', filename='images/dbgo.jpg') }});
         width:100%;
@@ -57,18 +58,6 @@
       background-attachment: fixed;
       background-position:center;
         }
-      .ar1 {
-        font-family: Changa;
-      }
-      #ar1 {
-        font-family: Changa;
-      }
-      .ar2 {
-        font-family: Amiri;
-      }
-      #ar2 {
-        font-family: Amiri;
-      }
     }
     </style>
     <script src="{{ url_for('static', filename='backstrap/jquery.min.js') }}"></script>
@@ -101,6 +90,7 @@
 
   <body>
     <noscript>
+        /* checking if nojs is on */
         <style>html{display:none;}</style>
         <meta http-equiv="refresh" content="0.0;url=/nojs/3">
     </noscript>

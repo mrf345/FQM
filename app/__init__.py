@@ -77,7 +77,7 @@ def create_db(app):
 
 
 class rwser(QThread):
-
+    """ pyside thread to monitor the web server """
     def __init__(self, ip="127.0.0.1", port=8000, app=None):
         QThread.__init__(self)
         self.ip = ip
@@ -92,7 +92,7 @@ class rwser(QThread):
              int(self.port)),
             self.app,
             log=None)
-        try:
+        try:  # gevent server known to have isuues on stopping
             self.serv.start()
             self.stopper.wait()
         except:
@@ -121,18 +121,6 @@ class NewWindow(QWidget):
             icp = r_path('static\\images\\favicon.png')
         else:
             icp = r_path('static/images/favicon.png')
-        """ To add a unified font that supports Arabic later on """
-        """
-        if os.name == 'nt':
-            icp = r_path('static\\images\\favicon.png')
-            font_p = r_path('static\\gfonts\\arial.ttf')
-        else:
-            icp = r_path('static/images/favicon.png')
-            font_p = r_path('static/gfonts/arial.ttf')
-        # Adding arial forn to the database
-        font_db = QFontDatabase()
-        font_id = font_db.addApplicationFont(font_p)
-        """
         # need to used objective message boxs instead of functions to set font
         self.Arial = QFont("", 15, QFont.Bold)
         self.Arials = QFont("", 10, QFont.Bold)
