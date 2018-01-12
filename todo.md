@@ -60,4 +60,9 @@ __By the Admin of the office, or the holder of S-ticket__
 #### __1. Auto reload duration specific to each user.__
 #### __2. Interactive panel headers to sort items by.__
 #### __3. Implement hotspot wifi solution__
-#### __4. Solve MacOS one package issue
+#### ___4. Solve MacOS one package issue___
+
+#### add last ticket pulled to panel or saperate waiting from processed. Figure out away to inform operator of the ticket about to pulled
+#### add tts offline in english only and use flask_gtts-js for gtts instead of gtts
+#### some javascript getting wrong input in offices : $('#dropdown-lvl&lt;app.data.Office object at0x7fc141447dd0&gt;').collapse('show');
+#### make sure of commiting additions before delations

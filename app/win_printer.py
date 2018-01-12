@@ -55,9 +55,12 @@ def printers():
 
 def listpp():
     lps = []
-    for ups in printers():
-        if ups[1][:3] == "USB":
-            lps.append(ups[0])
+    try:
+        for ups in printers():
+            if ups[1][:3] == "USB":
+                lps.append(ups[0])
+    except:
+        pass
     return lps
 
 
