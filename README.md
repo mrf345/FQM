@@ -1,16 +1,35 @@
-# FQM (Free Queue Manager)
+<p align='center'>
+<img width='20%' src='https://fqms.github.io/images/favicon.png' />
 
-### - Web based python-flask management system developed for the purpose of easing the process of organizing queues and lines.
-[User guide][791ac274]
+<h3 align='center'> Free Queue Management beta. A web based queue management system built with Python Flask as the back-end, and Bootstrap, jQuery as the front-end. </h3>
+<hr />
 
-  [791ac274]: https://fqms.github.io/images/user_guide.pdf "User guide"
-  
+## Features:
+> - <br />
+> - <br />
+> - <br />
+> - <br />
+
+## Setup:
+#### - From the source:
+> 1. `git clone https://github.com/mrf345/FQM.git` <br />
+> 2. `cd FQM` <br />
+> 3. `pip2.7 install -r requirements.txt` <br />
+> 4. `python2.7 run.py` <br />
+
+#### - With executable:
+> You can get an executable that's suitable to your OS from : <br />
+> - https://fqms.github.io/#download <br />
+> - https://sourceforge.net/projects/free-queue-manager/ <br />
+
+## Documentation:
+> You can find a useful user guide for the current version on : <br />
+> https://fqms.github.io/images/user_guide.pdf
+
 [FQM Website][4eba2488]
 
   [4eba2488]: https://fqms.github.io "FQM Website"
 
-### - Run it :
-_(Python 2.7.13)_
-`pip install -r requirements.txt && python run.py`
 
-![FQM GUI](https://fqms.github.io/images/gui.gif)
+<p align='center'>
+<img width='70%' src='https://fqms.github.io/images/logo.gif' />
