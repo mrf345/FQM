@@ -1,14 +1,14 @@
 <p align='center'>
 <img width='20%' src='https://fqms.github.io/images/favicon.png' />
+</p>
 
-<h3 align='center'> Free Queue Management beta. A web based queue management system built with Python Flask as the back-end, and Bootstrap, jQuery as the front-end. </h3>
+<h3 align='center'> Free Queue Manager (beta). A web based queue management system built with Python Flask as back-end, and Bootstrap, jQuery as front-end. </h3>
 <hr />
 
 ## Features:
-> - <br />
-> - <br />
-> - <br />
-> - <br />
+> - Support for POS USB printers on major operating systems. <br />
+> - Customize-able interfaces. <br />
+> - Supports text-to-speech announcement. <br />
 
 ## Setup:
 #### - From the source:
@@ -26,10 +26,8 @@
 > You can find a useful user guide for the current version on : <br />
 > https://fqms.github.io/images/user_guide.pdf
 
-[FQM Website][4eba2488]
 
-  [4eba2488]: https://fqms.github.io "FQM Website"
-
-
+<br />
 <p align='center'>
 <img width='70%' src='https://fqms.github.io/images/logo.gif' />
+</p>
