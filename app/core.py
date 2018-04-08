@@ -4,11 +4,11 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from flask import url_for, flash, render_template, redirect
-from flask import session, jsonify, request, Markup, Blueprint
+from flask import session, jsonify, Blueprint
 from flask_login import current_user, login_required, login_user
 import os
 from random import randint
-from gtts import gTTS as gt
+# from gtts import gTTS as gt
 from datetime import datetime
 import forms
 import data
@@ -161,10 +161,11 @@ def serial(t_id):
                 else:
                     p = None
             else:
+                # To Fix 1: Fail safe drivers. [FIXED]
                 try:
                     p = ppp.assign(int(q.vendor), int(q.product),
                                    int(q.in_ep), int(q.out_ep))
-                except:
+                except Exception:
                     p = None
             if p is None:
                 flash(get_lang(19),

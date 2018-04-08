@@ -9,7 +9,7 @@ from sys import exit, exc_info
 try:
     run_app()
 except Exception:
-    print exc_info()[1]
-    print 'Error runtime: please, help us improve by reporting to us on :'
-    print "\n\thttps://fqms.github.io/"
+    print(exc_info()[1])
+    print('Error runtime: please, help us improve by reporting to us on :')
+    print("\n\thttps://fqms.github.io/")
     exit(0)

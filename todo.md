@@ -36,12 +36,6 @@ __By the Admin of the office, or the holder of S-ticket__
 #### __2. Network printers support, Ethernet and Wireless.__
 #### __3. Customize printed tickets__
 
-### ***> TTS:***
-
-#### __1. move remote gTTS to front end using flask_gTTSjs.__
-#### __2. user local TTS library only for english.__
-#### __3. give option in customization local or remote TTS.__
-
 ### ***> G-translate:***
 
 #### __1. use flask_Gtranslate__
@@ -63,6 +57,4 @@ __By the Admin of the office, or the holder of S-ticket__
 #### ___4. Solve MacOS one package issue___
 
 #### add last ticket pulled to panel or saperate waiting from processed. Figure out away to inform operator of the ticket about to pulled
-#### add tts offline in english only and use flask_gtts-js for gtts instead of gtts
-#### some javascript getting wrong input in offices : $('#dropdown-lvl&lt;app.data.Office object at0x7fc141447dd0&gt;').collapse('show');
 #### make sure of commiting additions before delations
