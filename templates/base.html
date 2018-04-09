@@ -65,6 +65,7 @@
     {{ moment.include_moment(local_js='/static/backstrap/moment.min.js') }}
     <script src="{{ url_for('static', filename='loader.js') }}"></script>
     <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
+    <script src="{{ url_for('static', filename='disciple.js') }}"></script>
     <script type="text/javascript">
      {% if not firefox %}
      if (navigator.userAgent.search("Firefox") <= 2 && navigator.userAgent.search("Chrome") <= 2) {
@@ -83,7 +84,27 @@
     	 $("#waiting2").addClass("hide");
     	 $("#p1").removeClass("hide");
          }
-     };
+         // Adding disciple to the forms
+         var Monitor = disciple({
+            identifier: 'form',
+            {% if ar %}
+            msg_text: 'ماذا حدث هنا يا هذا ؟',
+            restore_text: 'إسترجاع',
+            later_text: 'فيما بعد',
+            forget_text: 'تجاهل',
+            restoring_text: 'يتم الإسترجاع',
+            msg_classes: ['ar1'],
+            restore_classes: ['ar1', 'btn', 'lightit'],
+            later_classes: ['ar1', 'btn', 'lightit'],
+            forget_classes: ['ar1', 'btn', 'btn-danger', 'lightit'],
+            restoring_classes: ['ar1']
+            {% else %}
+            restore_classes: ['btn', 'lightit'],
+            later_classes: ['btn', 'lightit'],
+            forget_classes: ['btn', 'btn-danger', 'lightit'],
+            {% endif %}
+         })
+     }
     </script>
     {% endblock %}
   </head>

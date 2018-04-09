@@ -11,7 +11,7 @@
 - [x] impliment json_stream and audio_sequence (4/9th)
 > AudioSequence has issues, whenever wraped under another func. SIDE TO FIX 1
 > - [ ] some javascript getting wrong input in offices : $('#dropdown-lvl&lt;app.data.Office object at0x7fc141447dd0&gt;').collapse('show'); JS
-- [ ] use disiple for the forms in AR and EN
+- [x] use disiple for the forms in AR and EN (4/10th)
 - [ ] change bootstrap default theme
 - [ ] tickets based on tasks instead of offices
 - [ ] General task that exists in multiple offices

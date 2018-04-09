@@ -6,7 +6,7 @@ hide {
   display: none;
 }
 
-i:hover {
+i:hover, .lightit:hover {
   filter: brightness(2.5);
   transition: all 0.2s ease-in-out;
   transition-property: all;
@@ -41,7 +41,6 @@ i:hover {
   box-shadow: none;
   z-index: 999;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   -webkit-transition: background .5s ease-in-out, opacity .5s ease;
   -moz-transition: background .5s ease-in-out, opacity .5s ease;
   transition: background .5s ease-in-out, opacity .5s ease;
@@ -52,14 +51,19 @@ footer > .row {
 }
 
 .ar1 {
-  font-family: Changa;
+  font-family: Changa !important;
 }
 #ar1 {
   font-family: Changa;
 }
 .ar2 {
-  font-family: Amiri;
+  font-family: Amiri !important;
 }
 #ar2 {
   font-family: Amiri;
+}
+
+.forget-btn {
+  color: gray;
+  font-weight: bold;
 }
