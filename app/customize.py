@@ -398,8 +398,9 @@ def multimedia(aa):
         ff = form.mf.data
         ffn = secure_filename(ff.filename)
         dc = data.Media.query.count()
-        if int(ex_functions.getFolderSize(dire)) >= sfl or dc >= nofl:
-            return redirect(url_for('cust_app.multimedia', aa=1))
+        # FIX ISUUE Remove folder size limitation
+        # if int(ex_functions.getFolderSize(dire)) >= sfl or dc >= nofl:
+        #     return redirect(url_for('cust_app.multimedia', aa=1))
         e = ffn[-3:len(ffn)]
         if e in mdal[0]:
             files.save(request.files['mf'], name=ffn)
