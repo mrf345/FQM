@@ -13,6 +13,7 @@ i:hover, .lightit:hover {
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;
   transition-delay: 0s;
+  cursor: pointer;
 }
 
 #map:hover {
@@ -22,6 +23,7 @@ i:hover, .lightit:hover {
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;
   transition-delay: 0s;
+  cursor: pointer;
 }
 
 #blogo:hover {
@@ -31,6 +33,7 @@ i:hover, .lightit:hover {
      transition-duration: 0.2s;
      transition-timing-function: ease-in-out;
      transition-delay: 0s;
+     cursor: pointer;
 }
 
 .navbar-inverse {
@@ -62,8 +65,6 @@ footer > .row {
 #ar2 {
   font-family: Amiri;
 }
-
-.forget-btn {
-  color: gray;
-  font-weight: bold;
+a:hover {
+  text-decoration: none;
 }

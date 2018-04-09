@@ -12,7 +12,7 @@
 > AudioSequence has issues, whenever wraped under another func. SIDE TO FIX 1
 > - [ ] some javascript getting wrong input in offices : $('#dropdown-lvl&lt;app.data.Office object at0x7fc141447dd0&gt;').collapse('show'); JS
 - [x] use disiple for the forms in AR and EN (4/10th)
-- [ ] change bootstrap default theme
+- [x] change bootstrap default theme (4/10th)
 - [ ] tickets based on tasks instead of offices
 - [ ] General task that exists in multiple offices
 - [ ] allow for multiple operators for an office
