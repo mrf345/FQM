@@ -1,118 +1,206 @@
-<!-- This Source Code Form is subject to the terms of the Mozilla Public
+ <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
-   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/.  -->
 {% extends "base_s.html" %}
 {% block title %} FQM - {{ ptitle }} {% endblock %}
 
+{% block scripts %}
+{{ super() }}
+	<script src='https://rawgit.com/mrf345/audio_sequence/master/bin/bundle.js' type='text/javascript'></script>
+{% endblock %}
+
 {% block page_content %}
-<script type="text/javascript">
- function update_values(fr) {
-     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-     $.getJSON($SCRIPT_ROOT+"/feed",
-	       function(data) {
-           if ( data.refre == 1 ) { location.reload(); }
-           {% if ar %}
-		       if ($("#hm1").text() == "المكتب : "+data.con && $("#hm2").text() == "التذكرة : "+data.cot && $("#hm3").text() == "المهمة : "+data.cott && $("#hcounter").text() == data.w9) {
-             $("#hm1").text("المكتب : "+data.con);
-		         $("#hm2").text("التذكرة : "+data.cot);
-		         $("#hm3").text("المهمة : "+data.cott);
-		       } else {
-		         $("#hm1").text("المكتب : "+data.con);
-		         $("#hm2").text("التذكرة : "+data.cot);
-  		       $("#hm3").text("المهمة : "+data.cott);
-           {% else %}
-		       if ($("#hm1").text() == "Office : "+data.con && $("#hm2").text() == "Ticket : "+data.cot && $("#hm3").text() == "Task : "+data.cott && $("#hcounter").text() == data.w9) {
-		         $("#hm1").text("Office : "+data.con);
-		         $("#hm2").text("Ticket : "+data.cot);
-		         $("#hm3").text("Task : "+data.cott);
-		       } else {
-		         $("#hm1").text("Office : "+data.con);
-		         $("#hm2").text("Ticket : "+data.cot);
-  		       $("#hm3").text("Task : "+data.cott);
-          {% endif %}
-		         var au = document.getElementById("audio_1")
-		         if ( au != null ) {
-			         au.play();
-		          }
-		         var au2 = document.getElementById("audio_2")
-		         if ( au2 != null ) {
-			         function pau2(){
-                 var au3 = document.getElementById("audio_3")
-                 if ( au3 != null ){
-                   au3.src = "{{ url_for('static', filename='tts/') }}"+"ar_"+data.anf
-                   au3.load();
-                   au3.volume = 1.0
-                 }
-                 au2.src = "{{ url_for('static', filename='tts/') }}"+data.anf
-                 au2.load();
-                 au2.volume = 1.0
-                 au2.play();
-                 var loopCounter = 1
-                 var loopLimit = {{ anr }}
-                 if ( au3 != null ) { loopLimit = loopLimit + 1 }
-                 au2.addEventListener('ended', function(){
-                    if (loopCounter < loopLimit){
-                      if ( au3 != null ) {
-                        au3.currentTime = 0
-                        au3.play();
-                        loopCounter++;
-                        au3.addEventListener('ended', function(){
-                          if (loopCounter < loopLimit){
-                            au2.currentTime = 0
-                            au2.play();
-                          }
-                        }, false)
-                      } else {
-                        au2.currentTime = 0
-                        au2.play();
-                        loopCounter++;
-                      }
-                    }
-                  }, false);
-                }
-			       if (au != null){
-			         au.addEventListener("ended", function() {
-    				     pau2();
-			         });
-			       } else {
-			         pau2();
-			       }
+ <!-- <script type="text/javascript"> 
+  function update_values(fr) { 
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}; 
+      $.getJSON($SCRIPT_ROOT+"/feed", 
+ 	       function(data) { 
+            if ( data.refre == 1 ) { location.reload(); } 
+            {% if ar %} 
+ 		       if ($("#hm1").text() == "المكتب : "+data.con && $("#hm2").text() == "التذكرة : "+data.cot && $("#hm3").text() == "المهمة : "+data.cott && $("#hcounter").text() == data.w9) { 
+              $("#hm1").text("المكتب : "+data.con); 
+ 		         $("#hm2").text("التذكرة : "+data.cot); 
+ 		         $("#hm3").text("المهمة : "+data.cott); 
+ 		       } else { 
+ 		         $("#hm1").text("المكتب : "+data.con); 
+ 		         $("#hm2").text("التذكرة : "+data.cot); 
+   		       $("#hm3").text("المهمة : "+data.cott); 
+            {% else %} 
+ 		       if ($("#hm1").text() == "Office : "+data.con && $("#hm2").text() == "Ticket : "+data.cot && $("#hm3").text() == "Task : "+data.cott && $("#hcounter").text() == data.w9) { 
+ 		         $("#hm1").text("Office : "+data.con); 
+ 		         $("#hm2").text("Ticket : "+data.cot); 
+ 		         $("#hm3").text("Task : "+data.cott); 
+ 		       } else { 
+ 		         $("#hm1").text("Office : "+data.con); 
+ 		         $("#hm2").text("Ticket : "+data.cot); 
+   		       $("#hm3").text("Task : "+data.cott); 
+           {% endif %} 
+		          var au = document.getElementById("audio_1") 
+ 		         if ( au != null ) { 
+ 			         au.play(); 
+ 		          } 
+ 		         var au2 = document.getElementById("audio_2") 
+ 		         if ( au2 != null ) { 
+ 			         function pau2(){ 
+                  var au3 = document.getElementById("audio_3") 
+                  if ( au3 != null ){ 
+                    au3.src = "{{ url_for('static', filename='tts/') }}"+"ar_"+data.anf 
+                    au3.load(); 
+                    au3.volume = 1.0 
+                  } 
+                  au2.src = "{{ url_for('static', filename='tts/') }}"+data.anf 
+                  au2.load(); 
+                  au2.volume = 1.0 
+                  au2.play(); 
+                  var loopCounter = 1 
+                  var loopLimit = {{ anr }} 
+                  if ( au3 != null ) { loopLimit = loopLimit + 1 } 
+                  au2.addEventListener('ended', function(){ 
+                     if (loopCounter < loopLimit){ 
+                       if ( au3 != null ) { 
+                         au3.currentTime = 0 
+                         au3.play(); 
+                         loopCounter++; 
+                         au3.addEventListener('ended', function(){ 
+                           if (loopCounter < loopLimit){ 
+                             au2.currentTime = 0 
+                             au2.play(); 
+                           } 
+                         }, false) 
+                       } else { 
+                         au2.currentTime = 0 
+                         au2.play(); 
+                         loopCounter++; 
+                       } 
+                     } 
+                   }, false); 
+                 } 
+ 			       if (au != null){ 
+ 			         au.addEventListener("ended", function() { 
+     				     pau2(); 
+ 			         }); 
+ 			       } else { 
+ 			         pau2(); 
+ 			       } 
 
-		       }
-		       function fit(j){
-			       $(j).fadeIn(fr/2).fadeOut(fr/2).fadeIn(fr/2).fadeOut(fr/2).fadeIn(fr/2).fadeOut(fr/2).fadeIn(fr/3);
-			       if(j=="#msg") {
-			         setTimeout(function(){
-				       $(j).fadeOut();
-			        }, fr*3.5);
-			       }
-		        }
-		       fit("#hm1");
-		       fit("#hm2");
-           fit("#hm3");
-		   }
-		   $("#hs1").text(data.w1);
-		   $("#hs2").text(data.w2);
-		   $("#hs3").text(data.w3);
-		   $("#hs4").text(data.w4);
-		   $("#hs5").text(data.w5);
-		   $("#hs6").text(data.w6);
-		   $("#hs7").text(data.w7);
-		   $("#hs8").text(data.w8);
-       $('#hcounter').text(data.w9);
-	       });
- }
- function tom(tmm, fr) {
-     window.setInterval(function(){
-	 update_values(fr)
-     }, tmm);
- }
- window.onload = function(){
-     tom({{ ts.rrate }},{{ ts.mduration }});
- };
+ 		       } 
+ 		       function fit(j){ 
+ 			       $(j).fadeIn(fr/2).fadeOut(fr/2).fadeIn(fr/2).fadeOut(fr/2).fadeIn(fr/2).fadeOut(fr/2).fadeIn(fr/3); 
+ 			       if(j=="#msg") { 
+ 			         setTimeout(function(){ 
+ 				       $(j).fadeOut(); 
+ 			        }, fr*3.5); 
+ 			       } 
+ 		        } 
+ 		       fit("#hm1"); 
+ 		       fit("#hm2"); 
+            fit("#hm3"); 
+ 		   } 
+ 		   $("#hs1").text(data.w1); 
+ 		   $("#hs2").text(data.w2); 
+ 		   $("#hs3").text(data.w3); 
+ 		   $("#hs4").text(data.w4); 
+ 		   $("#hs5").text(data.w5); 
+ 		   $("#hs6").text(data.w6); 
+ 		   $("#hs7").text(data.w7); 
+ 		   $("#hs8").text(data.w8); 
+        $('#hcounter').text(data.w9); 
+ 	       }); 
+  } 
+  function tom(tmm, fr) { 
+      window.setInterval(function(){ 
+ 	 update_values(fr) 
+      }, tmm); 
+  } 
+  window.onload = function(){ 
+      tom({{ ts.rrate }},{{ ts.mduration }}); 
+  }; 
+ </script>  -->
+<script type='text/javascript'>
+var prevTicket = undefined
+function update_values(fr, lang) {
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}
+    $.getJSON($SCRIPT_ROOT+"/feed", function(data) {
+		if (data.refre === 1) location.reload()
+		if (prevTicket !== data.con + data.cot + data.cott) {
+		    prevTicket = data.con + data.cot + data.cott
+    	    if (lang === 'ar') {
+				$("#hm1").text("المكتب : " + data.con)
+				$("#hm2").text("التذكرة : " + data.cot)
+				$("#hm3").text("المهمة : " + data.cott)
+		    } else {
+				$("#hm1").text("Office : " + data.con)
+				$("#hm2").text("Ticket : " + data.cot)
+  				$("#hm3").text("Task : " + data.cott)
+			}
+			var fadeEles = ['#hm1', '#hm2', '#hm3']
+			fadeEles.forEach(function (i) {
+				$(i).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow')
+			})
+			var au = document.getElementById("audio_1")
+			var au2 = document.getElementById("audio_2")
+			var au3 = document.getElementById("audio_3")
+			if (au) au.play()
+			if (au2) {
+				function pau2() { 
+					if (au3) { 
+						au3.src = "{{ url_for('static', filename='tts/') }}"+"ar_"+data.anf 
+						au3.load()
+						au3.volume = 1.0 
+					} 
+					au2.src = "{{ url_for('static', filename='tts/') }}"+data.anf 
+					au2.load(); 
+					au2.volume = 1.0 
+					au2.play()
+					var loopCounter = 1 
+					var loopLimit = {{ anr }} 
+					if (au3) loopLimit = loopLimit + 1
+					au2.addEventListener('ended', function(){ 
+						if (loopCounter < loopLimit){ 
+							if (au3) { 
+								au3.currentTime = 0 
+								au3.play(); 
+								loopCounter++; 
+								au3.addEventListener('ended', function() { 
+									if (loopCounter < loopLimit){ 
+										au2.currentTime = 0 
+										au2.play()
+									} 
+								}, false) 
+							} else { 
+								au2.currentTime = 0 
+								au2.play()
+								loopCounter++
+							} 
+						} 
+					}, false)
+				}
+				if (au) au.addEventListener("ended", function() { pau2() })
+				else pau2()
+			}
+		}
+		$("#hs1").text(data.w1)
+		$("#hs3").text(data.w3)
+		$("#hs4").text(data.w4)
+		$("#hs5").text(data.w5)
+		$("#hs6").text(data.w6)
+		$("#hs7").text(data.w7)
+		$("#hs8").text(data.w8)
+		$('#hcounter').text(data.w9)
+		$("#hs2").text(data.w2)
+	})
+}
+
+function tom(tmm, fr, lang) {
+    window.setInterval(function(){
+	update_values(fr, lang)
+    }, tmm)
+}
+
+window.onload = function () {
+    tom({{ ts.rrate }}, {{ ts.mduration }}, {% if ar %} 'ar' {% else %} 'en' {% endif %})
+}
 </script>
-
 <style>
  body {
      {% if ts.bgcolor[:3] == "rgb" %}
@@ -345,7 +433,7 @@
 </div>
 {% endif %}
 
-<!-- Hidden counter to fix identical changes -->
+ Hidden counter to fix identical changes 
 <p id='hcounter' style='display: none;'>
   0
 </p>

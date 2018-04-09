@@ -3,7 +3,11 @@ from data import Task, Office, Serial, Waiting, User
 from random import choice, randint
 from __init__ import create_app
 
+# To use any of the following functions, example :
+# with create_app().app_context():
+#      fill_tickets()
 
+# Random names to use in filling
 names = ('Aaron Enlightened', 'Abbott Father', 'Abel Breath', 'Abner Father',
          'Abraham Exalted', 'Adam Man', 'Addison Son', 'Adler Eagle',
          'Adley The Just', 'Adrian Dark', 'Aedan Fire', 'Alan Handsome',
@@ -30,10 +34,10 @@ def fill_tickets(entery_number=10, s_task=None):
             name = choice(names)
             t_id = task.id
             f_id = task.office_id
-            if i >= 11:
-                db.session.add(Serial(number=num + 1,
-                                      office_id=f_id,
-                                      task_id=t_id, name=name, n=True))
+            # if i >= 11: WTF ?!
+            db.session.add(Serial(number=num + 1,
+                                    office_id=f_id,
+                                    task_id=t_id, name=name, n=True))
     for a in range(Waiting.query.count(), 11):
         for b in Serial.query.filter_by(p=False).order_by(Serial.timestamp):
             if Waiting.query.filter_by(office_id=b.office_id,
