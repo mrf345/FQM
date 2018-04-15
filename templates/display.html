@@ -118,6 +118,8 @@
 <script type='text/javascript'>
 	var stream = JsonStream({
 		url: window.location.origin + '/feed',
+		duration: ("{{ ts.rrate }}" / 1000),
+		effect_duration: "{{ ts.mdruation }}",
 		data_attr: 'stream',
 		effect_repeats: 4,
 		use_effect: 'true',

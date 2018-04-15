@@ -11,13 +11,13 @@
 ## To Add :
 
 - [x] impliment json_stream and audio_sequence (4/9th)
-> JsonStream [x] : (4/14th)
+> [ ] JsonStream : (4/14th)
 > - [x] add effects and do as effectdo for function execution and jquey effects (4/15th)
 > - [x] add ensure update with identical values (4/15th)
 > - [ ] add jsonstream effects, and repeats to display screen customization
-> - [ ] add refreash rates, and duration to jsonstream
+> - [x] add refreash rates, and duration to jsonstream
 
-> AudioSequence [ ] :
+> [ ] AudioSequence :
 > - [ ] has issues, whenever wraped under another func. SIDE TO FIX 1
 > - [ ] solve declearing and killing
 > - [ ] some javascript getting wrong input in offices : $('#dropdown-lvl&lt;app.data.Office object at0x7fc141447dd0&gt;').collapse('show'); JS
