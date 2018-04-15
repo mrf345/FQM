@@ -483,10 +483,13 @@ def feed():
         hl.append("Empty")
     # fixing identical changes bug
     hcounter = data.Waiting.query.order_by(data.Waiting.id).first()
-    if hcounter is not None:
-        hcounter = hcounter.number
+    if co:
+        hcounter = co.ticket
     else:
-        hcounter = "Empty"
+        if hcounter is not None:
+            hcounter = hcounter.number
+        else:
+            hcounter = "Empty"
     # End of fix
     f = data.Display_store.query.filter_by(id=0).first()
     if f.announce != "false" and f.afile != " ":

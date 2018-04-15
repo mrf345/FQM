@@ -2,14 +2,24 @@
 
 ## To Fix :
 
-- [x] fail safe driviers (1/10th)
+- [x] fail safe printers driviers (1/10th)
 - [x] hide ticket 100 (Template) (4/8th)
 - [x] empty last ticket in display screen JS (4/9th)
+- [ ] fix no tickets to display, since ticket 100 hidden
+- [ ] fix increase br after ticket 100 removal
 
 ## To Add :
 
 - [x] impliment json_stream and audio_sequence (4/9th)
-> AudioSequence has issues, whenever wraped under another func. SIDE TO FIX 1
+> JsonStream [x] : (4/14th)
+> - [x] add effects and do as effectdo for function execution and jquey effects (4/15th)
+> - [x] add ensure update with identical values (4/15th)
+> - [ ] add jsonstream effects, and repeats to display screen customization
+> - [ ] add refreash rates, and duration to jsonstream
+
+> AudioSequence [ ] :
+> - [ ] has issues, whenever wraped under another func. SIDE TO FIX 1
+> - [ ] solve declearing and killing
 > - [ ] some javascript getting wrong input in offices : $('#dropdown-lvl&lt;app.data.Office object at0x7fc141447dd0&gt;').collapse('show'); JS
 - [x] use disiple for the forms in AR and EN (4/10th)
 - [x] change bootstrap default theme (4/10th)
@@ -17,6 +27,7 @@
 - [ ] General task that exists in multiple offices
 - [ ] allow for multiple operators for an office
 - [ ] add who pulled ticket
+- [ ] add pull from specific task, for priority
 - [ ] multi-language config files
 - [ ] add french, italian spanish to gtts
 - [ ] add french, italian spanish to the printer
