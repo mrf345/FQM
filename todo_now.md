@@ -5,8 +5,8 @@
 - [x] fail safe printers driviers (1/10th)
 - [x] hide ticket 100 (Template) (4/8th)
 - [x] empty last ticket in display screen JS (4/9th)
-- [ ] fix no tickets to display, since ticket 100 hidden
-- [ ] fix increase br after ticket 100 removal
+- [x] fix no tickets to display, since ticket 100 hidden (4/16th)
+- [x] fix increase br after ticket 100 removal (4/16th)
 
 ## To Add :
 
@@ -15,7 +15,7 @@
 > - [x] add effects and do as effectdo for function execution and jquey effects (4/15th)
 > - [x] add ensure update with identical values (4/15th)
 > - [ ] add jsonstream effects, and repeats to display screen customization
-> - [x] add refreash rates, and duration to jsonstream
+> - [x] add refreash rates, and duration to jsonstream (4/15th)
 
 > [ ] AudioSequence :
 > - [ ] has issues, whenever wraped under another func. SIDE TO FIX 1

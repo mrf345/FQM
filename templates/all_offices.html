@@ -159,7 +159,7 @@ $(document).ready(function() {
 		</div>
 	      {% endif %}
 	    {% endfor %}
-	    {% if len(officesp) == 0 %}
+	    {% if len(officesp) < tasks.count() %}
 	    <div class="well">
 		{{ brp*10 }}
     {% if ar %}
