@@ -49,9 +49,9 @@ def create_app():
     # Autoreload if templates change
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     # flask_upload settings
-    app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024
+    # app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024 # Remove Upload limit. FIX ISSUE
     app.config['UPLOADED_FILES_DEST'] = r_path('static/multimedia')
-    # app.config['UPLOADED_FILES_ALLOW'] = mdal # Remove Upload limit. FIX ISSUE
+    app.config['UPLOADED_FILES_ALLOW'] = mdal
     app.config['SECRET_KEY'] = os.urandom(24)
     # Intiating extensions before registering blueprints
     moment = Moment(app)

@@ -11,18 +11,20 @@
 ## To Add :
 
 - [x] impliment json_stream and audio_sequence (4/9th)
-> [ ] JsonStream : (4/14th)
+> [x] JsonStream : (4/14th)
 > - [x] add effects and do as effectdo for function execution and jquey effects (4/15th)
 > - [x] add ensure update with identical values (4/15th)
 > - [ ] add jsonstream effects, and repeats to display screen customization
 > - [x] add refreash rates, and duration to jsonstream (4/15th)
 
-> [ ] AudioSequence :
-> - [ ] has issues, whenever wraped under another func. SIDE TO FIX 1
-> - [ ] solve declearing and killing
-> - [ ] some javascript getting wrong input in offices : $('#dropdown-lvl&lt;app.data.Office object at0x7fc141447dd0&gt;').collapse('show'); JS
+> [x] AudioSequence : (4/16th)
+> - [x] has issues, whenever wraped under another func. SIDE TO FIX 1 (4/16th)
+> - [x] solve declearing and killing (4/16th)
+> - [x] some javascript getting wrong input in offices : $('#dropdown-lvl&lt;app.data.Office object at0x7fc141447dd0&gt;').collapse('show'); JS (4/16th)
+> - [ ] add repeat_each and repeat_whole options to display customization
 - [x] use disiple for the forms in AR and EN (4/10th)
 - [x] change bootstrap default theme (4/10th)
+- [ ] impliment auto_reloader
 - [ ] tickets based on tasks instead of offices
 - [ ] General task that exists in multiple offices
 - [ ] allow for multiple operators for an office

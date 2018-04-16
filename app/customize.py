@@ -311,9 +311,9 @@ def slide_r(f_id):
 @login_required
 def multimedia(aa):
     # Number of files limit
-    nofl = 30
+    nofl = 300
     # size folder limit in MB
-    sfl = 2000
+    sfl = 2000 # Fix limited upload folder size
     if current_user.role_id != 1:
         flash(get_lang(0),
               "danger")
@@ -324,11 +324,12 @@ def multimedia(aa):
     if pf is not None:
         pf = pf.name
     if aa == 0:
-        if int(ex_functions.getFolderSize(dire)) >= sfl:
-            flash(get_lang(36) + str(sfl) + "MB",
-                  "danger")
-            return redirect(url_for('cust_app.multimedia', aa=1))
-        elif data.Media.query.count() >= nofl:
+        # Fix limited upload folder size
+        # if int(ex_functions.getFolderSize(dire)) >= sfl:
+        #     flash(get_lang(36) + str(sfl) + "MB",
+        #           "danger")
+        #     return redirect(url_for('cust_app.multimedia', aa=1))
+        if data.Media.query.count() >= nofl:
             flash(get_lang(37) + str(nofl),
                   "danger")
             return redirect(url_for('cust_app.multimedia', aa=1))
