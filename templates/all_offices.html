@@ -6,13 +6,7 @@
 {% block title %} FQM - {{ ptitle }} {% endblock %}
 {% block head %}
 {{ super() }}
-<script src="{{ url_for('static', filename='reload.js') }}"></script>
 {{ pagedown.include_pagedown() }}
-<script>
-$(document).ready(function() {
- areload({{ ar_d }});
-});
-</script>
 <style>
 .qrw:hover {
   filter: brightness(0.8);
@@ -29,35 +23,12 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block page_content %}
+{%- from "auto_reload.html" import auto_reloader with context %}
 <div class="col-md-12">
     <div class="panel panel-primary">
-        <div class="panel-heading">
-	    <div class="row">
-		<div class="col-xs-12">
-		    <a id="ar" class="btn btn-primary pull-right hidden-sm hidden-xs {% if ar %} ar1 {% endif %}" data-toggle="tooltip"
-        title="{% if ar %} تفعيل أو إيقاف إعادة تجديد الصفحة {% else %} Start/Stop auto-reloading the page {% endif %}">
-			<span class="glyphicon glyphicon-refresh"></span>
-      {% if ar %}
-      تجديد الصفحة تلقائياً
-      {% else %}
-      Auto Reload
-      {% endif %}
-		    </a>
-		    <center><a id="arb" class="btn btn-primary btn-sm hidden-lg hidden-md {% if ar %} ar1 {% endif %}"
-          data-toggle="tooltip" title="{% if ar %} تفعيل أو إيقاف إعادة تجديد الصفحة {% else %} Start/Stop auto-reloading the page {% endif %}">
-			<span class="glyphicon glyphicon-refresh"></span>
-      {% if ar %}
-      تجديد الصفحة تلقائياً
-      {% else %}
-      Auto Reload
-      {% endif %}
-		    </a></center>
-        <a href="#" data-toggle="modal" data-target="#branch_qr"
-        class="hidden-xs hidden-sm text-center pull-left"
-        data-toggle="tooltip"
-        title="{% if ar %} QR Code : كل تذاكر المكاتب{% else %} QR Code : all offices {% endif %}"
-        ><i class="fa fa-3x fa-fw fa-qrcode fa-spin qrw" style="color: white;"></i></a>
-		</div>
+    	<div class="panel-heading">
+	    	<div class="row">
+				{{ auto_reloader(True) }}
     <div class="col-xs-12 hidden-md hidden-lg text-center">
         <br />
         <a href="#" data-toggle="modal" data-target="#branch_qr"

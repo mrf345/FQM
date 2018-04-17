@@ -24,7 +24,7 @@
 > - [ ] add repeat_each and repeat_whole options to display customization
 - [x] use disiple for the forms in AR and EN (4/10th)
 - [x] change bootstrap default theme (4/10th)
-- [ ] impliment auto_reloader
+- [x] impliment auto_reloader (4/17th)
 - [ ] tickets based on tasks instead of offices
 - [ ] General task that exists in multiple offices
 - [ ] allow for multiple operators for an office

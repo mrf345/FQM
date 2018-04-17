@@ -6,13 +6,7 @@
 {% block title %} FQM - {{ ptitle }} {% endblock %}
 {% block head %}
 {{ super() }}
-<script src="{{ url_for('static', filename='reload.js') }}"></script>
 {{ pagedown.include_pagedown() }}
-<script>
-$(document).ready(function() {
- areload({{ ar_d }});
-});
-</script>
 {% endblock %}
 
 {% import "bootstrap/wtf.html" as wtf %}
@@ -25,30 +19,12 @@ $(document).ready(function() {
 
 {% block page_content %}
 {% from "_helpers.html" import render_field %}
+{%- from "auto_reload.html" import auto_reloader with context %}
 <div class="col-md-12">
     <div class="panel panel-primary">
-        <div class="panel-heading">
-	    <div class="row">
-		<div class="col-xs-12">
-      <a id="ar" class="btn btn-primary pull-right hidden-sm hidden-xs {% if ar %} ar1 {% endif %}" data-toggle="tooltip"
-      title="{% if ar %} تفعيل أو إيقاف إعادة تجديد الصفحة {% else %} Start/Stop auto-reloading the page {% endif %}">
-    <span class="glyphicon glyphicon-refresh"></span>
-    {% if ar %}
-    تجديد الصفحة تلقائياً
-    {% else %}
-    Auto Reload
-    {% endif %}
-      </a>
-      <center><a id="arb" class="btn btn-primary btn-sm hidden-lg hidden-md {% if ar %} ar1 {% endif %}"
-        data-toggle="tooltip" title="{% if ar %} تفعيل أو إيقاف إعادة تجديد الصفحة {% else %} Start/Stop auto-reloading the page {% endif %}">
-    <span class="glyphicon glyphicon-refresh"></span>
-    {% if ar %}
-    تجديد الصفحة تلقائياً
-    {% else %}
-    Auto Reload
-    {% endif %}
-      </a></center>
-		</div>
+    	<div class="panel-heading">
+	    	<div class="row">
+				{{ auto_reloader() }}
 		<div class="col-xs-12">
 		    <h2 class="text text-center">
       {% if ar %}

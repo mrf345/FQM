@@ -30,34 +30,12 @@ $(document).ready(function() {
 
 {% block page_content %}
 {% from "_helpers.html" import render_field %}
+{%- from "auto_reload.html" import auto_reloader with context %}
 <div class="col-md-12">
     <div class="panel panel-primary">
         <div class="panel-heading">
-	    <div class="row">
-		<div class="col-xs-12">
-        <a id="ar" class="btn btn-primary pull-right hidden-sm hidden-xs {% if ar %} ar1 {% endif %}" data-toggle="tooltip"
-        title="{% if ar %} تفعيل أو إيقاف إعادة تجديد الصفحة {% else %} Start/Stop auto-reloading the page {% endif %}">
-      <span class="glyphicon glyphicon-refresh"></span>
-      {% if ar %}
-      تجديد الصفحة تلقائياً
-      {% else %}
-      Auto Reload
-      {% endif %}
-        </a>
-        <center><a id="arb" class="btn btn-primary btn-sm hidden-lg hidden-md {% if ar %} ar1 {% endif %}"
-          data-toggle="tooltip" title="{% if ar %} تفعيل أو إيقاف إعادة تجديد الصفحة {% else %} Start/Stop auto-reloading the page {% endif %}">
-      <span class="glyphicon glyphicon-refresh"></span>
-      {% if ar %}
-      تجديد الصفحة تلقائياً
-      {% else %}
-      Auto Reload
-      {% endif %}
-        </a></center>
-        <a href="#" data-toggle="modal" data-target="#branch_qr"
-        data-toggle="tooltip" class="hidden-xs hidden-sm text-center pull-left"
-        title="{% if ar %} QR Code : المكتب {% else %} QR Code : Office page {% endif %}"
-        ><i class="fa fa-3x fa-f fa-qrcode fa-spin qrw" style="color: white;"></i></a>
-		</div>
+	    	<div class="row">
+				{{ auto_reloader(True) }}
     <div class="col-xs-12 hidden-md hidden-lg text-center">
       <br />
         <a href="#" data-toggle="modal" data-target="#branch_qr"
