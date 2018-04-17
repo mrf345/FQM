@@ -67,3 +67,5 @@ Werkzeug==0.12.2
 Whoosh==2.7.4
 WTForms==2.1
 WTForms-Components==0.10.3
+Flask-Datepicker==0.6
+Flask-Colorpicker==0.3

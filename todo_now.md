@@ -25,6 +25,7 @@
 - [x] use disiple for the forms in AR and EN (4/10th)
 - [x] change bootstrap default theme (4/10th)
 - [x] impliment auto_reloader (4/17th)
+> - [ ] remove default reload duration from template, db
 - [ ] tickets based on tasks instead of offices
 - [ ] General task that exists in multiple offices
 - [ ] allow for multiple operators for an office
@@ -34,5 +35,5 @@
 - [ ] add french, italian spanish to gtts
 - [ ] add french, italian spanish to the printer
 - [x] fix upload file and folder size limit to unlimited (4/9th)
-- [ ] Use flask_datepicker
+- [x] Use flask_datepicker
 - [ ] Use flask_colorpicker

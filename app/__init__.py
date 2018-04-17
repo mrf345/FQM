@@ -32,6 +32,8 @@ from jinja2 import FileSystemLoader
 from flask_qrcode import QRcode
 from functools import partial
 from printer import listp
+from flask_datepicker import datepicker
+from flask_colorpicker import colorpicker
 
 
 def create_app():
@@ -59,6 +61,8 @@ def create_app():
     configure_uploads(app, files)
     login_manager.init_app(app)
     db.init_app(app)
+    datepicker(app, local=['static/jquery-ui.min.css', 'static/jquery-ui.min.js'])
+    colorpicker(app)
     # Register blueprints
     app.register_blueprint(administrate)
     app.register_blueprint(core)
