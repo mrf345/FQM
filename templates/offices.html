@@ -6,13 +6,7 @@
 {% block title %} FQM - {{ ptitle }} {% endblock %}
 {% block head %}
 {{ super() }}
-<script src="{{ url_for('static', filename='reload.js') }}"></script>
 {{ pagedown.include_pagedown() }}
-<script>
-$(document).ready(function() {
- areload({{ ar_d }});
-});
-</script>
 <style>
 .qrw:hover {
   filter: brightness(0.8);

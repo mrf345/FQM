@@ -3,126 +3,113 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
 <html>
-<head>
-<title>{% block title %} FQM - {{ ptitle }} {% endblock %}</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="X-UA-compatible" content="IE=edge">
-<link href="{{ url_for('static', filename='backstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ url_for('static', filename='backstrap/css/bootstrap-theme.min.css') }}" rel="stylesheet">
-<link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet">
-<link href="{{ url_for('static', filename='backstrap/css/bootstrap-theme.min.css.map') }}" rel="stylesheet">
-<link rel="icon"
-    type="image/png"
-    href="{{ url_for('static', filename='images/favicon.png') }}">
-<link href="{{ url_for('static', filename='css/afade.css') }}" rel="stylesheet">
-<link href="{{ url_for('static', filename='css/gfonts.css') }}" rel="stylesheet">
-<style>
- body {
-     background-color: black;
-     background-image: url('/static/images/dbg.jpg');
-     background-repeat: no-repeat;
-     background-attachment: fixed;
-     background-position: center;
-     background-size: cover;
- }
+    <head>
+        <title>{% block title %} FQM - {{ ptitle }} {% endblock %}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-compatible" content="IE=edge">
+        <link href="{{ url_for('static', filename='backstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='backstrap/css/bootstrap-theme.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='backstrap/css/bootstrap-theme.min.css.map') }}" rel="stylesheet">
+        <link rel="icon"
+            type="image/png"
+            href="{{ url_for('static', filename='images/favicon.png') }}">
+        <link href="{{ url_for('static', filename='css/gfonts.css') }}" rel="stylesheet">
+        <style>
+         body {
+             background-color: black;
+             background-image: url('/static/images/dbg.jpg');
+             background-repeat: no-repeat;
+             background-attachment: fixed;
+             background-position: center;
+             background-size: cover;
+         }
 
- @keyframes fadein {
-     from { opacity: 0; }
-     to   { opacity: 1; }
- }
-
- /* Firefox < 16 */
- @-moz-keyframes fadein {
-     from { opacity: 0; }
-     to   { opacity: 1; }
- }
-
- /* Safari, Chrome and Opera > 12.1 */
- @-webkit-keyframes fadein {
-     from { opacity: 0; }
-     to   { opacity: 1; }
- }
-
- /* Internet Explorer */
- @-ms-keyframes fadein {
-     from { opacity: 0; }
-     to   { opacity: 1; }
- }
-
- /* Opera < 12.1 */
- @-o-keyframes fadein {
-     from { opacity: 0; }
-     to   { opacity: 1; }
- }
- .vertical-center {
-     min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-     min-height: 100vh; /* These two lines are counted as one :-)       */
-     display: flex;
-     align-items: center;
- }
- i:hover {
-     filter: brightness(2.5);
-     transition: all 0.2s ease-in-out;
-     transition-property: all;
-     transition-duration: 0.2s;
-     transition-timing-function: ease-in-out;
-     transition-delay: 0s;
- }
- #blogo:hover {
-     filter: brightness(2.5);
-     transition: all 0.2s ease-in-out;
-     transition-property: all;
-     transition-duration: 0.2s;
-     transition-timing-function: ease-in-out;
-     transition-delay: 0s;
- }
- .ar1 {
-   font-family: 'Changa';
- }
- #ar1 {
-   font-family: 'Changa';
- }
- .ar2 {
-   font-family: 'Amiri';
- }
- #ar2 {
-   font-family: 'Amiri';
- }
- .shb {
-   -moz-box-shadow: 0 0 10px 10px rgba(0,0,0,0.3);
-   -webkit-box-shadow: 0 0 10px 10px rgba(0,0,0,0.3);
-   box-shadow: 0 0 10px 10px rgba(0,0,0,0.3);
- }
-  
-</style>
-<!--[if IE]>
-<style>
-body {
-    background-color: black;
-    background-image: url('/static/images/dbgo.jpg');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-    background-size: cover;
-}
-</style>
-<![endif]-->
-<script src="{{ url_for('static', filename='backstrap/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='backstrap/js/bootstrap.min.js') }}"></script>
-<script type="text/javascript">
- {% if not firefox %}
- if (navigator.userAgent.search("Firefox") <= 2 && navigator.userAgent.search("Chrome") <= 2) {
-     window.location = '/firefox/4'
- }
- {% endif %}
- {% if n or form.errors %}
-  $(document).ready(function(){
-     $("#upd").modal('show');
-  })
- {% endif %}
-</script>
-
+         .vertical-center {
+             min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+             min-height: 100vh; /* These two lines are counted as one :-)       */
+             display: flex;
+             align-items: center;
+         }
+         i:hover {
+             filter: brightness(2.5);
+             transition: all 0.2s ease-in-out;
+             transition-property: all;
+             transition-duration: 0.2s;
+             transition-timing-function: ease-in-out;
+             transition-delay: 0s;
+         }
+         #blogo:hover {
+             filter: brightness(2.5);
+             transition: all 0.2s ease-in-out;
+             transition-property: all;
+             transition-duration: 0.2s;
+             transition-timing-function: ease-in-out;
+             transition-delay: 0s;
+         }
+         .ar1 {
+           font-family: 'Changa';
+         }
+         #ar1 {
+           font-family: 'Changa';
+         }
+         .ar2 {
+           font-family: 'Amiri';
+         }
+         #ar2 {
+           font-family: 'Amiri';
+         }
+         .snb {
+           -moz-box-shadow: 0 0 10px 10px rgba(0,0,0,0.5);
+           -webkit-box-shadow: 0 0 10px 10px rgba(0,0,0,0.5);
+           box-shadow: 0 0 10px 10px rgba(0,0,0,0.5);
+         }
+         a {
+             text-decoration: none !important;
+         }
+        </style>
+        <!--[if IE]>
+        <style>
+        body {
+            background-color: black;
+            background-image: url('/static/images/dbgo.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+        }
+        </style>
+        <![endif]-->
+        <script src="{{ url_for('static', filename='backstrap/jquery.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='backstrap/js/bootstrap.min.js') }}"></script>
+        <script type="text/javascript">
+         {% if not firefox %}
+         if (navigator.userAgent.search("Firefox") <= 2 && navigator.userAgent.search("Chrome") <= 2) {
+             window.location = '/firefox/4'
+         }
+         {% endif %}
+         {% if n or form.errors %}
+          $(document).ready(function(){
+             $("#upd").modal('show');
+          })
+         {% endif %}
+        </script>
+        {{ datepicker.loader() }}
+        <script src="{{ url_for('static', filename='beloading.js') }}" type='text/javascript'></script>
+        <script type='text/javascript'>
+        $(document).ready(function () {
+          $('.navbar').addClass('hide') // to fix navbar showing over beloading
+          beloading({
+            background: 'rgba(0,0,0,1)',
+            text: ' ',
+            icon: ' '
+          }, function () {
+             setTimeout(function () {
+              $('.navbar').removeClass('hide')
+            }, 1000)})
+        })
+        </script>
 </head>
 
 <body>
@@ -134,7 +121,7 @@ body {
 <div class="cover vertical-center">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12 text-center shb" style="background: rgba(0,0,0,0.85); border-radius: 30%;"><br>
+            <div class="col-xs-12 text-center snb" style="background: rgba(0,0,0,0.85); border-radius: 30%;"><br>
     <a href="https://fqms.github.io/" target="_blank">
       <img src="{{ url_for('static', filename='images/favicon.png') }}" class="image-responsive" id="blogo">
     </a>

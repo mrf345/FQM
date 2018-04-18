@@ -78,3 +78,14 @@ a:hover {
   -webkit-box-shadow: 0 0 10px 10px rgba(0,0,0,0.3);
   box-shadow: 0 0 10px 10px rgba(0,0,0,0.3);
 }
+
+.snb {
+  -moz-box-shadow: 0 0 10px 10px rgba(0,0,0,0.5);
+  -webkit-box-shadow: 0 0 10px 10px rgba(0,0,0,0.5);
+  box-shadow: 0 0 10px 10px rgba(0,0,0,0.5);
+}
+
+a {
+  text-decoration: none !important;
+  cursor: pointer;
+}
