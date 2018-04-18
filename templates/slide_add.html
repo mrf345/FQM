@@ -7,38 +7,17 @@
 
 {% block head %}
 {{ super() }}
-<link href="{{ url_for('static', filename='css/spectrum.css') }}" rel="stylesheet">
-<link href="{{ url_for('static', filename='css/jquery-ui.min.css') }}" rel="stylesheet">
+{{ datepicker.loader() }}
+{{ colorpicker.loader() }}
+{{ colorpicker.picker(id='.spa', allowEmpty='false') }}
+{{ colorpicker.picker(id='.sp', showAlpha='false', allowEmpty='false') }}
 <link href="{{ url_for('static', filename='css/gfonts.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/webfont.select.css') }}" rel="stylesheet">
-<script src="{{ url_for('static', filename='jquery-ui.min.js') }}"></script>
-<script src="{{ url_for('static', filename='spectrum.js') }}" type="text/javascript"></script>
-<script src="{{ url_for('static', filename='jquery.are-you-sure.js') }}"></script>
 <script src="{{ url_for('static', filename='webfont.js') }}"></script>
 <script src="{{ url_for('static', filename='webfont.select.js') }}"></script>
 <script type="text/javascript">
 $(document).ready( function() {
-  $(".spa").spectrum({
-      color: "#000",
-      showAlpha: true,
-      preferredFormat: "rgb",
-      showInput: true,
-      showButtons: false,
-      allowEmpty: false,
-      move: function(color) {
- 	 this.val(color.toRgbString());
-      },
-  });
-  $(".sp").spectrum({
-      color: "#ff0",
-      preferredFormat: "rgb",
-      showButtons: false,
-      showInput: true,
-      allowEmpty: false,
-      move: function(color) {
- 	 this.val(color.toRgbString());
-      },
-  });
+  // TODO: Replace this mess with flask_fontpicker
   $('#hfont').wfselect({
   fonts: {
     google: {
@@ -65,7 +44,6 @@ $(document).ready( function() {
   var bf = $('#tfont').css('font-family');
   $('#tbfont').val(String(bf));
  });
-  $("#fm").areYouSure();
   $('#hbfont').val(String($('#hfont').css('font-family')));
   $('#tbfont').val(String($('#tfont').css('font-family')));
 });

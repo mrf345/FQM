@@ -7,8 +7,6 @@
 
 {% block head %}
 {{ super() }}
-<link href="{{ url_for('static', filename='css/spectrum.css') }}" rel="stylesheet">
-<link href="{{ url_for('static', filename='css/jquery-ui.min.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/gfonts.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/webfont.select.css') }}" rel="stylesheet">
 <style>
@@ -16,34 +14,33 @@
   display: none;
 }
 </style>
-<script src="{{ url_for('static', filename='jquery-ui.min.js') }}"></script>
-<script src="{{ url_for('static', filename='spectrum.js') }}" type="text/javascript"></script>
+{{ datepicker.loader() }}
+{{ colorpicker.loader() }}
+{{ colorpicker.picker(id='.spa', allowEmpty='false') }}
+{{ colorpicker.picker(id='.sp', showAlpha='false', allowEmpty='false') }}
 <script src="{{ url_for('static', filename='webfont.js')}}"></script>
 <script src="{{ url_for('static', filename='webfont.select.js') }}"></script>
+<script src="{{ url_for('static', filename='extFunctions.js') }}"></script>
 <script type="text/javascript">
 $(document).ready( function() {
-    {% if slist and not form.errors %}something("{{ slist[0] }}","{{ slist[2] }}","{{ slist[1] }}");{% endif %}
-    {% if form.errors %} something('#dropdown-lvl1','#ts4','.da2'); {% endif %}
-     $(".spa").spectrum({
-         showAlpha: true,
-         preferredFormat: "rgb",
-         showInput: true,
-         showButtons: false,
-         allowEmpty: false,
-         move: function(color) {
-    	 this.val(color.toRgbString());
-         },
-     });
-     $(".sp").spectrum({
-         preferredFormat: "rgb",
-         showButtons: false,
-         showInput: true,
-         allowEmpty: false,
-         showButtons: false,
-         move: function(color) {
-    	 this.val(color.toRgbString());
-         },
-     });
+  // TODO: Replace this mess with uniqueness
+  {% if slist and not form.errors %}something("{{ slist[0] }}","{{ slist[2] }}","{{ slist[1] }}");{% endif %}
+  {% if form.errors %} something('#dropdown-lvl1','#ts4','.da2'); {% endif %}
+  // Change img src when select field changes from extFunction.js
+    watchIt(
+      '#touch',
+      '.tobc',
+      {% if ar %}
+      ["{{ url_for('static', filename='images/map_ar.jpg') }}",
+      "{{ url_for('static', filename='images/map3_ar.jpg') }}",
+      "{{ url_for('static', filename='images/map4_ar.jpg') }}"],
+      {% else %}
+      ["{{ url_for('static', filename='images/map.jpg') }}",
+      "{{ url_for('static', filename='images/map3.jpg') }}",
+      "{{ url_for('static', filename='images/map4.jpg') }}"]
+      {% endif %}
+    )
+  // TODO: Replace with flask fontpicker
      $('#hfont').wfselect({
      fonts: {
        google: {
@@ -86,57 +83,6 @@ $(document).ready( function() {
     $('#hbfont').val(String($('#hfont').css('font-family')));
     $('#tbfont').val(String($('#tfont').css('font-family')));
     $('#mbfont').val(String($('#mfont').css('font-family')));
-
-    /* Adding display listener to change template */
-    {% if ar %}
-    var tcs = $('#touch option:selected').val()
-    if (tcs=='0') {
-      $('.tobc').attr('src', "{{ url_for('static', filename='images/map_ar.jpg') }}");
-    }
-    if (tcs=='1') {
-      $('.tobc').attr('src', "{{ url_for('static', filename='images/map3_ar.jpg') }}");
-    }
-    if (tcs=='2') {
-      $('.tobc').attr('src', "{{ url_for('static', filename='images/map4_ar.jpg') }}");
-    }
-
-    $('#touch').change(function(){
-        var imn = $('#touch option:selected').val()
-        if (imn=='0') {
-          $('.tobc').attr('src', "{{ url_for('static', filename='images/map_ar.jpg') }}");
-        }
-        if (imn=='1') {
-          $('.tobc').attr('src', "{{ url_for('static', filename='images/map3_ar.jpg') }}");
-        }
-        if (imn=='2') {
-          $('.tobc').attr('src', "{{ url_for('static', filename='images/map4_ar.jpg') }}");
-        }
-    });
-    {% else %}
-    var tcs = $('#touch option:selected').val()
-    if (tcs=='0') {
-      $('.tobc').attr('src', "{{ url_for('static', filename='images/map.jpg') }}");
-    }
-    if (tcs=='1') {
-      $('.tobc').attr('src', "{{ url_for('static', filename='images/map3.jpg') }}");
-    }
-    if (tcs=='2') {
-      $('.tobc').attr('src', "{{ url_for('static', filename='images/map4.jpg') }}");
-    }
-
-    $('#touch').change(function(){
-        var imn = $('#touch option:selected').val()
-        if (imn=='0') {
-          $('.tobc').attr('src', "{{ url_for('static', filename='images/map.jpg') }}");
-        }
-        if (imn=='1') {
-          $('.tobc').attr('src', "{{ url_for('static', filename='images/map3.jpg') }}");
-        }
-        if (imn=='2') {
-          $('.tobc').attr('src', "{{ url_for('static', filename='images/map4.jpg') }}");
-        }
-    });
-    {% endif %}
 });
 </script>
 {% endblock %}

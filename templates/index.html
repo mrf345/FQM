@@ -89,6 +89,12 @@
  #ar2 {
    font-family: 'Amiri';
  }
+ .shb {
+   -moz-box-shadow: 0 0 10px 10px rgba(0,0,0,0.3);
+   -webkit-box-shadow: 0 0 10px 10px rgba(0,0,0,0.3);
+   box-shadow: 0 0 10px 10px rgba(0,0,0,0.3);
+ }
+  
 </style>
 <!--[if IE]>
 <style>
@@ -128,7 +134,7 @@ body {
 <div class="cover vertical-center">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12 text-center" style="background: rgba(0,0,0,0.85); border-radius: 30%;"><br>
+            <div class="col-xs-12 text-center shb" style="background: rgba(0,0,0,0.85); border-radius: 30%;"><br>
     <a href="https://fqms.github.io/" target="_blank">
       <img src="{{ url_for('static', filename='images/favicon.png') }}" class="image-responsive" id="blogo">
     </a>

@@ -61,8 +61,8 @@ def create_app():
     configure_uploads(app, files)
     login_manager.init_app(app)
     db.init_app(app)
-    datepicker(app, local=['static/jquery-ui.min.css', 'static/jquery-ui.min.js'])
-    colorpicker(app)
+    datepicker(app, local=['static/css/jquery-ui.min.css', 'static/jquery-ui.min.js'])
+    colorpicker(app, local=['static/css/spectrum.css', 'static/spectrum.js'])
     # Register blueprints
     app.register_blueprint(administrate)
     app.register_blueprint(core)

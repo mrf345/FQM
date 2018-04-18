@@ -65,6 +65,16 @@ footer > .row {
 #ar2 {
   font-family: Amiri;
 }
+
 a:hover {
   text-decoration: none;
+}
+.modal-body > center > img {
+  height: 60%;
+}
+
+.shb {
+  -moz-box-shadow: 0 0 10px 10px rgba(0,0,0,0.3);
+  -webkit-box-shadow: 0 0 10px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 0 10px 10px rgba(0,0,0,0.3);
 }
