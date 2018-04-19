@@ -7,17 +7,18 @@
 
 {% block head %}
 {{ super() }}
-{{ datepicker.loader() }}
-<link href="{{ url_for('static', filename='css/gfonts.css') }}" rel="stylesheet">
-<link href="{{ url_for('static', filename='css/webfont.select.css') }}" rel="stylesheet">
-<script src='{{ url_for('static', filename='webfont.js') }}'></script>
-<script src="{{ url_for('static', filename='webfont.select.js') }}"></script>
 <script src="{{ url_for('static', filename='extFunctions.js') }}"></script>
+{{ fontpicker.loader() }}
 {{ colorpicker.loader() }}
 {{ colorpicker.picker(id='.spa', allowEmpty='false') }}
 {{ colorpicker.picker(id='.sp', showAlpha='false', allowEmpty='false') }}
+{{ fontpicker.picker(
+    ids=['#hfont', '#tfont', '#sfont', '#h2font'],
+    families="['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade']",
+    urlCss=url_for('static', filename='css/gfonts.css'))
+}}
 <script type="text/javascript">
- $(document).ready( function(){
+ $(document).ready( function () {
      // Future TODO: replace this mess with uniqueness JS
      {% if slist and not form.errors %}something("{{ slist[0] }}","{{ slist[2] }}","{{ slist[1] }}");{% endif %}
      {% if form.errors %} something('#dropdown-lvl2','#ds7','.da3'); {% endif %}
@@ -39,64 +40,7 @@
             else $('.warn').addClass('hide')
         }
     )
-    // TODO: Replace with font-picker
-     $('#hfont').wfselect({
-     fonts: {
-       google: {
-         families: ['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade'],
-         url_generation: {base_url: "{{ url_for('static', filename='css/gfonts.css') }}", space_char: '+'}
-       }
-     },
-     load_all_fonts: true,
-     default_font_name: {type: 'google', name: String($('#hfont').val())}
-    }).on('wfselectchange', function (event, fontInfo){
-      var af = $('#hfont').css('font-family');
-      $('#hbfont').val(String(af));
-    });
-    $('#tfont').wfselect({
-    fonts: {
-      google: {
-        families: ['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade'],
-        url_generation: {base_url: "{{ url_for('static', filename='css/gfonts.css') }}", space_char: '+'}
-      }
-    },
-    load_all_fonts: true,
-     default_font_name: {type: 'google', name: String($('#tfont').val())}
-    }).on('wfselectchange', function (event, fontInfo){
-     var bf = $('#tfont').css('font-family');
-     $('#tbfont').val(String(bf));
-    });
-    $('#sfont').wfselect({
-    fonts: {
-      google: {
-        families: ['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade'],
-        url_generation: {base_url: "{{ url_for('static', filename='css/gfonts.css') }}", space_char: '+'}
-      }
-    },
-    load_all_fonts: true,
-     default_font_name: {type: 'google', name: String($('#sfont').val())}
-    }).on('wfselectchange', function (event, fontInfo){
-     var sf = $('#sfont').css('font-family');
-     $('#sbfont').val(String(sf));
-    });
-    $('#h2font').wfselect({
-    fonts: {
-      google: {
-        families: ['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade'],
-        url_generation: {base_url: "{{ url_for('static', filename='css/gfonts.css') }}", space_char: '+'}
-      }
-    },
-    load_all_fonts: true,
-     default_font_name: {type: 'google', name: String($('#h2font').val())}
-    }).on('wfselectchange', function (event, fontInfo){
-     var h2b = $('#h2font').css('font-family');
-     $('#h2bfont').val(String(h2b));
-    });
-    $('#hbfont').val(String($('#hfont').css('font-family')));
-    $('#tbfont').val(String($('#tfont').css('font-family')));
-    $('#sbfont').val(String($('#sfont').css('font-family')));
-    $('#h2bfont').val(String($('#h2font').css('font-family')));
-});
+})
 </script>
 {% endblock %}
 
@@ -249,8 +193,7 @@
 		{{ render_field(form.hsize, class="form-control") }}<br/>
 		{{ render_field(form.hcolor, class="sp") }}<br/>
 		{{ render_field(form.hbg, class="spa") }}<br/>
-		{{ render_field(form.hfont, class="form-control") }}<br/>
-		{{ render_field(form.hbfont) }}
+		{{ render_field(form.hfont, class="form-control") }}
 		<br><br><br><br>
 		<center>
         {% if ar %}
@@ -307,9 +250,8 @@
 		<br><hr><br>
 		{{ render_field(form.h2size, class="form-control") }}<br/>
 		{{ render_field(form.h2color, class="sp") }}<br/>
-		{{ render_field(form.h2font, class="form-control") }}<br/>
-		{{ render_field(form.h2bfont) }}
-		<br><br><br><br>
+		{{ render_field(form.h2font, class="form-control") }}
+		{{ brp * 4 }}
 		<center>
         {% if ar %}
         <button type="button" onclick="something('#dropdown-lvl2','#ds2','.da3');" class="btn btn-warning btn-md ar1">تراجع</button>
@@ -366,7 +308,6 @@
 		{{ render_field(form.tsize, class="form-control") }}<br/>
 		{{ render_field(form.tcolor, class="sp") }}<br/>
 		{{ render_field(form.tfont, class="form-control") }}<br/>
-		{{ render_field(form.tbfont) }}
     {{ brp * 4 }}
 		<center>
       {% if ar %}
@@ -418,8 +359,7 @@
 
 		{{ render_field(form.ssize, class="form-control") }}<br/>
 		{{ render_field(form.scolor, class="sp") }}<br/>
-		{{ render_field(form.sfont, class="form-control") }}<br/>
-		{{ render_field(form.sbfont) }}
+		{{ render_field(form.sfont, class="form-control") }}
     {{ brp * 4 }}
 		<center>
       {% if ar %}

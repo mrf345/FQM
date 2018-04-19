@@ -69,3 +69,4 @@ WTForms==2.1
 WTForms-Components==0.10.3
 Flask-Datepicker==0.6
 Flask-Colorpicker==0.3
+Flask-Fontpicker==0.1

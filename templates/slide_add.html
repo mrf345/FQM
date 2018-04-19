@@ -7,47 +7,15 @@
 
 {% block head %}
 {{ super() }}
-{{ datepicker.loader() }}
+{{ fontpicker.loader() }}
 {{ colorpicker.loader() }}
 {{ colorpicker.picker(id='.spa', allowEmpty='false') }}
 {{ colorpicker.picker(id='.sp', showAlpha='false', allowEmpty='false') }}
-<link href="{{ url_for('static', filename='css/gfonts.css') }}" rel="stylesheet">
-<link href="{{ url_for('static', filename='css/webfont.select.css') }}" rel="stylesheet">
-<script src="{{ url_for('static', filename='webfont.js') }}"></script>
-<script src="{{ url_for('static', filename='webfont.select.js') }}"></script>
-<script type="text/javascript">
-$(document).ready( function() {
-  // TODO: Replace this mess with flask_fontpicker
-  $('#hfont').wfselect({
-  fonts: {
-    google: {
-      families: ['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade'],
-      url_generation: {base_url: "{{ url_for('static', filename='css/gfonts.css') }}", space_char: '+'}
-    }
-  },
-  load_all_fonts: true,
-  default_font_name: {type: 'google', name: String($('#hfont').val())}
- }).on('wfselectchange', function (event, fontInfo){
-   var af = $('#hfont').css('font-family');
-   $('#hbfont').val(String(af));
- });
- $('#tfont').wfselect({
- fonts: {
-   google: {
-     families: ['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade'],
-     url_generation: {base_url: "{{ url_for('static', filename='css/gfonts.css') }}", space_char: '+'}
-   }
- },
- load_all_fonts: true,
-  default_font_name: {type: 'google', name: String($('#tfont').val())}
- }).on('wfselectchange', function (event, fontInfo){
-  var bf = $('#tfont').css('font-family');
-  $('#tbfont').val(String(bf));
- });
-  $('#hbfont').val(String($('#hfont').css('font-family')));
-  $('#tbfont').val(String($('#tfont').css('font-family')));
-});
-</script>
+{{ fontpicker.picker(
+	ids=['#hfont', '#tfont'],
+	families="['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade']",
+	urlCss=url_for('static', filename='css/gfonts.css'))
+}}
 {% endblock %}
 
 {%- from "sb_cust.html" import sb_cust with context %}
@@ -58,17 +26,16 @@ $(document).ready( function() {
 {% block page_content %}
 {% from "_helpers.html" import render_field %}
 <script type="text/javascript">
- function hide(a){
-     if (a == "#p1"){
-	 $(a).addClass('hide');
-	 $('#p2').removeClass('hide');
-     }
-     if (a == "#p2"){
-	 $(a).addClass('hide');
-	 $('#p1').removeClass('hide');
-     }
- }
-
+	// TODO: Replace this mess with uniqueness
+	function hide(a){
+		if (a == "#p1"){
+			$(a).addClass('hide');
+	 		$('#p2').removeClass('hide');
+    } else {
+	 		$(a).addClass('hide');
+	 		$('#p1').removeClass('hide');
+    }
+ 	}
 </script>
 <div class="col-md-12">
     <div class="panel panel-default" id="waiting2">
@@ -123,8 +90,7 @@ $(document).ready( function() {
 		{{ render_field(form.hsize, class="form-control") }}<br>
 		{{ render_field(form.hcolor, class="sp", value="rgb(255,255,0)") }}<br>
 		{{ render_field(form.hbg, class="spa", value="rgba(0,0,0,0.5)") }}<br>
-		{{ render_field(form.hfont, class="form-control") }}<br>
-		{{ render_field(form.hbfont) }}
+		{{ render_field(form.hfont, class="form-control") }}
     {{ brp * 5 }}
 		<center>
       {% if ar %}
@@ -167,7 +133,6 @@ $(document).ready( function() {
 		{{ render_field(form.tcolor, class="sp", value="rgb(255,255,0)") }}<br>
 		{{ render_field(form.tbg, class="spa", value="rgba(0,0,0,0.5)") }}<br>
   	{{ render_field(form.tfont, class="form-control") }}<br>
-		{{ render_field(form.tbfont) }}
 		<br><hr><br>
     {% if ar %}
     <p class="h4 text-center text-danger ar2">

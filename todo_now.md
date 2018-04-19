@@ -37,4 +37,4 @@
 - [x] fix upload file and folder size limit to unlimited (4/9th)
 - [x] Use flask_datepicker (4/18th)
 - [x] Use flask_colorpicker (4/19th)
-- [ ] Create and use flask_fontpicker
+- [x] Create and use flask_fontpicker (4/19th)

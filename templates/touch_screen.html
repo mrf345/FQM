@@ -7,20 +7,21 @@
 
 {% block head %}
 {{ super() }}
-<link href="{{ url_for('static', filename='css/gfonts.css') }}" rel="stylesheet">
-<link href="{{ url_for('static', filename='css/webfont.select.css') }}" rel="stylesheet">
 <style>
 #hbfont {
   display: none;
 }
 </style>
-{{ datepicker.loader() }}
+<script src="{{ url_for('static', filename='extFunctions.js') }}"></script>
+{{ fontpicker.loader() }}
 {{ colorpicker.loader() }}
 {{ colorpicker.picker(id='.spa', allowEmpty='false') }}
 {{ colorpicker.picker(id='.sp', showAlpha='false', allowEmpty='false') }}
-<script src="{{ url_for('static', filename='webfont.js')}}"></script>
-<script src="{{ url_for('static', filename='webfont.select.js') }}"></script>
-<script src="{{ url_for('static', filename='extFunctions.js') }}"></script>
+{{ fontpicker.picker(
+  ids=['#hfont', '#tfont', '#mfont'],
+  families="['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade']",
+  urlCss=url_for('static', filename='css/gfonts.css'))
+}}
 <script type="text/javascript">
 $(document).ready( function() {
   // TODO: Replace this mess with uniqueness
@@ -40,49 +41,6 @@ $(document).ready( function() {
       "{{ url_for('static', filename='images/map4.jpg') }}"]
       {% endif %}
     )
-  // TODO: Replace with flask fontpicker
-     $('#hfont').wfselect({
-     fonts: {
-       google: {
-         families: ['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade'],
-         url_generation: {base_url: "{{ url_for('static', filename='css/gfonts.css') }}", space_char: '+'}
-       }
-     },
-     load_all_fonts: true,
-     default_font_name: {type: 'google', name: String($('#hfont').val())}
-    }).on('wfselectchange', function (event, fontInfo){
-      var af = $('#hfont').css('font-family');
-      $('#hbfont').val(String(af));
-    });
-    $('#tfont').wfselect({
-    fonts: {
-      google: {
-        families: ['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade'],
-        url_generation: {base_url: "{{ url_for('static', filename='css/gfonts.css') }}", space_char: '+'}
-      }
-    },
-    load_all_fonts: true,
-     default_font_name: {type: 'google', name: String($('#tfont').val())}
-    }).on('wfselectchange', function (event, fontInfo){
-     var bf = $('#tfont').css('font-family');
-     $('#tbfont').val(String(bf));
-    });
-     $('#mfont').wfselect({
-     fonts: {
-       google: {
-         families: ['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade'],
-         url_generation: {base_url: "{{ url_for('static', filename='css/gfonts.css') }}", space_char: '+'}
-       }
-     },
-     load_all_fonts: true,
-      default_font_name: {type: 'google', name: String($('#mfont').val())}
-    }).on('wfselectchange', function (event, fontInfo){
-      var cf = $('#mfont').css('font-family');
-      $('#mbfont').val(String(cf));
-    });
-    $('#hbfont').val(String($('#hfont').css('font-family')));
-    $('#tbfont').val(String($('#tfont').css('font-family')));
-    $('#mbfont').val(String($('#mfont').css('font-family')));
 });
 </script>
 {% endblock %}
@@ -218,8 +176,7 @@ $(document).ready( function() {
 		{{ render_field(form.hsize, class="form-control") }}<br/>
 		{{ render_field(form.hcolor, class="sp") }}<br/>
 		{{ render_field(form.hbg, class="spa") }}<br/>
-  	{{ render_field(form.hfont, class="form-control") }}<br/>
-    {{ render_field(form.hbfont) }}
+  	{{ render_field(form.hfont, class="form-control") }}
 		{{ brp * 5 }}
 		<center>
       {% if ar %}
@@ -274,8 +231,7 @@ $(document).ready( function() {
 
 	    {{ render_field(form.tsize, class="form-control") }}<br/>
 	    {{ render_field(form.tcolor, class="form-control") }}<br/>
-      {{ render_field(form.tfont, class="form-control") }}<br/>
-      {{ render_field(form.tbfont) }}
+      {{ render_field(form.tfont, class="form-control") }}
 		  {{ brp * 5 }}
 	    <center>
     {% if ar %}
@@ -329,8 +285,7 @@ $(document).ready( function() {
 		{{ render_field(form.msize, class="form-control") }}<br/>
 		{{ render_field(form.mcolor, class="sp") }}<br/>
 		{{ render_field(form.mbg, class="spa") }}<br/>
-  	{{ render_field(form.mfont) }}<br/>
-  	{{ render_field(form.mbfont) }}
+  	{{ render_field(form.mfont) }}
 		<br><br><hr><br>
 		<center>
 		    <a data-toggle="modal" data-target="#mym">

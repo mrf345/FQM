@@ -34,7 +34,7 @@ from functools import partial
 from printer import listp
 from flask_datepicker import datepicker
 from flask_colorpicker import colorpicker
-
+from flask_fontpicker import fontpicker
 
 def create_app():
     app = Flask(__name__, static_folder=r_path('static'),
@@ -63,6 +63,7 @@ def create_app():
     db.init_app(app)
     datepicker(app, local=['static/css/jquery-ui.min.css', 'static/jquery-ui.min.js'])
     colorpicker(app, local=['static/css/spectrum.css', 'static/spectrum.js'])
+    fontpicker(app)
     # Register blueprints
     app.register_blueprint(administrate)
     app.register_blueprint(core)

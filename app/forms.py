@@ -68,19 +68,16 @@ class Touch_c(FlaskForm):
                         coerce=str)
     hcolor = StringField("Select title font color :")
     hfont = StringField("choose a font for title :")
-    hbfont = HiddenField("HB")
     hbg = StringField("Select heading background color :")
     tsize = SelectField("choose task font size :", choices=font_sizes,
                         coerce=str)
     tcolor = SelectField("choose tasks color :",
                          choices=btn_colors, coerce=str)
     tfont = StringField("choose tasks font :")
-    tbfont = HiddenField("TB")
     msize = SelectField("choose message font size :", choices=font_sizes,
                         coerce=str)
     mcolor = StringField("Select message font color :")
     mfont = StringField("choose message font : ")
-    mbfont = HiddenField("MB")
     mduration = SelectField("choose message duration of appearing : ",
                             choices=durations, coerce=str)
     mbg = StringField("Select message background color :")
@@ -177,24 +174,20 @@ class Display_c(FlaskForm):
                         coerce=str)
     hcolor = StringField("choose title font color :")
     hfont = StringField("choose title font :")
-    hbfont = HiddenField("HB")
     hbg = StringField("choose title background color :")
     tsize = SelectField("choose main heading office font size :",
                         choices=font_sizes,
                         coerce=str)
     tcolor = StringField("choose main heading office color :")
     tfont = StringField("choose main heading office font :")
-    tbfont = HiddenField("TB")
     h2color = StringField("choose main heading ticket color :")
     h2size = SelectField("choose main heading ticket font size :",
                          choices=font_sizes, coerce=str)
     h2font = StringField("choose main heading ticket font :")
-    h2bfont = HiddenField("H2B")
     ssize = SelectField("choose secondery heading font size :",
                         choices=font_sizes, coerce=str)
     scolor = StringField("choose secondery heading color :")
     sfont = StringField("choose secondery heading font :")
-    sbfont = HiddenField("SB")
     mduration = SelectField("choose message duration of appearing : ",
                             choices=durations, coerce=str)
     rrate = SelectField("choose page refreash rate : ", choices=durations,
@@ -244,24 +237,20 @@ class Display_c_ar(FlaskForm):
                         coerce=str)
     hcolor = StringField(u"إختار لون العنوان :")
     hfont = StringField(u"إختار خط العنوان :")
-    hbfont = HiddenField("HB")
     hbg = StringField(u"إختار خلفية العنوان :")
     tsize = SelectField(u"إختار حجم المكتب الحالي :",
                         choices=font_sizar,
                         coerce=str)
     tcolor = StringField(u"إختار لون المكتب الحالي :")
     tfont = StringField(u"إختار خط المكتب الحالي :")
-    tbfont = HiddenField("TB")
     h2color = StringField(u"إختار لون التذكرة الحالية :")
     h2size = SelectField(u"إختار حجم التذكرة الحالية :",
                          choices=font_sizar, coerce=str)
     h2font = StringField(u"إختار خط التذكرة الحالية :")
-    h2bfont = HiddenField("H2B")
     ssize = SelectField(u"إختار حجم لائحة الإنتضار :",
                         choices=font_sizar, coerce=str)
     scolor = StringField(u"إختار لون لائحة الإنتضار :")
-    sfont = StringField(u"إختار خط لائحة الإنتضار :")
-    sbfont = HiddenField("SB")
+    sfont = StringField(u"اختر خط لائحة الإنتضار :")
     mduration = SelectField(u"إختار مدة عرض التنبيه :",
                             choices=duratioar, coerce=str)
     rrate = SelectField(u"إختار مدة تجديد بيانات الشاشة :",
@@ -308,14 +297,12 @@ class Slide_a(FlaskForm):
                         coerce=str)
     hcolor = StringField("Select a title font color :")
     hfont = StringField("Select a title font :")
-    hbfont = HiddenField("HB")
     hbg = StringField("Select title background color :")
     subti = StringField("Enter a subtitle :")
     tsize = SelectField("Select subtitle font size :", choices=font_sizes,
                         coerce=str)
     tcolor = StringField("Select sub title color :")
     tfont = StringField("Select subtitle font :")
-    tbfont = HiddenField("TB")
     tbg = StringField("Select subtitle background color :")
     background = SelectField("Select background : ", coerce=int)
     bgcolor = StringField("Select background color : ")

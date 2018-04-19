@@ -215,12 +215,12 @@ def slide_a():
         ss.title = form.title.data
         ss.hsize = form.hsize.data
         ss.hcolor = form.hcolor.data
-        ss.hfont = form.hbfont.data
+        ss.hfont = form.hfont.data
         ss.hbg = form.hbg.data
         ss.subti = form.subti.data
         ss.tsize = form.tsize.data
         ss.tcolor = form.tcolor.data
-        ss.tfont = form.tbfont.data
+        ss.tfont = form.tfont.data
         ss.tbg = form.tbg.data
         ss.bname = bb
         ss.ikey = form.background.data
@@ -513,10 +513,10 @@ def displayscreen_c(stab):
         touch_s.ssize = form.ssize.data
         touch_s.scolor = form.scolor.data
         touch_s.mduration = form.mduration.data
-        touch_s.hfont = form.hbfont.data
-        touch_s.tfont = form.tbfont.data
-        touch_s.h2font = form.h2bfont.data
-        touch_s.sfont = form.sbfont.data
+        touch_s.hfont = form.hfont.data
+        touch_s.tfont = form.tfont.data
+        touch_s.h2font = form.h2font.data
+        touch_s.sfont = form.sfont.data
         touch_s.mduration = form.mduration.data
         touch_s.rrate = form.rrate.data
         touch_s.announce = form.announce.data
@@ -618,9 +618,9 @@ def touchscreen_c(stab):
         touch_s.msize = form.msize.data
         touch_s.mcolor = form.mcolor.data
         touch_s.mduration = form.mduration.data
-        touch_s.hfont = form.hbfont.data
-        touch_s.tfont = form.tbfont.data
-        touch_s.mfont = form.mbfont.data
+        touch_s.hfont = form.hfont.data
+        touch_s.tfont = form.tfont.data
+        touch_s.mfont = form.mfont.data
         touch_s.message = form.message.data
         bg = form.background.data
         if bg == 00:
