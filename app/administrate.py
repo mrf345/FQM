@@ -59,28 +59,6 @@ def admin_u():
                            form=form)
 
 
-@administrate.route('/settings', methods=['GET', 'POST'])
-@login_required
-def settings():
-    if current_user.role_id != 1:
-        flash(get_lang(0), 'danger')
-        return redirect(url_for('core.root'))
-    form = forms.Settings_f()
-    if session.get('lang') == 'AR':
-        form = forms.Settings_f_ar()
-    ddb = data.Settings.query.first()
-    if form.validate_on_submit():
-        ddb.ar_d = int(form.ar_d.data) * 1000
-        db.session.commit()
-        flash(get_lang(3), 'info')
-        return redirect(url_for('administrate.settings'))
-    form.ar_d.data = ddb.ar_d / 1000
-    return render_template('settings.html',
-                           snb='#snb3',
-                           ptitle="Autoreload druation",
-                           form=form)
-
-
 @administrate.route('/csvd/<t_name>', methods=['GET', 'POST'])
 @login_required
 def csvd(t_name):

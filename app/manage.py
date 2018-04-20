@@ -60,8 +60,7 @@ def all_offices():
                            offices=data.Office.query,
                            tasks=data.Task.query,
                            snb="#snb1",
-                           snb2="#da2",
-                           ar_d=data.Settings.query.first().ar_d)
+                           snb2="#da2")
 
 
 @manage_app.route('/offices/<int:o_id>', methods=['GET', 'POST'])
@@ -132,8 +131,7 @@ def offices(o_id):
                            snb="#snb1",
                            slist=["#dropdown-lvl" + str(o_id),
                                   ".da" + str(o_id + 3),
-                                  "#t1" + str(o_id)],
-                           ar_d=data.Settings.query.first().ar_d)
+                                  "#t1" + str(o_id)])
 
 
 @manage_app.route('/office_a', methods=['GET', 'POST'])
@@ -369,8 +367,7 @@ def task(o_id):
                            snb="#snb1",
                            slist=["#dropdown-lvl" + str(task.office_id),
                                   ".da" + str(task.office_id + 3),
-                                  "#tt" + str(task.office_id) + str(o_id)],
-                           ar_d=data.Settings.query.first().ar_d)
+                                  "#tt" + str(task.office_id) + str(o_id)])
 
 
 @manage_app.route('/task_d/<int:t_id>')

@@ -378,13 +378,3 @@ class Vid(db.Model):
         self.controls = controls
         self.mute = mute
         self.vkey = vkey
-
-
-class Settings(db.Model):
-    __tablename__ = 'settings'
-    id = db.Column(db.Integer, primary_key=True)
-    ar_d = db.Column(db.Integer)
-
-    def __init__(self, ar_d=8000):
-        self.id = 0
-        self.ar_d = ar_d

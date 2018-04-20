@@ -63,7 +63,13 @@ def create_app():
     db.init_app(app)
     datepicker(app, local=['static/css/jquery-ui.min.css', 'static/jquery-ui.min.js'])
     colorpicker(app, local=['static/css/spectrum.css', 'static/spectrum.js'])
-    fontpicker(app)
+    fontpicker(app, local=[
+        'static/jquery-ui.min.js',
+        'static/css/jquery-ui.min.css',
+        'static/webfont.js',
+        'static/webfont.select.js',
+        'static/css/webfont.select.css'
+    ])
     # Register blueprints
     app.register_blueprint(administrate)
     app.register_blueprint(core)

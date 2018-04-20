@@ -6,6 +6,7 @@
 from app import run_app
 from sys import exit, exc_info
 
+# run_app()
 try:
     run_app()
 except Exception:

@@ -183,15 +183,6 @@
                     إستخراج البيانات
                   </a>
                 </li>
-                <center>
-                <li class="dropdown-header">( إعدادات )</li>
-                </center>
-                <li id="ar2">
-                  <a href="{{ url_for('administrate.settings') }}">
-                    <span class="fa fa-wrench"></span>
-                    مدة إعادة تجديد الصفحة
-                  </a>
-                </li>
                 {% else %}
                 <center>
     			      <li class="dropdown-header">( Users )</li>
@@ -215,15 +206,6 @@
                   <a href="{{ url_for('administrate.csvd', t_name=0) }}">
                     <span class="fa fa-database"></span>
                     Export CSV
-                  </a>
-                </li>
-                <center>
-                <li class="dropdown-header">( Settings )</li>
-                </center>
-                <li>
-                  <a href="{{ url_for('administrate.settings') }}">
-                    <span class="fa fa-wrench"></span>
-                    Autoreload duration
                   </a>
                 </li>
                 {% endif %}

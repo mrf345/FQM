@@ -18,8 +18,7 @@ def mse():
             data.Touch_store,
             data.Slides_c,
             data.Vid, data.Waiting_c,
-            data.Printer,
-            data.Settings]
+            data.Printer]
     # -- make sure objects are created,
     # And if not create an auto filled one
     for t in lodb:

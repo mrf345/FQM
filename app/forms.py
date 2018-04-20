@@ -725,25 +725,6 @@ class U_admin_ar(FlaskForm):
     submit = SubmitField(u'تحديث حساب المدير')
 
 
-# Settings form
-
-class Settings_f(FlaskForm):
-    ar_d = IntegerField('Enter a duration for auto reload in seconds : ',
-                        validators=[
-                            InputRequired("Must be in-between 1 to 100"),
-                            NumberRange(1, 100)])
-    submit = SubmitField('Set settings')
-
-
-class Settings_f_ar(FlaskForm):
-    ar_d = IntegerField(
-        u'أدخل الوقت المحدد بالثواني : ',
-        validators=[
-            InputRequired(u"الحد الأدنى 1 و الحد الأقصى 100"),
-            NumberRange(1, 100)])
-    submit = SubmitField(u'تعديل')
-
-
 # Video form
 
 class Video(FlaskForm):

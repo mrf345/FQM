@@ -25,7 +25,7 @@
 - [x] use disciple for the forms in AR and EN (4/10th)
 - [x] change bootstrap default theme (4/10th)
 - [x] implement auto_reloader (4/17th)
-> - [ ] remove default reload duration from template, db
+> - [x] remove default reload duration from template, db (4/20th)
 - [ ] tickets based on tasks instead of offices
 - [ ] General task that exists in multiple offices
 - [ ] allow for multiple operators for an office
