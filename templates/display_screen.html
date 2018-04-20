@@ -193,8 +193,10 @@
 		{{ render_field(form.hsize, class="form-control") }}<br/>
 		{{ render_field(form.hcolor, class="sp") }}<br/>
 		{{ render_field(form.hbg, class="spa") }}<br/>
-		{{ render_field(form.hfont, class="form-control") }}
-		<br><br><br><br>
+        {{ render_field(form.hfont, class="form-control") }} {{ brp * 3 }}
+        {{ render_field(form.effect, class="form-control btn-primary") }} <br/>
+        {{ render_field(form.repeats, class="form-control btn-primary") }}
+		{{ brp * 4 }}
 		<center>
         {% if ar %}
         <button type="button" onclick="something('#dropdown-lvl2','#ds1','.da3');" class="btn btn-warning btn-md ar1">تراجع</button>

@@ -15,10 +15,10 @@
 		duration: ("{{ ts.rrate }}" / 1000),
 		effect_duration: "{{ ts.mdruation }}",
 		data_attr: 'stream',
-		effect_repeats: 4,
+		effect_repeats: parseInt("{{ ts.repeats }}"),
 		use_effect: 'true',
 		use_effect_do: 'true',
-		effect: 'fade',
+		effect: "{{ ts.effect }}",
 		ensure_value: 'w9',
 		todo: function (data) {
 			if (aplayer) aplayer.exit(false)

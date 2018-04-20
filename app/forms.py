@@ -192,6 +192,39 @@ class Display_c(FlaskForm):
                             choices=durations, coerce=str)
     rrate = SelectField("choose page refreash rate : ", choices=durations,
                         coerce=str)
+    effect = SelectField(
+        "choose visiual motion effect for notification :",
+        choices=[
+            ("fade", "fade"),
+            ("blind", "blind"),
+            ("bounce", "bounce"),
+            ("clip", "clip"),
+            ("drop", "drop"),
+            ("explode", "explode"),
+            ("fold", "fold"),
+            ("highlight", "highlight"),
+            ("puff", "puff"),
+            ("pulsate", "pulsate"),
+            ("scale", "scale"),
+            ("shake", "shake"),
+            ("size", "size"),
+            ("slide", "slide")
+        ], coerce=str
+    )
+    repeats = SelectField(
+        "choose motion effect's number of repeats :",
+        choices=[
+            ("1", "1 time"),
+            ("2", "2 times"),
+            ("3", "3 times"),
+            ("4", "4 times"),
+            ("5", "5 times"),
+            ("7", "7 times"),
+            ("8", "8 times"),
+            ("9", "9 times"),
+            ("10", "10 times")
+        ], coerce=str
+    )
     announce = SelectField("Verbal announcement : ",
                            choices=[("en-us",
                                     "English"),
@@ -256,6 +289,39 @@ class Display_c_ar(FlaskForm):
     rrate = SelectField(u"إختار مدة تجديد بيانات الشاشة :",
                         choices=duratioar,
                         coerce=str)
+    effect = SelectField(
+        u"إختار نوع التأثير البصري :",
+        choices=[
+            ("fade", u"تلاشي"),
+            ("blind", u"خلط"),
+            ("bounce", u"إرتجاج"),
+            ("clip", u"قطع"),
+            ("drop", u"رمي"),
+            ("explode", u"إنفجار"),
+            ("fold", u"طي"),
+            ("highlight", u"إشارة"),
+            ("puff", u"نفخ"),
+            ("pulsate", u"إتساع مرتج"),
+            ("scale", u"إتساع"),
+            ("shake", u"رج"),
+            ("size", u"تحجيم"),
+            ("slide", u"إنزلاق")
+        ], coerce=str
+    )
+    repeats = SelectField(
+        u"إختر عدد مرات تكرار التأثير البصري :",
+        choices=[
+            ("1", u"1 مرة"),
+            ("2", u"2 مرات"),
+            ("3", u"3 مرات"),
+            ("4", u"4 مرات"),
+            ("5", u"5 مرات"),
+            ("7", u"7 مرات"),
+            ("8", u"8 مرات"),
+            ("9", u"9 مرات"),
+            ("10", u"10 مرات")
+        ], coerce=str
+    )
     announce = SelectField(u"تنبيه المناداة الصوتي :",
                            choices=[("en-us",
                                     u"إنجليزي"),

@@ -245,6 +245,8 @@ class Display_store(db.Model):
     rrate = db.Column(db.String(100))
     announce = db.Column(db.String(100))
     anr = db.Column(db.Integer)
+    effect = db.Column(db.String(100))
+    repeats = db.Column(db.String(100))
     afile = db.Column(db.String(100))
     bgcolor = db.Column(db.String(100))
     tmp = db.Column(db.Integer)
@@ -264,7 +266,7 @@ class Display_store(db.Model):
                  hbg="rgba(0, 0, 0, 0.5)", tsize="600%",
                  tcolor="rgb(184, 193, 255)", ssize="500%",
                  scolor="rgb(224, 224, 224)", audio="bell_sound.wav",
-                 hfont="El Messiri", tfont="Mada",
+                 hfont="El Messiri", tfont="Mada", repeats="3", effect="fade",
                  sfont="Amiri", mduration="3000", rrate="2000",
                  announce="en-us", ikey=4, vkey=6, akey=5,
                  anr=2, bgcolor="49.jpg", afile=" ", tmp=0):
@@ -294,6 +296,8 @@ class Display_store(db.Model):
         self.afile = afile
         self.tmp = tmp
         self.anr = anr
+        self.effect = effect
+        self.repeats = repeats
         self.ikey = ikey
         self.vkey = vkey
         self.akey = akey

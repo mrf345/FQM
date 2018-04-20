@@ -14,7 +14,7 @@
 > [x] JsonStream : (4/14th)
 > - [x] add effects and do as effectdo for function execution and jquey effects (4/15th)
 > - [x] add ensure update with identical values (4/15th)
-> - [ ] add jsonstream effects, and repeats to display screen customization
+> - [x] add jsonstream effects, and repeats to display screen customization (4/20th)
 > - [x] add refresh rates, and duration to jsonstream (4/15th)
 
 > [x] AudioSequence : (4/16th)

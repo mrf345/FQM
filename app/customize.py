@@ -521,6 +521,8 @@ def displayscreen_c(stab):
         touch_s.rrate = form.rrate.data
         touch_s.announce = form.announce.data
         touch_s.anr = form.anr.data
+        touch_s.effect = form.effect.data
+        touch_s.repeats = form.repeats.data
         bg = form.background.data
         if bg == 00:
             touch_s.bgcolor = form.bgcolor.data
@@ -570,6 +572,8 @@ def displayscreen_c(stab):
     form.rrate.data = touch_s.rrate
     form.announce.data = touch_s.announce
     form.anr.data = touch_s.anr
+    form.effect.data = touch_s.effect
+    form.repeats.data = touch_s.repeats
     if touch_s.bgcolor[:3] == "rgb":
         form.bgcolor.data = touch_s.bgcolor
         form.background.data = 00
