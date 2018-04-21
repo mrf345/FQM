@@ -6,7 +6,7 @@ Author : Mohamed Feddad
 Date : 2018/1/5
 Source : https://github.com/mrf345/disciple
 License: MPL 2.0
-Dependancies: Bootstrap ver. * > 3, jQuery
+Dependencies: Bootstrap ver. * > 3, jQuery
 
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -16,13 +16,18 @@ Dependancies: Bootstrap ver. * > 3, jQuery
 
 const disciple = function (options = {}) {
     const checkType = function checkType (type, args) {
-       // checking the type of each varible in the passed array
+       // checking the type of each variable in the passed array
       for (let a in args) {
         if (typeof args[a] !== type) return false
       }
       return true
     }
-  
+		const escapeReady = function (todo) {
+			// to add function to document ready event with escape
+			if (document.readyState === 'complete') todo()
+			else $(document).ready(todo)
+		}
+
     options = {
       identifier: options.identifier || '.disciple', // ID to identifiy the form to watch
       // confirm message displayed when form is dirty
@@ -61,12 +66,12 @@ const disciple = function (options = {}) {
   
     const defaults = {
       elements: ['input', 'select', 'textarea', 'fieldset', 'datalist'], // form elements that gets checked
-      separator: '~%^disciple^%~', // sepcial string to separate form values when stored
+      separator: '~%^disciple^%~', // special string to separate form values when stored
       storeForm: [], // to store the form upon loading
       leaveForm: [], // to store the form after unload event
-      cleared: false, // indecator that messenger is done
-      cLoop: false, // interval to delay execution untill messenger is done
-      submitted: false, // to indeicate if form submitted
+      cleared: false, // indicator that messenger is done
+      cLoop: false, // interval to delay execution until messenger is done
+      submitted: false, // to indelicate if form submitted
       transparent: { // transparent over-lay css properties
         'background': options.msgbox_background,
         'opacity': '1',
@@ -114,43 +119,43 @@ const disciple = function (options = {}) {
       ]) {
         if (!(ds[d] instanceof Array)) throw new Error('disciple(options) _classes takes an Array of strings')
       }
-      // initial setup
-      $(document).ready(function () {
-        if (localStorage.stopped !== 'yes') {
-          if (localStorage.hasOwnProperty(window.location.href) && localStorage.disciple === 'yes') {
-            if (window.location.href !== localStorage.togo) messenger(true)
-            else defaults.cleared = true
-            defaults.cLoop = setInterval(function () {
-              // in case of messanger and reincarnate to restore we will wait for messenger to be done first
-              if (defaults.cleared) {
-                reincarnate()
-                defaults.cleared = false
-                witness() // to start storing form values
-                clearInterval(defaults.cLoop)
-              }
-            }, 200)
-          } else {
-            witness()
-            if (localStorage.hasOwnProperty(window.location.href)) reincarnate() // if page is set for later
-            else if (localStorage.disciple === 'yes') messenger() // if form is dirty changed
-          }
-        }
-      })
+			// initial setup
+			escapeReady(function () {
+				if (localStorage.stopped !== 'yes') {
+						if (localStorage.hasOwnProperty(window.location.href) && localStorage.disciple === 'yes') {
+								if (window.location.href !== localStorage.togo) messenger(true)
+								else defaults.cleared = true
+								defaults.cLoop = setInterval(function () {
+										// in case of messenger and reincarnate to restore we will wait for messenger to be done first
+										if (defaults.cleared) {
+												reincarnate()
+												defaults.cleared = false
+												witness() // to start storing form values
+												clearInterval(defaults.cLoop)
+										}
+								}, 200)
+						} else {
+								witness()
+								if (localStorage.hasOwnProperty(window.location.href)) reincarnate() // if page is set for later
+								else if (localStorage.disciple === 'yes') messenger() // if form is dirty changed
+						}
+				}
+			})
     }
   
     const witness = function witness () {
-      // watch over and store identifed form, if exists
+			// watch over and store identified form, if exists
       if ($(options.identifier).length >= 1) {
-        $(document).ready(function () {
-          for (let e in defaults.elements) {
-            $(options.identifier).find(defaults.elements[e]).each(function () {
-              defaults.storeForm.push($(this).val())
-            })
-          }
-          $(options.identifier).submit(function () {
-            defaults.submitted = true
-          })
-        })
+				escapeReady(function () {
+					for (let e in defaults.elements) {
+						$(options.identifier).find(defaults.elements[e]).each(function () {
+							defaults.storeForm.push($(this).val())
+						})
+					}
+					$(options.identifier).submit(function () {
+						defaults.submitted = true
+					})
+				})
         $(window).on('unload', function () {
           if (!defaults.submitted) {
             for (let e in defaults.elements) {
@@ -240,7 +245,7 @@ const disciple = function (options = {}) {
   
     const postpone = function postpone (clearing = false) {
       // to store for later. Just by removing the confirm message
-      // and upon loading the stored later page automaticly will be restored
+      // and upon loading the stored later page automatically will be restored
       localStorage.disciple = 'no'
       localStorage.togo = false
       $('#messenger').css({'opacity': '0'})

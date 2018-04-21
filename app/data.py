@@ -245,6 +245,7 @@ class Display_store(db.Model):
     rrate = db.Column(db.String(100))
     announce = db.Column(db.String(100))
     anr = db.Column(db.Integer)
+    anrt = db.Column(db.String(100))
     effect = db.Column(db.String(100))
     repeats = db.Column(db.String(100))
     afile = db.Column(db.String(100))
@@ -269,7 +270,7 @@ class Display_store(db.Model):
                  hfont="El Messiri", tfont="Mada", repeats="3", effect="fade",
                  sfont="Amiri", mduration="3000", rrate="2000",
                  announce="en-us", ikey=4, vkey=6, akey=5,
-                 anr=2, bgcolor="49.jpg", afile=" ", tmp=0):
+                 anr=2, anrt="each", bgcolor="49.jpg", afile=" ", tmp=0):
         self.id = 0
         self.tfont = tfont
         self.hfont = hfont
@@ -296,6 +297,7 @@ class Display_store(db.Model):
         self.afile = afile
         self.tmp = tmp
         self.anr = anr
+        self.anrt = anrt
         self.effect = effect
         self.repeats = repeats
         self.ikey = ikey

@@ -194,8 +194,9 @@
 		{{ render_field(form.hcolor, class="sp") }}<br/>
 		{{ render_field(form.hbg, class="spa") }}<br/>
         {{ render_field(form.hfont, class="form-control") }} {{ brp * 3 }}
-        {{ render_field(form.effect, class="form-control btn-primary") }} <br/>
-        {{ render_field(form.repeats, class="form-control btn-primary") }}
+        {{ render_field(form.effect, class="form-control text-center btn-primary") }} <br />
+        {{ render_field(form.repeats, class="btn text-center form-control btn-primary") }} {{ brp * 2 }}
+        {{ render_field(form.mduration, class="btn form-control btn-primary") }}
 		{{ brp * 4 }}
 		<center>
         {% if ar %}
@@ -415,10 +416,10 @@
 		</center>
 		<hr>
 		<center>
-		    {{ render_field(form.naudio, class="btn btn-md btn-primary form-control") }}<br>
-		    {{ render_field(form.announce, class="btn btn-md btn-primary form-control") }}<br>
-        {{ render_field(form.anr, class='btn btn-md btn-primary form-control') }}<br />
-    		{{ render_field(form.mduration, class="btn btn-md form-control btn-primary") }}
+		    {{ render_field(form.naudio, class="btn btn-md btn-primary form-control") }}<br/>
+		    {{ render_field(form.announce, class="btn btn-md btn-primary form-control") }}<br/>
+            {{ render_field(form.anr, class='btn btn-md btn-primary form-control') }} <br/>
+            {{ render_field(form.anrt, class="btn btn-md btn-primary form-control")}}
         {{ brp * 2 }}
 		</center>
 		{{ brp * 4 }}

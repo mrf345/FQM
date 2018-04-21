@@ -78,7 +78,7 @@ class Touch_c(FlaskForm):
                         coerce=str)
     mcolor = StringField("Select message font color :")
     mfont = StringField("choose message font : ")
-    mduration = SelectField("choose message duration of appearing : ",
+    mduration = SelectField("choose motion effect duration of appearing :",
                             choices=durations, coerce=str)
     mbg = StringField("Select message background color :")
     message = TextAreaField("Insert message to be displayed," +
@@ -188,7 +188,7 @@ class Display_c(FlaskForm):
                         choices=font_sizes, coerce=str)
     scolor = StringField("choose secondery heading color :")
     sfont = StringField("choose secondery heading font :")
-    mduration = SelectField("choose message duration of appearing : ",
+    mduration = SelectField("choose motion effect duration of appearing : ",
                             choices=durations, coerce=str)
     rrate = SelectField("choose page refreash rate : ", choices=durations,
                         coerce=str)
@@ -239,6 +239,13 @@ class Display_c(FlaskForm):
                                (4, 'Four time'),
                                (5, 'Five times')],
                       coerce=int)
+    anrt = SelectField(
+        'Type of announcement and notification repeating :',
+        choices=[
+            ('each', 'Each: to repeat each announcement and notification'),
+            ('whole', 'Whole: to repeat all the announcements and notification as whole')
+        ], coerce=str
+    )
     naudio = SelectField("Select audio notification : ", coerce=int)
     bgcolor = StringField("Select a background color :")
     submit = SubmitField("Customize")
@@ -284,7 +291,7 @@ class Display_c_ar(FlaskForm):
                         choices=font_sizar, coerce=str)
     scolor = StringField(u"إختار لون لائحة الإنتضار :")
     sfont = StringField(u"اختر خط لائحة الإنتضار :")
-    mduration = SelectField(u"إختار مدة عرض التنبيه :",
+    mduration = SelectField(u"إختار مدة عرض التأثير البصري :",
                             choices=duratioar, coerce=str)
     rrate = SelectField(u"إختار مدة تجديد بيانات الشاشة :",
                         choices=duratioar,
@@ -336,6 +343,13 @@ class Display_c_ar(FlaskForm):
                                (4, u'أربع مرات'),
                                (5, u'خمس مرات')],
                       coerce=int)
+    anrt = SelectField(
+        u'إختر نوع تكرار المناداة و الإشعار الصوتي :',
+        choices=[
+            ('each', u'مفرد : لتكرار كل إشعار بمفرده'),
+            ('whole', u'جمع: لتكرار جميع الإشعارات جملتاً')
+        ], coerce=str
+    )
     naudio = SelectField(u"إختار ملف التنبيه الصوتي :", coerce=int)
     bgcolor = StringField(u"إختار لون الخلفية :")
     submit = SubmitField(u"تخصيص")

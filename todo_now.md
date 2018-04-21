@@ -2,7 +2,7 @@
 
 ## To Fix :
 
-- [x] fail safe printers driviers (1/10th)
+- [x] fail safe printers drivers (1/10th)
 - [x] hide ticket 100 (Template) (4/8th)
 - [x] empty last ticket in display screen JS (4/9th)
 - [x] fix no tickets to display, since ticket 100 hidden (4/16th)
@@ -21,7 +21,7 @@
 > - [x] has issues, whenever warped under another func. SIDE TO FIX 1 (4/16th)
 > - [x] solve declaring and killing (4/16th)
 > - [x] some javascript getting wrong input in offices : $('#dropdown-lvl&lt;app.data.Office object at0x7fc141447dd0&gt;').collapse('show'); JS (4/16th)
-> - [ ] add repeat_each and repeat_whole options to display customization
+> - [x] add repeat_each and repeat_whole options to display customization (4/21th)
 - [x] use disciple for the forms in AR and EN (4/10th)
 - [x] change bootstrap default theme (4/10th)
 - [x] implement auto_reloader (4/17th)

@@ -12,24 +12,23 @@
 	var aplayer = undefined
 	var stream = JsonStream({
 		url: window.location.origin + '/feed',
-		duration: ("{{ ts.rrate }}" / 1000),
-		effect_duration: "{{ ts.mdruation }}",
+		duration: parseInt("{{ ts.rrate }}") / 1000,
+		effect_duration: parseInt("{{ ts.mduration }}"),
 		data_attr: 'stream',
 		effect_repeats: parseInt("{{ ts.repeats }}"),
 		use_effect: 'true',
 		use_effect_do: 'true',
 		effect: "{{ ts.effect }}",
 		ensure_value: 'w9',
-		todo: function (data) {
+		todo: function (data, toPlay=[]) {
 			if (aplayer) aplayer.exit(false)
+			{% if ts.audio != 'false' %}toPlay.push("{{'/static/multimedia/'+ts.audio}}"){% endif %}
+			{% if ts.announce == 'en-us' or ts.announce == 'both' %}toPlay.push('/static/tts/' + data.anf){% endif %}
+			{% if ts.announce == 'ar' or ts.announce == 'both' %}toPlay.push('/static/tts/ar_' + data.anf){% endif %}
 			aplayer = AudioSequence({
-				files: [
-					{% if ts.audio != "false" %} "{{ url_for('static', filename='multimedia/' + ts.audio) }}", {% endif %}
-					{% if ts.announce == "en-us" or ts.announce == "both" %} "{{ url_for('static', filename='tts/') }}" + data.anf, {% endif %}
-					{% if ts.announce == "ar" or ts.announce == "both" %} "{{ url_for('static', filename='tts/') }}" + "ar_" + data.anf {% endif %}
-				],
-				repeat_whole: 'true',
-				repeats: {{ ts.anr }}
+				files: toPlay.map(function (i) { if (i !== "") return i}),
+				repeats: parseInt("{{ ts.anr }}"),
+				{% if ts.anrt == 'whole' %}repeat_whole{% else %}repeat_each{% endif %}: 'true'
 			})
 		}
 	})

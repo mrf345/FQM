@@ -173,7 +173,6 @@ def slideshow():
     pagination = data.Slides.query.paginate(page, per_page=10,
                                             error_out=False)
     return render_template("slideshow.html",
-                           brp=Markup("<br>"),
                            len=len,
                            snb="#snb2", sli=data.Slides_c.query.first(),
                            mmm=data.Slides.query,
@@ -229,7 +228,6 @@ def slide_a():
         flash(get_lang(32), "info")
         return redirect(url_for("cust_app.slideshow"))
     return render_template("slide_add.html",
-                           brp=Markup("<br>"),
                            ptitle="Add Slide ",
                            form=form, snb="#snb2",
                            slist=["#dropdown-lvl3", ".da4", "#ss3"],
@@ -428,7 +426,6 @@ def multimedia(aa):
             flash(get_lang(4), "danger")
             return redirect(url_for("cust_app.multimedia", aa=1))
     return render_template("multimedia.html",
-                           brp=Markup("<br>"),
                            ptitle="Multimedia",
                            snb="#snb2",
                            form=form,
@@ -521,6 +518,7 @@ def displayscreen_c(stab):
         touch_s.rrate = form.rrate.data
         touch_s.announce = form.announce.data
         touch_s.anr = form.anr.data
+        touch_s.anrt = form.anrt.data
         touch_s.effect = form.effect.data
         touch_s.repeats = form.repeats.data
         bg = form.background.data
@@ -572,6 +570,7 @@ def displayscreen_c(stab):
     form.rrate.data = touch_s.rrate
     form.announce.data = touch_s.announce
     form.anr.data = touch_s.anr
+    form.anrt.data = touch_s.anrt
     form.effect.data = touch_s.effect
     form.repeats.data = touch_s.repeats
     if touch_s.bgcolor[:3] == "rgb":
@@ -584,7 +583,6 @@ def displayscreen_c(stab):
     else:
         form.naudio.data = touch_s.akey
     return render_template("display_screen.html",
-                           brp=Markup("<br>"),
                            form=form,
                            ptitle="Display Screen customize",
                            snb="#snb2",
@@ -676,7 +674,6 @@ def touchscreen_c(stab):
     else:
         form.naudio.data = touch_s.akey
     return render_template("touch_screen.html",
-                           brp=Markup("<br>"),
                            ptitle="Touch Screen customize",
                            snb="#snb2",
                            form=form,

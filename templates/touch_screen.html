@@ -7,11 +7,6 @@
 
 {% block head %}
 {{ super() }}
-<style>
-#hbfont {
-  display: none;
-}
-</style>
 <script src="{{ url_for('static', filename='extFunctions.js') }}"></script>
 {{ fontpicker.loader() }}
 {{ colorpicker.loader() }}
@@ -23,7 +18,7 @@
   urlCss=url_for('static', filename='css/gfonts.css'))
 }}
 <script type="text/javascript">
-$(document).ready( function() {
+$(document).ready( function () {
   // TODO: Replace this mess with uniqueness
   {% if slist and not form.errors %}something("{{ slist[0] }}","{{ slist[2] }}","{{ slist[1] }}");{% endif %}
   {% if form.errors %} something('#dropdown-lvl1','#ts4','.da2'); {% endif %}
@@ -34,14 +29,14 @@ $(document).ready( function() {
       {% if ar %}
       ["{{ url_for('static', filename='images/map_ar.jpg') }}",
       "{{ url_for('static', filename='images/map3_ar.jpg') }}",
-      "{{ url_for('static', filename='images/map4_ar.jpg') }}"],
+      "{{ url_for('static', filename='images/map4_ar.jpg') }}"]
       {% else %}
       ["{{ url_for('static', filename='images/map.jpg') }}",
       "{{ url_for('static', filename='images/map3.jpg') }}",
       "{{ url_for('static', filename='images/map4.jpg') }}"]
       {% endif %}
     )
-});
+})
 </script>
 {% endblock %}
 
@@ -54,40 +49,42 @@ $(document).ready( function() {
 {% block page_content %}
 {% from "_helpers.html" import render_field %}
 <div class="col-md-12">
-    <div class="panel panel-default" id="waiting">
-	<div class="panel-body">
+  <div class="panel panel-default" id="waiting">
+	  <div class="panel-body">
 	    <div class="well">
-		{{ brp*8 }}
-		<center><i class="fa fa-5x fa-refresh fa-spin text-danger"></i></center>
-		<br/>
-    {% if ar %}
-		<h3 class="text-danger text-center ar1"> الرجاء الإنتظار لدقيقة , يتم اللآن التحميل</h3>
-    {% else %}
-		<h3 class="text-danger text-center">Wait a minute please, loading ..</h3>
-    {% endif %}
-		{{ brp*8 }}
+		    {{ brp*8 }}
+		    <center><i class="fa fa-5x fa-refresh fa-spin text-danger"></i></center>
+		    <br/>
+        {% if ar %}
+		    <h3 class="text-danger text-center ar1"> الرجاء الإنتظار لدقيقة , يتم اللآن التحميل</h3>
+        {% else %}
+		    <h3 class="text-danger text-center">Wait a minute please, loading ..</h3>
+        {% endif %}
+		    {{ brp*8 }}
 	    </div>
-	</div>
-    </div>
-    <form id="fm" method="POST" enctype="multipart/form-data">
+	  </div>
+  </div>
+  <form method="POST" enctype="multipart/form-data" id="fm" class=".disciple">
+    <div class="panel panel-default hide" id="p0">
       <!-- Changed first side-bar element id to 0 to fix some strange bug after adding font picker ..
         you'll never know where they come from .. lol -->
-        <div class="panel panel-default hide" id="p0">
-            <div class="panel-heading text-center">
-          <h3 class="text-muted">
-            {% if ar %}
-            <strong class="ar1"><span class="fa fa-desktop"></span>  شاشة اللمس -
-              <span class="fa fa-windows"></span>  القالب</strong></h3>
-            {% else %}
-            <strong><span class="fa fa-desktop"></span>  Touch Screen - <span class="fa fa-windows">
-            </span>  Template</strong></h3>
-            {% endif %}
-            </div>
-            <br>
-            <div class="panel-body">
-              {{ brp * 3 }}
-          <div class="col-xs-12">
-              <center>
+      <div class="panel-heading text-center">
+        {% if ar %}
+        <h3 class="text-muted">
+          <strong class="ar1"><span class="fa fa-desktop"></span>  شاشة اللمس -
+          <span class="fa fa-windows"></span>  القالب</strong>
+        </h3>
+        {% else %}
+        <h3 class="text-muted">
+          <strong><span class="fa fa-desktop"></span>  Touch Screen - <span class="fa fa-windows">
+          </span>  Template</strong>
+        </h3>
+        {% endif %}
+      </div>
+      <div class="panel-body">
+        {{ brp * 3 }}
+        <div class="col-xs-12">
+          <center>
             <a data-toggle="modal" data-target="#mym">
                 <img class="img-responsive img-thumbnail tobc" id="map" width="40%"
                 {% if ar %}
@@ -106,35 +103,34 @@ $(document).ready( function() {
   		        | The picture of the template is automaticly changed to the one selected |
   		      </p>
             {% endif %}
-              </center>
-          </div>
-            </div>
-            <br><hr><br>
-          {{ form.csrf_token }}
-          {{ render_field(form.touch, class="form-control") }}
-          {{ brp * 2 }}
-          {% if ar %}
-          <h4 class="text-center text-danger ar2">
-            | تنبيه : شاشة اللمس صممت مع خاصية قابلية العرض في شاشات بمتعددة الأحجام |
-          </h4>
-          {% else %}
-          <h4 class="text-center text-danger">
-            | Reminder: Touch screen meant to be displayed on different sized monitors so it supports it |
-          </h4>
-          {% endif %}
-          {{ brp * 5 }}
-          <center>
-            {% if ar %}
-            <button type="button" href="#" class="btn btn-warning btn-md disabled ar1">تراجع</button>
-            <button type="button" onclick="something('#dropdown-lvl1','#ts2','.da2');" class="btn btn-primary btn-md ar1">تقدم</button>
-            {% else %}
-              <button type="button" href="#" class="btn btn-warning btn-md disabled">Previous</button>
-              <button type="button" onclick="something('#dropdown-lvl1','#ts2','.da2');" class="btn btn-primary btn-md">Next</button>
-            {% endif %}
           </center>
-          {{ brp * 3 }}
-            </div>
         </div>
+      </div>
+        <br><hr><br>
+        {{ form.csrf_token }}
+        {{ render_field(form.touch, class="form-control") }}
+        {{ brp * 2 }}
+        {% if ar %}
+        <h4 class="text-center text-danger ar2">
+          | تنبيه : شاشة اللمس صممت مع خاصية قابلية العرض في شاشات بمتعددة الأحجام |
+        </h4>
+        {% else %}
+        <h4 class="text-center text-danger">
+          | Reminder: Touch screen meant to be displayed on different sized monitors so it supports it |
+        </h4>
+        {% endif %}
+        {{ brp * 5 }}
+        <center>
+          {% if ar %}
+          <button type="button" href="#" class="btn btn-warning btn-md disabled ar1">تراجع</button>
+          <button type="button" onclick="something('#dropdown-lvl1','#ts2','.da2');" class="btn btn-primary btn-md ar1">تقدم</button>
+          {% else %}
+          <button type="button" href="#" class="btn btn-warning btn-md disabled">Previous</button>
+          <button type="button" onclick="something('#dropdown-lvl1','#ts2','.da2');" class="btn btn-primary btn-md">Next</button>
+          {% endif %}
+        </center>
+        {{ brp * 3 }}
+    </div>
 	<div class="panel panel-default hide" id="p2">
 	    <div class="panel-heading text-center">
 		<h3 class="text-muted">
