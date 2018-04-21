@@ -305,9 +305,11 @@ def pull(o_id):
         path = ex_functions.r_path('static\\tts\\')
     else:
         path = ex_functions.r_path('static/tts/')
-    if data.Office.query.filter_by(id=o_id).first() is None:
+    # FIX: pulling tickets by task_id instead of office_id
+    # to allow for pulling form specific office
+    if data.Task.query.filter_by(id=o_id).first() is None:
         flash(get_lang(4), "danger")
-        return redirect(url_for("manage_app.offices", o_id=o_id))
+        return redirect(url_for("manage_app.task", o_id=o_id))
     oid = data.Office.query.filter_by(operator_id=current_user.id).first()
     if current_user.role_id == 3 and oid is None:
         flash(get_lang(17),
@@ -317,6 +319,7 @@ def pull(o_id):
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
+    # Loading up the 10 waiting list
     if data.Serial.query.filter_by(p=False).count() >= 0:
         for a in range(data.Waiting.query.count(), 11):
             for b in data.Serial.query.filter_by(p=False).order_by(
@@ -330,13 +333,16 @@ def pull(o_id):
         db.session.commit()
     else:
         flash(get_lang(25), "danger")
-        return redirect(url_for("manage_app.offices", o_id=o_id))
-    cs = data.Waiting.query.filter_by(office_id=o_id).first()
+        return redirect(url_for("manage_app.task", o_id=o_id))
+    cs = data.Waiting.query.filter_by(task_id=o_id).first()
     if cs is None:
         flash(get_lang(25), "danger")
-        return redirect(url_for("manage_app.offices", o_id=o_id))
-    ocs = data.Office.query.filter_by(id=o_id).first()
-    toc = data.Task.query.filter_by(id=cs.task_id).first().name
+        return redirect(url_for("manage_app.task", o_id=o_id))
+    # Fix: pulling tickets by task_id instead of office_id
+    # have to switch positions
+    theTask = data.Task.query.filter_by(id=o_id).first()
+    ocs = data.Office.query.filter_by(id=theTask.office_id).first()
+    toc = theTask.name
     # adding to current waiting
     cl = data.Waiting_c.query.first()
     cl.ticket = ocs.prefix + str(cs.number)
@@ -425,30 +431,30 @@ def pull(o_id):
         pool.close()
         pool.join()
     # last check for available tickets and final commit
-    # attempt to fix overlpoading issue " Waiting istance is already deleated"
-    # --- Reassiging cs seems to fix it
-    cs = data.Waiting.query.filter_by(office_id=o_id).first()
+    # attempt to fix overleaping issue " Waiting instance is already deleted"
+    # --- Reassigning cs seems to fix it
+    # Fix: pulling tickets by task_id instead of office_id
+    # modifying removing from  waiting with task_id 
+    cs = data.Waiting.query.filter_by(task_id=o_id).first()
     if cs is None:
         flash(get_lang(25), "danger")
-        return redirect(url_for("manage_app.offices", o_id=o_id))
-    sr = data.Serial.query.filter_by(office_id=cs.office_id,
-                                     task_id=cs.task_id,
-                                     number=cs.number).first()
+        return redirect(url_for("manage_app.task", o_id=o_id))
+    sr = data.Serial.query.filter_by(office_id=cs.office_id, task_id=cs.task_id, number=cs.number).first()
     if sr is None:
         flash(get_lang(25), "danger")
-        return redirect(url_for("manage_app.offices", o_id=o_id))
+        return redirect(url_for("manage_app.task", o_id=o_id))
     sr.p = True
     sr.pdt = datetime.utcnow()
     db.session.add(sr)
     db.session.delete(cs)
     db.session.commit()
     flash(get_lang(26), "info")
-    return redirect(url_for("manage_app.offices", o_id=o_id))
+    return redirect(url_for("manage_app.task", o_id=o_id))
 
 
 @core.route('/feed', methods=['GET'])
 def feed():
-    # Checking if autorefreash is due and do it
+    # Checking if auto refresh is due and do it
     autoref = None
     if session.get('autoref') == 1:
         autoref = 1

@@ -1,13 +1,21 @@
 # To Fix:
+
 - [ ] CSS:
 > - [ ] Move, improve general css to mstyle.css
 > - [ ] Move all template inline css to style tag based on classes
+
 - [ ] JsonStream:
 > - [ ] Fix mdruation and effect_duration 
+
 - [ ] Template:
 > - [ ] look for template repetitiveness and replace it with macros
 > - [ ] replace manage panel headers and footers with macros
 > - [ ] replace background css in base and base_s with macro
+
+- [ ] Improving multi-lang config file and methods:
+> - [ ] move all static AR to the config file
+> - [ ] Simplify config file, so others can contribute translations
+> - [ ] integrate methods with template, gtts and printers
 
 # To Add:
 
@@ -21,4 +29,4 @@
 
 - [ ] Create and use python module based on pos module for cross-platform drawn printing
 
-- [ ] Smart tickets
+- [ ] Smart tickets. Doubtful though !

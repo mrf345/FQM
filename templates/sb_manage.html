@@ -73,21 +73,8 @@
             {% endif %}
 					    </a>
 					</li>
-					<li  id="t2{{ office.id }}" {% if ar %} class="ar1" {% endif %}>
-					    <a href="{{ url_for('core.pull', o_id=office.id) }}">
-						<span class="fa fa-minus"></span>
-            {% if ar %}
-            سحب تذكرة
-            {% else %}
-						Pull a ticket
-            {% endif %}
-						{% if serial.filter_by(p=False, office_id=office.id).count() != 0 %}
-						<span class="badge pull-right">
-						    {{ serial.filter_by(p=False, office_id=office.id).count() }}
-						</span>
-						{% endif %}
-					    </a>
-					</li>
+			<!-- Fix: pulling tickets by task_id instead of office_id -->
+			<!-- Will include pull ticket under task instead of all tickets, fast and simple -->
 					<li  id="t3{{ office.id }}" {% if ar %} class="ar1" {% endif %}>
 					    <a href="{{ url_for('manage_app.task_a', o_id=office.id) }}">
 						<span class="fa fa-plus"></span>
@@ -104,6 +91,22 @@
 					    <a href="{{ url_for('manage_app.task', o_id=task.id) }}">
 						{{ task.id }}.  {{ task.name }}
 					    </a>
+					</li>
+					<!-- Pull is shifted to here -->
+					<li  id="t2{{ office.id }}" {% if ar %} class="ar1" {% endif %}>
+						<a href="{{ url_for('core.pull', o_id=task.id) }}">
+								<span class="fa fa-minus"></span>
+								{% if ar %}
+									سحب تذكرة
+								{% else %}
+									Pull a ticket
+								{% endif %}
+								{% if serial.filter_by(p=False, task_id=task.id).count() != 0 %}
+								<span class="badge pull-right">
+									{{ serial.filter_by(p=False, task_id=task.id).count() }}
+								</span>
+								{% endif %}
+						</a>
 					</li>
 					{% endif %}
 					{% endfor %}

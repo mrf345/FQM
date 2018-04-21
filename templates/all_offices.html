@@ -130,7 +130,7 @@
 		</div>
 	      {% endif %}
 	    {% endfor %}
-	    {% if len(officesp) < tasks.count() %}
+	    {% if len(officesp) < tasks.count() or tasks.count() == 0 %}
 	    <div class="well">
 		{{ brp*10 }}
     {% if ar %}

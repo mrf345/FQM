@@ -260,7 +260,7 @@ def search():
                   "danger")
             return redirect(url_for("manage_app.search"))
         serials = data.Serial.query.filter(and_(*terms))
-        if serials.first() is None:
+        if serials.first() is None or serials.order_by(data.Serial.id.desc()).first() == 100:
             flash(get_lang(49), "info")
             return redirect(url_for("manage_app.search"))
         page = request.args.get('page', 1, type=int)
