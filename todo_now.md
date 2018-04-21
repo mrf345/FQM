@@ -23,14 +23,14 @@
 > - [x] solve declaring and killing (4/16th)
 > - [x] some javascript getting wrong input in offices : $('#dropdown-lvl&lt;app.data.Office object at0x7fc141447dd0&gt;').collapse('show'); JS (4/16th)
 > - [x] add repeat_each and repeat_whole options to display customization (4/21st)
-- [x] use disciple for the forms in AR and EN (4/10th)0
+- [x] use disciple for the forms in AR and EN (4/10th)
 - [x] change bootstrap default theme (4/10th)
 - [x] implement auto_reloader (4/17th)
 > - [x] remove default reload duration from template, db (4/20th)
-- [ ] tickets based on tasks instead of offices
+- [x] tickets based on tasks instead of offices (4/21st)
 - [ ] General task that exists in multiple offices
 - [ ] allow for multiple operators for an office
-- [ ] add who pulled ticket
+- [x] add who pulled ticket
 - [x] add pull from specific task, for priority (4/21st)
 - [ ] multi-language config files
 - [ ] add french, italian spanish to gtts

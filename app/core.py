@@ -445,6 +445,8 @@ def pull(o_id):
         return redirect(url_for("manage_app.task", o_id=o_id))
     sr.p = True
     sr.pdt = datetime.utcnow()
+    # Fix: adding pulled by feature to tickets
+    sr.pulledBy = current_user.id
     db.session.add(sr)
     db.session.delete(cs)
     db.session.commit()

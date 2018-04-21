@@ -59,6 +59,7 @@ def all_offices():
                            serial=data.Serial.query,
                            offices=data.Office.query,
                            tasks=data.Task.query,
+                           users=data.User.query,
                            snb="#snb1",
                            snb2="#da2")
 
@@ -128,6 +129,7 @@ def offices(o_id):
                            serial=data.Serial.query,
                            offices=data.Office.query,
                            tasks=data.Task.query,
+                           users=data.User.query,
                            snb="#snb1",
                            slist=["#dropdown-lvl" + str(o_id),
                                   ".da" + str(o_id + 3),
@@ -280,6 +282,7 @@ def search():
                                ptitle="Tickets search",
                                offices=data.Office.query,
                                tasks=data.Task.query,
+                               users=data.User.query,
                                pagination=pagination,
                                serialsp=pagination.items,
                                len=len,
@@ -363,6 +366,7 @@ def task(o_id):
                            ooid=oid,
                            offices=data.Office.query,
                            tasks=data.Task.query,
+                           users=data.User.query,
                            task=task,
                            snb="#snb1",
                            slist=["#dropdown-lvl" + str(task.office_id),

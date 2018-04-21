@@ -44,14 +44,16 @@ class Serial(db.Model):
     name = db.Column(db.String(300), nullable=True)
     n = db.Column(db.Boolean)
     p = db.Column(db.Boolean)
-    # stands for proccessed , which be modified after been prcossed
+    # stands for proccessed , which be modified after been processed
     pdt = db.Column(db.DateTime())
+    # Fix: adding pulled by feature to tickets
+    pulledBy = db.Column(db.Integer)
     office_id = db.Column(db.Integer, db.ForeignKey('offices.id'))
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
 
     def __init__(self, number=100,
                  office_id=1,
-                 task_id=1,
+                 task_id=1, pulledBy = 01,
                  name=None, n=False, p=False):
         self.number = number
         self.office_id = office_id
@@ -60,7 +62,7 @@ class Serial(db.Model):
         self.n = n
         # fixing mass use tickets multi operators conflict
         self.p = p
-
+        self.pulledBy = pulledBy
 
 class Waiting(db.Model):
     __tablename__ = "waitings"

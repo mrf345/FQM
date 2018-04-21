@@ -135,7 +135,7 @@
 		<u>{{ moment(o.timestamp).format('L') }}</u>
 	      </div>
 	      <div class="col-xs-12 col-sm-3">
-		{% if o.p %}<u>{{ moment(o.pdt).fromNow() }}</u>
+		{% if o.p %} <u>{{ users.filter_by(id=o.pulledBy).first().name }} / {{ moment(o.pdt).fromNow() }}</u>
 		{% else %}
 		{% if ar %} <u class="ar1"> في الإنتظار</u> {% else %}<u>Waiting ..</u> {% endif %}
 		{% endif %}
