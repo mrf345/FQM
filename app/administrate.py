@@ -121,8 +121,43 @@ def users():
                            offices=data.Office.query,
                            pagination=pagination,
                            usersp=pagination.items,
-                           brp=Markup("<br>"),
+                           operators=data.Operators.query,
                            users=data.User.query)
+
+
+@administrate.route('/operators/<int:t_id>', methods=['GET', 'POST'])
+@login_required
+def operators(t_id):
+    office = data.Office.query.filter_by(id=t_id).first()
+    if office is None:
+        flash(get_lang(4),
+              "danger")
+        return redirect(url_for('root'))
+    if current_user.role_id == 3 and data.Operators.query.filter_by(id=current_user.id).first() is None :
+        flash(get_lang(0),
+              "danger")
+        return redirect(url_for('root'))
+    page = request.args.get('page', 1, type=int)
+    if page > int(data.Operators.query.count() / 10) + 1:
+        flash(get_lang(4),
+              'danger')
+        return redirect(url_for('manage.office', o_id=t_id))
+    pagination = data.Operators.query.filter_by(office_id=t_id).paginate(page, per_page=10,
+                                          error_out=False)
+    return render_template('operators.html',
+                           ptitle=str(office.name) + ' operators',
+                           len=len,
+                           offices=data.Office.query,
+                           pagination=pagination,
+                           usersp=pagination.items,
+                           serial=data.Serial.query,
+                           users=data.User.query,
+                           tasks=data.Task.query,
+                           operators=data.Operators.query,
+                           snb="#snb1",
+                           slist=["#dropdown-lvl" + str(t_id),
+                           ".da" + str(t_id + 3),
+                           "#to" + str(t_id)])
 
 
 @administrate.route('/user_a', methods=['GET', 'POST'])
@@ -144,6 +179,14 @@ def user_a():
                                  form.password.data,
                                  form.role.data))
         db.session.commit()
+        # Fix: multiple operators for office
+        # adding user to Operators list
+        if form.role.data == 3:
+            db.session.add(data.Operators(
+                data.User.query.filter_by(name=form.name.data).first().id,
+                form.offices.data
+            ))
+            db.session.commit()
         flash(get_lang(6),
               "info")
         return redirect(url_for('administrate.users'))
@@ -185,6 +228,10 @@ def user_u(u_id):
         return redirect(url_for('administrate.users'))
     form.name.data = u.name
     form.role.data = u.role_id
+    # Fix: multiple operators for office
+    # fetch office id if operator
+    if u.role_id == 3:
+        form.offices.data = data.Operators.query.filter_by(id=u.id).first().office_id
     return render_template('user_update.html',
                            form=form, snb='#snb3',
                            ptitle='Update user : ' + u.name,
@@ -207,10 +254,20 @@ def user_d(u_id):
         flash(get_lang(8),
               "danger")
         return redirect(url_for("administrate.users"))
-    if data.Office.query.filter_by(operator_id=u.id).first() is not None:
-        flash(get_lang(9),
-              "danger")
-        return redirect(url_for("administrate.users"))
+    # if data.Office.query.filter_by(operator_id=u.id).first() is not None:
+    #     flash(get_lang(9),
+    #           "danger")
+    #       return redirect(url_for("administrate.users"))
+    # Fix: multiple operators for office
+    # checking if user is assigned operator
+    # !! Removed checking on second though it seems useless since assinging became obligatory
+    # if data.Operators.query.filter_by(id=u.id).first() is not None:
+    #     flash(get_lang(9),
+    #           "danger")
+    #     return redirect(url_for("administrate.users"))
+    # delete from operators if user is operator
+    if u.role_id == 3:
+        db.session.delete(data.Operators.query.filter_by(id=u.id).first())
     db.session.delete(u)
     db.session.commit()
     flash(get_lang(11),
@@ -226,8 +283,13 @@ def user_da():
               "danger")
         return redirect(url_for('core.root'))
     for u in data.User.query:
-        ofc = data.Office.query.filter_by(operator_id=u.id).first()
-        if u.id != 1 and ofc is None:
+        # Fix: multiple operators for office
+        # ofc = data.Office.query.filter_by(operator_id=u.id).first()
+        if u.role_id == 3:
+            opt = data.Operators.query.filter_by(id=u.id).first()
+            if opt:
+                db.session.delete(opt)
+        if u.id != 1:
             db.session.delete(u)
     db.session.commit()
     flash(get_lang(12),

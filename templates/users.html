@@ -88,9 +88,9 @@
 		    {% else %}
 		    <u>
 			Operator
-			{% if offices.filter_by(operator_id=u.id).first() is not none %}
+			{% if operators.filter_by(id=u.id).first() is not none %}
 			 of : <em>
-			{{ offices.filter_by(operator_id=u.id).first().prefix }}{{ offices.filter_by(operator_id=u.id).first().name }} </em>
+			{{ offices.filter_by(id=operators.filter_by(id=u.id).first().office_id).first().prefix }}{{ offices.filter_by(id=operators.filter_by(id=u.id).first().office_id).first().name }} </em>
 			{% endif %}
 
 		    </u>

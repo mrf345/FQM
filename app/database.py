@@ -11,7 +11,7 @@ from flask_uploads import UploadSet, ALL
     currently needed for sql alchemy, login manager and flask-uploads"""
 
 # current version
-version = "0.2.6 beta"
+version = "0.3 beta"
 
 
 db = SQLAlchemy()

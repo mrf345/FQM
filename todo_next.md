@@ -17,6 +17,11 @@
 > - [ ] Simplify config file, so others can contribute translations
 > - [ ] integrate methods with template, gtts and printers
 
+- [ ] Improve User management:
+> - [ ] add configurable profile for users
+> - [ ] add activities log to profile
+> - [ ] improve office operators interface
+
 # To Add:
 
 - [ ] implement uniqueness instead of dumb something()

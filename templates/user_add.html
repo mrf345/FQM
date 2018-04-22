@@ -7,6 +7,16 @@
 
 {% block page_content %}
 {% from "_helpers.html" import render_field %}
+<script type='text/javascript'>
+$(document).ready(function () {
+	// to hide and display offices list when operator is selected
+	if ($('#role').val() == 3) $('.offices').removeClass('hide')
+	$('#role').change(function () {
+		if ($('#role').val() == 3) $('.offices').removeClass('hide')
+		else $('.offices').addClass('hide')
+	})
+})
+</script>
 <div class="col-md-12">
     <form method="POST" enctype="multipart/form-data" id="fm">
 	<div class="panel panel-default">
@@ -54,8 +64,11 @@
 		  </p>
       {% endif %}
 		  <br>
-		  {{ render_field(form.role, class="form-control") }}<br>
-		  <br><br>
+		  {{ render_field(form.role, class="form-control") }}<br/>
+		  <div class='offices hide'>
+			{{ render_field(form.offices, class="form-control") }} <br/>
+		  </div>
+		  {{ brp * 3 }}
 		  <center>
         {% if ar %}
 		    {{ form.submit(class_="btn btn-md btn-danger ar1") }}

@@ -6,11 +6,11 @@
 from app import run_app
 from sys import exit, exc_info
 
-# run_app()
-try:
-    run_app()
-except Exception:
-    print(exc_info()[1])
-    print('Error runtime: please, help us improve by reporting to us on :')
-    print("\n\thttps://fqms.github.io/")
-    exit(0)
+run_app()
+# try:
+#     run_app()
+# except Exception:
+#     print(exc_info()[1])
+#     print('Error runtime: please, help us improve by reporting to us on :')
+#     print("\n\thttps://fqms.github.io/")
+#     exit(0)

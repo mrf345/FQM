@@ -1,0 +1,121 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+{% extends "base.html" %}
+{% block title %} FQM - {{ ptitle  }} {% endblock %}
+{% import "_macros.html" as macros %}
+
+{% block head %}
+{{ super() }}
+{{ pagedown.include_pagedown() }}
+{% endblock %}
+
+{%- from "sb_manage.html" import sb_manage with context %}
+{% block sidebar %}
+{{ sb_manage() }}
+{% endblock %}
+
+{% block page_content %}
+{% from "_helpers.html" import render_field %}
+<div class="col-xs-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+	    <h3 class="text text-center">
+        {% if ar %}
+        <strong class="ar1">قائمة المستخدمين</strong>
+        {% else %}
+        <strong>Operators list</strong>
+        {% endif %}
+      	</h3>
+		</div>
+        <div class="panel-body">
+	    <div class="row text-center h3 text-muted hidden-xs">
+        {% if ar %}
+        <div class="col-sm-4 ar2">
+    		    (الإسم)
+    		</div>
+    		<div class="col-sm-5 ar2">
+    		    (آخر دخول)
+    		</div>
+    		<div class="col-sm-3 ar2">
+    		    (تذاكر مسحوبة)
+    		</div>
+        {% else %}
+		<div class="col-sm-4">
+		    (ID.Name)
+		</div>
+		<div class="col-sm-5">
+		    (Last Seen)
+		</div>
+		<div class="col-sm-3">
+		    (Tickets pulled)
+		</div>
+    {% endif %}
+	    </div>
+		{% if len(usersp) > 0 %}
+	    {% for u in usersp %}
+	    <div class="row well h4 text-center text-primary">
+		<div class="col-xs-12 col-sm-4">
+        {% if ar %}
+		    <strong class="ar1">{{ u.id }}. {{ users.filter_by(id=u.id).first().name }}</strong>
+        {% else %}
+		    <strong>{{ u.id }}. {{ users.filter_by(id=u.id).first().name }}</strong>
+        {% endif %}
+		</div>
+		<div class="col-xs-12 col-sm-5">
+		    <u> {{ moment(users.filter_by(id=u.id).first().last_seen).fromNow() }} </u>
+		</div>
+		<div class="col-xs-12 col-sm-3">
+		    {{ serial.filter_by(pulledBy=u.id).count() }}
+		</div>
+	    </div>
+	    {% endfor %}
+	    {% endif %}
+	{% if len(usersp) == 0 %}
+	<div class="well">
+		{{ brp * 8 }}
+	<center>
+      {% if ar %}
+      <h3 class="text-danger ar1">لا يوجد أي مستخدميين ليتم إستعراضهم</h3>
+      {% else %}
+      <h3 class="text-danger">No operators been assigned yet ...</h3>
+      {% endif %}
+    </center>
+		{{ brp*8 }}
+	    </div>
+      {% elif len(usersp) == 1 %}
+      {{ brp*25 }}
+      {% elif len(usersp) <= 2 %}
+      {{ brp*20 }}
+	    {% elif len(usersp) <= 5 %}
+	    {{ brp*15 }}
+	    {% endif %}
+	    <br>
+	</div>
+        <div class="panel-footer text-center">
+	    <div class="row text-center">
+        {% if ar %}
+        <div class="col-xs-12 col-sm-12 h4 ar1">
+    		    إجمالي المستخدميين :
+            <br /><br />
+    		    <span class="label label-info">
+    			<i> {{ len(usersp) }} </i>
+    		    </span>
+    		</div>
+        {% else %}
+		<div class="col-xs-12 col-sm-12 h4">
+		    Users total :
+		    <span class="label label-info">
+			<i> {{ len(usersp) }} </i>
+		    </span>
+		</div>
+  	  {% endif %}
+	    </div>
+	    <div class="row text-center">
+		{{ macros.pagination_widget(pagination, '.users') }}
+	    </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

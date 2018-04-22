@@ -37,23 +37,17 @@
 	    </div>
 	    <div class="row text-center text-muted h4">
     {% if ar %}
-    <div class="col-sm-10 col-sm-offset-1 col-md-3 well ar1">
+    <div class="col-sm-10 col-sm-offset-2 col-md-4 well ar1">
 		    رمز حرفي : <u>{{ offices.filter_by(id=task.office_id).first().prefix }}</u>
 		</div>
 		<div class="col-sm-10 col-sm-offset-1 col-md-offset-0 col-md-4 well ar1">
-		    مستخدم خاص : <u>{% if user == "Not assigned" %} لم يحدد بعد {% else %} {{ user }} {% endif %}</u>
-		</div>
-		<div class="col-sm-10 col-sm-offset-1 col-md-offset-0 col-md-3 well ar1">
 		    تم الإضافة : <u> {{ moment(task.timestamp).format('L') }}</u>
 		</div>
     {% else %}
-		<div class="col-sm-10 col-sm-offset-1 col-md-3 well">
+		<div class="col-sm-10 col-sm-offset-2 col-md-4 well">
 		    Prefix : <u>{{ offices.filter_by(id=task.office_id).first().prefix }}</u>
 		</div>
 		<div class="col-sm-10 col-sm-offset-1 col-md-offset-0 col-md-4 well">
-		    Opretator : <u>{{ user }}</u>
-		</div>
-		<div class="col-sm-10 col-sm-offset-1 col-md-offset-0 col-md-3 well">
 		    Created : <u> {{ moment(task.timestamp).format('L') }}</u>
 		</div>
     {% endif %}

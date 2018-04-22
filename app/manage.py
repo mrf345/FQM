@@ -18,7 +18,7 @@ manage_app = Blueprint('manage_app', __name__)
 @manage_app.route('/manage')
 @login_required
 def manage():
-    ofc = data.Office.query.filter_by(operator_id=current_user.id).first()
+    ofc = data.Operators.query.filter_by(id=current_user.id).first()
     if current_user.role_id == 3 and ofc is None:
         flash(get_lang(17),
               "danger")
@@ -33,6 +33,7 @@ def manage():
                            ooid=ofc,
                            serial=data.Serial.query,
                            offices=data.Office.query,
+                           operators=data.Operators.query,
                            tasks=data.Task.query)
 
 
@@ -60,6 +61,7 @@ def all_offices():
                            offices=data.Office.query,
                            tasks=data.Task.query,
                            users=data.User.query,
+                           operators=data.Operators.query,
                            snb="#snb1",
                            snb2="#da2")
 
@@ -72,19 +74,13 @@ def offices(o_id):
         flash(get_lang(4),
               "danger")
         return redirect(url_for("manage_app.all_offices"))
-    if current_user.role_id == 3 and ofc.operator_id != current_user.id:
+    if current_user.role_id == 3 and data.Operators.query.filter_by(id=current_user.id).first() is None:
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
-    user = data.User.query.filter_by(id=ofc.operator_id).first()
-    if user is None:
-        form = forms.Offices_a(upd=ofc.prefix)
-        if session.get('lang') == 'AR':
-            form = forms.Offices_a_ar(upd=ofc.prefix)
-    else:
-        form = forms.Offices_a(upd=ofc.prefix, uid=user.id)
-        if session.get('lang') == 'AR':
-            form = forms.Offices_a_ar(upd=ofc.prefix, uid=user.id)
+    form = forms.Offices_a(upd=ofc.prefix)
+    if session.get('lang') == 'AR':
+        form = forms.Offices_a_ar(upd=ofc.prefix)
     page = request.args.get('page', 1, type=int)
     if page > int(data.Serial.query.filter_by(office_id=o_id).count() / 10) + 1:
         flash(get_lang(4),
@@ -96,10 +92,6 @@ def offices(o_id):
                                                     .number.desc()).paginate(
                                                         page, per_page=10,
                                                         error_out=False)
-    if user is None:
-        user = "Not assigned"
-    else:
-        user = user.name
     if form.validate_on_submit():
         mka = data.Office.query.filter_by(name=form.name.data)
         for f in mka:
@@ -108,18 +100,15 @@ def offices(o_id):
                       "danger")
                 return redirect(url_for("manage_app.offices", o_id=o_id))
         ofc.name = form.name.data
-        ofc.operator_id = form.operator.data
         ofc.prefix = form.prefix.data.upper()
         db.session.commit()
         flash(get_lang(44),
               "info")
         return redirect(url_for('manage_app.offices', o_id=o_id))
     form.name.data = ofc.name
-    form.operator.data = ofc.operator_id
     form.prefix.data = ofc.prefix.upper()
     return render_template('offices.html',
                            form=form,
-                           user=user,
                            officesp=pagination.items,
                            pagination=pagination,
                            ptitle="Office : " + ofc.prefix + str(ofc.name),
@@ -130,6 +119,7 @@ def offices(o_id):
                            offices=data.Office.query,
                            tasks=data.Task.query,
                            users=data.User.query,
+                           operators=data.Operators.query,
                            snb="#snb1",
                            slist=["#dropdown-lvl" + str(o_id),
                                   ".da" + str(o_id + 3),
@@ -153,7 +143,6 @@ def office_a():
                   "danger")
             return redirect(url_for("manage_app.all_offices"))
         db.session.add(data.Office(form.name.data,
-                                   form.operator.data,
                                    form.prefix.data.upper()))
         db.session.commit()
         flash(get_lang(45),
@@ -164,6 +153,7 @@ def office_a():
                            ptitle="Adding new office",
                            offices=data.Office.query,
                            tasks=data.Task.query,
+                           operators=data.Operators.query,
                            snb="#snb1",
                            snb2="#da3",
                            serial=data.Serial.query)
@@ -285,6 +275,7 @@ def search():
                                users=data.User.query,
                                pagination=pagination,
                                serialsp=pagination.items,
+                               operators=data.Operators.query,
                                len=len,
                                snb="#snb1",
                                snb2="#da1",
@@ -294,6 +285,7 @@ def search():
                            ptitle="Tickets search",
                            offices=data.Office.query,
                            tasks=data.Task.query,
+                           operators=data.Operators.query,
                            snb="#snb1",
                            snb2="#da1",
                            serial=data.Serial.query)
@@ -310,25 +302,15 @@ def task(o_id):
         flash(get_lang(4),
               "danger")
         return redirect(url_for("core.root"))
-    oid = data.Office.query.filter_by(operator_id=current_user.id).first()
-    if current_user.role_id == 3 and oid is None:
+    if current_user.role_id == 3 and data.Operators.query.filter_by(id=current_user.id).first() is None:
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
-    if current_user.role_id == 3 and task.office_id != oid.id:
+    if current_user.role_id == 3 and task.office_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
-    if oid is None:
-        oid = 0
-    else:
-        oid = oid.id
     ofc = data.Office.query.filter_by(id=task.office_id).first()
-    user = data.User.query.filter_by(id=ofc.operator_id).first()
-    if user is None:
-        user = "Not assigned"
-    else:
-        user = user.name
     page = request.args.get('page', 1, type=int)
     if page > int(data.Serial.query.filter_by(task_id=o_id).count() / 10) + 1:
         flash(get_lang(4),
@@ -356,17 +338,16 @@ def task(o_id):
     form.name.data = task.name
     return render_template('tasks.html',
                            form=form,
-                           user=user,
                            ptitle="Task : " + task.name,
                            tasksp=pagination.items,
                            pagination=pagination,
                            serial=data.Serial.query,
                            o_id=o_id,
                            len=len,
-                           ooid=oid,
                            offices=data.Office.query,
                            tasks=data.Task.query,
                            users=data.User.query,
+                           operators=data.Operators.query,
                            task=task,
                            snb="#snb1",
                            slist=["#dropdown-lvl" + str(task.office_id),
@@ -382,12 +363,11 @@ def task_d(t_id):
         flash(get_lang(4),
               "danger")
         return redirect(url_for("core.root"))
-    oid = data.Office.query.filter_by(operator_id=current_user.id).first()
-    if current_user.role_id == 3 and oid is None:
+    if current_user.role_id == 3 and oid is data.Operators.query.filter_by(id=current_user.id).first():
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
-    if current_user.role_id == 3 and task.office_id != oid.id:
+    if current_user.role_id == 3 and task.office_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
@@ -416,19 +396,14 @@ def task_a(o_id):
         flash(get_lang(4),
               "danger")
         return redirect(url_for("core.root"))
-    oid = data.Office.query.filter_by(operator_id=current_user.id).first()
-    if current_user.role_id == 3 and oid is None:
+    if current_user.role_id == 3 and data.Operators.query.filter_by(id=current_user.id).first() is None:
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
-    if current_user.role_id == 3 and o_id != oid.id:
+    if current_user.role_id == 3 and o_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
-    if oid is None:
-        oid = 0
-    else:
-        oid = oid.id
     if form.validate_on_submit():
         if data.Task.query.filter_by(name=form.name.data).first() is not None:
             flash(get_lang(43),
@@ -442,7 +417,7 @@ def task_a(o_id):
                            offices=data.Office.query,
                            serial=data.Serial.query,
                            tasks=data.Task.query,
-                           ooid=oid,
+                           operators=data.Operators.query,
                            snb="#snb1",
                            slist=["#dropdown-lvl" + str(o_id),
                                   ".da" + str(o_id + 3),

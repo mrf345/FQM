@@ -55,11 +55,6 @@ def root(n=None):
             return redirect(url_for('core.root'))
         user = data.User.query.filter_by(name=form.name.data).first()
         if user is not None:
-            d = data.Office.query.filter_by(operator_id=user.id).first()
-            if user.role_id == 3 and d is None:
-                flash(get_lang(15),
-                      "danger")
-                return redirect(url_for('core.root'))
             if user.verify_password(form.password.data):
                 if form.rm.data:
                     login_user(user, remember=True)
@@ -93,12 +88,11 @@ def serial(t_id):
         flash(get_lang(4),
               "danger")
         return redirect(url_for("core.root"))
-    oid = data.Office.query.filter_by(operator_id=current_user.id).first()
-    if current_user.role_id == 3 and oid is None:
+    if current_user.role_id == 3:
         flash(get_lang(18),
               "danger")
         return redirect(url_for('core.root'))
-    if current_user.role_id == 3 and tsk.office_id != oid.id:
+    if current_user.role_id == 3 and tsk.office_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
         flash(get_lang(18),
               "danger")
         return redirect(url_for('core.root'))
@@ -214,12 +208,11 @@ def serial_r(o_id):
         flash(get_lang(4), "danger")
         return redirect(url_for("manage_app.all_offices"))
     sr = data.Serial.query.filter_by(office_id=o_id)
-    oid = data.Office.query.filter_by(operator_id=current_user.id).first()
-    if current_user.role_id == 3 and oid is None:
+    if current_user.role_id == 3 and data.Operators.query.filter_by(id=current_user.id).first() is None:
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
-    if current_user.role_id == 3 and o_id != oid.id:
+    if current_user.role_id == 3 and o_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
@@ -273,12 +266,11 @@ def serial_rt(t_id):
         flash(get_lang(54), "danger")
         return redirect(url_for("manage_app.all_offices"))
     sr = data.Serial.query.filter_by(task_id=t_id)
-    oid = data.Office.query.filter_by(operator_id=current_user.id).first()
-    if current_user.role_id == 3 and oid is None:
+    if current_user.role_id == 3 and data.Operators.query.filter_by(id=current_user.id).first() is None:
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
-    if current_user.role_id == 3 and t_id != oid.id:
+    if current_user.role_id == 3 and t_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
@@ -310,12 +302,11 @@ def pull(o_id):
     if data.Task.query.filter_by(id=o_id).first() is None:
         flash(get_lang(4), "danger")
         return redirect(url_for("manage_app.task", o_id=o_id))
-    oid = data.Office.query.filter_by(operator_id=current_user.id).first()
-    if current_user.role_id == 3 and oid is None:
+    if current_user.role_id == 3 and data.Operators.query.filter_by(id=current_user.id).first() is None:
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
-    if current_user.role_id == 3 and o_id != oid.id:
+    if current_user.role_id == 3 and data.Task.query.filter_by(id=o_id).first().office_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
@@ -542,10 +533,6 @@ def display():
 @core.route('/touch/<int:a>')
 @login_required
 def touch(a):
-    if a != 0 and a != 1:
-        flash(get_lang(4),
-              'danger')
-        return redirect(url_for('core.root'))
     d = False
     if a == 1:
         d = True

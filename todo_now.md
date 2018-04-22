@@ -29,8 +29,10 @@
 > - [x] remove default reload duration from template, db (4/20th)
 - [x] tickets based on tasks instead of offices (4/21st)
 - [ ] General task that exists in multiple offices
-- [ ] allow for multiple operators for an office
-- [x] add who pulled ticket
+- [x] allow for multiple operators for an office (4/22nd)
+> - [x] remove old operator assign from db, form (4/22nd)
+> - [x] fix manage permissions to operators table (4/22nd)
+- [x] add who pulled ticket (4/22nd)
 - [x] add pull from specific task, for priority (4/21st)
 - [ ] multi-language config files
 - [ ] add french, italian spanish to gtts

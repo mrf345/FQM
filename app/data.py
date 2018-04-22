@@ -15,12 +15,10 @@ class Office(db.Model):
     name = db.Column(db.Integer, unique=True)
     timestamp = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
     prefix = db.Column(db.String(2))
-    operator_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, name, operator_id, prefix):
+    def __init__(self, name, prefix):
         self.name = name
         self.prefix = prefix
-        self.operator_id = operator_id
 
 
 class Task(db.Model):
@@ -98,6 +96,17 @@ class Waiting_c(db.Model):
         self.tname = tname
         self.n = n
         self.name = name
+
+
+class Operators(db.Model):
+    __tablename__ = "operators"
+    crap = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer)
+    office_id = db.Column(db.Integer, db.ForeignKey('offices.id'))
+
+    def __init__(self, id, office_id):
+        self.id = id
+        self.office_id = office_id
 
 
 class User(UserMixin, db.Model):

@@ -478,10 +478,6 @@ class Offices_a(FlaskForm):
                             min=1, max=9999,
                             message="Only allowed range of " +
                             "numbers 1-9999")])
-    operator = SelectField("Select a user operator for the office : ",
-                           validators=[InputRequired(
-                               "You must select unassigned operator ..")],
-                           coerce=int)
     prefix = SelectField("Select unique prefix for the office : ",
                          validators=[
                              InputRequired(
@@ -490,7 +486,6 @@ class Offices_a(FlaskForm):
 
     def __init__(self, upd=None, uid=None, *args, **kwargs):
         super(Offices_a, self).__init__(*args, **kwargs)
-        ll = [(00, "Without an operator")]
         prefixs = [('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'), ('E', 'E'),
                    ('F', 'F'), ('G', 'G'), ('H', 'H'), ('I', 'I'), ('J', 'J'),
                    ('K', 'K'), ('L', 'L'), ('M', 'M'), ('N', 'N'), ('O', 'O'),
@@ -501,15 +496,9 @@ class Offices_a(FlaskForm):
         for v in data.Office.query.order_by(data.Office.timestamp):
             if (v.prefix, v.prefix) in prefixs:
                 prefixs.remove((v.prefix, v.prefix))
-        for n in data.User.query.filter_by(role_id=3):
-            if data.Office.query.filter_by(operator_id=n.id).first() is None:
-                ll.append((n.id, n.name))
         if upd is not None:
             prefixs.append((upd, upd))
-        if uid is not None:
-            ll.append((uid, data.User.query.filter_by(id=uid).first().name))
         self.prefix.choices = prefixs
-        self.operator.choices = ll
 
 
 class Offices_a_ar(FlaskForm):
@@ -519,10 +508,6 @@ class Offices_a_ar(FlaskForm):
             NumberRange(
                 min=1, max=9999,
                 message=u"أقل قيمة 1 و أقصى قيمة 9999")])
-    operator = SelectField(u"إختر مشغل للمكتب :",
-                           validators=[InputRequired(
-                               u"يجب إختيار مشغل غير معين")],
-                           coerce=int)
     prefix = SelectField(u"إختار رمز حرفي مميز :",
                          validators=[
                              InputRequired(
@@ -531,7 +516,6 @@ class Offices_a_ar(FlaskForm):
 
     def __init__(self, upd=None, uid=None, *args, **kwargs):
         super(Offices_a_ar, self).__init__(*args, **kwargs)
-        ll = [(00, u"من غير مشغل")]
         prefixs = [('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'), ('E', 'E'),
                    ('F', 'F'), ('G', 'G'), ('H', 'H'), ('I', 'I'), ('J', 'J'),
                    ('K', 'K'), ('L', 'L'), ('M', 'M'), ('N', 'N'), ('O', 'O'),
@@ -542,15 +526,9 @@ class Offices_a_ar(FlaskForm):
         for v in data.Office.query.order_by(data.Office.timestamp):
             if (v.prefix, v.prefix) in prefixs:
                 prefixs.remove((v.prefix, v.prefix))
-        for n in data.User.query.filter_by(role_id=3):
-            if data.Office.query.filter_by(operator_id=n.id).first() is None:
-                ll.append((n.id, n.name))
         if upd is not None:
             prefixs.append((upd, upd))
-        if uid is not None:
-            ll.append((uid, data.User.query.filter_by(id=uid).first().name))
         self.prefix.choices = prefixs
-        self.operator.choices = ll
 
 
 # -- Adding Task
@@ -664,14 +642,15 @@ class User_a(FlaskForm):
                        validators=[InputRequired
                                    ("You must select a role " +
                                     " to add user in ..")])
+    offices = SelectField(
+        "Select office to assing the operator to :", 
+        coerce=int)
     submit = SubmitField("Add")
 
     def __init__(self, *args, **kwargs):
         super(User_a, self).__init__(*args, **kwargs)
-        prf = []
-        for v in data.Roles.query:
-            prf.append((v.id, v.name))
-        self.role.choices = prf
+        self.role.choices = [(v.id, v.name) for v in data.Roles.query]
+        self.offices.choices = [(o.id, 'Office : ' + str(o.name) + o.prefix) for o in data.Office.query]
 
 
 class User_a_ar(FlaskForm):
@@ -689,15 +668,15 @@ class User_a_ar(FlaskForm):
         coerce=int,
         validators=[
             InputRequired(u"يتوجب إختيار دور للمستخدم")])
+    offices = SelectField(
+        u"إختر مكتب ليتم تعيين المشغل له :", 
+        coerce=int)
     submit = SubmitField(u"إضافة مستخدم")
 
     def __init__(self, *args, **kwargs):
         super(User_a_ar, self).__init__(*args, **kwargs)
-        prf = []
-        for v in data.Roles.query:
-            prf.append((v.id, v.name))
-        self.role.choices = prf
-
+        self.role.choices = [(v.id, v.name) for v in data.Roles.query]
+        self.offices.choices = [(o.id, 'Office : ' + str(o.name) + o.prefix) for o in data.Office.query]
 
 # Multimedia upload form
 
