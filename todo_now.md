@@ -8,6 +8,7 @@
 - [x] fix no tickets to display, since ticket 100 hidden (4/16th)
 - [x] fix increase br after ticket 100 removal (4/16th)
 - [x] fix ticket 100 in search results (4/21st)
+- [x] fix auto-reload display_screen when customized (4/22nd)
 
 ## To Add :
 
@@ -28,15 +29,18 @@
 - [x] implement auto_reloader (4/17th)
 > - [x] remove default reload duration from template, db (4/20th)
 - [x] tickets based on tasks instead of offices (4/21st)
-- [ ] General task that exists in multiple offices
+
+~~[ ] General task that exists in multiple offices~~
+> Will require a major modification on database structure, results in huge instability.
+> [x] temporary solution, to allow for identically named tasks to be added (4/23rd)
 - [x] allow for multiple operators for an office (4/22nd)
 > - [x] remove old operator assign from db, form (4/22nd)
 > - [x] fix manage permissions to operators table (4/22nd)
 - [x] add who pulled ticket (4/22nd)
 - [x] add pull from specific task, for priority (4/21st)
-- [ ] multi-language config files
-- [ ] add french, italian spanish to gtts
-- [ ] add french, italian spanish to the printer
+- [x] multi-language config files (4/22nd)
+> - [x] add french, italian spanish to gtts (4/22nd)
+> - [ ] add french, italian spanish to the printer
 - [x] fix upload file and folder size limit to unlimited (4/9th)
 - [x] Use flask_datepicker (4/18th)
 - [x] Use flask_colorpicker (4/19th)

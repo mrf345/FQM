@@ -226,10 +226,15 @@ class Display_c(FlaskForm):
         ], coerce=str
     )
     announce = SelectField("Verbal announcement : ",
-                           choices=[("en-us",
-                                    "English"),
+                           choices=[("en-us", "English"),
                                     ("ar", "Arabic"),
-                                    ("both", "English and Arabic"),
+                                    ("it", "Italian"),
+                                    ("es", "Spanish"),
+                                    ("fr", "French"),
+                                    ("en-us,ar", "English and Arabic"),
+                                    ("en-us,it", "English and Italian"),
+                                    ("en-us,es", "English and Spanish"),
+                                    ("en-us,fr", "English and French"),
                                     ("false", "Disable")],
                            coerce=str)
     anr = SelectField('Number of announcement repeating : ',
@@ -330,10 +335,15 @@ class Display_c_ar(FlaskForm):
         ], coerce=str
     )
     announce = SelectField(u"تنبيه المناداة الصوتي :",
-                           choices=[("en-us",
-                                    u"إنجليزي"),
+                           choices=[("en-us", u"إنجليزي"),
                                     ("ar", u"عربي"),
-                                    ("both", u"إنجليزي و عربي"),
+                                    ("it", u"إيطالي"),
+                                    ("es", u"إسباني"),
+                                    ("fr", u"فرنسي"),
+                                    ("en-us,ar", u"إنجليزي و عربي"),
+                                    ("en-us,it", u"إنجليزي و إيطالي"),
+                                    ("en-us,es", u"إنجليزي و إسباني"),
+                                    ("en-us,fr", u"إنجليزي و فرنسي"),
                                     ("false", u"تعطيل")],
                            coerce=str)
     anr = SelectField(u'عدد مرات تكرار المناداة الصوتي :',

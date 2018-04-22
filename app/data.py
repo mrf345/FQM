@@ -24,7 +24,7 @@ class Office(db.Model):
 class Task(db.Model):
     __tablename__ = "tasks"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(300), unique=True)
+    name = db.Column(db.String(300))
     timestamp = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
     office_id = db.Column(db.Integer, db.ForeignKey('offices.id'))
 

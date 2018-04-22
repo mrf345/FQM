@@ -19,6 +19,7 @@ from ex_functions import get_lang, say_it
 from shutil import rmtree
 from multiprocessing.pool import ThreadPool
 from sys import platform
+from fmsgs import TTS
 
 core = Blueprint('core', __name__)
 
@@ -351,77 +352,18 @@ def pull(o_id):
         if os.path.isdir(path):
             rmtree(path)
         os.mkdir(path)
-        if cl.n:
-            ticket = cl.name
-            if lang.announce == "ar":
-                if tnumber == 1:
-                    ms = "الرجاء من المدعوا "
-                else:
-                    ms = "الرجاء من الرقم "
-                ms += (ticket).encode('utf-8')
-                ms += " , التوجه إلى مكتب رقم "
-                ms += (office).encode('utf-8')
-                ms += " ."
-            elif lang.announce == "en-us":
-                if tnumber == 1:
-                    ms = "The name "
-                else:
-                    ms = "The number "
-                ms += (ticket).encode('utf-8')
-                ms += " , please proceed to the office number : "
-                ms += str(office) + " ."
-            elif lang.announce == "both":
-                if tnumber == 1:
-                    ms = "الرجاء من المدعوا "
-                else:
-                    ms = "الرجاء من الرقم "
-                ms += (ticket).encode('utf-8')
-                ms += " , التوجه إلى مكتب رقم "
-                ms += (office).encode('utf-8')
-                ms += " ."
-                if tnumber == 1:
-                    ms2 = "The name "
-                else:
-                    ms2 = "The number "
-                ms2 += (ticket).encode('utf-8')
-                ms2 += " , please proceed to the office number : "
-                ms2 += str(office) + " ."
-        else:
-            ticket = cl.ticket
-            if lang.announce == "ar":
-                ms = "الرجاء من صاحب الرقم "
-                ms += (ticket).encode('utf-8')
-                ms += " , التوجه إلى مكتب رقم "
-                ms += (office).encode('utf-8') + " ."
-            elif lang.announce == "en-us":
-                ms = "The number : " + (ticket).encode('utf-8')
-                ms += " , please proceed to the office number : "
-                ms += str(office) + " ."
-            elif lang.announce == "both":
-                ms = "الرجاء من صاحب الرقم "
-                ms += (ticket).encode('utf-8')
-                ms += " , التوجه إلى مكتب رقم "
-                ms += (office).encode('utf-8') + " ."
-                ms2 = "The number : " + (ticket).encode('utf-8')
-                ms2 += " , please proceed to the office number : "
-                ms2 += str(office) + " ."
-        fname = str(randint(1, 10000)) + ".mp3"
-        lang.afile = fname
+        langs = lang.announce.split(',')
+        ticket = cl.name if cl.n else cl.ticket
+        fileCode = str(randint(1, 999999)) + ".mp3"
+        for l in langs:
+            ms = TTS[l][0] if tnumber == 1 else TTS[l][1]
+            ms += (ticket).encode('utf-8')
+            ms += TTS[l][2]
+            ms += (office).encode('utf-8')
+            say_it(ms, l, path + l + fileCode)
+        lang.afile = fileCode
         db.session.add(lang)
         db.session.commit()
-        fpath = path + fname
-        # Applying threading for GTTS
-        pool = ThreadPool(processes=2)
-        if lang.announce == "both":
-            fname2 = "ar_" + fname
-            path2 = path + fname2
-            pool.apply_async(say_it, (ms, "ar", path2))
-            pool.apply_async(say_it, (ms2, "en-us", fpath))
-        else:
-            pool.apply_async(say_it, (ms, lang.announce, fpath))
-        pool.close()
-        pool.join()
-    # last check for available tickets and final commit
     # attempt to fix overleaping issue " Waiting instance is already deleted"
     # --- Reassigning cs seems to fix it
     # Fix: pulling tickets by task_id instead of office_id

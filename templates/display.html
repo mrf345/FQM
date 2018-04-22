@@ -8,8 +8,11 @@
 {% block page_content %}
 <script type="text/javascript" src="{{ url_for('static', filename='jsonstream.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='audiosequence.js') }}"></script>
+<script src="{{ url_for('static', filename='extFunctions.js') }}" type='text/javascript'></script>
 <script type='text/javascript'>
+	reloadIf()
 	var aplayer = undefined
+	var langs = "{{ ts.announce }}".split(',')
 	var stream = JsonStream({
 		url: window.location.origin + '/feed',
 		duration: parseInt("{{ ts.rrate }}") / 1000,
@@ -23,8 +26,9 @@
 		todo: function (data, toPlay=[]) {
 			if (aplayer) aplayer.exit(false)
 			{% if ts.audio != 'false' %}toPlay.push("{{'/static/multimedia/'+ts.audio}}"){% endif %}
-			{% if ts.announce == 'en-us' or ts.announce == 'both' %}toPlay.push('/static/tts/' + data.anf){% endif %}
-			{% if ts.announce == 'ar' or ts.announce == 'both' %}toPlay.push('/static/tts/ar_' + data.anf){% endif %}
+			langs.forEach(function (lang) {
+				toPlay.push('/static/tts/' + lang + data.anf)
+			})
 			aplayer = AudioSequence({
 				files: toPlay.map(function (i) { if (i !== "") return i}),
 				repeats: parseInt("{{ ts.anr }}"),
@@ -288,7 +292,7 @@
 			{% if ar %} المهمة {% else %} Task {% endif %} : <p class='effectit ensureit' stream='cott' style='display: inline-block;'>Heading</p></h1>
       {{ brp * 2 }}
 		<h1 style="color: {{ ts.h2color }}; font-family: '{{ ts.h2font }}'; font-size: {{ ts.h2size }}; background: {{ ts.hbg }};">
-			{% if ar %} التذكرة {% else %} Ticket {% endif %} : <p class='effectdoit ensureitit' stream='cot' style='display: inline-block;'>Heading</p></h1>
+			{% if ar %} التذكرة {% else %} Ticket {% endif %} : <p class='effectdoit ensureit' stream='cot' style='display: inline-block;'>Heading</p></h1>
     </div>
     <div class="col-xs-3">
 	    <h1 style="color: {{ ts.scolor }}; font-family: {{ ts.sfont }}; font-size: {{ ts.ssize }}; background: {{ ts.hbg }};">

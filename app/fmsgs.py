@@ -128,3 +128,31 @@ msgsl_ar = [
     u"تأكد من إدخال الأمر التالي , و إعادة تشغيل الحاسوب 'sudo gpasswd -a $(users) lp' ",
     u'خطأ : يتوجب تسجيل الدخول أولاً لدخول الصفحة'
 ]
+
+TTS = {
+    'en-us': [
+        "The name ",
+        "The number ",
+        " , please proceed to the office number : "
+    ],
+    'ar': [
+        "الرجاء من المدعوا ",
+        "الرجاء من صاحب الرقم ",
+        " , التوجه إلى مكتب رقم "
+    ],
+    'fr': [
+        "le nom ",
+        "le nombre ",
+        " , s'il vous plaît procéder au numéro de bureau : "
+    ],
+    'es': [
+        "el nombre ",
+        "el número ",
+        " , por favor diríjase al número de la oficina : "
+    ],
+    'it': [
+        "il nome ",
+        "il numero ",
+        " , si prega di procedere al numero dell'ufficio : "
+    ]
+}
