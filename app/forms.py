@@ -890,9 +890,13 @@ class Printer_f(FlaskForm):
                         coerce=int)
     langu = SelectField("Select language of printed ticket : ",
                         choices=[
-                            (1, 'English'),
-                            (2, 'Arabic')],
-                        coerce=int)
+                            ('en', 'English'),
+                            ('it', 'Italian'),
+                            ('fr', 'French'),
+                            ('es', 'Spanish'),
+                            ('ar', 'Arabic')
+                            ],
+                        coerce=str)
     printers = SelectField('Select a usb printer : ',
                            coerce=str)
     submit = SubmitField('Set ticket')
@@ -927,9 +931,12 @@ class Printer_f_ar(FlaskForm):
                         coerce=int)
     langu = SelectField(u"إختر لغة التذكرة المطبوعة :",
                         choices=[
-                            (1, u'الإنجليزية'),
-                            (2, u'العربية')],
-                        coerce=int)
+                            ('en', u'الإنجليزية'),
+                            ('it', u'الإطالي'),
+                            ('fr', u'الفرنسي'),
+                            ('es', u'العربي'),
+                            ('ar', u'العربية')],
+                        coerce=str)
     printers = SelectField(u'إختار طابعة يو أس بي :',
                            coerce=str)
     submit = SubmitField(u'إعداد التذاكر')

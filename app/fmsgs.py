@@ -156,3 +156,38 @@ TTS = {
         " , si prega di procedere al numero dell'ufficio : "
     ]
 }
+
+PRINTER = {
+    'en': [
+        "Version ",
+        "\nOffice : ",
+        "\nCurrent ticket : ",
+        "\nTickets ahead : ",
+        "\nTask : ",
+        "\nTime : "
+    ],
+    'it': [
+        "Versione ",
+        "\nUfficio : ",
+        "\nBiglietto corrente: ",
+        "\nbiglietti in anticipo : ",
+        "\nCompito : ",
+        "\nTempo : "
+    ],
+    'es': [
+        u"Version ",
+        "\nOficina : ",
+        "\nBillete actual : ",
+        "\nBilletes antes : ",
+        "\nTarea : ",
+        "\nHora : "
+    ],
+    'fr': [
+        "Version ",
+        "\nBureau : ",
+        "\nBillet actuel : ",
+        "\nBillets devant : ",
+        "\nTache : ",
+        "\nTemps : "
+    ]
+}

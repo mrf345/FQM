@@ -22,6 +22,9 @@
 > - [ ] add activities log to profile
 > - [ ] improve office operators interface
 
+- [ ] Datepicker:
+> - [ ] add list based identifiers, and use (this) in JS instead ids 
+
 # To Add:
 
 - [ ] implement uniqueness instead of dumb something()

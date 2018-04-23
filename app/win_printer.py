@@ -64,8 +64,8 @@ def listpp():
     return lps
 
 
-def printwin(pname, a, b, c, d, cit):
-    outp = printit(Dummy(), a, b, c, d, cit)
+def printwin(pname, a, b, c, d, cit, l):
+    outp = printit(Dummy(), a, b, c, d, cit, lang=l)
     outp = outp.output
     fname = "dummy.txt"
     ffname = path.join(getcwd(), fname)

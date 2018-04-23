@@ -151,12 +151,12 @@ class Printer(db.Model):
     in_ep = db.Column(db.Integer, nullable=True)
     out_ep = db.Column(db.Integer, nullable=True)
     active = db.Column(db.Boolean())
-    langu = db.Column(db.Integer)
+    langu = db.Column(db.String(100))
     value = db.Column(db.Integer)
 
     def __init__(self, vendor=" ", product=" ",
                  in_ep=0, out_ep=0, active=False,
-                 langu=1, value=1):
+                 langu='en', value=1):
         self.vendor = vendor
         self.product = product
         self.in_ep = in_ep

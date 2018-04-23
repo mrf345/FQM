@@ -62,6 +62,7 @@ def ticket():
         if form.kind.data == 1:
             tc.n = True
             pr.value = form.value.data
+            pr.active = False
             db.session.add(tc)
             db.session.add(pr)
         else:
@@ -79,7 +80,7 @@ def ticket():
                 pr.out_ep = int(f[3])
             tc.n = False
             pr.active = True
-            pr.langu = int(form.langu.data)
+            pr.langu = form.langu.data
             pr.value = form.value.data
             db.session.add(tc)
             db.session.add(pr)

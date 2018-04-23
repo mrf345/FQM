@@ -16,6 +16,7 @@ from datetime import datetime
 from ex_functions import r_path
 from os import remove, getcwd, path, name
 from database import version
+from fmsgs import PRINTER
 
 
 class find_class(object):
@@ -38,11 +39,11 @@ class find_class(object):
 
 
 def printit(printer, ticket, office, tnumber,
-            task, cticket, site='https://fqms.github.io'):
+            task, cticket, site='https://fqms.github.io', lang='en'):
     printer.set(align='center', height=4, width=4)
     printer.text("FQM\n")
     printer.set(align='center', height=1, width=1)
-    printer.text("Version " + version)
+    printer.text(PRINTER[lang][0] + version)
     printer.set('center', 'a', 'u', 1, 1)
     printer.text("\n" + site + "\n")
     printer.set(align='center', height=1, width=2)
@@ -52,14 +53,14 @@ def printit(printer, ticket, office, tnumber,
     printer.set(align='center', height=1, width=2)
     printer.text("\n" + '-' * 15 + "\n")
     printer.set(align='left', height=1, width=1)
-    printer.text("\nOffice : " + str(office).encode('utf-8') + "\n")
-    printer.text("\nCurrent ticket : " + str(cticket).encode('utf-8') + "\n")
-    printer.text("\nTickets ahead : " + str(tnumber) + "\n")
+    printer.text(PRINTER[lang][1] + str(office).encode('utf-8') + "\n")
+    printer.text(PRINTER[lang][2] + str(cticket).encode('utf-8') + "\n")
+    printer.text(PRINTER[lang][3] + str(tnumber) + "\n")
     try:
-        printer.text("\nTask : " + str(task) + "\n")
+        printer.text(PRINTER[lang][4] + str(task) + "\n")
     except:
         pass
-    printer.text("\nTime : " + str(datetime.utcnow())[:-7] + "\n")
+    printer.text(PRINTER[lang][5] + str(datetime.utcnow())[:-7] + "\n")
     printer.cut()
     return printer
 
@@ -100,7 +101,7 @@ def printit_ar(pname, ti, ofc, tnu, tas, cticket):
              ImageFont.truetype(fpath, 30),
              ImageFont.truetype(fpath, 25)]
 
-    logo = 'FQM 0.2'
+    logo = 'FQM ' + version[:4]
     title = u'نظام إدارة الحشود الحر'
     title = arabic_reshaper.reshape(title)
     title = get_display(title)

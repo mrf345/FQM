@@ -40,7 +40,7 @@
 - [x] add pull from specific task, for priority (4/21st)
 - [x] multi-language config files (4/22nd)
 > - [x] add french, italian spanish to gtts (4/22nd)
-> - [ ] add french, italian spanish to the printer
+> - [x] add french, italian spanish to the printer (4/24th)
 - [x] fix upload file and folder size limit to unlimited (4/9th)
 - [x] Use flask_datepicker (4/18th)
 - [x] Use flask_colorpicker (4/19th)

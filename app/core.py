@@ -78,7 +78,6 @@ def root(n=None):
 
 
 @core.route('/serial/<int:t_id>', methods=['POST', 'GET'])
-@login_required
 def serial(t_id):
     ex_functions.mse()
     form = forms.Touch_name()
@@ -89,14 +88,15 @@ def serial(t_id):
         flash(get_lang(4),
               "danger")
         return redirect(url_for("core.root"))
-    if current_user.role_id == 3:
-        flash(get_lang(18),
-              "danger")
-        return redirect(url_for('core.root'))
-    if current_user.role_id == 3 and tsk.office_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
-        flash(get_lang(18),
-              "danger")
-        return redirect(url_for('core.root'))
+    # Fix: to allow non users to generate tickets
+    # if current_user.role_id == 3:
+    #     flash(get_lang(18),
+    #           "danger")
+    #     return redirect(url_for('core.root'))
+    # if current_user.role_id == 3 and tsk.office_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
+    #     flash(get_lang(18),
+    #           "danger")
+    #    return redirect(url_for('core.root'))
     if not form.validate_on_submit() and data.Touch_store.query.first().n:
         ts = data.Touch_store.query.filter_by(id=0).first()
         tnumber = False
@@ -138,7 +138,7 @@ def serial(t_id):
                 chk = win_printer.check_win_p()
                 chl = len(win_printer.listpp())
                 if chl >= 1 and chk is True:
-                    if langu == 2:
+                    if langu == 'ar':
                         win_printer.printwin_ar(
                             q.product,
                             oot.prefix + '.' + str(ln + 1),
@@ -151,7 +151,7 @@ def serial(t_id):
                             oot.prefix + '.' + str(ln + 1),
                             oot.prefix + str(oot.name),
                             tnum, ppt.name,
-                            oot.prefix + '.' + str(cuticket.number))
+                            oot.prefix + '.' + str(cuticket.number), lang=langu)
                     p = True
                 else:
                     p = None
@@ -173,18 +173,20 @@ def serial(t_id):
                     flash(get_lang(58), "info")
                 return redirect(url_for('cust_app.ticket'))
             if os.name != 'nt':
-                if langu == 1:
-                    ppp.printit(p,
-                                oot.prefix + '.' + str(ln + 1),
-                                oot.prefix + str(oot.name),
-                                tnum, u'' + ppt.name,
-                                oot.prefix + '.' + str(cuticket.number))
+                if langu == 'ar':
+                    ppp.printit_ar(
+                        p,
+                        oot.prefix + '.' + str(ln + 1),
+                        oot.prefix + str(oot.name),
+                        tnum, u'' + ppt.name,
+                        oot.prefix + '.' + str(cuticket.number))
                 else:
-                        ppp.printit_ar(p,
-                                       oot.prefix + '.' + str(ln + 1),
-                                       oot.prefix + str(oot.name),
-                                       tnum, u'' + ppt.name,
-                                       oot.prefix + '.' + str(cuticket.number))
+                    ppp.printit(
+                        p,
+                        oot.prefix + '.' + str(ln + 1),
+                        oot.prefix + str(oot.name),
+                        tnum, u'' + ppt.name,
+                        oot.prefix + '.' + str(cuticket.number), lang=langu)
         db.session.commit()
     else:
         flash(get_lang(4),
@@ -356,7 +358,7 @@ def pull(o_id):
         ticket = cl.name if cl.n else cl.ticket
         fileCode = str(randint(1, 999999)) + ".mp3"
         for l in langs:
-            ms = TTS[l][0] if tnumber == 1 else TTS[l][1]
+            ms = TTS[l][0] if tnumber == 1 and not data.Printer.query.first().active else TTS[l][1]
             ms += (ticket).encode('utf-8')
             ms += TTS[l][2]
             ms += (office).encode('utf-8')
@@ -445,7 +447,6 @@ def feed():
 
 
 @core.route('/display')
-@login_required
 def display():
     ts = data.Display_store.query.first()
     sli = data.Slides_c.query.first()
@@ -473,7 +474,6 @@ def display():
 
 
 @core.route('/touch/<int:a>')
-@login_required
 def touch(a):
     d = False
     if a == 1:

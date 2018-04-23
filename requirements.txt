@@ -68,5 +68,5 @@ Whoosh==2.7.4
 WTForms==2.1
 WTForms-Components==0.10.3
 Flask-Datepicker==0.8
-Flask-Colorpicker==0.7
+Flask-Colorpicker==0.9
 Flask-Fontpicker==0.2
