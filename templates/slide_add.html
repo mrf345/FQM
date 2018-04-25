@@ -9,8 +9,8 @@
 {{ super() }}
 {{ fontpicker.loader() }}
 {{ colorpicker.loader() }}
-{{ colorpicker.picker(ids=['#hcolor', '#tcolor'], allowEmpty='false') }}
-{{ colorpicker.picker(ids=['#hbg', '#tbg', '#bgcolor'], showAlpha='false', allowEmpty='false') }}
+{{ colorpicker.picker(ids=['#hcolor', '#tcolor', '#bgcolor'], showAlpha='false', allowEmpty='false') }}
+{{ colorpicker.picker(ids=['#hbg', '#tbg'], allowEmpty='false') }}
 {{ fontpicker.picker(
 	ids=['#hfont', '#tfont'],
 	families="['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade']",

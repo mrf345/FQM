@@ -23,9 +23,13 @@
 > - [ ] improve office operators interface
 
 - [ ] Datepicker:
-> - [ ] add list based identifiers, and use (this) in JS instead ids 
+> - [ ] add list based identifiers, and use (this) in JS instead ids
 
 # To Add:
+
+- [ ] More manage
+> - [ ] add pull from all office
+> - [ ] add general tasks (Require DB resign, Tasks over Offices)
 
 - [ ] implement uniqueness instead of dumb something()
 > - [ ] add option in uniqueness to always enforce hash tags
