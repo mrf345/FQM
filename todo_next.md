@@ -12,20 +12,26 @@
 > - [ ] replace manage panel headers and footers with macros
 > - [ ] replace background css in base and base_s with macro
 
-- [ ] Improving multi-lang config file and methods:
-> - [ ] move all static AR to the config file
-> - [ ] Simplify config file, so others can contribute translations
-> - [ ] integrate methods with template, gtts and printers
-
 - [ ] Improve User management:
 > - [ ] add configurable profile for users
 > - [ ] add activities log to profile
 > - [ ] improve office operators interface
 
-- [ ] Datepicker:
-> - [ ] add list based identifiers, and use (this) in JS instead ids
+- [ ] Nested audio announcement:
+> - [ ] use check boxes to get langs
+> - [ ] select field to enable disable announcement and toggle display check boxes
 
 # To Add:
+
+- [ ] Implement flask_googletrans:
+> - [ ] add fr, es, it en to /lang
+> - [ ] fix extra_function get_lang
+> - [ ] add langs to dropdown menu base.html
+> - [ ] put back and cache all flash messages
+> - [ ] cache wtforms and remove ar_forms
+> - [ ] remove ar from templates and cache templates
+> - [ ] remove ar from app/* and cache them
+
 
 - [ ] More manage
 > - [ ] add pull from all office
