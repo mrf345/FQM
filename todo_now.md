@@ -25,6 +25,10 @@
 
 ## To Add:
 
+- [ ] GUI Multilang:
+> - [ ] add fr, es, it to static langs
+> - [ ] replace langs buttons with select field
+
 - [ ] Implement flask_googletrans:
 > - [ ] add fr, es, it en to /lang
 > - [ ] fix extra_function get_lang, __Add warning if cache not found and fail to connect__
