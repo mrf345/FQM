@@ -1,47 +1,52 @@
-# FQM 0.3 :
+# FQM 0.4
 
-## To Fix :
+## To Fix:
 
-- [x] fail safe printers drivers (1/10th)
-- [x] hide ticket 100 (Template) (4/8th)
-- [x] empty last ticket in display screen JS (4/9th)
-- [x] fix no tickets to display, since ticket 100 hidden (4/16th)
-- [x] fix increase br after ticket 100 removal (4/16th)
-- [x] fix ticket 100 in search results (4/21st)
-- [x] fix auto-reload display_screen when customized (4/22nd)
+- [ ] CSS:
+> - [ ] Move, improve general css to mstyle.css
+> - [ ] Move all template inline css to style tag based on classes
 
-## To Add :
+- [ ] JsonStream:
+> - [ ] Fix mdruation and effect_duration 
 
-- [x] implement json_stream and audio_sequence (4/9th)
-> [x] JsonStream : (4/14th)
-> - [x] add effects and do as effectdo for function execution and jquey effects (4/15th)
-> - [x] add ensure update with identical values (4/15th)
-> - [x] add jsonstream effects, and repeats to display screen customization (4/20th)
-> - [x] add refresh rates, and duration to jsonstream (4/15th)
+- [ ] Template:
+> - [ ] look for template repetitiveness and replace it with macros
+> - [ ] replace manage panel headers and footers with macros
+> - [ ] replace background css in base and base_s with macro
 
-> [x] AudioSequence : (4/16th)
-> - [x] has issues, whenever warped under another func. SIDE TO FIX 1 (4/16th)
-> - [x] solve declaring and killing (4/16th)
-> - [x] some javascript getting wrong input in offices : $('#dropdown-lvl&lt;app.data.Office object at0x7fc141447dd0&gt;').collapse('show'); JS (4/16th)
-> - [x] add repeat_each and repeat_whole options to display customization (4/21st)
-- [x] use disciple for the forms in AR and EN (4/10th)
-- [x] change bootstrap default theme (4/10th)
-- [x] implement auto_reloader (4/17th)
-> - [x] remove default reload duration from template, db (4/20th)
-- [x] tickets based on tasks instead of offices (4/21st)
+- [ ] Improve User management:
+> - [ ] add configurable profile for users
+> - [ ] add activities log to profile
+> - [ ] improve office operators interface
 
-~~[ ] General task that exists in multiple offices~~
-> Will require a major modification on database structure, results in huge instability.
-> [x] temporary solution, to allow for identically named tasks to be added (4/23rd)
-- [x] allow for multiple operators for an office (4/22nd)
-> - [x] remove old operator assign from db, form (4/22nd)
-> - [x] fix manage permissions to operators table (4/22nd)
-- [x] add who pulled ticket (4/22nd)
-- [x] add pull from specific task, for priority (4/21st)
-- [x] multi-language config files (4/22nd)
-> - [x] add french, italian spanish to gtts (4/22nd)
-> - [x] add french, italian spanish to the printer (4/24th)
-- [x] fix upload file and folder size limit to unlimited (4/9th)
-- [x] Use flask_datepicker (4/18th)
-- [x] Use flask_colorpicker (4/19th)
-- [x] Create and use flask_fontpicker (4/19th)
+- [ ] Nested audio announcement:
+> - [ ] use check boxes to get langs
+> - [ ] select field to enable disable announcement and toggle display check boxes
+
+## To Add:
+
+- [ ] Implement flask_googletrans:
+> - [ ] add fr, es, it en to /lang
+> - [ ] fix extra_function get_lang, __Add warning if cache not found and fail to connect__
+> - [ ] add langs to dropdown menu base.html
+> - [ ] put back and cache all flash messages
+> - [ ] cache wtforms and remove ar_forms
+> - [ ] remove ar from templates and cache templates
+> - [ ] remove ar from app/* and cache them
+
+
+- [ ] More manage
+> - [ ] add pull from all office
+> - [ ] add general tasks (Require DB resign, Tasks over Offices)
+
+- [ ] implement uniqueness instead of dumb something()
+> - [ ] add option in uniqueness to always enforce hash tags
+> - [ ] get next, prev and customize btns working with hashtags
+> - [ ] get sb_cust, sb_mange working with hashtags
+> - [ ] hashtag url based in the app .py files
+> - [ ] make disciple play well with the hashtags urls
+> - [ ] make sure forms error handling redirects to the hashtag url
+
+- [ ] Create and use python module based on pos module for cross-platform drawn printing
+
+- [ ] Smart tickets. Doubtful though !
