@@ -1,0 +1,36 @@
+{% macro uniqueness(hash=False, errors=False) %}
+<script src="{{ url_for('static', filename='uniqueness.js') }}"></script>
+<script type="text/javascript">
+    var unique = false
+    $(document).ready( function () {
+        unique = uniqueness({
+            effect: 'fade',
+            always_hash: 'true',
+            local_url: 'true',
+            {% if hash %} start_with: {{ hash - 1}} {% endif %}
+        }, function (data) {
+            $("[id^='ds']").removeClass('active')
+            if (data === 'next' || data === 'back') $('#ds' + (unique.turn === -1 && data === 'back' ? this.s_length : unique.turn + 1)).addClass('active')
+            else $('#ds' + (data + 1)).addClass('active')
+        })
+        {% if errors %} setTimeout(function () { unique.goto(unique.s_length - 1) }, 1000) {% endif %}
+    })
+</script>
+{% endmacro %}
+
+{% macro unique_btns(p, s, n, ar) %}
+<!-- TODO: when multilang implemented text auto-detected form global flask var -->
+<center>
+<div class="btn-group {% if ar %} ar1 {% endif %}">
+  <button type="button" class="btn btn-warning" onclick="unique.back()">
+      <span class='fa fa-arrow-left' style='padding-right: 1%'></span>
+      {{ p }}
+    </button>
+  <button type="submit" class="btn btn-danger">{{ s }}</button>
+  <button type="button" class="btn btn-primary" onclick="unique.next()">
+      {{ n }}
+      <span class='fa fa-arrow-right' style='padding-left: 2%'></span>
+    </button>
+</div> 
+</center>
+{% endmacro %}

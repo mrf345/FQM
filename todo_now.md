@@ -5,6 +5,7 @@
 - [ ] CSS:
 > - [ ] Move, improve general css to mstyle.css
 > - [ ] Move all template inline css to style tag based on classes
+> - [ ] Make google fonts default regardless of lang
 
 - [ ] JsonStream:
 > - [ ] Fix mdruation and effect_duration 
@@ -37,19 +38,21 @@
 > - [ ] cache wtforms and remove ar_forms
 > - [ ] remove ar from templates and cache templates
 > - [ ] remove ar from app/* and cache them
+> - [ ] remove ar pics from watchIt
 
 
 - [ ] More manage
 > - [ ] add pull from all office
 > - [ ] add general tasks (Require DB resign, Tasks over Offices)
 
-- [ ] implement uniqueness instead of dumb something()
-> - [ ] add option in uniqueness to always enforce hash tags
-> - [ ] get next, prev and customize btns working with hashtags
+- [x] implement uniqueness instead of dumb something() (5/4th)
+> - [x] add option in uniqueness to always enforce hash tags (5/4th)
+> - [x] get next, prev and customize btns working with hashtags (5/4th)
+> - [x] uniqueness macro (5/4th)
 > - [ ] get sb_cust, sb_mange working with hashtags
 > - [ ] hashtag url based in the app .py files
 > - [ ] make disciple play well with the hashtags urls
-> - [ ] make sure forms error handling redirects to the hashtag url
+> - [x] make sure forms error handling redirects to the hashtag url (5/4th)
 
 - [ ] Create and use python module based on pos module for cross-platform drawn printing
 

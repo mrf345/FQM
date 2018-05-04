@@ -587,6 +587,7 @@ def displayscreen_c(stab):
                            form=form,
                            ptitle="Display Screen customize",
                            snb="#snb2",
+                           hash=stab,
                            slist=["#dropdown-lvl2",
                                   ".da3",
                                   stab],

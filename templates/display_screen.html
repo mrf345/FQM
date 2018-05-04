@@ -6,6 +6,7 @@
 {% block title %} FQM - {{ ptitle  }} {% endblock %}
 
 {% block head %}
+{% from 'uniqueness.html' import uniqueness %}
 {{ super() }}
 <script src="{{ url_for('static', filename='extFunctions.js') }}"></script>
 {{ fontpicker.loader() }}
@@ -17,30 +18,31 @@
     families="['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade']",
     urlCss=url_for('static', filename='css/gfonts.css'))
 }}
+<!-- Loading uniqueness macro -->
+{{ uniqueness(hash, form.errors) }} 
 <script type="text/javascript">
- $(document).ready( function () {
-     // Future TODO: replace this mess with uniqueness JS
-     {% if slist and not form.errors %}something("{{ slist[0] }}","{{ slist[2] }}","{{ slist[1] }}");{% endif %}
-     {% if form.errors %} something('#dropdown-lvl2','#ds7','.da3'); {% endif %}
-    // Change img src when select field changes from extFunction.js
-    watchIt(
-        '#display',
-        '.tobc',
-        {% if ar %}
-        ["{{ url_for('static', filename='images/map2_ar.jpg') }}",
-        "{{ url_for('static', filename='images/map5_ar.jpg') }}",
-        "{{ url_for('static', filename='images/map6_ar.jpg') }}"],
-        {% else %}
-        ["{{ url_for('static', filename='images/map2.jpg') }}",
-        "{{ url_for('static', filename='images/map5.jpg') }}",
-        "{{ url_for('static', filename='images/map6.jpg') }}"],
-        {% endif %}
-        function (position) {
-            if (position === '1' || position === '2') $('.warn').removeClass('hide')
-            else $('.warn').addClass('hide')
-        }
-    )
-})
+    $(document).ready( function () {
+        $('#dropdown-lvl2').collapse('show') // to dropdown display side bar
+        // Change img src when select field changes from extFunction.js
+        watchIt(
+            '#display',
+            '.tobc',
+            // TODO: Remove AR pics, when multilang UI implemented 
+            {% if ar %}
+            ["{{ url_for('static', filename='images/map2_ar.jpg') }}",
+            "{{ url_for('static', filename='images/map5_ar.jpg') }}",
+            "{{ url_for('static', filename='images/map6_ar.jpg') }}"],
+            {% else %}
+            ["{{ url_for('static', filename='images/map2.jpg') }}",
+            "{{ url_for('static', filename='images/map5.jpg') }}",
+            "{{ url_for('static', filename='images/map6.jpg') }}"],
+            {% endif %}
+            function (position) {
+                if (position === '1' || position === '2') $('.warn').removeClass('hide')
+                else $('.warn').addClass('hide')
+            }
+        )
+    })
 </script>
 {% endblock %}
 
@@ -52,24 +54,10 @@
 
 {% block page_content %}
 {% from "_helpers.html" import render_field %}
+{% from "uniqueness.html" import unique_btns %}
 <div class="col-md-12">
-    <div class="panel panel-default" id="waiting">
-	<div class="panel-body">
-	    <div class="well">
-		{{ brp*8 }}
-		<center><i class="fa fa-5x fa-refresh fa-spin text-danger"></i></center>
-		<br/>
-    {% if ar %}
-		<h3 class="text-danger text-center ar1"> الرجاء الإنتظار لدقيقة , يتم اللآن التحميل</h3>
-    {% else %}
-		<h3 class="text-danger text-center">Wait a minute please, loading ..</h3>
-    {% endif %}
-		{{ brp*8 }}
-	    </div>
-	</div>
-    </div>
     <form method="POST" enctype="multipart/form-data" id="fm">
-      <div class="panel panel-default hide" id="pa1">
+      <div class="panel panel-default uniqueness" id="pa1">
     	    <div class="panel-heading text-center">
     		<h3 class="text-muted">
             <span class="fa fa-television"></span>
@@ -136,19 +124,15 @@
         </h4>
         {% endif %}
         {{ brp * 4 }}
-    		<center>
             {% if ar %}
-            <button type="button" href="#" class="btn btn-warning btn-md disabled ar1">تراجع</button>
-    		    <button type="button" onclick="something('#dropdown-lvl2','#ds2','.da3');" class="btn btn-primary btn-md ar1">تقدم</button>
+                {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
             {% else %}
-    		    <button type="button" href="#" class="btn btn-warning btn-md disabled">Previous</button>
-    		    <button type="button" onclick="something('#dropdown-lvl2','#ds2','.da3');" class="btn btn-primary btn-md">Next</button>
+                {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
             {% endif %}
-    		</center>
         {{ brp * 3 }}
     	    </div>
     	</div>
-	<div class="panel panel-default hide" id="pa2">
+	<div class="panel panel-default uniqueness" id="pa2">
 	    <div class="panel-heading text-center">
 		<h3 class="text-muted">
         <span class="fa fa-television"></span>
@@ -194,23 +178,19 @@
 		{{ render_field(form.hcolor, class="sp") }}<br/>
 		{{ render_field(form.hbg, class="spa") }}<br/>
         {{ render_field(form.hfont, class="form-control") }} {{ brp * 3 }}
-        {{ render_field(form.effect, class="form-control text-center btn-primary") }} <br />
-        {{ render_field(form.repeats, class="btn text-center form-control btn-primary") }} {{ brp * 2 }}
-        {{ render_field(form.mduration, class="btn form-control btn-primary") }}
+        {{ render_field(form.effect, class="form-control text-center  ") }} <br />
+        {{ render_field(form.repeats, class="btn text-center form-control  ") }} {{ brp * 2 }}
+        {{ render_field(form.mduration, class="btn form-control  ") }}
 		{{ brp * 4 }}
-		<center>
-        {% if ar %}
-        <button type="button" onclick="something('#dropdown-lvl2','#ds1','.da3');" class="btn btn-warning btn-md ar1">تراجع</button>
-		    <button type="button" onclick="something('#dropdown-lvl2','#ds3','.da3');" class="btn btn-primary btn-md ar1">تقدم</button>
-        {% else %}
-		    <button type="button" onclick="something('#dropdown-lvl2','#ds1','.da3');" class="btn btn-warning btn-md">Previous</button>
-		    <button type="button" onclick="something('#dropdown-lvl2','#ds3','.da3');" class="btn btn-primary btn-md">Next</button>
-        {% endif %}
-		</center>
+		    {% if ar %}
+                {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
+            {% else %}
+                {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
+            {% endif %}
     {{ brp * 3 }}
 	    </div>
 	</div>
-	<div class="panel panel-default hide" id="pa3">
+	<div class="panel panel-default uniqueness" id="pa3">
 	    <div class="panel-heading text-center">
 		<h3 class="text-muted">
       <span class="fa fa-television"></span>
@@ -255,19 +235,16 @@
 		{{ render_field(form.h2color, class="sp") }}<br/>
 		{{ render_field(form.h2font, class="form-control") }}
 		{{ brp * 4 }}
-		<center>
-        {% if ar %}
-        <button type="button" onclick="something('#dropdown-lvl2','#ds2','.da3');" class="btn btn-warning btn-md ar1">تراجع</button>
-		    <button type="button" onclick="something('#dropdown-lvl2','#ds4','.da3');" class="btn btn-primary btn-md ar1">تقدم</button>
-        {% else %}
-		    <button type="button" onclick="something('#dropdown-lvl2','#ds2','.da3');" class="btn btn-warning btn-md">Previous</button>
-		    <button type="button" onclick="something('#dropdown-lvl2','#ds4','.da3');" class="btn btn-primary btn-md">Next</button>
-        {% endif %}
+		    {% if ar %}
+                {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
+            {% else %}
+                {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
+            {% endif %}
 		</center>
     {{ brp * 3 }}
 	    </div>
 	</div>
-	<div class="panel panel-default hide" id="pa4">
+	<div class="panel panel-default uniqueness" id="pa4">
 	    <div class="panel-heading text-center">
 		<h3 class="text-muted">
       <span class="fa fa-television"></span>
@@ -312,19 +289,15 @@
 		{{ render_field(form.tcolor, class="sp") }}<br/>
 		{{ render_field(form.tfont, class="form-control") }}<br/>
     {{ brp * 4 }}
-		<center>
-      {% if ar %}
-      <button type="button" onclick="something('#dropdown-lvl2','#ds3','.da3');" class="btn btn-warning btn-md ar1">تراجع</button>
-      <button type="button" onclick="something('#dropdown-lvl2','#ds6','.da3');" class="btn btn-primary btn-md ar1">تقدم</button>
-      {% else %}
-		    <button type="button" onclick="something('#dropdown-lvl2','#ds3','.da3');" class="btn btn-warning btn-md">Previous</button>
-		    <button type="button" onclick="something('#dropdown-lvl2','#ds6','.da3');" class="btn btn-primary btn-md">Next</button>
-      {% endif %}
-    </center>
+        {% if ar %}
+            {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
+        {% else %}
+            {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
+        {% endif %}
     {{ brp * 3 }}
 	    </div>
 	</div>
-	<div class="panel panel-default hide" id="pa6">
+	<div class="panel panel-default uniqueness" id="pa6">
 	    <div class="panel-heading text-center">
 		<h3 class="text-muted">
       <span class="fa fa-television"></span>
@@ -364,19 +337,15 @@
 		{{ render_field(form.scolor, class="sp") }}<br/>
 		{{ render_field(form.sfont, class="form-control") }}
     {{ brp * 4 }}
-		<center>
-      {% if ar %}
-      <button type="button" onclick="something('#dropdown-lvl2','#ds4','.da3');" class="btn btn-warning btn-md ar1">تراجع</button>
-      <button type="button" onclick="something('#dropdown-lvl2','#ds7','.da3');" class="btn btn-primary btn-md ar1">تقدم</button>
-      {% else %}
-		    <button type="button" onclick="something('#dropdown-lvl2','#ds4','.da3');" class="btn btn-warning btn-md">Previous</button>
-		    <button type="button" onclick="something('#dropdown-lvl2','#ds7','.da3');" class="btn btn-primary btn-md">Next</button>
-      {% endif %}
-		</center>
+        {% if ar %}
+          {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
+        {% else %}
+          {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
+        {% endif %}
     {{ brp * 3 }}
 	    </div>
 	</div>
-	<div class="panel panel-default hide" id="pa7">
+	<div class="panel panel-default uniqueness" id="pa7">
 	    <div class="panel-heading text-center">
 		<h3 class="text-muted">
       <span class="fa fa-television"></span>
@@ -416,26 +385,22 @@
 		</center>
 		<hr>
 		<center>
-		    {{ render_field(form.naudio, class="btn btn-md btn-primary form-control") }}<br/>
-		    {{ render_field(form.announce, class="btn btn-md btn-primary form-control") }}<br/>
-            {{ render_field(form.anr, class='btn btn-md btn-primary form-control') }} <br/>
-            {{ render_field(form.anrt, class="btn btn-md btn-primary form-control")}}
+		    {{ render_field(form.naudio, class="btn btn-md   form-control") }}<br/>
+		    {{ render_field(form.announce, class="btn btn-md   form-control") }}<br/>
+            {{ render_field(form.anr, class='btn btn-md   form-control') }} <br/>
+            {{ render_field(form.anrt, class="btn btn-md   form-control")}}
         {{ brp * 2 }}
 		</center>
 		{{ brp * 4 }}
-		<center>
-      {% if ar %}
-      <button type="button" onclick="something('#dropdown-lvl2','#pa6','.da3');" class="btn btn-warning btn-md ar1">تراجع</button>
-      <button type="button" onclick="something('#dropdown-lvl2','#pa8','.da3');" class="btn btn-primary btn-md ar1">تقدم</button>
-      {% else %}
-		    <button type="button" onclick="something('#dropdown-lvl2','#pa6','.da3');" class="btn btn-warning btn-md">Previous</button>
-		    <button type="button" onclick="something('#dropdown-lvl2','#pa8','.da3');" class="btn btn-primary btn-md">Next</button>
-      {% endif %}
-		</center>
+            {% if ar %}
+                {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
+            {% else %}
+                {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
+            {% endif %}
     {{ brp * 4 }}
 	    </div>
 	</div>
-	<div class="panel panel-default hide" id="pa8">
+	<div class="panel panel-default uniqueness" id="pa8">
 	    <div class="panel-heading text-center">
 		<h3 class="text-muted">
       <span class="fa fa-television"></span>
@@ -480,11 +445,11 @@
 		<br><hr>
 		<br>
 		<center>
-		    {{ render_field(form.background, class="btn btn-md btn-primary form-control") }}
+		    {{ render_field(form.background, class="btn btn-md   form-control") }}
 		    <br><br>
 		    {{ form.bgcolor(class_="sp") }}
 		    <br><hr><br>
-		    {{ render_field(form.rrate, class="btn btn-md btn-primary form-control") }}
+		    {{ render_field(form.rrate, class="btn btn-md   form-control") }}
 		</center>
     {{ brp * 3 }}
 		{% if form.errors %}
@@ -504,15 +469,11 @@
 		    </ol>
 		 {% endif %}
 		</div>
-		    <center>
-      {% if ar %}
-      <button type="button" onclick="something('#dropdown-lvl2','#pa7','.da3');" class="btn btn-warning btn-md ar1">تراجع</button>
-			{{ form.submit(class_="btn btn-md btn-danger ar1") }}
-      {% else %}
-			<button type="button" onclick="something('#dropdown-lvl2','#pa7','.da3');" class="btn btn-warning btn-md">Previous</button>
-			{{ form.submit(class_="btn btn-md btn-danger") }}
-      {% endif %}
-		    </center>
+		    {% if ar %}
+                {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
+            {% else %}
+                {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
+            {% endif %}
         {{ brp * 4 }}
 	    </div>
 	</div>

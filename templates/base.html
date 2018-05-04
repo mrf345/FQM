@@ -67,18 +67,18 @@
     <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
     <script src="{{ url_for('static', filename='disciple.js') }}"></script>
     <script type="text/javascript">
-     {% if not firefox %}
+    {% if not firefox %}
      if (navigator.userAgent.search("Firefox") <= 2 && navigator.userAgent.search("Chrome") <= 2) {
          window.location = '/firefox/4'
      }
      {% endif %}
-     window.onload = function(){
+     window.onload = function () {
          {% if snb %}$("{{ snb }}").addClass("active");{% endif %}
-         {% if slist  %}something("{{ slist[0] }}","{{ slist[2] }}","{{ slist[1] }}");{% endif %}
+         // {% if slist  %}something("{{ slist[0] }}","{{ slist[2] }}","{{ slist[1] }}");{% endif %}
          {% if snb2 %}$("{{ snb2 }}").addClass("active");{% endif %}
          {% if current_user.role_id == 3 %}
-         $('#cls').collapse('show');
-         $('#dropdown-lvl{{ ooid }}').collapse('show');
+         $('#cls').collapse('show')
+         $('#dropdown-lvl{{ ooid }}').collapse('show')
          {% endif %}
          if (! $("#waiting2").hasClass("hide")) {
     	 $("#waiting2").addClass("hide");
