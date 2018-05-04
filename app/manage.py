@@ -29,7 +29,7 @@ def manage():
         ofc = ofc.id
     return render_template("manage.html",
                            ptitle="Management",
-                           snb="#snb1",
+                           navbar="#snb1",
                            ooid=ofc,
                            serial=data.Serial.query,
                            offices=data.Office.query,
@@ -62,8 +62,8 @@ def all_offices():
                            tasks=data.Task.query,
                            users=data.User.query,
                            operators=data.Operators.query,
-                           snb="#snb1",
-                           snb2="#da2")
+                           navbar="#snb1",
+                           hash="#da2")
 
 
 @manage_app.route('/offices/<int:o_id>', methods=['GET', 'POST'])
@@ -120,10 +120,9 @@ def offices(o_id):
                            tasks=data.Task.query,
                            users=data.User.query,
                            operators=data.Operators.query,
-                           snb="#snb1",
-                           slist=["#dropdown-lvl" + str(o_id),
-                                  ".da" + str(o_id + 3),
-                                  "#t1" + str(o_id)])
+                           navbar="#snb1",
+                           dropdown="#dropdown-lvl" + str(o_id),
+                           hash="#t1" + str(o_id))
 
 
 @manage_app.route('/office_a', methods=['GET', 'POST'])
@@ -154,8 +153,8 @@ def office_a():
                            offices=data.Office.query,
                            tasks=data.Task.query,
                            operators=data.Operators.query,
-                           snb="#snb1",
-                           snb2="#da3",
+                           navbar="#snb1",
+                           hash="#da3",
                            serial=data.Serial.query)
 
 
@@ -277,8 +276,8 @@ def search():
                                serialsp=pagination.items,
                                operators=data.Operators.query,
                                len=len,
-                               snb="#snb1",
-                               snb2="#da1",
+                               navbar="#snb1",
+                               hash="#da1",
                                serial=data.Serial.query)
     return render_template("search.html",
                            form=form,
@@ -286,8 +285,8 @@ def search():
                            offices=data.Office.query,
                            tasks=data.Task.query,
                            operators=data.Operators.query,
-                           snb="#snb1",
-                           snb2="#da1",
+                           navbar="#snb1",
+                           hash="#da1",
                            serial=data.Serial.query)
 
 
@@ -349,10 +348,9 @@ def task(o_id):
                            users=data.User.query,
                            operators=data.Operators.query,
                            task=task,
-                           snb="#snb1",
-                           slist=["#dropdown-lvl" + str(task.office_id),
-                                  ".da" + str(task.office_id + 3),
-                                  "#tt" + str(task.office_id) + str(o_id)])
+                           navbar="#snb1",
+                           dropdown="#dropdown-lvl" + str(task.office_id),
+                           hash="#tt" + str(task.office_id) + str(o_id))
 
 
 @manage_app.route('/task_d/<int:t_id>')
@@ -418,8 +416,7 @@ def task_a(o_id):
                            serial=data.Serial.query,
                            tasks=data.Task.query,
                            operators=data.Operators.query,
-                           snb="#snb1",
-                           slist=["#dropdown-lvl" + str(o_id),
-                                  ".da" + str(o_id + 3),
-                                  "#t3" + str(o_id)],
+                           navbar="#snb1",
+                           dropdown="#dropdown-lvl" + str(o_id),
+                           hash="#t3" + str(o_id),
                            ptitle="Add new task")

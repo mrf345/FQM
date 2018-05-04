@@ -35,7 +35,7 @@ def customize():
         return redirect(url_for('core.root'))
     return render_template("customize.html",
                            ptitle="Customization",
-                           snb="#snb2",
+                           navbar="#snb2",
                            vtrue=data.Vid.query.first().enable,
                            strue=data.Slides_c.query.first().status)
 
@@ -96,11 +96,11 @@ def ticket():
     form.printers.data += '_' + str(pr.in_ep) + '_' + str(pr.out_ep)
     form.langu.data = pr.langu
     form.value.data = pr.value
-    return render_template('ticket.html', snb='#snb2',
+    return render_template('ticket.html', navbar='#snb2',
                            ptitle='Tickets',
                            vtrue=data.Vid.query.first().enable,
                            strue=data.Slides_c.query.first().status,
-                           form=form, snb2='#da7')
+                           form=form, hash='#da7')
 
 
 @cust_app.route('/video', methods=['GET', 'POST'])
@@ -147,8 +147,8 @@ def video():
         form.mute.data = vdb.mute
     return render_template('video.html',
                            ptitle='Video settings',
-                           snb='#snb2',
-                           snb2='#da5',
+                           navbar='#snb2',
+                           hash='#da5',
                            form=form,
                            vtrue=data.Vid.query.first().enable,
                            strue=data.Slides_c.query.first().status)
@@ -175,14 +175,15 @@ def slideshow():
                                             error_out=False)
     return render_template("slideshow.html",
                            len=len,
-                           snb="#snb2", sli=data.Slides_c.query.first(),
+                           navbar="#snb2", sli=data.Slides_c.query.first(),
                            mmm=data.Slides.query,
                            slides=pagination.items,
                            pagination=pagination,
                            sm=data.Slides.query.filter(data.Slides.
                                                        ikey != 0).count(),
                            ptitle="All slides",
-                           slist=["#dropdown-lvl3", ".da4", "#ss1"],
+                           hash="#ss1",
+                           dropdown="#dropdown-lvl3",
                            vtrue=data.Vid.query.first().enable,
                            strue=data.Slides_c.query.first().status)
 
@@ -230,8 +231,9 @@ def slide_a():
         return redirect(url_for("cust_app.slideshow"))
     return render_template("slide_add.html",
                            ptitle="Add Slide ",
-                           form=form, snb="#snb2",
-                           slist=["#dropdown-lvl3", ".da4", "#ss3"],
+                           form=form, navbar="#snb2",
+                           hash=1,
+                           dropdown='#dropdown-lvl3',
                            vtrue=data.Vid.query.first().enable,
                            strue=data.Slides_c.query.first().status)
 
@@ -266,9 +268,10 @@ def slide_c():
     form.effect.data = sc.effect
     form.status.data = sc.status
     return render_template("slide_settings.html",
-                           form=form, snb="#snb2",
-                           slist=["#dropdown-lvl3", ".da4", "#ss2"],
+                           form=form, navbar="#snb2",
+                           hash="#ss2",
                            ptitle="Slideshow settings",
+                           dropdown="#dropdown-lvl3",
                            vtrue=data.Vid.query.first().enable,
                            strue=data.Slides_c.query.first().status)
 
@@ -428,9 +431,9 @@ def multimedia(aa):
             return redirect(url_for("cust_app.multimedia", aa=1))
     return render_template("multimedia.html",
                            ptitle="Multimedia",
-                           snb="#snb2",
+                           navbar="#snb2",
                            form=form,
-                           snb2="#da1",
+                           hash="#da1",
                            mmm=mmm,
                            len=len,
                            ml=mdal,
@@ -586,11 +589,9 @@ def displayscreen_c(stab):
     return render_template("display_screen.html",
                            form=form,
                            ptitle="Display Screen customize",
-                           snb="#snb2",
+                           navbar="#snb2",
                            hash=stab,
-                           slist=["#dropdown-lvl2",
-                                  ".da3",
-                                  stab],
+                           dropdown='#dropdown-lvl2',
                            vtrue=data.Vid.query.first().enable,
                            strue=data.Slides_c.query.first().status)
 
@@ -677,10 +678,9 @@ def touchscreen_c(stab):
         form.naudio.data = touch_s.akey
     return render_template("touch_screen.html",
                            ptitle="Touch Screen customize",
-                           snb="#snb2",
+                           navbar="#snb2",
                            form=form,
-                           slist=["#dropdown-lvl1",
-                                  ".da2",
-                                  stab],
+                           dropdown='#dropdown-lvl1',
+                           hash=stab,
                            vtrue=data.Vid.query.first().enable,
                            strue=data.Slides_c.query.first().status)

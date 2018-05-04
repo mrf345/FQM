@@ -6,9 +6,15 @@
 > - [ ] Move, improve general css to mstyle.css
 > - [ ] Move all template inline css to style tag based on classes
 > - [ ] Make google fonts default regardless of lang
+> - [ ] use macros for inline css
 
 - [ ] JsonStream:
-> - [ ] Fix mdruation and effect_duration 
+> - [ ] Fix mdruation and effect_duration
+
+- [ ] Disciple:
+> bugs uniqueness whenever, multiple colorpickers modified. Temp solution :
+> [ ] add to be ignored field to disciple
+> [ ] implement new disciple
 
 - [ ] Template:
 > - [ ] look for template repetitiveness and replace it with macros
@@ -49,9 +55,9 @@
 > - [x] add option in uniqueness to always enforce hash tags (5/4th)
 > - [x] get next, prev and customize btns working with hashtags (5/4th)
 > - [x] uniqueness macro (5/4th)
-> - [ ] get sb_cust, sb_mange working with hashtags
-> - [ ] hashtag url based in the app .py files
-> - [ ] make disciple play well with the hashtags urls
+> - [x] get sb_cust, sb_mange working with hashtags (5/5th)
+> - [x] hashtag url based in the app .py files (5/5th)
+> - [x] make disciple play well with the hashtags urls (5/5th)
 > - [x] make sure forms error handling redirects to the hashtag url (5/4th)
 
 - [ ] Create and use python module based on pos module for cross-platform drawn printing

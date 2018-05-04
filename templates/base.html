@@ -63,7 +63,6 @@
     <script src="{{ url_for('static', filename='backstrap/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='backstrap/js/bootstrap.min.js') }}"></script>
     {{ moment.include_moment(local_js='/static/backstrap/moment.min.js') }}
-    <script src="{{ url_for('static', filename='loader.js') }}"></script>
     <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
     <script src="{{ url_for('static', filename='disciple.js') }}"></script>
     <script type="text/javascript">
@@ -73,17 +72,17 @@
      }
      {% endif %}
      window.onload = function () {
-         {% if snb %}$("{{ snb }}").addClass("active");{% endif %}
-         // {% if slist  %}something("{{ slist[0] }}","{{ slist[2] }}","{{ slist[1] }}");{% endif %}
-         {% if snb2 %}$("{{ snb2 }}").addClass("active");{% endif %}
+         {% if dropdown %} $("{{ dropdown }}").collapse('show') {% endif %} // sidebar collapse for all
+         {% if hash %} $("{{ hash }}").addClass('active') {% endif %} // activating item regardless of uniqueness activation
+         {% if navbar %}$("{{ navbar }}").addClass("active") {% endif %} // activating navbar category
          {% if current_user.role_id == 3 %}
-         $('#cls').collapse('show')
-         $('#dropdown-lvl{{ ooid }}').collapse('show')
+            $('#cls').collapse('show')
+            $('#dropdown-lvl{{ ooid }}').collapse('show')
          {% endif %}
-         if (! $("#waiting2").hasClass("hide")) {
-    	 $("#waiting2").addClass("hide");
-    	 $("#p1").removeClass("hide");
-         }
+         // if (! $("#waiting2").hasClass("hide")) {
+    	 // $("#waiting2").addClass("hide");
+    	 // $("#p1").removeClass("hide");
+         // }
          // Adding disciple to the forms
          disciple({
             identifier: 'form',

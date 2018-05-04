@@ -22,7 +22,6 @@
 {{ uniqueness(hash, form.errors) }} 
 <script type="text/javascript">
     $(document).ready( function () {
-        $('#dropdown-lvl2').collapse('show') // to dropdown display side bar
         // Change img src when select field changes from extFunction.js
         watchIt(
             '#display',
@@ -57,7 +56,7 @@
 {% from "uniqueness.html" import unique_btns %}
 <div class="col-md-12">
     <form method="POST" enctype="multipart/form-data" id="fm">
-      <div class="panel panel-default uniqueness" id="pa1">
+      <div class="panel panel-default uniqueness"   >
     	    <div class="panel-heading text-center">
     		<h3 class="text-muted">
             <span class="fa fa-television"></span>
@@ -132,7 +131,7 @@
         {{ brp * 3 }}
     	    </div>
     	</div>
-	<div class="panel panel-default uniqueness" id="pa2">
+	<div class="panel panel-default uniqueness"   >
 	    <div class="panel-heading text-center">
 		<h3 class="text-muted">
         <span class="fa fa-television"></span>
@@ -190,7 +189,7 @@
     {{ brp * 3 }}
 	    </div>
 	</div>
-	<div class="panel panel-default uniqueness" id="pa3">
+	<div class="panel panel-default uniqueness"   >
 	    <div class="panel-heading text-center">
 		<h3 class="text-muted">
       <span class="fa fa-television"></span>
@@ -244,7 +243,7 @@
     {{ brp * 3 }}
 	    </div>
 	</div>
-	<div class="panel panel-default uniqueness" id="pa4">
+	<div class="panel panel-default uniqueness"   >
 	    <div class="panel-heading text-center">
 		<h3 class="text-muted">
       <span class="fa fa-television"></span>
@@ -297,7 +296,7 @@
     {{ brp * 3 }}
 	    </div>
 	</div>
-	<div class="panel panel-default uniqueness" id="pa6">
+	<div class="panel panel-default uniqueness"   >
 	    <div class="panel-heading text-center">
 		<h3 class="text-muted">
       <span class="fa fa-television"></span>
@@ -345,7 +344,7 @@
     {{ brp * 3 }}
 	    </div>
 	</div>
-	<div class="panel panel-default uniqueness" id="pa7">
+	<div class="panel panel-default uniqueness"   >
 	    <div class="panel-heading text-center">
 		<h3 class="text-muted">
       <span class="fa fa-television"></span>
@@ -400,7 +399,7 @@
     {{ brp * 4 }}
 	    </div>
 	</div>
-	<div class="panel panel-default uniqueness" id="pa8">
+	<div class="panel panel-default uniqueness"   >
 	    <div class="panel-heading text-center">
 		<h3 class="text-muted">
       <span class="fa fa-television"></span>

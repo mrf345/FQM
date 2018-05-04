@@ -54,7 +54,7 @@ def admin_u():
         flash(get_lang(2), 'info')
         return redirect(url_for('administrate.logout'))
     return render_template('admin_u.html',
-                           snb='#snb3',
+                           navbar='#snb3',
                            ptitle="Updating Admin Password",
                            form=form)
 
@@ -95,7 +95,7 @@ def csvd(t_name):
         return redirect(url_for('administrate.csvd',
                                 t_name=form.table.data))
     return render_template('csvs.html',
-                           snb='#snb3',
+                           navbar='#snb3',
                            ptitle='Export CSV',
                            form=form)
 
@@ -116,7 +116,7 @@ def users():
                                           error_out=False)
     return render_template('users.html',
                            ptitle='All users',
-                           snb='#snb3',
+                           navbar='#snb3',
                            len=len,
                            offices=data.Office.query,
                            pagination=pagination,
@@ -154,10 +154,9 @@ def operators(t_id):
                            users=data.User.query,
                            tasks=data.Task.query,
                            operators=data.Operators.query,
-                           snb="#snb1",
-                           slist=["#dropdown-lvl" + str(t_id),
-                           ".da" + str(t_id + 3),
-                           "#to" + str(t_id)])
+                           navbar="#snb1",
+                           dropdown="#dropdown-lvl" + str(t_id),
+                           hash="#to" + str(t_id))
 
 
 @administrate.route('/user_a', methods=['GET', 'POST'])
@@ -191,7 +190,7 @@ def user_a():
               "info")
         return redirect(url_for('administrate.users'))
     return render_template('user_add.html',
-                           form=form, snb='#snb3',
+                           form=form, navbar='#snb3',
                            ptitle='Add user')
 
 
@@ -233,7 +232,7 @@ def user_u(u_id):
     if u.role_id == 3:
         form.offices.data = data.Operators.query.filter_by(id=u.id).first().office_id
     return render_template('user_update.html',
-                           form=form, snb='#snb3',
+                           form=form, navbar='#snb3',
                            ptitle='Update user : ' + u.name,
                            u=u)
 

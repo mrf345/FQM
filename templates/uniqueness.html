@@ -9,7 +9,7 @@
             local_url: 'true',
             {% if hash %} start_with: {{ hash - 1}} {% endif %}
         }, function (data) {
-            $("[id^='ds']").removeClass('active')
+            if (unique.s_length > 2) $("[id^='ds']").removeClass('active')
             if (data === 'next' || data === 'back') $('#ds' + (unique.turn === -1 && data === 'back' ? this.s_length : unique.turn + 1)).addClass('active')
             else $('#ds' + (data + 1)).addClass('active')
         })

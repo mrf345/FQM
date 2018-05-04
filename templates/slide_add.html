@@ -6,6 +6,7 @@
 {% block title %} FQM - {{ ptitle  }} {% endblock %}
 
 {% block head %}
+{% from 'uniqueness.html' import uniqueness %}
 {{ super() }}
 {{ fontpicker.loader() }}
 {{ colorpicker.loader() }}
@@ -16,6 +17,8 @@
 	families="['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade']",
 	urlCss=url_for('static', filename='css/gfonts.css'))
 }}
+<!-- Loading uniqueness macro -->
+{{ uniqueness(hash, form.errors) }}
 {% endblock %}
 
 {%- from "sb_cust.html" import sb_cust with context %}
@@ -25,36 +28,10 @@
 
 {% block page_content %}
 {% from "_helpers.html" import render_field %}
-<script type="text/javascript">
-	// TODO: Replace this mess with uniqueness
-	function hide(a){
-		if (a == "#p1"){
-			$(a).addClass('hide');
-	 		$('#p2').removeClass('hide');
-    } else {
-	 		$(a).addClass('hide');
-	 		$('#p1').removeClass('hide');
-    }
- 	}
-</script>
+{% from "uniqueness.html" import unique_btns %}
 <div class="col-md-12">
-    <div class="panel panel-default" id="waiting2">
-	<div class="panel-body">
-	    <div class="well">
-		{{ brp*8 }}
-		<center><i class="fa fa-5x fa-refresh fa-spin text-danger"></i></center>
-		<br/>
-    {% if ar %}
-		<h3 class="text-danger text-center ar1"> الرجاء الإنتظار لدقيقة , يتم اللآن التحميل</h3>
-    {% else %}
-		<h3 class="text-danger text-center">Wait a minute please, loading ..</h3>
-    {% endif %}
-		{{ brp*8 }}
-	    </div>
-	</div>
-    </div>
     <form method="POST" enctype="multipart/form-data" id="fm">
-	<div class="panel panel-default hide" id="p1">
+	<div class="panel panel-default uniqueness">
 	    <div class="panel-heading text-center">
 		<h3 class="text-muted">
       <span class="fa fa-plus"></span>
@@ -92,17 +69,15 @@
 		{{ render_field(form.hbg, class="spa", value="rgba(0,0,0,0.5)") }}<br>
 		{{ render_field(form.hfont, class="form-control") }}
     {{ brp * 5 }}
-		<center>
-      {% if ar %}
-		    <a href="javascript:hide('#p1');"><button type="button" class="btn btn-md btn-primary ar1">تقدم</button></a>
-      {% else %}
-		    <a href="javascript:hide('#p1');"><button type="button" class="btn btn-md btn-primary">Next</button></a>
-      {% endif %}
-		</center>
+		{% if ar %}
+			{{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
+		{% else %}
+			{{ unique_btns('Previous', 'Customize', 'Next', ar) }}
+		{% endif %}
         {{ brp * 2 }}
 	    </div>
 	</div>
-	<div class="panel panel-default hide" id="p2">
+	<div class="panel panel-default uniqueness">
 	    <div class="panel-heading text-center">
 		<h3 class="text-muted">
       <span class="fa fa-plus"></span>
@@ -145,18 +120,14 @@
     {% endif %}
 		<br>
 		{{ render_field(form.background, class="btn btn-md btn-primary form-control") }}
-		<br><br>
+		{{ brp * 2 }}
 		<center>{{ form.bgcolor(class_="sp", value="rgb(255,0,0)") }}</center>
-		<br><br><br><br>
-		<center>
-      {% if ar %}
-      <a href="javascript:hide('#p2');"><button type="button" class="btn btn-md btn-primary ar1">تراجع</button></a>
-      {{ form.submit(class_="btn btn-md btn-danger ar1") }}
-      {% else %}
-		    <a href="javascript:hide('#p2');"><button type="button" class="btn btn-md btn-primary">Previous</button></a>
-		    {{ form.submit(class_="btn btn-md btn-danger") }}
-      {% endif %}
-		</center>
+		{{ brp * 4 }}
+		{% if ar %}
+			{{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
+		{% else %}
+			{{ unique_btns('Previous', 'Customize', 'Next', ar) }}
+		{% endif %}
 	    </div>
 	</div>
     </form>

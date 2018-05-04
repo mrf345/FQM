@@ -6,6 +6,7 @@
 {% block title %} FQM - {{ ptitle  }} {% endblock %}
 
 {% block head %}
+{% from 'uniqueness.html' import uniqueness %}
 {{ super() }}
 <script src="{{ url_for('static', filename='extFunctions.js') }}"></script>
 {{ fontpicker.loader() }}
@@ -17,11 +18,10 @@
   families="['Aref Ruqaa', 'Cairo', 'Amiri', 'Changa', 'El Messiri', 'Harmattan', 'Jomhuria', 'Katibeh', 'Lalezar', 'Lateef', 'Lemonada', 'Mada', 'Mirza', 'Rakkas', 'Reem Kufi', 'Scheherazade']",
   urlCss=url_for('static', filename='css/gfonts.css'))
 }}
+<!-- Loading uniqueness macro -->
+{{ uniqueness(hash, form.errors) }}
 <script type="text/javascript">
 $(document).ready( function () {
-  // TODO: Replace this mess with uniqueness
-  {% if slist and not form.errors %}something("{{ slist[0] }}","{{ slist[2] }}","{{ slist[1] }}");{% endif %}
-  {% if form.errors %} something('#dropdown-lvl1','#ts4','.da2'); {% endif %}
   // Change img src when select field changes from extFunction.js
     watchIt(
       '#touch',
@@ -48,26 +48,10 @@ $(document).ready( function () {
 
 {% block page_content %}
 {% from "_helpers.html" import render_field %}
+{% from "uniqueness.html" import unique_btns %}
 <div class="col-md-12">
-  <div class="panel panel-default" id="waiting">
-	  <div class="panel-body">
-	    <div class="well">
-		    {{ brp*8 }}
-		    <center><i class="fa fa-5x fa-refresh fa-spin text-danger"></i></center>
-		    <br/>
-        {% if ar %}
-		    <h3 class="text-danger text-center ar1"> الرجاء الإنتظار لدقيقة , يتم اللآن التحميل</h3>
-        {% else %}
-		    <h3 class="text-danger text-center">Wait a minute please, loading ..</h3>
-        {% endif %}
-		    {{ brp*8 }}
-	    </div>
-	  </div>
-  </div>
   <form method="POST" enctype="multipart/form-data" id="fm" class=".disciple">
-    <div class="panel panel-default hide" id="p0">
-      <!-- Changed first side-bar element id to 0 to fix some strange bug after adding font picker ..
-        you'll never know where they come from .. lol -->
+    <div class="panel panel-default uniqueness">
       <div class="panel-heading text-center">
         {% if ar %}
         <h3 class="text-muted">
@@ -120,18 +104,14 @@ $(document).ready( function () {
         </h4>
         {% endif %}
         {{ brp * 5 }}
-        <center>
-          {% if ar %}
-          <button type="button" href="#" class="btn btn-warning btn-md disabled ar1">تراجع</button>
-          <button type="button" onclick="something('#dropdown-lvl1','#ts2','.da2');" class="btn btn-primary btn-md ar1">تقدم</button>
-          {% else %}
-          <button type="button" href="#" class="btn btn-warning btn-md disabled">Previous</button>
-          <button type="button" onclick="something('#dropdown-lvl1','#ts2','.da2');" class="btn btn-primary btn-md">Next</button>
-          {% endif %}
-        </center>
+            {% if ar %}
+                {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
+            {% else %}
+                {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
+            {% endif %}
         {{ brp * 3 }}
     </div>
-	<div class="panel panel-default hide" id="p2">
+	<div class="panel panel-default uniqueness">
 	    <div class="panel-heading text-center">
 		<h3 class="text-muted">
       {% if ar %}
@@ -174,18 +154,14 @@ $(document).ready( function () {
 		{{ render_field(form.hbg, class="spa") }}<br/>
   	{{ render_field(form.hfont, class="form-control") }}
 		{{ brp * 5 }}
-		<center>
-      {% if ar %}
-      <button type="button" onclick="something('#dropdown-lvl1','#ts0','.da2');" class="btn btn-warning btn-md disabled ar1">تراجع</button>
-      <button type="button" onclick="something('#dropdown-lvl1','#ts3','.da2');" class="btn btn-primary btn-md ar1">تقدم</button>
-      {% else %}
-		    <button type="button" onclick="something('#dropdown-lvl1','#ts0','.da2');" class="btn btn-warning btn-md disabled">Previous</button>
-		    <button type="button" onclick="something('#dropdown-lvl1','#ts3','.da2');" class="btn btn-primary btn-md">Next</button>
-      {% endif %}
-		</center>
+            {% if ar %}
+                {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
+            {% else %}
+                {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
+            {% endif %}
     {{ brp * 3 }}
 	</div>
-	<div class="panel panel-default hide" id="p3">
+	<div class="panel panel-default uniqueness">
 	    <div class="panel-heading text-center">
   		<h3 class="text-muted">
         {% if ar %}
@@ -229,18 +205,14 @@ $(document).ready( function () {
 	    {{ render_field(form.tcolor, class="form-control") }}<br/>
       {{ render_field(form.tfont, class="form-control") }}
 		  {{ brp * 5 }}
-	    <center>
-    {% if ar %}
-    <button type="button" onclick="something('#dropdown-lvl1','#ts2','.da2');" class="btn btn-warning btn-md ar1">تراجع</button>
-		<button type="button" onclick="something('#dropdown-lvl1','#ts4','.da2');" class="btn btn-primary btn-md ar1">تقدم</button>
-    {% else %}
-		<button type="button" onclick="something('#dropdown-lvl1','#ts2','.da2');" class="btn btn-warning btn-md">Previous</button>
-		<button type="button" onclick="something('#dropdown-lvl1','#ts4','.da2');" class="btn btn-primary btn-md">Next</button>
-    {% endif %}
-	    </center>
+        {%if ar %}
+            {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
+        {% else %}
+            {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
+        {% endif %}
       {{ brp * 3 }}
 	</div>
-	<div class="panel panel-default hide" id="p4">
+	<div class="panel panel-default uniqueness">
 	    <div class="panel-heading text-center">
     	<h3 class="text-muted">
         {% if ar %}
@@ -281,8 +253,8 @@ $(document).ready( function () {
 		{{ render_field(form.msize, class="form-control") }}<br/>
 		{{ render_field(form.mcolor, class="sp") }}<br/>
 		{{ render_field(form.mbg, class="spa") }}<br/>
-  	{{ render_field(form.mfont) }}
-		<br><br><hr><br>
+  	    {{ render_field(form.mfont) }}
+		{{ brp * 4 }}
 		<center>
 		    <a data-toggle="modal" data-target="#mym">
 			<span class="img-responsive img-thumbnail fa fa-5x fa-bell" id="map"></span>
@@ -297,19 +269,15 @@ $(document).ready( function () {
 		</center>
 		<br>
 		<center>{{ render_field(form.naudio, class="btn btn-primary btn-md form-control") }}</center>
-		<br><br><br>
-		<center>
-      {% if ar %}
-      <button type="button" onclick="something('#dropdown-lvl1','#ts3','.da2');" class="btn btn-warning btn-md ar1">تراجع</button>
-      <button type="button" onclick="something('#dropdown-lvl1','#ts5','.da2');" class="btn btn-primary btn-md ar1">تقدم</button>
-      {% else %}
-		    <button type="button" onclick="something('#dropdown-lvl1','#ts3','.da2');" class="btn btn-warning btn-md">Previous</button>
-		    <button type="button" onclick="something('#dropdown-lvl1','#ts5','.da2');" class="btn btn-primary btn-md">Next</button>
-      {% endif %}
-		</center>
-	    </div>
+    {{ brp * 3 }}
+    {% if ar %}
+        {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
+    {% else %}
+        {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
+    {% endif %}
+	  </div>
 	</div>
-	<div class="panel panel-default hide" id="p5">
+	<div class="panel panel-default uniqueness">
 	    <div class="panel-heading text-center">
   		<h3 class="text-muted">
         {% if ar %}
@@ -358,16 +326,11 @@ $(document).ready( function () {
 		    </ol>
 		    {% endif %}
 		</div>
-		    <center>
-
-      {% if ar %}
-      <button type="button" onclick="something('#dropdown-lvl1','#ts4','.da2');" class="btn btn-warning btn-md ar1">تراجع</button>
-			{{ form.submit(class_="btn btn-md btn-danger ar1", type="submit") }}
-      {% else %}
-      <button type="button" onclick="something('#dropdown-lvl1','#ts4','.da2');" class="btn btn-warning btn-md">Previous</button>
-			{{ form.submit(class_="btn btn-md btn-danger", type="submit") }}
-      {% endif %}
-		    </center>
+		        {% if ar %}
+                {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
+            {% else %}
+                {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
+            {% endif %}
         {{ brp * 3 }}
 	    </div>
 	</div>
