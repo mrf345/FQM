@@ -53,6 +53,31 @@ tar = [(0, u"القالب الأول"),
        (1, u"القالب الثاني"),
        (2, u"القالب الثالث")]
 
+
+def announce_tuples():
+    """ To generate list of tuples for announcement languages mixed together """
+    languages = [
+        {'desc': 'English', 'sc': 'en-us'},
+        {'desc': 'Arabic', 'sc': 'ar'},
+        {'desc': 'Italian','sc': 'it'},
+        {'desc': 'French', 'sc': 'fr'},
+        {'desc': 'Spanish', 'sc': 'es'}
+    ]
+    toReturn = [("false", "Disable")]
+    for lang in languages:
+        toReturn.append((lang['sc'], lang['desc']))
+    for lang in languages:
+        for other_lang in languages:
+            if lang != other_lang:
+                toReturn.append((lang['sc'] + ',' + other_lang['sc'], lang['desc'] + ' ' + other_lang['desc']))
+                for another_lang in languages:
+                    if lang != another_lang and other_lang != another_lang:
+                        toReturn.append(
+                            (lang['sc'] + ',' + other_lang['sc'] + ',' + another_lang['sc'],
+                            lang['desc'] + ' ' + other_lang['desc'] + ' ' + another_lang['desc']))
+    return toReturn
+
+
 # -- Customizing and updating touch
 
 
@@ -226,16 +251,7 @@ class Display_c(FlaskForm):
         ], coerce=str
     )
     announce = SelectField("Verbal announcement : ",
-                           choices=[("en-us", "English"),
-                                    ("ar", "Arabic"),
-                                    ("it", "Italian"),
-                                    ("es", "Spanish"),
-                                    ("fr", "French"),
-                                    ("en-us,ar", "English and Arabic"),
-                                    ("en-us,it", "English and Italian"),
-                                    ("en-us,es", "English and Spanish"),
-                                    ("en-us,fr", "English and French"),
-                                    ("false", "Disable")],
+                           choices=announce_tuples(),
                            coerce=str)
     anr = SelectField('Number of announcement repeating : ',
                       choices=[(1, 'One time'),

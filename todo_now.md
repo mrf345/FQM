@@ -11,11 +11,6 @@
 - [ ] JsonStream:
 > - [ ] Fix mdruation and effect_duration
 
-- [ ] Disciple:
-> bugs uniqueness whenever, multiple colorpickers modified. Temp solution :
-> [ ] add to be ignored field to disciple
-> [ ] implement new disciple
-
 - [ ] Template:
 > - [ ] look for template repetitiveness and replace it with macros
 > - [ ] replace manage panel headers and footers with macros
@@ -26,9 +21,10 @@
 > - [ ] add activities log to profile
 > - [ ] improve office operators interface
 
-- [ ] Nested audio announcement:
-> - [ ] use check boxes to get langs
-> - [ ] select field to enable disable announcement and toggle display check boxes
+- [x] Nested audio announcement: (5/7th)
+~~ - use check boxes to get langs ~~
+~~ - select field to enable disable announcement and toggle display check boxes ~~
+> - [x] use nested tuples function generator instead (5/7th)
 
 ## To Add:
 

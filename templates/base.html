@@ -74,16 +74,11 @@
      window.onload = function () {
          {% if dropdown %} $("{{ dropdown }}").collapse('show') {% endif %} // sidebar collapse for all
          {% if hash %} $("{{ hash }}").addClass('active') {% endif %} // activating item regardless of uniqueness activation
-         {% if navbar %}$("{{ navbar }}").addClass("active") {% endif %} // activating navbar category
+         {% if navbar %} $("{{ navbar }}").addClass("active") {% endif %} // activating navbar category
          {% if current_user.role_id == 3 %}
             $('#cls').collapse('show')
             $('#dropdown-lvl{{ ooid }}').collapse('show')
          {% endif %}
-         // if (! $("#waiting2").hasClass("hide")) {
-    	 // $("#waiting2").addClass("hide");
-    	 // $("#p1").removeClass("hide");
-         // }
-         // Adding disciple to the forms
          disciple({
             identifier: 'form',
             {% if ar %}
