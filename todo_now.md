@@ -22,8 +22,8 @@
 > - [ ] improve office operators interface
 
 - [x] Nested audio announcement: (5/7th)
-~~ - use check boxes to get langs ~~
-~~ - select field to enable disable announcement and toggle display check boxes ~~
+> ~~use check boxes to get langs~~
+> ~~select field to enable disable announcement and toggle display check boxes~~
 > - [x] use nested tuples function generator instead (5/7th)
 
 ## To Add:
