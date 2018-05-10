@@ -29,6 +29,9 @@
 - [ ] initial disciple with uniqueness:
 > - [ ] figure out way to get the initial url hashed in display_c, touch_c and, slide_a
 
+- [ ] Delete all offices
+> - [ ] fix delete all false reset request 
+
 
 ## To Add:
 
@@ -66,6 +69,7 @@
 > - [ ] remove browser detection from back-end
 
 #### move these, to todo_next:
+
 - [ ] Create and use python module based on pos module for cross-platform drawn printing
 
 - [ ] Smart tickets. Doubtful though !
