@@ -152,6 +152,7 @@ def serial(t_id):
                             oot.prefix + str(oot.name),
                             tnum, ppt.name,
                             oot.prefix + '.' + str(cuticket.number), l=langu)
+                            # FIX Issue printer on windows
                     p = True
                 else:
                     p = None
