@@ -35,6 +35,8 @@ from printer import listp
 from flask_datepicker import datepicker
 from flask_colorpicker import colorpicker
 from flask_fontpicker import fontpicker
+from languages import GUI as LANGUAGES
+
 
 def create_app():
     app = Flask(__name__, static_folder=r_path('static'),
@@ -135,13 +137,13 @@ class NewWindow(QWidget):
         # need to used objective message boxs instead of functions to set font
         self.Arial = QFont("", 15, QFont.Bold)
         self.Arials = QFont("", 10, QFont.Bold)
-        # Language support varibels used by translate func
-        self.Arabic = None
+        # Language support variable 
+        self.Language = 'en'
         self.Runningo = False
         icon = QIcon(icp)
         self.SelfIinit(icon)
         self.center()
-        self.Llists(glo)
+        self.langsList(glo)
         self.set_Abutton(icp, glo)
         self.Lists(glo)
         self.Flabel(glo)
@@ -175,26 +177,76 @@ class NewWindow(QWidget):
         self.l.setAlignment(Qt.AlignCenter | Qt.AlignHCenter)
         self.l.setFont(fontt)
         self.t = QLabel('Texted', self)
-        self.t.setText("Server is <u> Not running </u> <br>")
+        self.t.setText(self.getTrans('11'))
         self.t.setOpenExternalLinks(True)
         self.t.setAlignment(Qt.AlignCenter | Qt.AlignHCenter)
         self.t.setFont(fontt)
-        self.t.setToolTip('Status of the server')
-        self.l.setToolTip('Status of the server')
+        self.t.setToolTip(self.getTrans('9'))
+        self.l.setToolTip(self.getTrans('9'))
         glo.addStretch()
         glo.addWidget(self.l)
         glo.addWidget(self.t)
         glo.addStretch()
 
+    def langsList(self, glo):
+        self.langs = {
+            # languages to be displayed in select
+            'en': 'English',
+            'ar': 'Arabic',
+            'fr': 'French',
+            'it': 'Italian',
+            'es': 'Spanish'
+        }
+        self.langs_list = QComboBox()
+        self.langs_list.addItems(self.langs.values())
+        self.langs_list.setCurrentIndex(1)
+        self.langs_list.setToolTip(self.getTrans('1'))
+        self.langs_list.currentIndexChanged.connect(self.langChange)
+        glo.addWidget(self.langs_list)
+        
+    def langChange (self):
+        self.language = list(self.langs.keys())[self.langs_list.currentIndex()]
+        self.langs_list.setToolTip(self.getTrans('1'))
+        self.Amsgb = self.getTrans('2')
+        self.abutton.setToolTip(
+            self.getTrans('2')
+        )
+        self.mbutton.setText(self.getTrans('3'))
+        self.mbutton.setToolTip(self.getTrans('4'))
+        self.mbutton2.setText(self.getTrans('5'))
+        self.mbutton2.setToolTip(self.getTrans('6'))
+        self.sl.setToolTip(
+            self.getTrans('7')
+        )
+        self.sl2.setToolTip(self.getTrans('8'))
+        self.t.setToolTip(self.getTrans('9'))
+        self.l.setToolTip(self.getTrans('9'))
+        if self.Runningo:
+            pp = self.slchange()
+            addr = self.getTrans('10')
+            addr += u"<a href='http://"
+            addr += pp[1].split(',')[1] + u":" + pp[0]
+            addr += u"'> http://" + pp[1].split(',')[1] + u":" + pp[0]
+            addr += u"</a>"
+            self.t.setText(addr)
+        else:
+            self.t.setText(self.getTrans('11'))
+    
+    def getTrans(self, index):
+        lang = list(self.langs.keys())[self.langs_list.currentIndex()]
+        try:
+            return LANGUAGES[lang][index]
+        except Exception:
+            return None
+
     def Lists(self, glo):
         ips = self.get_ips()
         self.sl = QComboBox()
         self.sl.addItems(ips)
-        self.sl.setToolTip(
-            'Select network interface with ip, so the server runs on it')
+        self.sl.setToolTip(self.getTrans('7'))
         self.sl2 = QComboBox()
         self.get_ports()
-        self.sl2.setToolTip('Select a port, so server runs through it')
+        self.sl2.setToolTip('8')
         self.sl.currentIndexChanged.connect(self.get_ports)
         glo.addWidget(self.sl)
         glo.addWidget(self.sl2)
@@ -226,32 +278,6 @@ class NewWindow(QWidget):
         self.sl2.clear()
         self.sl2.addItems(m_ports)
 
-    def Llists(self, glo):
-        hlayout = QHBoxLayout()
-        self.lebutton = QPushButton('English', self)
-        self.lebutton.setToolTip('Change language to English')
-        self.lebutton.setEnabled(False)
-        self.lebutton.setFont(self.Arials)
-        self.labutton = QPushButton('Arabic', self)
-        self.labutton.setFont(self.Arials)
-        if os.name == 'nt':
-            self.lebutton.setIcon(QPixmap(r_path(
-                'static\\images\\english.png')))
-            self.labutton.setIcon(QPixmap(r_path(
-                'static\\images\\arabic.png')))
-        else:
-            self.lebutton.setIcon(QPixmap(r_path(
-                'static/images/english.png')))
-            self.labutton.setIcon(QPixmap(r_path(
-                'static/images/arabic.png')))
-        self.labutton.setToolTip('Change language to Arabic')
-        self.labutton.setEnabled(True)
-        self.lebutton.clicked.connect(partial(self.translate, ar=False))
-        self.labutton.clicked.connect(self.translate)
-        hlayout.addWidget(self.lebutton)
-        hlayout.addWidget(self.labutton)
-        glo.addLayout(hlayout)
-
     def slchange(self):
         return [self.sl2.currentText(), self.sl.currentText()]
 
@@ -270,8 +296,8 @@ class NewWindow(QWidget):
             self.mbutton2.setIcon(QPixmap(r_path('static\\images\\pause.png')))
         else:
             self.mbutton2.setIcon(QPixmap(r_path('static/images/pause.png')))
-        self.mbutton.setToolTip('Start the server')
-        self.mbutton2.setToolTip('Stop the server')
+        self.mbutton.setToolTip(self.getTrans('4'))
+        self.mbutton2.setToolTip(self.getTrans('6'))
         self.mbutton2.setEnabled(False)
         self.mbutton2.setFont(self.Arials)
         hlayout.addWidget(self.mbutton)
@@ -295,24 +321,14 @@ class NewWindow(QWidget):
                     self.ic1 = QIcon(r_path('static/images/play.png'))
                 self.ic1 = self.ic1.pixmap(70, 70, QIcon.Active, QIcon.On)
                 self.l.setPixmap(self.ic1)
-                if self.Arabic is None:
-                    pp = self.slchange()
-                    addr = "Server is <u>Running</u> <br>"
-                    addr += " On : <a href='http://"
-                    addr += pp[1].split(',')[1] + ":" + pp[0]
-                    addr += "'> http://" + pp[1].split(',')[1] + ":" + pp[0]
-                    addr += "</a>"
-                    self.t.setText(addr)
-                    self.t.setFont(self.Arial)
-                else:
-                    pp = self.slchange()
-                    addr = u"الخدمة <u>مشغــلة</u> و تبث على : <br>"
-                    addr += u"<a href='http://"
-                    addr += pp[1].split(',')[1] + u":" + pp[0]
-                    addr += u"'> http://" + pp[1].split(',')[1] + u":" + pp[0]
-                    addr += u"</a>"
-                    self.t.setText(addr)
-                    self.t.setFont(self.Arial)
+                pp = self.slchange()
+                addr = self.getTrans('10')
+                addr += "<a href='http://"
+                addr += pp[1].split(',')[1] + ":" + pp[0]
+                addr += "'> http://" + pp[1].split(',')[1] + ":" + pp[0]
+                addr += "</a>"
+                self.t.setText(addr)
+                self.t.setFont(self.Arial)
                 self.P.start()
                 self.Runningo = True
             except:
@@ -329,10 +345,7 @@ class NewWindow(QWidget):
                 self.mbutton2.setEnabled(False)
                 self.sl.setEnabled(True)
                 self.sl2.setEnabled(True)
-                if self.Arabic is None:
-                    self.t.setText("Server is <u> Not running </u> <br>")
-                else:
-                    self.t.setText(u"الــخـدمة <u>متــوقفــة</u><br>")
+                self.t.setText(self.getTrans('11'))
                 # removing the last used port to avoid termination error
                 cind = self.sl2.currentIndex()
                 self.sl2.removeItem(cind)
@@ -345,26 +358,14 @@ class NewWindow(QWidget):
 
     def set_Abutton(self, icon, glo):
         def show_about(nself):
-            if nself.Arabic is None:
-                Amsg = "<center>All credit reserved to the author of FQM "
-                Amsg += " version " + version
-                Amsg += ", This work is a free, open-source project licensed "
-                Amsg += " under Mozilla Public License version 2.0 . <br><br>"
-                Amsg += " visit us for more infos and how-tos :<br> "
-                Amsg += "<b><a href='https://fqms.github.io/'> "
-                Amsg += "https://fqms.github.io/ </a> </b></center>"
-                Amsgb = "About FQM"
-            else:
-                Amsg = u" <center> "
-                Amsg += u" إدارة الحشود الحر النسخة " + version + u" "
-                Amsg += u"حقوق نشر هذا البرنامج محفوظة و تخضع "
-                Amsg += u" لرخصة البرامج الحرة و مفتوحة المصدر "
-                Amsg += u" Mozilla Public License version 2.0 . "
-                Amsg += u"<br><br> "
-                Amsg += u"للمزيد من المعلومات و الشروحات , قم بزيارة :"
-                Amsg += u"<br> <b><a href='https://fqms.github.io/'>"
-                Amsg += u"https://fqms.github.io </a> </b></center>"
-                Amsgb = u"عن النظام"
+            Amsg = u" <center> "
+            Amsg += self.getTrans('12') + version + u" "
+            Amsg += self.getTrans('13')
+            Amsg += self.getTrans('14')
+            Amsg += self.getTrans('15')
+            Amsg += u"<br> <b><a href='https://fqms.github.io/'>"
+            Amsg += u"https://fqms.github.io </a> </b></center>"
+            Amsgb = self.getTrans('2')
             return QMessageBox.about(
                 self,
                 Amsgb,
@@ -372,20 +373,15 @@ class NewWindow(QWidget):
         self.abutton = QPushButton('', self)
         self.abutton.setIcon(QPixmap(icon))
         self.abutton.setIconSize(QSize(150, 70))
-        self.abutton.setToolTip('About FQM')
+        self.abutton.setToolTip(self.getTrans('2'))
         self.abutton.clicked.connect(partial(show_about, self))
         glo.addWidget(self.abutton)
 
     def closeEvent(self, event=None):
         if self.Runningo:
-            if self.Arabic is None:
-                response = self.msgApp(
-                    "Exiting while running",
-                    "Are you really sure, you want to exit ?")
-            else:
-                response = self.msgApp(
-                    u"تأكيد الخروج",
-                    u"تريد بالفعل , الخروج و إيقاف البرنامج ؟")
+            response = self.msgApp(
+                self.getTrans('16'),
+                self.getTrans('17'))
             if response == 'y':
                 if event is not None:
                     event.accept()
@@ -413,30 +409,16 @@ class NewWindow(QWidget):
     def eout(self):
         if self.P.isRunning():
             self.P.stop()
-        if self.Arabic is None:
-            msgg = "<center>"
-            msgg += " Opps, a critical error has occurred, we will be "
-            msgg += " grateful if you can help fixing it, by reporting to us "
-            msgg += " at : <br><br> "
-            msgg += "<b><a href='https://fqms.github.io/'> "
-            msgg += "https://fqms.github.io/ </a></b> </center>"
-            mm = QMessageBox.critical(
-                self,
-                "Critical Error",
-                msgg,
-                QMessageBox.Ok)
-        else:
-            msgg = u"<center>"
-            msgg += u"حدث خطأ فادح في تشغيل النظام , سنكون شاكرين لك إن "
-            msgg += u"قمت بتبليغنا عنه , ليتم إصلاحه في أقرب وقت "
-            msgg += u"<br>"
-            msgg += u"<br><b><a href='https://fqms.github.io/'> "
-            msgg += u"https://fqms.github.io </a></b> </center>"
-            mm = QMessageBox.critical(
-                self,
-                u"خطأ في التشغيل",
-                msgg,
-                QMessageBox.Ok)
+        msgg = u"<center>"
+        msgg += self.getTrans('18')
+        msgg += self.getTrans('19')
+        msgg += u"<br><b><a href='https://fqms.github.io/'> "
+        msgg += u"https://fqms.github.io </a></b> </center>"
+        mm = QMessageBox.critical(
+            self,
+            self.getTrans('20'),
+            msgg,
+            QMessageBox.Ok)
 
     def center(self):
         qrect = self.frameGeometry()
@@ -457,68 +439,6 @@ class NewWindow(QWidget):
             except:
                 pass
         return il
-
-    def translate(self, ar=True):
-        if ar:
-            self.Arabic = "arabic"
-            self.labutton.setEnabled(False)
-            self.labutton.setText(u"العربية")
-            self.labutton.setToolTip(u"تغير اللغة إلى العربية")
-            self.lebutton.setText(u"الإنجليزية")
-            self.lebutton.setToolTip(u"تغير اللغة إلى الإنجليزية")
-            self.lebutton.setEnabled(True)
-            self.Amsgb = u"عن النظام"
-            self.abutton.setToolTip(
-                u"عن النظام"
-            )
-            self.mbutton.setText(u"تشغــيل")
-            self.mbutton.setToolTip(u"تشغيل الخدمة")
-            self.mbutton2.setText(u"إيــقاف")
-            self.mbutton2.setToolTip(u"إيقاف الخدمة")
-            self.sl.setToolTip(
-                u"إختار عنوان IP ليتم بث الخدمة عليه")
-            self.sl2.setToolTip(u"إختار منفذ ليتم بث الخدمة من خلاله")
-            self.t.setToolTip(u"حالة الخدمة ")
-            self.l.setToolTip(u"حالة الخدمة ")
-            if self.Runningo:
-                pp = self.slchange()
-                addr = u"الخدمة <u>مشغــلة</u> و تبث على : <br>"
-                addr += u"<a href='http://"
-                addr += pp[1].split(',')[1] + u":" + pp[0]
-                addr += u"'> http://" + pp[1].split(',')[1] + u":" + pp[0]
-                addr += u"</a>"
-                self.t.setText(addr)
-            else:
-                self.t.setText(u"الــخـدمة <u>متــوقفــة</u><br>")
-        else:
-            self.Arabic = None
-            self.lebutton.setEnabled(False)
-            self.lebutton.setText("English")
-            self.lebutton.setToolTip('Change language to English')
-            self.labutton.setEnabled(True)
-            self.labutton.setText("Arabic")
-            self.labutton.setToolTip('Change language to Arabic')
-            self.Amsgb = "About FQM"
-            self.abutton.setToolTip('About FQM')
-            self.mbutton.setText("Start")
-            self.mbutton.setToolTip("Start the server")
-            self.mbutton2.setText("Stop")
-            self.mbutton2.setToolTip("Stop the server")
-            self.sl.setToolTip(
-                'Select network interface with ip, so the server runs on it')
-            self.sl2.setToolTip('Select a port, so server runs through it')
-            self.t.setToolTip('Status of the server')
-            self.l.setToolTip('Status of the server')
-            if self.Runningo:
-                pp = self.slchange()
-                addr = "Server is <u>Running</u> <br>"
-                addr += " On : <a href='http://"
-                addr += pp[1].split(',')[1] + ":" + pp[0]
-                addr += "'> http://" + pp[1].split(',')[1] + ":" + pp[0]
-                addr += "</a>"
-                self.t.setText(addr)
-            else:
-                self.t.setText("Server is <u> Not running </u> <br>")
 
 
 def run_app():

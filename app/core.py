@@ -19,7 +19,7 @@ from ex_functions import get_lang, say_it
 from shutil import rmtree
 from multiprocessing.pool import ThreadPool
 from sys import platform
-from fmsgs import TTS
+from lanuages import TTS
 
 core = Blueprint('core', __name__)
 

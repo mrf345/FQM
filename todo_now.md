@@ -26,11 +26,15 @@
 > ~~select field to enable disable announcement and toggle display check boxes~~
 > - [x] use nested tuples function generator instead (5/7th)
 
+- [ ] initial disciple with uniqueness:
+> - [ ] figure out way to get the initial url hashed in display_c, touch_c and, slide_a
+
+
 ## To Add:
 
-- [ ] GUI Multilang:
-> - [ ] add fr, es, it to static langs
-> - [ ] replace langs buttons with select field
+- [x] GUI Multilang:
+> - [x] add fr, es, it to static langs
+> - [x] replace langs buttons with select field
 
 - [ ] Implement flask_googletrans:
 > - [ ] add fr, es, it en to /lang
@@ -56,6 +60,12 @@
 > - [x] make disciple play well with the hashtags urls (5/5th)
 > - [x] make sure forms error handling redirects to the hashtag url (5/4th)
 
+- [ ] browser detection:
+> - [ ] move specific browser css to macros
+> - [ ] create and utilize browser_notifier front-end solution
+> - [ ] remove browser detection from back-end
+
+#### move these, to todo_next:
 - [ ] Create and use python module based on pos module for cross-platform drawn printing
 
 - [ ] Smart tickets. Doubtful though !

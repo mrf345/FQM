@@ -8,7 +8,7 @@ from database import db
 import os
 from httplib import HTTPConnection as htp
 from flask import session
-import fmsgs
+import lanuages as LANGUAGES
 from gtts import gTTS as gt
 # Extra functions
 
@@ -89,9 +89,9 @@ def r_path(relative_path):
 def get_lang(i_num):
     """ function to get the set language and return the correct flash
     messages list """
-    msgl = fmsgs.msgsl_en
+    msgl = LANGUAGES.msgsl_en
     if session.get('lang') == 'AR':
-        msgl = fmsgs.msgsl_ar
+        msgl = LANGUAGES.msgsl_ar
     return msgl[i_num]
 
 
