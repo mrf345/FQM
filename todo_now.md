@@ -32,12 +32,18 @@
 - [ ] Delete all offices
 > - [ ] fix delete all false reset request 
 
+- [ ] Un-bundled JS
+> - [ ] make sure of unique toReturn values in all un-bundled js scripts. to avoid future clashes.
 
 ## To Add:
 
 - [x] GUI Multilang:
 > - [x] add fr, es, it to static langs
 > - [x] replace langs buttons with select field
+
+- [ ] Recall announcement
+> - [ ] add special recall value /feed
+> - [ ] add exception to repeat on display.html when special /feed value met
 
 - [ ] Implement flask_googletrans:
 > - [ ] add fr, es, it en to /lang
