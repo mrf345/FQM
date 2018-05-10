@@ -151,7 +151,7 @@ def serial(t_id):
                             oot.prefix + '.' + str(ln + 1),
                             oot.prefix + str(oot.name),
                             tnum, ppt.name,
-                            oot.prefix + '.' + str(cuticket.number), lang=langu)
+                            oot.prefix + '.' + str(cuticket.number), l=langu)
                     p = True
                 else:
                     p = None
