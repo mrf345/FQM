@@ -65,12 +65,8 @@
     {{ moment.include_moment(local_js='/static/backstrap/moment.min.js') }}
     <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
     <script src="{{ url_for('static', filename='disciple.js') }}"></script>
+    <script src="{{ url_for('static', filename='browserNotifier.js') }}"></script>
     <script type="text/javascript">
-    {% if not firefox %}
-     if (navigator.userAgent.search("Firefox") <= 2 && navigator.userAgent.search("Chrome") <= 2) {
-         window.location = '/firefox/4'
-     }
-     {% endif %}
      window.onload = function () {
          {% if dropdown %} $("{{ dropdown }}").collapse('show') {% endif %} // sidebar collapse for all
          {% if hash %} $("{{ hash }}").addClass('active') {% endif %} // activating item regardless of uniqueness activation
@@ -79,6 +75,9 @@
             $('#cls').collapse('show')
             $('#dropdown-lvl{{ ooid }}').collapse('show')
          {% endif %}
+         if ( // to escape firefox notifying while beloading fades
+             location.href.split('/').indexOf('manage') === -1 && location.href.split('/').indexOf('customize') === -1
+         ) browserNotifier({}, function () { $('.navbar-inverse').removeClass('hide') }, function () { $('.navbar-inverse').addClass('hide') })
          disciple({
             identifier: 'form',
             {% if ar %}

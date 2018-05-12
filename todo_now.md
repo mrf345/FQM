@@ -26,20 +26,20 @@
 > ~~select field to enable disable announcement and toggle display check boxes~~
 > - [x] use nested tuples function generator instead (5/7th)
 
-- [ ] initial disciple with uniqueness:
-> - [ ] figure out way to get the initial url hashed in display_c, touch_c and, slide_a
+- [x] initial disciple with uniqueness: (5/11th)
+> - [x] figure out way to get the initial url hashed in display_c, touch_c and, slide_a (5/11th)
 
-- [ ] Delete all offices
-> - [ ] fix delete all false reset request 
+- [x] Delete all offices (5/11th)
+> - [x] fix delete all false reset request (5/11th)
 
 - [ ] Un-bundled JS
 > - [ ] make sure of unique toReturn values in all un-bundled js scripts. to avoid future clashes.
 
 ## To Add:
 
-- [x] GUI Multilang:
-> - [x] add fr, es, it to static langs
-> - [x] replace langs buttons with select field
+- [x] GUI Multilang: (5/10th)
+> - [x] add fr, es, it to static langs (5/10th)
+> - [x] replace langs buttons with select field (5/10th)
 
 - [ ] Recall announcement
 > - [ ] add special recall value /feed
@@ -68,11 +68,12 @@
 > - [x] hashtag url based in the app .py files (5/5th)
 > - [x] make disciple play well with the hashtags urls (5/5th)
 > - [x] make sure forms error handling redirects to the hashtag url (5/4th)
+> - [ ] add special hash callback for disciple to solve remind me later
 
-- [ ] browser detection:
-> - [ ] move specific browser css to macros
-> - [ ] create and utilize browser_notifier front-end solution
-> - [ ] remove browser detection from back-end
+- [x] browser detection: (5/12th)
+> - [x] move specific browser css to macros (5/12th)
+> - [x] create and utilize browser_notifier front-end solution (5/12th)
+> - [x] remove browser detection from back-end (5/12th)
 
 #### move these, to todo_next:
 

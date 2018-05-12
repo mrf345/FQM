@@ -69,12 +69,12 @@ def announce_tuples():
     for lang in languages:
         for other_lang in languages:
             if lang != other_lang:
-                toReturn.append((lang['sc'] + ',' + other_lang['sc'], lang['desc'] + ' ' + other_lang['desc']))
+                toReturn.append((lang['sc'] + ',' + other_lang['sc'], lang['desc'] + ' > ' + other_lang['desc']))
                 for another_lang in languages:
                     if lang != another_lang and other_lang != another_lang:
                         toReturn.append(
                             (lang['sc'] + ',' + other_lang['sc'] + ',' + another_lang['sc'],
-                            lang['desc'] + ' ' + other_lang['desc'] + ' ' + another_lang['desc']))
+                            lang['desc'] + ' > ' + other_lang['desc'] + ' > ' + another_lang['desc']))
     return toReturn
 
 

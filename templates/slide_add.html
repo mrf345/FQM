@@ -18,7 +18,7 @@
 	urlCss=url_for('static', filename='css/gfonts.css'))
 }}
 <!-- Loading uniqueness macro -->
-{{ uniqueness(hash, form.errors) }}
+{{ uniqueness(hash, form.errors, False) }}
 {% endblock %}
 
 {%- from "sb_cust.html" import sb_cust with context %}

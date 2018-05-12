@@ -1,11 +1,11 @@
-{% macro uniqueness(hash=False, errors=False) %}
+{% macro uniqueness(hash=False, errors=False, always=True) %}
 <script src="{{ url_for('static', filename='uniqueness.js') }}"></script>
 <script type="text/javascript">
     var unique = false
     $(document).ready( function () {
         unique = uniqueness({
             effect: 'fade',
-            always_hash: 'true',
+            {% if always %} always_hash: 'true', {% endif %}
             local_url: 'true',
             {% if hash %} start_with: {{ hash - 1}} {% endif %}
         }, function (data) {

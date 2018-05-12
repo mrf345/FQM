@@ -475,7 +475,7 @@ def run_app():
             return redirect(url_for('core.root'))
         flash(get_lang(56), "danger")
         return redirect(url_for('core.root'))
-    # Injecting default varibles to all templates
+    # Injecting default variables to all templates
 
     @app.context_processor
     def inject_vars():
@@ -483,10 +483,6 @@ def run_app():
         ar = False
         if session.get('lang') == 'AR':
             ar = True
-        # adding browser detection var
-        firefox = False
-        if session.get('firefox') == 1:
-            firefox = True
         # modifing side bar spacing for specific paths
         path = request.path
         adml = ['/users', '/user_a', '/admin_u', '/user_u',
@@ -496,6 +492,6 @@ def run_app():
             adme = True
         return dict(is_connected=check_ping, path=path,
                     adme=adme, brp=Markup("<br>"), ar=ar,
-                    firefox=firefox, version=version)
+                    version=version)
     QCoreApplication.processEvents()
     appg.exec_()

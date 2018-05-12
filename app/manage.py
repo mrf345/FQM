@@ -196,10 +196,12 @@ def office_da():
         flash(get_lang(53),
               "danger")
         return redirect(url_for("manage_app.all_offices"))
-    if data.Serial.query.count() > 0:
+    if data.Serial.query.count() > data.Office.query.count():
         flash(get_lang(46),
               "danger")
         return redirect(url_for("manage_app.all_offices"))
+    for s in data.Serial.query:
+        db.session.delete(s)
     for f in data.Office.query:
         for t in data.Task.query.filter_by(office_id=f.id):
             db.session.delete(t)

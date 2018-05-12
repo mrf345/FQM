@@ -83,12 +83,9 @@
         <![endif]-->
         <script src="{{ url_for('static', filename='backstrap/jquery.min.js') }}"></script>
         <script src="{{ url_for('static', filename='backstrap/js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='beloading.js') }}"></script>
+        <script src="{{ url_for('static', filename='browserNotifier.js') }}"></script>
         <script type="text/javascript">
-         {% if not firefox %}
-         if (navigator.userAgent.search("Firefox") <= 2 && navigator.userAgent.search("Chrome") <= 2) {
-             window.location = '/firefox/4'
-         }
-         {% endif %}
          {% if n or form.errors %}
           $(document).ready(function(){
              $("#upd").modal('show');
@@ -96,18 +93,16 @@
          {% endif %}
         </script>
         {{ datepicker.loader() }}
-        <script src="{{ url_for('static', filename='beloading.js') }}" type='text/javascript'></script>
         <script type='text/javascript'>
         $(document).ready(function () {
-          $('.navbar').addClass('hide') // to fix navbar showing over beloading
           beloading({
             background: 'rgba(0,0,0,1)',
             text: ' ',
             icon: ' '
           }, function () {
              setTimeout(function () {
-              $('.navbar').removeClass('hide')
-            }, 1000)})
+                browserNotifier()
+            }, 1500)})
         })
         </script>
 </head>

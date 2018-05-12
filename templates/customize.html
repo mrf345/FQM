@@ -11,15 +11,15 @@
 <script src="{{ url_for('static', filename='beloading.js') }}" type='text/javascript'></script>
 <script type='text/javascript'>
 $(document).ready(function () {
-  $('.navbar').addClass('hide') // to fix navbar showing over beloading
+  $('.navbar-inverse').addClass('hide') // to fix navbar showing over beloading
   beloading({
     background: 'rgba(0,0,0,1)',
     text: ' ',
     icon: ' '
   }, function () {
      setTimeout(function () {
-      $('.navbar').removeClass('hide')
-    }, 1000)})
+      browserNotifier({}, function () { $('.navbar-inverse').removeClass('hide') })
+    }, 1500)})
 })
 </script>
 {% endblock %}

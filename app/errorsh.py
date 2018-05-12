@@ -19,15 +19,3 @@ def nojs(ino):
         return redirect(url_for('core.root'))
     return render_template('nojs.html',
                            ptitle='Javascript is disabled')
-
-
-@errorsh_app.route('/firefox/<int:ino>')
-def firefox(ino):
-    if ino == 1:
-        session['firefox'] = 1
-        s = session.get('next_url', '/')
-        if s != '/':
-            return redirect(s)
-        return redirect(url_for('core.root'))
-    return render_template('firefox.html',
-                           ptitle='Firefox is not used')
