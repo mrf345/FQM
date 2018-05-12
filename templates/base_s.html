@@ -60,13 +60,6 @@
 </style>
 <script src="{{ url_for('static', filename='backstrap/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='backstrap/js/bootstrap.min.js') }}"></script>
-{% if not firefox %}
-<script type="text/javascript">
-if (navigator.userAgent.search("Firefox") <= 2 && navigator.userAgent.search("Chrome") <= 2) {
-    window.location = '/firefox/4'
-}
-</script>
-{% endif %}
 {% endblock %}
 </head>
 
