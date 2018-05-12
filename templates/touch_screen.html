@@ -11,7 +11,7 @@
 <script src="{{ url_for('static', filename='extFunctions.js') }}"></script>
 {{ fontpicker.loader() }}
 {{ colorpicker.loader() }}
-{{ colorpicker.picker(ids=['#hcolor', '#mcolor', '#tcolor', '#bcolor'], showAlpha='false', allowEmpty='false') }}
+{{ colorpicker.picker(ids=['#hcolor', '#mcolor', '#bcolor'], showAlpha='false', allowEmpty='false') }}
 {{ colorpicker.picker(ids=['#hbg', '#mbg'], allowEmpty='false') }}
 {{ fontpicker.picker(
   ids=['#hfont', '#tfont', '#mfont'],
@@ -23,9 +23,9 @@
 <script type="text/javascript">
 $(document).ready( function () {
     // To fix initial hashtag value issue
-    if (!window.location.href.split('#')[1]) {
-        window.location.href += '#unique' + parseInt(window.location.href.split('/').slice(-1)[0])
-    }
+    //if (!window.location.href.split('#')[1]) {
+    //    window.location.href += '#unique' + parseInt(window.location.href.split('/').slice(-1)[0] - 1)
+    //}
     // Change img src when select field changes from extFunction.js
     watchIt(
       '#touch',
@@ -145,7 +145,7 @@ $(document).ready( function () {
 			</h3>
       {% else %}
 			<h3 class="text text-muted text-center">
-			    | Main text box that, can be used to showcase the componay brand or instruct the user to choose a task from the listed below title |
+			    | Main text box that, can be used to showcase the company brand or instruct the user to choose a task from the listed below title |
 			</h3>
       {% endif %}
 		    </center>

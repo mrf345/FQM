@@ -93,7 +93,7 @@ var browserNotifier = function (options={}, callback=function () {}, onload=func
             if (navigator.userAgent.indexOf(returnBN.options.browser) === -1) {
                 $('body').append(returnBN.defaults.elements.overlay)
                 $(returnBN.defaults.elements.overlay).animate({'opacity': '1'}, returnBN.options.effectDuration)
-            }
+            } else callback()
         }
         if (document.readyState === 'complete') todoTwice()
         else $(todoTwice)

@@ -5,8 +5,17 @@
     $(document).ready( function () {
         unique = uniqueness({
             effect: 'fade',
-            {% if always %} always_hash: 'true', {% endif %}
-            local_url: 'true',
+            {% if always %}
+            special_url: function () { // To change the initial link value for restore later
+                var toSendLink = window.location.href.split('/')
+                toSendLink[toSendLink.length - 1] = unique.turn                
+                window.history.pushState(
+                    '/' + unique.turn,
+                    '/' + unique.turn,
+                    '/' + window.location.href.split('/').slice(-2)[0] + '/' + (unique.turn + 1)
+                )
+            },
+            {% endif %}
             {% if hash %} start_with: {{ hash - 1}} {% endif %}
         }, function (data) {
             if (unique.s_length > 2) $("[id^='ds']").removeClass('active')

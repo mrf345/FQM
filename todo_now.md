@@ -32,8 +32,8 @@
 - [x] Delete all offices (5/11th)
 > - [x] fix delete all false reset request (5/11th)
 
-- [ ] Un-bundled JS
-> - [ ] make sure of unique toReturn values in all un-bundled js scripts. to avoid future clashes.
+- [x] Un-bundled JS (5/12th)
+> - [x] make sure of unique toReturn values in all un-bundled js scripts. to avoid future clashes. (5/12th)
 
 ## To Add:
 
@@ -68,7 +68,7 @@
 > - [x] hashtag url based in the app .py files (5/5th)
 > - [x] make disciple play well with the hashtags urls (5/5th)
 > - [x] make sure forms error handling redirects to the hashtag url (5/4th)
-> - [ ] add special hash callback for disciple to solve remind me later
+> - [x] add special hash callback for disciple to solve remind me later (5/12th)
 
 - [x] browser detection: (5/12th)
 > - [x] move specific browser css to macros (5/12th)
