@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+from flask import request
 import _winreg
 import win32com.client
 from printer import printit
@@ -72,8 +73,8 @@ def printwin(pname, a, b, c, d, cit, l):
     f = open(ffname, 'w')
     f.write(outp)
     f.close()
-    lh = "127.0.0.1"
-    txt = 'print /D:\\\%s\%s "%s"' % (lh, pname, ffname)
+    lh = request.remote_addr
+    txt = 'print /D:\\\%s\\"%s" "%s"' % (lh, pname, ffname)
     system(txt)
     if path.isfile(ffname):
         remove(ffname)
@@ -204,8 +205,8 @@ def printwin_ar(pname, ti, ofc, tnu, tas, cticket):
     f.write(p.output)
     p.close()
     f.close()
-    lh = "127.0.0.1"
-    text = 'print /D:\\\%s\%s "%s"' % (lh, pname, sfs[1])
+    lh = request.remote_addr
+    text = 'print /D:\\\%s\\"%s" "%s"' % (lh, pname, sfs[1])
     system(text)
     for f in sffs:
         if path.isfile(f):

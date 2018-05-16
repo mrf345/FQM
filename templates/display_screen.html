@@ -19,9 +19,9 @@
     urlCss=url_for('static', filename='css/gfonts.css'))
 }}
 <!-- Loading uniqueness macro -->
-{{ uniqueness(hash, form.errors) }} 
+{{ uniqueness(hash, form.errors) }}
 <script type="text/javascript">
-    $(document).ready( function () {
+    $(document).ready(function () {
         // To fix initial hashtag value issue
         //if (!window.location.href.split('#')[1]) {
         //    window.location.href += '#unique' + (parseInt(window.location.href.split('/').slice(-1)[0]) - 1)
@@ -183,7 +183,7 @@
         {{ render_field(form.hfont, class="form-control") }} {{ brp * 3 }}
         {{ render_field(form.effect, class="form-control text-center  ") }} <br />
         {{ render_field(form.repeats, class="btn text-center form-control  ") }} {{ brp * 2 }}
-        {{ render_field(form.mduration, class="btn form-control  ") }}
+        {{ render_field(form.mduration, class="btn form-control") }}
 		{{ brp * 4 }}
 		    {% if ar %}
                 {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
