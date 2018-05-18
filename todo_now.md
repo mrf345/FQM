@@ -35,6 +35,12 @@
 - [x] Un-bundled JS (5/12th)
 > - [x] make sure of unique toReturn values in all un-bundled js scripts. to avoid future clashes. (5/12th)
 
+- [ ] Fix type of ticket displayed
+> - [ ] All offices
+> - [ ] Tasks
+> - [ ] Offices
+
+
 ## To Add:
 
 - [x] GUI Multilang: (5/10th)
@@ -75,8 +81,25 @@
 > - [x] create and utilize browser_notifier front-end solution (5/12th)
 > - [x] remove browser detection from back-end (5/12th)
 
+- [ ] Implement flask_gtts **Fixing ticket repeating announcement**
+> - [ ] use gTTS from the display template instead
+> - [ ] remove values from db
+> - [ ] remove old values from display template
+> - [ ] test if that solves repeating same name
+
+- [ ] create smart tickets display
+> - [ ] method to generate special identifier for the device based on time + date + randint
+> - [ ] new serial for s-tickets that generates ticket with the special identifier stored in db
+> - [ ] new feed for s-tickets that takes special identifer as an arg
+> - [ ] s-ticket layout integrated with json_stream and audio_sequence 
+
+- [ ] New Tickets
+> - [ ] add printed tickets section from old tickets
+> - [ ] add registered tickets section with new settings like name, number, message color text font and button color text font
+> - [ ] add s-ticket layout customization background title colors fonts sound notification and audio notification
+> - [ ] add special args for touch_screen to redirect to registered or printed tickets
+> - [ ] remove old tickets from template and db
+
 #### move these, to todo_next:
 
 - [ ] Create and use python module based on pos module for cross-platform drawn printing
-
-- [ ] Smart tickets. Doubtful though !
