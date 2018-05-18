@@ -40,6 +40,8 @@
 > - [ ] Tasks
 > - [ ] Offices
 
+- [ ] GUI smaller sized font for server status
+
 
 ## To Add:
 
