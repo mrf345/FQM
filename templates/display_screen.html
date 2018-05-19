@@ -22,10 +22,6 @@
 {{ uniqueness(hash, form.errors) }}
 <script type="text/javascript">
     $(document).ready(function () {
-        // To fix initial hashtag value issue
-        //if (!window.location.href.split('#')[1]) {
-        //    window.location.href += '#unique' + (parseInt(window.location.href.split('/').slice(-1)[0]) - 1)
-        //}
         // Change img src when select field changes from extFunction.js
         watchIt(
             '#display',
@@ -59,7 +55,7 @@
 {% from "_helpers.html" import render_field %}
 {% from "uniqueness.html" import unique_btns %}
 <div class="col-md-12">
-    <form method="POST" enctype="multipart/form-data" id="fm">
+    <form method="POST" enctype="multipart/form-data">
       <div class="panel panel-default uniqueness"   >
     	    <div class="panel-heading text-center">
     		<h3 class="text-muted">

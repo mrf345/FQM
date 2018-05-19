@@ -2,6 +2,7 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
+{% from "beloadingNotifier.html" import beloadingNotifier %}
 <html>
   <head>
     <title>{% block title %} FQM {% endblock %}</title>
@@ -66,7 +67,7 @@
     {{ moment.include_moment(local_js='/static/backstrap/moment.min.js') }}
     <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
     <script src="{{ url_for('static', filename='disciple.js') }}"></script>
-    <script src="{{ url_for('static', filename='browserNotifier.js') }}"></script>
+    {{ beloadingNotifier(version, beload=False) }}
     <script type="text/javascript">
      window.onload = function () {
          {% if dropdown %} $("{{ dropdown }}").collapse('show') {% endif %} // sidebar collapse for all
@@ -76,10 +77,8 @@
             $('#cls').collapse('show')
             $('#dropdown-lvl{{ ooid }}').collapse('show')
          {% endif %}
-         if ( // to escape firefox notifying while beloading fades
-             location.href.split('/').indexOf('manage') === -1 && location.href.split('/').indexOf('customize') === -1
-         ) browserNotifier({}, function () { $('.navbar-inverse').removeClass('hide') }, function () { $('.navbar-inverse').addClass('hide') })
-         disciple({
+         // TODO: Move disciple to beloadingNotifier after multilang interface & mod uniqueness_btns
+         window.debDis = disciple({
             identifier: 'form',
             {% if ar %}
             msg_text: 'قمت بتعديل معطيات أحد الحقول من غير حفظها , تود ؟',
@@ -112,7 +111,7 @@
     <div class="widw2">
         <center><img class="img-responsive"  style="width: 30%;" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo"></center>
         <br>
-        <nav class="navbar navbar-inverse shb" style="margin-bottom: 3%; background: rgba(0,0,0,0.7)" onload="snb({{ snb }});">
+        <nav class="navbar navbar-inverse shb" style="margin-bottom: 3%; background: rgba(0,0,0,0.7)" id="navb">
     	<div  class="container-fluid">
     	    <!-- Brand and toggle get grouped for better mobile display -->
     	    <div class="navbar-header">

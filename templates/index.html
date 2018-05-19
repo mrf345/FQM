@@ -2,6 +2,7 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
+{% from "beloadingNotifier.html" import beloadingNotifier %}
 <html>
     <head>
         <title>{% block title %} FQM - {{ ptitle }} {% endblock %}</title>
@@ -84,27 +85,15 @@
         <script src="{{ url_for('static', filename='backstrap/jquery.min.js') }}"></script>
         <script src="{{ url_for('static', filename='jquery-ui.min.js') }}"></script>
         <script src="{{ url_for('static', filename='backstrap/js/bootstrap.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='beloading.js') }}"></script>
-        <script src="{{ url_for('static', filename='browserNotifier.js') }}"></script>
+        {{ datepicker.loader() }}
+        {{ beloadingNotifier(version) }}
         <script type="text/javascript">
+        // to toggle logging form modal if errors or unsigned login attempt
          {% if n or form.errors %}
           $(document).ready(function(){
              $("#upd").modal('show');
           })
          {% endif %}
-        </script>
-        {{ datepicker.loader() }}
-        <script type='text/javascript'>
-        $(document).ready(function () {
-          beloading({
-            background: 'rgba(0,0,0,1)',
-            text: ' ',
-            icon: ' '
-          }, function () {
-             setTimeout(function () {
-                browserNotifier()
-            }, 1500)})
-        })
         </script>
 </head>
 

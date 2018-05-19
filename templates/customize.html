@@ -2,26 +2,15 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
+
 {% extends "base.html" %}
 {% block title %} FQM - {{ ptitle  }} {% endblock %}
 
+{% from "beloadingNotifier.html" import beloadingNotifier %}
 {% block head %}
 {{ super() }}
 {{ datepicker.loader() }}
-<script src="{{ url_for('static', filename='beloading.js') }}" type='text/javascript'></script>
-<script type='text/javascript'>
-$(document).ready(function () {
-  $('.navbar-inverse').addClass('hide') // to fix navbar showing over beloading
-  beloading({
-    background: 'rgba(0,0,0,1)',
-    text: ' ',
-    icon: ' '
-  }, function () {
-     setTimeout(function () {
-      browserNotifier({}, function () { $('.navbar-inverse').removeClass('hide') })
-    }, 1500)})
-})
-</script>
+{{ beloadingNotifier(version) }}
 {% endblock %}
 
 {%- from "sb_cust.html" import sb_cust with context %}

@@ -1,10 +1,9 @@
 // Dependencies: jQuery, jQuery-ui, FontAwesome
 
-var browserNotifier = function (options={}, callback=function () {}, onload=function () {}) {
+var browserNotifier = function (options={}, callback=function () {}) {
     returnBN = {} // unique object name to return
 
     returnBN.options = {
-        browser: options.browser || 'Firefox', // list of browsers to notify for
         text: options.text || 'You are not using Firefox, which this project is designed and most suited for.',
         textClass: options.textClass || '',
         textStyle: options.textStyle || {
@@ -30,22 +29,22 @@ var browserNotifier = function (options={}, callback=function () {}, onload=func
         overlayColor: options.overlayColor || 'rgba(0,0,0,0.85)',
         overlayClass: options.overlayClass || '',
         overlayStyle: options.overlayStyle || {},
-        effectDuration: options.effectDuration * 1000 || 1000
+        effectDuration: options.effectDuration * 1000 || 1000,
+        storeVal: options.storeVal || 'browserNotifier', // value to to identify notifier in localStorage
+        validator: options.validator || function () {
+            return new Promise(function (resolve, reject) {
+                return resolve(true)
+            })
+        } // if returns true notifier will be activated
     }
 
     returnBN.defaults = { // list of browsers name in navigator and fa- icon names
-        browsers: {
-            MSIE: 'edge',
-            Firefox: 'firefox',
-            Chrome: 'chrome',
-            Opera: 'opera',
-            Safari: 'safari'
-        },
         elements: { // list of jQuery elements to be appended
             text: $('<h1>').text(returnBN.options.text).css(returnBN.options.textStyle).addClass('text-center'),
             button: $('<button>').addClass(returnBN.options.buttonClass).css(returnBN.options.buttonStyle)
             .text(returnBN.options.buttonText).click(function () {
                 returnBN.__exit__()
+                callback()
             }),
             icon: $('<a>').attr('href', returnBN.options.iconLink).attr('target', '_blank')
             .append(
@@ -83,34 +82,33 @@ var browserNotifier = function (options={}, callback=function () {}, onload=func
 
 
     returnBN.__init__ = function () {
-        if (
-            Object.keys(
-                returnBN.defaults.browsers
-            ).indexOf(returnBN.options.browser) === -1
-        ) throw new Error('Error: available browsers ' + Object.keys(returnBN.defaults.browsers))
-        onload()
         var todoTwice = function () {
-            if (navigator.userAgent.indexOf(returnBN.options.browser) === -1) {
-                $('body').append(returnBN.defaults.elements.overlay)
-                $(returnBN.defaults.elements.overlay).animate({'opacity': '1'}, returnBN.options.effectDuration)
-            } else callback()
+            returnBN.options.validator()
+            .then(
+                function () {
+                    $('body').append(returnBN.defaults.elements.overlay)
+                    $(returnBN.defaults.elements.overlay).animate({'opacity': '1'}, returnBN.options.effectDuration)
+                }
+            ).catch(
+                function (e) {
+                    callback()
+                }
+            )
         }
         if (document.readyState === 'complete') todoTwice()
         else $(todoTwice)
-
     }
 
     returnBN.__exit__ = function () {
         $(returnBN.defaults.elements.overlay).animate({'opacity': '0'}, returnBN.options.effectDuration,
         complete=function () {
             $(returnBN.defaults.elements.overlay).remove()
-            localStorage.browserNotifier = 'yes'
-            callback()
+            localStorage[returnBN.options.storeVal] = 'yes'
         })
     }
 
 
-    if (!localStorage.browserNotifier) returnBN.__init__()
+    if (!localStorage[returnBN.options.storeVal]) returnBN.__init__()
     else callback()
     return returnBN
 }

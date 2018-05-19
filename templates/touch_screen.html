@@ -22,10 +22,7 @@
 {{ uniqueness(hash, form.errors) }}
 <script type="text/javascript">
 $(document).ready( function () {
-    // To fix initial hashtag value issue
-    //if (!window.location.href.split('#')[1]) {
-    //    window.location.href += '#unique' + parseInt(window.location.href.split('/').slice(-1)[0] - 1)
-    //}
+    $('.navbar-inverse').removeClass('hide')
     // Change img src when select field changes from extFunction.js
     watchIt(
       '#touch',
@@ -54,7 +51,7 @@ $(document).ready( function () {
 {% from "_helpers.html" import render_field %}
 {% from "uniqueness.html" import unique_btns %}
 <div class="col-md-12">
-  <form method="POST" enctype="multipart/form-data" id="fm" class=".disciple">
+    <form method="POST" enctype="multipart/form-data">
     <div class="panel panel-default uniqueness">
       <div class="panel-heading text-center">
         {% if ar %}
@@ -117,258 +114,257 @@ $(document).ready( function () {
     </div>
 	<div class="panel panel-default uniqueness">
 	    <div class="panel-heading text-center">
-		<h3 class="text-muted">
-      {% if ar %}
-      <strong class="ar1"><span class="fa fa-desktop"></span>  شاشة اللمس - <span class="fa fa-text-width"></span>  العنوان</strong></h3>
-      {% else %}
-      <strong><span class="fa fa-desktop"></span>  Touch Screen - <span class="fa fa-text-width"></span>  Title</strong></h3>
-      {% endif %}
+		    <h3 class="text-muted">
+                {% if ar %}
+                <strong class="ar1"><span class="fa fa-desktop"></span>  شاشة اللمس - <span class="fa fa-text-width"></span>  العنوان</strong>
+                {% else %}
+                <strong><span class="fa fa-desktop"></span>  Touch Screen - <span class="fa fa-text-width"></span>  Title</strong>
+                {% endif %}
+            </h3>
 	    </div>
 	    <br>
 	    <div class="panel-body">
-        {{ brp * 3 }}
-		<div class="col-xs-12">
-		    <center>
-			<a data-toggle="modal" data-target="#mym">
-			    <img class="img-responsive img-thumbnail" id="map" width="40%"
-          {% if ar %}
-          src="{{ url_for('static', filename='images/map_title_ar.jpg') }}"
-          {% else %}
-          src="{{ url_for('static', filename='images/map_title.jpg') }}"
-          {% endif %}
-          >
-			</a>
-      {% if ar %}
-      <h3 class="text text-muted text-center ar2">
-          | الحقل النصي الرئيسي الذي يتيح المستخدم إرشاد العميل إلى إختيار مهمة أو الإشارة إلى شيئ
-           معين |
-			</h3>
-      {% else %}
-			<h3 class="text text-muted text-center">
-			    | Main text box that, can be used to showcase the company brand or instruct the user to choose a task from the listed below title |
-			</h3>
-      {% endif %}
-		    </center>
-		</div>
+            {{ brp * 3 }}
+		    <div class="col-xs-12">
+		        <center>
+			    <a data-toggle="modal" data-target="#mym">
+			        <img class="img-responsive img-thumbnail" id="map" width="40%"
+                    {% if ar %}
+                    src="{{ url_for('static', filename='images/map_title_ar.jpg') }}"
+                    {% else %}
+                    src="{{ url_for('static', filename='images/map_title.jpg') }}"
+                    {% endif %}
+                    >
+			    </a>
+                {% if ar %}
+                <h3 class="text text-muted text-center ar2">
+                    | الحقل النصي الرئيسي الذي يتيح المستخدم إرشاد العميل إلى إختيار مهمة أو الإشارة إلى شيئ
+                    معين |
+			    </h3>
+                {% else %}
+			    <h3 class="text text-muted text-center">
+			        | Main text box that, can be used to showcase the company brand or instruct the user to choose a task from the listed below title |
+			    </h3>
+                {% endif %}
+		        </center>
+		    </div>
 	    </div>
 	    <br><hr><br>
 		{{ render_field(form.title, class="form-control") }}<br/>
 		{{ render_field(form.hsize, class="form-control") }}<br/>
 		{{ render_field(form.hcolor, class="sp") }}<br/>
 		{{ render_field(form.hbg, class="spa") }}<br/>
-  	{{ render_field(form.hfont, class="form-control") }}
+  	    {{ render_field(form.hfont, class="form-control") }}
 		{{ brp * 5 }}
             {% if ar %}
                 {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
             {% else %}
                 {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
             {% endif %}
-    {{ brp * 3 }}
+        {{ brp * 3 }}
 	</div>
 	<div class="panel panel-default uniqueness">
 	    <div class="panel-heading text-center">
-  		<h3 class="text-muted">
-        {% if ar %}
-        <strong class="ar1"><span class="fa fa-desktop"></span>  شاشة اللمس -
-          <span class="fa fa-text-tasks"></span>
-          المهمات
-        </strong></h3>
-        {% else %}
-        <strong><span class="fa fa-desktop"></span>  Touch Screen -
-          <span class="fa fa-tasks"></span>  Tasks</strong></h3>
-        {% endif %}
-      </h3>
+  		    <h3 class="text-muted">
+                {% if ar %}
+                <strong class="ar1"><span class="fa fa-desktop"></span>  شاشة اللمس -
+                <span class="fa fa-text-tasks"></span>
+                المهمات
+                </strong>
+                {% else %}
+                <strong><span class="fa fa-desktop"></span>  Touch Screen -
+                <span class="fa fa-tasks"></span>  Tasks</strong>
+                {% endif %}
+            </h3>
 	    </div>
 	    <div class="panel-body">
-        {{ brp * 3 }}
-		<center>
-		    <a data-toggle="modal" data-target="#mym">
-			<img class="img-responsive img-thumbnail" id="map" width="35%"
-      {% if ar %}
-      src="{{ url_for('static', filename='images/map_task_ar.jpg') }}"
-      {% else %}
-      src="{{ url_for('static', filename='images/map_task.jpg') }}"
-      {% endif %}
-      >
-		    </a>
-		    <br>
-        {% if ar %}
-        <h3 class="text text-muted text-center ar2">
-          | المهمات التي يتاح للمستخدم الإختيار منها ليتم إضافة تذكرة خاصة به |
-		    </h3>
-        {% else %}
-		    <h3 class="text text-muted text-center">
-			| Tasks are the options that a the customer can select from and his unique ticket will be generated by |
-		    </h3>
-        {% endif %}
-		</center>
+            {{ brp * 3 }}
+		    <center>
+		        <a data-toggle="modal" data-target="#mym">
+			        <img class="img-responsive img-thumbnail" id="map" width="35%"
+                    {% if ar %}
+                    src="{{ url_for('static', filename='images/map_task_ar.jpg') }}"
+                    {% else %}
+                    src="{{ url_for('static', filename='images/map_task.jpg') }}"
+                    {% endif %}
+                    >
+		        </a>
+		        <br>
+                {% if ar %}
+                <h3 class="text text-muted text-center ar2">
+                | المهمات التي يتاح للمستخدم الإختيار منها ليتم إضافة تذكرة خاصة به |
+		        </h3>
+                {% else %}
+		        <h3 class="text text-muted text-center">
+			    | Tasks are the options that a the customer can select from and his unique ticket will be generated by |
+		        </h3>
+                {% endif %}
+		    </center>
 	    </div>
 	    <br><hr><br>
-
 	    {{ render_field(form.tsize, class="form-control") }}<br/>
 	    {{ render_field(form.tcolor, class="form-control") }}<br/>
-      {{ render_field(form.tfont, class="form-control") }}
-		  {{ brp * 5 }}
+        {{ render_field(form.tfont, class="form-control") }}
+		{{ brp * 5 }}
         {%if ar %}
             {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
         {% else %}
             {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
         {% endif %}
-      {{ brp * 3 }}
-	</div>
-	<div class="panel panel-default uniqueness">
-	    <div class="panel-heading text-center">
-    	<h3 class="text-muted">
-        {% if ar %}
-        <strong class="ar1"><span class="fa fa-desktop"></span>
-            شاشة اللمس -
-            <span class="fa fa-flag"></span>
-              التنبيهات
-            </strong></h3>
-        {% else %}
-        <strong><span class="fa fa-desktop"></span>
-            Touch Screen - <span class="fa fa-flag"></span>  Notification</strong></h3>
-        {% endif %}
-      </h3>
-	    </div>
-	    <div class="panel-body">
-        <br /><br />
-		<center>
-		    <a data-toggle="modal" data-target="#mym">
-			<img class="img-resoinsive img-thumbnail" id="map" width="40%"
-      {% if ar %}
-      src="{{ url_for('static', filename='images/map_message_ar.jpg') }}"
-      {% else %}
-      src="{{ url_for('static', filename='images/map_message.jpg') }}"
-      {% endif %}
-      >
-		    </a>
-        {% if ar %}
-		    <h3 class="text text-muted text-center ar2">
-          | حقل نصي لإعلام العميل أن المهمة المختارة تم تسجيلها و أن التذكرة تم تحريرها |
-        </h3>
-        {% else %}
-		    <h3 class="text text-muted text-center">| Text box that will appear to inform the customer that his selection is made and ticket's been generated |</h3>
-        {% endif %}
-		</center>
-		<br><hr><br>
-		{{ render_field(form.message, class="form-control") }}<br/>
-		{{ render_field(form.mduration, class="form-control") }}<br/>
-		{{ render_field(form.msize, class="form-control") }}<br/>
-		{{ render_field(form.mcolor, class="sp") }}<br/>
-		{{ render_field(form.mbg, class="spa") }}<br/>
-  	    {{ render_field(form.mfont) }}
-		{{ brp * 4 }}
-		<center>
-		    <a data-toggle="modal" data-target="#mym">
-			<span class="img-responsive img-thumbnail fa fa-5x fa-bell" id="map"></span>
-		    </a>
-        {% if ar %}
-		    <h3 class="text text-muted text-center ar2">
-		      | إشعار صوتي تشغيله عندما يقوم العميل بإختيار المهمة المحددة |
-		    </h3>
-        {% else %}
-		    <h3 class="text text-muted text-center">| A sound tune that will be played whenever the customer select a task of his choice |</h3>
-        {% endif %}
-		</center>
-		<br>
-		<center>{{ render_field(form.naudio, class="btn btn-primary btn-md form-control") }}</center>
-    {{ brp * 3 }}
-    {% if ar %}
-        {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
-    {% else %}
-        {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
-    {% endif %}
-	  </div>
-	</div>
-	<div class="panel panel-default uniqueness">
-	    <div class="panel-heading text-center">
-  		<h3 class="text-muted">
-        {% if ar %}
-        <strong class="ar1"><span class="fa fa-desktop"></span>
-            شاشة اللمس - <span class="fa fa-picture-o"></span>
-              الخلفية
-            </strong></h3>
-        {% else %}
-        <strong><span class="fa fa-desktop"></span>
-            Touch Screen - <span class="fa fa-picture-o"></span>  Background</strong></h3>
-        {% endif %}
-      </h3>
-	    </div>
-	    <div class="panel-body">
         {{ brp * 3 }}
-		<center>
-		    <a data-toggle="modal" data-target="#mym">
-			<img class="img-responsive img-thumbnail" id="map" width="30%"
-      src="{{ url_for('static', filename='images/map_background.jpg') }}"
-      >
-		</a>
-    {% if ar  %}
-		<h3 class="text text-muted text-center ar2"> | الخلفية التي يتم عليها عرض كل الحقول النصية التابعة لشاشة اللمس | </h3>
-    {% else %}
-		<h3 class="text text-muted text-center">| The background image on-which all elements of the Touch Screen will be displayed on . You can choose between a limited varity of default images or to select a specific color and lastly you can as well chose to upload your own special background image | </h3>
-    {% endif %}
-		<br><hr>
-		<br>
-		<center>
-		    {{ render_field(form.background, class="btn btn-md btn-primary form-control") }}
-		</center>
-		<br><br>
-		<center>
-		    {{ form.bcolor(class_="sp") }}
-		</center>
-    {{ brp * 4 }}
-		{% if form.errors %}
-		<div class="well">
-		    <h3 class="text-center text-warning">- Errors :</h4>
-		    <ol class="text-center h4 text-danger">
-			{% for field_name, field_errors in form.errors|dictsort if field_errors %}
-			{% for error in field_errors %}
-			<li>{{ form[field_name].name }}: {{ error }}</li>
-			{% endfor %}
-			{% endfor %}
-		    </ol>
-		    {% endif %}
-		</div>
-		        {% if ar %}
-                {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
+	</div>
+	<div class="panel panel-default uniqueness">
+	    <div class="panel-heading text-center">
+    	    <h3 class="text-muted">
+                {% if ar %}
+                <strong class="ar1"><span class="fa fa-desktop"></span>
+                شاشة اللمس -
+                <span class="fa fa-flag"></span>
+                التنبيهات
+                </strong>
+                {% else %}
+                <strong><span class="fa fa-desktop"></span>
+                Touch Screen - <span class="fa fa-flag"></span>  Notification</strong>
+                {% endif %}
+            </h3>
+	    </div>
+	    <div class="panel-body">
+            {{ brp * 2 }}
+		    <center>
+		        <a data-toggle="modal" data-target="#mym">
+			        <img class="img-resoinsive img-thumbnail" id="map" width="40%"
+                    {% if ar %}
+                    src="{{ url_for('static', filename='images/map_message_ar.jpg') }}"
+                    {% else %}
+                    src="{{ url_for('static', filename='images/map_message.jpg') }}"
+                    {% endif %}
+                    >
+		        </a>
+                {% if ar %}
+		        <h3 class="text text-muted text-center ar2">
+                | حقل نصي لإعلام العميل أن المهمة المختارة تم تسجيلها و أن التذكرة تم تحريرها |
+                </h3>
+                {% else %}
+		        <h3 class="text text-muted text-center">| Text box that will appear to inform the customer that his selection is made and ticket's been generated |</h3>
+                {% endif %}
+		    </center>
+		    <br><hr><br>
+		    {{ render_field(form.message, class="form-control") }}<br/>
+		    {{ render_field(form.mduration, class="form-control") }}<br/>
+		    {{ render_field(form.msize, class="form-control") }}<br/>
+		    {{ render_field(form.mcolor, class="sp") }}<br/>
+		    {{ render_field(form.mbg, class="spa") }}<br/>
+  	        {{ render_field(form.mfont) }}
+		    {{ brp * 4 }}
+		    <center>
+		        <a data-toggle="modal" data-target="#mym">
+			        <span class="img-responsive img-thumbnail fa fa-5x fa-bell" id="map"></span>
+		        </a>
+                {% if ar %}
+		        <h3 class="text text-muted text-center ar2">
+		            | إشعار صوتي تشغيله عندما يقوم العميل بإختيار المهمة المحددة |
+		        </h3>
+                {% else %}
+		        <h3 class="text text-muted text-center">| A sound tune that will be played whenever the customer select a task of his choice |</h3>
+                {% endif %}
+		    </center>
+		    <br>
+		    <center>{{ render_field(form.naudio, class="btn btn-primary btn-md form-control") }}</center>
+            {{ brp * 3 }}
+            {% if ar %}
+            {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
             {% else %}
-                {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
+            {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
             {% endif %}
-        {{ brp * 3 }}
+	    </div>
+	</div>
+	<div class="panel panel-default uniqueness">
+	    <div class="panel-heading text-center">
+  		    <h3 class="text-muted">
+            {% if ar %}
+            <strong class="ar1"><span class="fa fa-desktop"></span>
+                شاشة اللمس - <span class="fa fa-picture-o"></span>
+                الخلفية
+            </strong>
+            {% else %}
+            <strong><span class="fa fa-desktop"></span>
+                Touch Screen - <span class="fa fa-picture-o"></span>  Background</strong>
+            {% endif %}
+            </h3>
+	    </div>
+	    <div class="panel-body">
+            {{ brp * 3 }}
+		    <center>
+		        <a data-toggle="modal" data-target="#mym">
+			        <img class="img-responsive img-thumbnail" id="map" width="30%"
+                    src="{{ url_for('static', filename='images/map_background.jpg') }}"
+                    >
+                </a>
+		    </center>
+            {% if ar  %}
+		    <h3 class="text text-muted text-center ar2"> | الخلفية التي يتم عليها عرض كل الحقول النصية التابعة لشاشة اللمس | </h3>
+            {% else %}
+		    <h3 class="text text-muted text-center">| The background image on-which all elements of the Touch Screen will be displayed on . You can choose between a limited varity of default images or to select a specific color and lastly you can as well chose to upload your own special background image | </h3>
+            {% endif %}
+		    <br><hr><br>
+		    <center> {{ render_field(form.background, class="btn btn-md btn-primary form-control") }} </center>
+		    {{ brp * 2 }}
+		    <center>
+		        {{ form.bcolor(class_="sp") }}
+		    </center>
+            {{ brp * 4 }}
+		    {% if form.errors %}
+		    <div class="well">
+		        <h3 class="text-center text-warning">- Errors :</h3>
+		        <ol class="text-center h4 text-danger">
+			    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+			        {% for error in field_errors %}
+			            <li>{{ form[field_name].name }}: {{ error }}</li>
+			        {% endfor %}
+			    {% endfor %}
+		        </ol>
+            </div>
+            {% endif %}
+		    {% if ar %}
+            {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
+            {% else %}
+            {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
+            {% endif %}
+            {{ brp * 3 }}
 	    </div>
 	</div>
     </form>
 </div>
-<br>
 <div class="modal fade" id="mym">
     <div class="modal-dialog">
-	<div class="modal-content">
-	    <div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">&times;</button>
-    {% if ar %}
-		<h4 class="modal-title ar1">خارطة شاشة اللمس</h4>
-    {% else %}
-		<h4 class="modal-title">Template Map</h4>
-    {% endif %}
+	    <div class="modal-content">
+	        <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                {% if ar %}
+		        <h4 class="modal-title ar1">خارطة شاشة اللمس</h4>
+                {% else %}
+		        <h4 class="modal-title">Template Map</h4>
+                {% endif %}
+	        </div>
+	        <div class="modal-body">
+		        <center>
+                    <img class="img-responsive img-thumbnail tobc"
+                    {% if ar %}
+                    src="{{ url_for('static', filename='images/map_ar.jpg') }}"
+                    {% else %}
+                    src="{{ url_for('static', filename='images/map.jpg') }}"
+                    {% endif %}
+                    alt="Map image">
+                </center>
+	        </div>
+	        <div class="modal-footer">
+                {% if ar %}
+		        <button type="button" class="close ar1" data-dismiss="modal">إلغاء</button>
+                {% else %}
+		        <button type="button" class="close" data-dismiss="modal">Close</button>
+                {% endif %}
+	        </div>
 	    </div>
-	    <div class="modal-body">
-		<center><img class="img-responsive img-thumbnail tobc"
-      {% if ar %}
-      src="{{ url_for('static', filename='images/map_ar.jpg') }}"
-      {% else %}
-      src="{{ url_for('static', filename='images/map.jpg') }}"
-      {% endif %}
-      alt="Map image"></center>
-	    </div>
-	    <div class="modal-footer">
-    {% if ar %}
-		<button type="button" class="close ar1" data-dismiss="modal">إلغاء</button>
-    {% else %}
-		<button type="button" class="close" data-dismiss="modal">Close</button>
-    {% endif %}
-	    </div>
-	</div>
     </div>
 </div>
 {% endblock %}

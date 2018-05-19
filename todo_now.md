@@ -49,6 +49,10 @@
 > - [x] add fr, es, it to static langs (5/10th)
 > - [x] replace langs buttons with select field (5/10th)
 
+- [x] Adding new release notifier (5/19th)
+> - [x] modify browser_notifier (5/19th)
+> - [x] implement new browser_notifier (5/19th)
+
 - [ ] Recall announcement
 > - [ ] add special recall value /feed
 > - [ ] add exception to repeat on display.html when special /feed value met

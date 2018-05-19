@@ -203,7 +203,7 @@ GUI = {
         '7': u'Select network interface with IP, so the server runs on it',
         '8': u'Select a port, so the server runs through it',
         '9': u'Status of the server',
-        '10': u'Server is <u>Runnin</u> <br> On : ',
+        '10': u'Server is <u>Running</u> <br> On : ',
         '11': u'Server is <u> Not running </u> <br>',
         '12': u'All credit reserved to the author of FQM version ',
         '13': u', This work is a free, open-source project licensed ',
