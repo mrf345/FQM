@@ -53,6 +53,12 @@
 > - [x] modify browser_notifier (5/19th)
 > - [x] implement new browser_notifier (5/19th)
 
+- [ ] Adding alias
+> - [ ] add alias to display_screen customize settings
+> - [ ] add alias to printed ticket settings
+> - [ ] alias for task and office in display and display/announcement
+> - [ ] alias for task and office in app/languages
+
 - [ ] Recall announcement
 > - [ ] add special recall value /feed
 > - [ ] add exception to repeat on display.html when special /feed value met
