@@ -1,0 +1,50 @@
+{% macro panelFooter(theModal=[],tri=False) %}
+    <!-- Receives [[['title', numbers()],..],..] -->
+    {% for theRows in theModal%}
+    <div class="row rmCurs">
+        {% for theRow in theRows %}
+        {% if ar %}
+        {% else %}
+        <div class="col-xs-12 {% if tri %} col-sm-4 {% else %} col-sm-6 {% endif %} h4 ar2 pb-1">
+            {{theRow[0]}} :
+            <span class="label {% if theRow[0] in ['Waiting', 'Image slides', 'Administrators'] %} label-danger {% else %} label-info {% endif %}">
+                <i> {{ theRow[1] }} </i>
+            </span>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+{% endmacro %}
+
+{% macro spacer(theModal=[]) %}
+    <!-- Receives ['message', number()] -->
+    {% if theModal[1] == 0 %}
+    <div class="well text-center rmCurs">
+        <p class="pt-10"></p>
+        <h3 class="text-danger mt-10 mb-10">{{ theModal[0] }}</h3>
+        <p class="pb-10"></p>
+    </div>
+    {% elif theModal[1] <= 1 %}
+    <p class="pb-10"></p>
+    <p class="pb-10"></p>
+    <p class="pb-10"></p>
+    {% elif theModal[1] <= 3 %}
+      <p class="pb-10"></p>
+      <p class="pb-10"></p>
+    {% elif theModal[1] <= 5 %}
+    <p class="pb-10"></p>
+    <p class="pb-5"></p>
+    {% endif %}
+{% endmacro %}
+
+{% macro touchFooter() %}
+<div class="row vertical-center">
+    <div class="col-md-12 hidden-sm hidden-xs pt-4 pb-4 text-center text-center well rmCurs">
+      <h1 class="text-warning ar-1 text-strong" style="font-size: 400%;"> No tasks created yet</h1>
+    </div>
+    <div class="col-xs-12 hidden-md hidden-lg hidden-xl text-center well rmCurs">
+      <h1 class="text-warning ar1 text-strong"> No tasks created yet</h1>
+    </div>
+</div>
+{% endmacro %}

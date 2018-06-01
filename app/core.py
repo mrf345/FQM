@@ -67,12 +67,19 @@ def root(n=None):
                     session['next_url'] = None
                     return redirect(s)
                 else:
-                    return redirect(url_for('manage_app.manage'))
+                    if current_user.role_id == 3:
+                        return redirect(
+                            url_for(
+                                'manage_app.offices',
+                                o_id=data.Operators.query.filter_by(id=current_user.id).first().office_id
+                                ))
+                    else:
+                        return redirect(url_for('manage_app.manage'))
             flash(get_lang(17), "danger")
             return redirect(url_for("core.root", n='a'))
         flash(get_lang(17), "danger")
         return redirect(url_for("core.root", n='a'))
-    return render_template("index.html",
+    return render_template("index.html", operators=data.Operators.query,
                            ptitle="Free Queue Manager",
                            form=form, n=n, dpass=dpass)
 

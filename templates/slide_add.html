@@ -6,7 +6,7 @@
 {% block title %} FQM - {{ ptitle  }} {% endblock %}
 
 {% block head %}
-{% from 'uniqueness.html' import uniqueness %}
+{% from '_uniqueness.html' import uniqueness %}
 {{ super() }}
 {{ fontpicker.loader() }}
 {{ colorpicker.loader() }}
@@ -28,133 +28,106 @@
 
 {% block page_content %}
 {% from "_helpers.html" import render_field %}
-{% from "uniqueness.html" import unique_btns %}
+{% from "_uniqueness.html" import unique_btns %}
+{% from "_modals.html" import qrModal %}
 <div class="col-md-12">
     <form method="POST" enctype="multipart/form-data" id="fm">
-	<div class="panel panel-default uniqueness">
-	    <div class="panel-heading text-center">
-		<h3 class="text-muted">
-      <span class="fa fa-plus"></span>
-      {% if ar %}
-      <strong class="ar1">
-        عرض الشرائح - إضافة شريحة
-      </strong>
-      {% else %}
-      <strong>
-        Slide-show -   Add slide
-      </strong>
-      {% endif %}
-    </h3>
-	    </div>
-	    <div class="panel-body">
-		<br><br>
-    {{ brp * 3 }}
-		{{ form.csrf_token }}
-		<a data-toggle="modal" data-target="#mym">
-		    <center><img class="img-responsive img-thumbnail" id="map" src="{{ url_for('static', filename='images/slideshow_title.jpg') }}"></center>
-		</a><br>
-    {% if ar %}
-		<p class="h4 text-center text-danger ar2">
-      | العنوان : الحقل النصي الرئيسي في الشريحة المضافة |
-		</p>
-    {% else %}
-    <p class="h4 text-center text-danger">
-		    | Title : Main text box that displays main heading of a slide |
-		</p>
-    {% endif %}
-		<br>
-		{{ render_field(form.title, class="form-control") }}<br>
-		{{ render_field(form.hsize, class="form-control") }}<br>
-		{{ render_field(form.hcolor, class="sp", value="rgb(255,255,0)") }}<br>
-		{{ render_field(form.hbg, class="spa", value="rgba(0,0,0,0.5)") }}<br>
-		{{ render_field(form.hfont, class="form-control") }}
-    {{ brp * 5 }}
-		{% if ar %}
-			{{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
-		{% else %}
-			{{ unique_btns('Previous', 'Customize', 'Next', ar) }}
-		{% endif %}
-        {{ brp * 2 }}
-	    </div>
-	</div>
-	<div class="panel panel-default uniqueness">
-	    <div class="panel-heading text-center">
-		<h3 class="text-muted">
-      <span class="fa fa-plus"></span>
-      {% if ar %}
-      <strong class="ar1">  عرض الشرائح - إضافة شريحة  </strong>
-      {% else %}
-      <strong> Slide-show -   Add slide </strong>
-      {% endif %}
-    </h3>
-	    </div>
-	    <div class="panel-body">
-		<br><br>
-		<a data-toggle="modal" data-target="#mym">
-		    <center><img class="img-responsive img-thumbnail" id="map"  src="{{ url_for('static', filename='images/slideshow_subtitle.jpg') }}"></center>
-		</a><br>
-    {% if ar %}
-		<p class="h4 text-center text-danger ar2">
-        | العنوان الجانبي : حقل نصي لإضافة تعليمات نصية بأسفل العنوان الرئيسي |
-		</p>
-    {% else %}
-    <p class="h4 text-center text-danger">
-        | Subtitle : Secondary text box will be displayed under main title |
-    </p>
-    {% endif %}
-		<br>
-		{{ render_field(form.subti, class="form-control") }}<br>
-		{{ render_field(form.tsize, class="form-control") }}<br>
-		{{ render_field(form.tcolor, class="sp", value="rgb(255,255,0)") }}<br>
-		{{ render_field(form.tbg, class="spa", value="rgba(0,0,0,0.5)") }}<br>
-  	{{ render_field(form.tfont, class="form-control") }}<br>
-		<br><hr><br>
-    {% if ar %}
-    <p class="h4 text-center text-danger ar2">
-        | لإختيار خلفية صورية أو ملونة ليعرض عليها الحقول النصية |
-		</p>
-    {% else %}
-		<p class="h4 text-center text-danger">
-		    | To select a background on-which slide content be displayed  |
-		</p>
-    {% endif %}
-		<br>
-		{{ render_field(form.background, class="btn btn-md btn-primary form-control") }}
-		{{ brp * 2 }}
-		<center>{{ form.bgcolor(class_="sp", value="rgb(255,0,0)") }}</center>
-		{{ brp * 4 }}
-		{% if ar %}
-			{{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
-		{% else %}
-			{{ unique_btns('Previous', 'Customize', 'Next', ar) }}
-		{% endif %}
-	    </div>
-	</div>
+		<div class="panel panel-default uniqueness">
+	    	<div class="panel-heading text-center">
+				<h3 class="text-muted">
+      				<span class="fa fa-plus"></span>
+      				{% if ar %}
+      				<strong class="ar1">
+        				عرض الشرائح - إضافة شريحة
+      				</strong>
+      				{% else %}
+      				<strong>
+        				Slide-show - Add slide
+      				</strong>
+      				{% endif %}
+    			</h3>
+	    	</div>
+	    	<div class="panel-body">
+				{{ form.csrf_token }}
+				<a data-toggle="modal" data-target="#mym">
+		    		<center><img class="img-responsive img-thumbnail mt-5 mb-2" id="map" src="{{ url_for('static', filename='images/slideshow_title.jpg') }}"></center>
+				</a>
+    			{% if ar %}
+				<p class="h3 text-center text-danger ar2">
+      				| العنوان : الحقل النصي الرئيسي في الشريحة المضافة |
+				</p>
+    			{% else %}
+    			<p class="h3 mb-2 text-center text-danger ar2">
+		    		| Title : Main text box that displays main heading of a slide |
+				</p>
+    			{% endif %}
+				{{ render_field(form.title, class="form-control") }}<br>
+				{{ render_field(form.hsize, class="form-control") }}<br>
+				{{ render_field(form.hcolor, class="sp", value="rgb(255,255,0)") }}<br>
+				{{ render_field(form.hbg, class="spa", value="rgba(0,0,0,0.5)") }}<br>
+				{{ render_field(form.hfont, class="form-control") }}
+				<p class="pt-5"></p>
+				{% if ar %}
+					{{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
+				{% else %}
+					{{ unique_btns('Previous', 'Customize', 'Next', ar) }}
+				{% endif %}
+				<p class="pb-2"></p>
+	    	</div>
+		</div>
+		<div class="panel panel-default uniqueness">
+	    	<div class="panel-heading text-center">
+				<h3 class="text-muted">
+      				<span class="fa fa-plus"></span>
+      				{% if ar %}
+      				<strong class="ar1">  عرض الشرائح - إضافة شريحة  </strong>
+      				{% else %}
+      				<strong> Slide-show - Add slide </strong>
+      				{% endif %}
+    			</h3>
+	    	</div>
+	    	<div class="panel-body">
+				<a data-toggle="modal" data-target="#mym">
+		    		<center><img class="img-responsive img-thumbnail mt-5 mb-2" id="map"  src="{{ url_for('static', filename='images/slideshow_subtitle.jpg') }}"></center>
+				</a>
+    			{% if ar %}
+					<p class="h3 text-center text-danger ar2">
+    			    | العنوان الجانبي : حقل نصي لإضافة تعليمات نصية بأسفل العنوان الرئيسي |
+					</p>
+    			{% else %}
+    			<p class="h3 text-center text-danger mb-2 ar2">
+    			    | Subtitle : Secondary text box will be displayed under main title |
+    			</p>
+    			{% endif %}
+				{{ render_field(form.subti, class="form-control") }}<br>
+				{{ render_field(form.tsize, class="form-control") }}<br>
+				{{ render_field(form.tcolor, class="sp", value="rgb(0,0,255)") }}<br>
+				{{ render_field(form.tbg, class="spa", value="rgba(0,0,0,0.5)") }}<br>
+  				{{ render_field(form.tfont, class="form-control") }}<br>
+				<hr>
+    			{% if ar %}
+    			<p class="h3 text-center text-danger ar2">
+    			    | لإختيار خلفية صورية أو ملونة ليعرض عليها الحقول النصية |
+				</p>
+    			{% else %}
+				<p class="h3 text-center mb-2 mt-2 ar2 text-danger">
+				    | To select a background on-which slide content be displayed  |
+				</p>
+    			{% endif %}
+				{{ render_field(form.background, class="form-control") }}
+				<p class="pb-2"></p>
+				<center>{{ form.bgcolor(class_="sp") }}</center>
+				<p class="pb-5"></p>
+				{% if ar %}
+					{{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
+				{% else %}
+					{{ unique_btns('Previous', 'Customize', 'Next', ar) }}
+				{% endif %}
+				<p class="pb-2"></p>
+	    	</div>
+		</div>
     </form>
 </div>
-<br>
-<div class="modal fade" id="mym">
-    <div class="modal-dialog">
-	<div class="modal-content">
-	    <div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">&times;</button>
-    {% if ar %}
-		<h4 class="modal-title ar1">خارطة عرض الشرائح</h4>
-    {% else %}
-		<h4 class="modal-title">Slideshow template</h4>
-    {% endif %}
-	    </div>
-	    <div class="modal-body">
-		<center><img class="img-thumbnail img-responsive" src="{{ url_for('static', filename='images/slideshow.jpg') }}" alt="Map image"></center>
-	    </div>
-	    <div class="modal-footer">
-    {% if ar %}
-		<button type="button" class="close ar1" data-dismiss="modal">إلغاء</button>
-    {% else %}
-		<button type="button" class="close" data-dismiss="modal">Close</button>
-    {% endif %}
-	    </div>
-	</div>
-    </div>
-</div>
+
+{{ qrModal([['mym', 'Slideshow template', url_for('static', filename='images/slideshow.jpg')]]) }}
 {% endblock %}

@@ -24,334 +24,149 @@
 
 {% block page_content %}
 {%- from "auto_reload.html" import auto_reloader with context %}
+{% from "_footers.html" import panelFooter %}
 <div class="col-md-12">
     <div class="panel panel-primary">
     	<div class="panel-heading">
 	    	<div class="row">
 				{{ auto_reloader(True) }}
-    <div class="col-xs-12 hidden-md hidden-lg text-center">
-        <br />
-        <a href="#" data-toggle="modal" data-target="#branch_qr"
-        data-toggle="tooltip"
-        title="{% if ar %} QR Code : كل تذاكر المكاتب{% else %} QR Code : all offices {% endif %}"
-        ><i class="fa fa-3x fa-fw fa-qrcode fa-spin qrw" style="color: white;"></i></a>
-    </div>
-		<div class="col-xs-12">
-      {% if ar %}
-		    <h2 class="text text-center ar1"><strong> كل تذاكر المكاتب </strong></h2>
-      {% else %}
-		    <h2 class="text text-center"><strong> All offices Tickets </strong></h2>
-      {% endif %}
-		</div>
-	    </div>
-	    <div class="row">
-		<div class="col-xs-12 text-center">
-		    <div class="btn-group-justified">
-			<a class="btn btn-warning" data-toggle="modal" data-target="#rall">
-			    <span class="fa fa-reply-all"></span>
-          {% if ar %}
-			    <strong class="ar1">إعادة تهيئ</strong>
-          {% else %}
-			    <strong>Reset all</strong>
-          {% endif %}
-			</a>
-			<a class="btn btn-danger" data-toggle="modal" data-target="#dall">
-			    <span class="fa fa-trash"></span>
-          {% if ar %}
-			    <strong class="ar1">حذف الجميع</strong>
-          {% else %}
-			    <strong>Delete all</strong>
-          {% endif %}
-			</a>
-		    </div>
-		</div>
-	    </div>
+    			<div class="col-xs-12 hidden-md hidden-lg text-center mb-1">
+        			<a href="#" data-toggle="modal" data-target="#branch_qr"
+        				data-toggle="tooltip"
+        				title="{% if ar %} QR Code : كل تذاكر المكاتب{% else %} QR Code : all offices {% endif %}"
+					>
+						<i class="fa fa-3x fa-fw fa-qrcode fa-spin qrw" style="color: white;"></i>
+					</a>
+    			</div>
+				<div class="col-xs-12">
+      				{% if ar %}
+		    		<h2 class="text text-center ar1"><strong> كل تذاكر المكاتب </strong></h2>
+      				{% else %}
+		    		<h2 class="text text-center"><strong> All offices Tickets </strong></h2>
+      				{% endif %}
+				</div>
+	    	</div>
+	    	<div class="row">
+				<div class="col-xs-12 text-center">
+		    		<div class="btn-group-justified">
+						<a class="btn btn-warning" data-toggle="modal" data-target="#rall">
+			    			<span class="fa fa-reply-all"></span>
+          					{% if ar %}
+			    			<strong class="ar1">إعادة تهيئ</strong>
+          					{% else %}
+			    			<strong>Reset all</strong>
+          					{% endif %}
+						</a>
+						<a class="btn btn-danger" data-toggle="modal" data-target="#dall">
+			    			<span class="fa fa-trash"></span>
+          					{% if ar %}
+			    			<strong class="ar1">حذف الجميع</strong>
+          					{% else %}
+			    			<strong>Delete all</strong>
+          					{% endif %}
+						</a>
+		    		</div>
+				</div>
+	    	</div>
         </div>
         <div class="panel-body">
-	    <div class="row text-center h3 text-muted hidden-xs">
-        {% if ar %}
-        <div class="col-xs-2 ar2">
-    		    (التذكرة)
-    		</div>
-    		<div class="col-xs-2 ar2">
-    		    (الإصدار)
-    		</div>
-    		<div class="col-xs-3 ar2">
-    		    (السحب)
-    		</div>
-    		<div class="col-xs-3 ar2">
-    		    (القيمة)
-    		</div>
-    		<div class="col-xs-2 ar2">
-    		    (نوع التذكرة)
-    		</div>
-        {% else %}
-		<div class="col-xs-2">
-		    (Ticket)
+	    	<div class="row text-center ar2 h3 text-muted hidden-xs">
+	        	{% if ar %}
+    		    <div class="col-xs-2 ar2">
+    			    (التذكرة)
+    			</div>
+    			<div class="col-xs-2 ar2">
+    		    	(الإصدار)
+    			</div>
+    			<div class="col-xs-3 ar2">
+    		    	(السحب)
+    			</div>
+    			<div class="col-xs-3 ar2">
+    		    	(القيمة)
+    			</div>
+    			<div class="col-xs-2 ar2">
+    		    	(نوع التذكرة)
+    			</div>
+        		{% else %}
+				<div class="col-xs-2">
+		    		(Ticket)
+				</div>
+				<div class="col-xs-2">
+		    		(Issued)
+				</div>
+				<div class="col-xs-3">
+		    		(Pulled)
+				</div>
+				<div class="col-xs-3">
+		    		(Value)
+				</div>
+				<div class="col-xs-2">
+		    		(Ticket Type)
+				</div>
+    			{% endif %}
+	    	</div>
+	    	{% for o in officesp %}
+	      	{% if o.number != 100 %}
+			<div class="row well {% if o.p %} text-primary {% else %} text-danger {% endif %} h4  text-center">
+		  		<div class="col-xs-12 col-sm-2">
+		    		<b> {{ offices.filter_by(id=o.office_id).first().prefix }}{{ o.number }}.</b>
+		  		</div>
+		  		<div class="col-xs-12 col-sm-2">
+		    		<u>{{ moment(o.timestamp).format('L') }}</u>
+		  		</div>
+		  		<div class="col-xs-12 col-sm-3">
+		    		{% if o.p %} <u>{{ users.filter_by(id=o.pulledBy).first().name }} / {{ moment(o.pdt).fromNow() }}</u>
+		    		{% else %} {% if ar %} <u class="ar1"> في الإنتظار</u> {% else %}<u>Waiting ..</u> {% endif %}{% endif %}
+		  		</div>
+		  		<div class="col-xs-12 col-sm-3">
+		    		{% if o.n %}<u> {{ o.name }} </u> {% else %}
+		      		{% if ar %} <u class="ar1"> لا إسم</u> {% else %} <u> None </u> {% endif %}{% endif %}
+		  		</div>
+		  		<div class="col-xs-12 col-sm-2">
+		    		{% if ar %}
+		      		<u class="ar1"> {% if o.n %} مسجلة {% else %} مطبوعة {% endif %} </u>
+		    		{% else %}
+		      		<u> {% if o.n %} Registered {% else %} Printed {% endif %} </u>
+		    		{% endif %}
+		  		</div>
+			</div>
+	      	{% endif %}
+	    	{% endfor %}
+	    	{% if len(officesp) <= tasks.count() or tasks.count() == 0 %}
+			<div class="well">
+				{% if ar %}
+				{% else %}
+				<h3 class="text-danger text-center pt-10 pb-10">No tickets been issued yet to display</h3>
+				{% endif %}
+			</div>
+	    	{% elif len(officesp) <= 4 %}
+			<p class='pb-10'></p>
+	    	{% endif %}
+    	</div>
+		<div class="panel-footer text-center">
+			{{ panelFooter([
+			[['Offices total', offices.count()], ['Tickets total', serial.count()]],
+			[['Processed', serial.filter_by(p=True).count()], ['Waiting', serial.filter_by(p=False).count()]]
+			]) }}
+	    	<div class="row text-center">
+				<div class="pagination">
+		    		{{ macros.pagination_widget(pagination, '.all_offices') }}
+				</div>
+	    	</div>
 		</div>
-		<div class="col-xs-2">
-		    (Issued)
-		</div>
-		<div class="col-xs-3">
-		    (Pulled)
-		</div>
-		<div class="col-xs-3">
-		    (Value)
-		</div>
-		<div class="col-xs-2">
-		    (Ticket Type)
-		</div>
-    {% endif %}
-	    </div>
-	    {% for o in officesp %}
-	      {% if o.number != 100 %}
-		<div class="row well {% if o.p %} text-primary {% else %} text-danger {% endif %} h4  text-center">
-		  <div class="col-xs-12 col-sm-2">
-		    <b> {{ offices.filter_by(id=o.office_id).first().prefix }}{{ o.number }}.</b>
-		  </div>
-		  <div class="col-xs-12 col-sm-2">
-		    <u>{{ moment(o.timestamp).format('L') }}</u>
-		  </div>
-		  <div class="col-xs-12 col-sm-3">
-		    {% if o.p %} <u>{{ users.filter_by(id=o.pulledBy).first().name }} / {{ moment(o.pdt).fromNow() }}</u>
-		    {% else %} {% if ar %} <u class="ar1"> في الإنتظار</u> {% else %}<u>Waiting ..</u> {% endif %}{% endif %}
-		  </div>
-		  <div class="col-xs-12 col-sm-3">
-		    {% if o.n %}<u> {{ o.name }} </u> {% else %}
-		      {% if ar %} <u class="ar1"> لا إسم</u> {% else %} <u> None </u> {% endif %}{% endif %}
-		  </div>
-		  <div class="col-xs-12 col-sm-2">
-		    {% if ar %}
-		      <u class="ar1"> {% if o.n %} مسجلة {% else %} مطبوعة {% endif %} </u>
-		    {% else %}
-		      <u> {% if o.n %} Registered {% else %} Printed {% endif %} </u>
-		    {% endif %}
-		  </div>
-		</div>
-	      {% endif %}
-	    {% endfor %}
-	    {% if len(officesp) <= tasks.count() or tasks.count() == 0 %}
-	    <div class="well">
-		{{ brp*10 }}
-    {% if ar %}
-    <h3 class="text-danger text-center ar1">
-		    لا يوجد تذاكر مسجلة إلى الآن
-		</h3>
-    {% else %}
-		<h3 class="text-danger text-center">
-		    No tickets been issued yet to display ..
-		</h3>
-    {% endif %}
-		{{ brp*10 }}
-	    </div>
-	    {% elif len(officesp) <= 4 %}
-	    {{ brp*15 }}
-	    {% endif %}
 	</div>
-	<div class="panel-footer text-center">
-	    <div class="row">
-    {% if ar %}
-    <div class="col-xs-12 col-sm-6 h4 ar1">
-		    إجمالي المكاتب :
-        <br />
-        <br />
-		    <span class="label label-info">
-			<i> {{ offices.count() }} </i>
-		    </span>
-		</div>
-		<div class="col-xs-12 col-sm-6 h4 ar1">
-		    إجمالي التذاكر :
-        <br />
-        <br />
-		    <span class="label label-info">
-			<i> {{ serial.count() }}</i>
-		    </span>
-		</div>
-    {% else %}
-		<div class="col-xs-12 col-sm-6 h4">
-		    Offices total :
-		    <span class="label label-info">
-			<i> {{ offices.count() }} </i>
-		    </span>
-		</div>
-		<div class="col-xs-12 col-sm-6 h4">
-		    Tickets total :
-		    <span class="label label-info">
-			<i> {{ serial.count() }}</i>
-		    </span>
-		</div>
-    {% endif %}
-	    </div>
-	    <div class="row">
-    {% if ar %}
-    <div class="col-xs-12 col-sm-6 h4 ar1">
-		    تم سحبه :
-        <br />
-        <br />
-		    <span class="label label-info">
-			<i>{{ serial.filter_by(p=True).count() }}</i>
-		    </span>
-		</div>
-		<div class="col-xs-12 col-sm-6 h4 ar1">
-		    في الإنتظار :
-        <br />
-        <br />
-		    <span class="label label-danger">
-			<i>{{ serial.filter_by(p=False).count() }}</i>
-		    </span>
-		</div>
-    {% else %}
-		<div class="col-xs-12 col-sm-6 h4">
-		    Proccessed :
-		    <span class="label label-info">
-			<i>{{ serial.filter_by(p=True).count() }}</i>
-		    </span>
-		</div>
-		<div class="col-xs-12 col-sm-6 h4">
-		    Waiting :
-		    <span class="label label-danger">
-			<i>{{ serial.filter_by(p=False).count() }}</i>
-		    </span>
-		</div>
-    {% endif %}
-	    </div>
-	    <div class="row text-center">
-		<div class="pagination">
-		    {{ macros.pagination_widget(pagination, '.all_offices') }}
-		</div>
-	    </div>
-	</div>
-	</div>
-    </div>
 </div>
-<div class="modal fade" id="rall">
-    <div class="modal-dialog">
-	<div class="modal-content">
-	    <div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">&times;</button>
-    {% if ar %}
-		<h4 class="modal-title text-center ar1">تنبيه : إعدة تهيئ الجميع </h4>
-    {% else %}
-		<h4 class="modal-title text-center">Warning : Reset All </h4>
-    {% endif %}
-	    </div>
-	    <div class="modal-body">
-    {% if ar %}
-    <h4 class="text-danger text-center text-warning ar2">
-		  <strong>
-      تحاول القيام بإعادة تهيئة شاملة و كلية لكل من المكاتب , المهمات و التذاكر كذالك ,
-      تريد الإستمرار في ذالك ؟
-    </strong><br><br>
-		</h4>
-    {% else %}
-		<h4 class="text-danger text-center text-warning">
-		    <strong> You are attempting to reset every office and task to zero, with
-			all tickets eraised, that won't be retrievable , Are you sure of that ? </strong><br><br>
-		</h4>
-    {% endif %}
-	    </div>
-	    <div class="modal-footer">
-    {% if ar %}
-    <button type="button" class="close btn btn-md btn-warning pull-left ar1" data-dismiss="modal">إلغاء</button>
-    <a href="{{ url_for('core.serial_ra') }}">
-      <button type="button" class="close btn btn-md btn-danger ar1">إستمرار</button>
-    </a>
-    {% else %}
-		<button type="button" class="close btn btn-md btn-warning pull-left" data-dismiss="modal">No, don't</button>
-		<a href="{{ url_for('core.serial_ra') }}">
-      <button type="button" class="close btn btn-md btn-danger">Yes, sure</button>
-    </a>
-    {% endif %}
-	    </div>
-	</div>
-    </div>
-</div>
-<div class="modal fade" id="dall">
-    <div class="modal-dialog">
-	<div class="modal-content">
-	    <div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">&times;</button>
-    {% if ar %}
-		<h4 class="modal-title text-center ar1">تنبيه : حذف الجميع</h4>
-    {% else %}
-		<h4 class="modal-title text-center">Warning : Reset All </h4>
-    {% endif %}
-	    </div>
-	    <div class="modal-body">
-    {% if ar %}
-    <h4 class="text-danger text-center text-warning ar2">
-		  <strong>
-        تحاول القيام بحذف شامل و كلي لجميع المكاتب , المهمات و التذاكر ,
-        تريد بالفعل الإستمرار في ذالك ؟
-    </strong><br><br>
-		</h4>
-    {% else %}
-		<h4 class="text-danger text-center text-warning">
-		    <strong>  You are attempting to delete every office and task under it
-			with all tickets, which won't be retrievable , Are you sure of that ? </strong><br><br>
-		</h4>
-    {% endif %}
-	    </div>
-	    <div class="modal-footer">
-    {% if ar %}
-    <button type="button" class="close btn btn-md btn-warning pull-left ar1" data-dismiss="modal">إلغاء</button>
-    <a href="{{ url_for('manage_app.office_da') }}">
-      <button type="button" class="close btn btn-md btn-danger ar1">إستمرار</button>
-    </a>
-    {% else %}
-		<button type="button" class="close btn btn-md btn-warning pull-left" data-dismiss="modal">No, don't</button>
-		<a href="{{ url_for('manage_app.office_da') }}">
-      <button type="button" class="close btn btn-md btn-danger">Yes, sure</button>
-    </a>
-    {% endif %}
-	    </div>
-	</div>
-    </div>
-</div>
-<div class="modal fade" id="vdall">
-    <div class="modal-dialog">
-	<div class="modal-content">
-	    <div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">&times;</button>
-		<h4 class="modal-title text-center">Warning : Delete All </h4>
-	    </div>
-	    <div class="modal-body">
-		<h4 class="text-danger text-center text-warning">
-		    <strong> You are attempting to delete every office and task under it
-			with all tickets, which won't be retrievable , Are you sure of that ? </strong><br><br>
-		</h4>
-	    </div>
-	    <div class="modal-footer">
-		<button type="button" class="close btn btn-md btn-warning pull-left" data-dismiss="modal">No, don't</button>
-		<a href="{{ url_for('manage_app.office_da') }}"><button type="button" class="close btn btn-md btn-danger">Yes, sure</button></a>
-	    </div>
-	</div>
-    </div>
-</div>
-<div class="modal fade" id="branch_qr">
-    <div class="modal-dialog">
-  <div class="modal-content">
-      <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">&times;</button>
-    {% if ar %}
-    <h4 class="modal-title ar1">شفرة QR - كل المكاتب</h4>
-    {% else %}
-    <h4 class="modal-title">QR code - All offices</h4>
-    {% endif %}
-      </div>
-      <div class="modal-body">
-    <center><img class="img-thumbnail img-responsive pic"
-      src="{{ qrcode(url_for('manage_app.all_offices', _external=True)) }}"
-      alt="QR image"></center>
-      </div>
-      <div class="modal-footer">
-    {% if ar %}
-    <button type="button" class="close ar1" data-dismiss="modal">إلغاء</button>
-    {% else %}
-    <button type="button" class="close" data-dismiss="modal">Close</button>
-    {% endif %}
-      </div>
-  </div>
-    </div>
-</div>
+
+{% from '_modals.html' import confirmModal %}
+{{ confirmModal(
+	[['rall', 'Warning : Reset All', 
+	"You are attempting to reset every office and task to zero, with all tickets erased, that won't be retrievable , Are you sure of that ?",
+	url_for('core.serial_ra')
+	],
+	['dall', 'Warning: Delete All',
+	"You are attempting to delete every office and task under it with all tickets, which won't be retrievable , Are you sure of that ?",
+	url_for('manage_app.office_da')]]
+)}}
+{% from '_modals.html' import qrModal %}
+{{ qrModal([['branch_qr', 'QR code - All offices', qrcode(url_for('manage_app.all_offices', _external=True))]]) }}
 {% endblock %}

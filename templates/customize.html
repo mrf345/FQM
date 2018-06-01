@@ -6,7 +6,7 @@
 {% extends "base.html" %}
 {% block title %} FQM - {{ ptitle  }} {% endblock %}
 
-{% from "beloadingNotifier.html" import beloadingNotifier %}
+{% from "_beloadingNotifier.html" import beloadingNotifier %}
 {% block head %}
 {{ super() }}
 {{ datepicker.loader() }}
@@ -20,135 +20,132 @@
 
 {% block page_content %}
 <div class="col-md-12">
-    <div class="panel panel-default">
-	<div class="panel-heading text-center">
+  <div class="panel panel-default">
+	  <div class="panel-heading text-center">
       {% if ar %}
 	    <h3 class="text-muted ar1"><strong>التخصيص</strong></h3>
       {% else %}
 	    <h3 class="text-muted"><strong>Customization</strong></h3>
       {% endif %}
-	</div>
-	<div class="panel-body">
-    {{ brp * 2 }}
-	    <h4 class="text text-primary text-center">
-    {% if ar %}
-    <strong class="ar1">
-      تمكيين مستخدميين النظام من تخصيص كل جزء من واجهات الإستخدام التي يتعامل معها عملاء النظام
-      , كل عينة تظهر في شاشات اللمس أو الإستعراض يمكن تخصيصها بدقة و بقيم مختلفة
-      كا تخصيص الخطوط ,الألوان , الأحجام , و كذالك الخلفيات كل ذالك من خلال واجهة سهلة و مبسطة
-		</strong>
-    {% else %}
-		<strong>
-		    Allowing the user to customize every bit of the interface, which the customer be
-		    confronted and interacts with. Every element style has the option to be customized
-		    with its font, color, size and background color. Via the simple navigation bar
-		    on the side each main componant is displayed with its own customizable element listed under it.
-		</strong>
-    {% endif %}
-	    </h4>
-	    <br><hr><br>
-	    {{ brp * 2 }}
-	    <div class="media">
-		<span class="fa fa-4x fa-music text-muted media-object pull-left"></span>
-		<div class="media-body">
-      {% if ar %}
-      <h4 class="text text-primary ar1"><u>الوسائط المتعددة :</u>
-      </h4>
-		    <h4 class="text text-muted ar2"  >
-        المنصة التي يتم فيها رفع و إدارة ملفات الوسائط المتعددة , ليتم إستخدامها
-        لاحقاً في مهمة تخصيص لوحات الإستخدام يمكن إضافة الملفات الصوتية كتنبيه صوتي
-        أو ملف صورة كخلفية للشاشة , كذالك يمن رفع ملفات الفيديو ليتم إستخدامها في شاشة العرض
-        , إستخدام ملفات الوسائط المتعددة ليس بالضاروري لكنه يجعل من لوحات الإستخدام أكثر
-        جاذبية و فاعلية
-		    </h4>
-      {% else %}
-      <h4 class="text text-primary"><u>Multimedia :</u>
-      </h4>
-		    <h4 class="text text-muted">
-			The place where all multimedia files meant to be uploaded to, for the purpose of later
-			use in other componants which has the option to incoprate the uploaded multimedia
-			files like jpg backgrounds instead of staticly colored backgrounds and wav audio files
-			to be incoparted withe visiual notification message as well as png images to attach
-			a transparent logo to slides for example ..
-		    </h4>
-      {% endif %}
-		</div>
-	    </div>
-	    <br>
-	    <div class="media">
-		<a data-toggle="collapse" href="#dropdown-lvl1">
-		    <span class="fa fa-4x fa-desktop text-muted media-object pull-left"></span>
-		</a>
-		<div class="media-body">
-		    <h4 class="text text-primary">
-          <a data-toggle="collapse" href="#dropdown-lvl1">
-            {% if ar %}
-            <u class="ar1"> شاشة اللمس :</u>
-            {% else %}
-            <u>Touch Screen :</u>
-            {% endif %}
-          </a>
-          <span class="fa fa-mouse-pointer text-muted"></span>
-        </h4>
-		    <a data-toggle="collapse" href="#dropdown-lvl1">
-      {% if ar %}
-      <h4 class="text text-muted ar2"  >
-        المنصة التي تمكن من تخصيص واجهة شاشة اللمس , الشاشة التي تمكن العملاء من
-        إختيار مهمة أو خدمة معينة ليتم سحب أو تسجيل تذكرة لها , هذه المنصة تمكنك من
-        تخصيص كل من العنواين و اشكالها كذالك المهمات و اشكالها و التبيهات الصوتية
-			</h4>
-      {% else %}
-			<h4 class="text text-muted">
-			    It's the screen with-which the customer chooses any given task from a list of
-			    managed tasks, That will generate a uniqe ticket with each click and display
-			    a response notification. Touch screen purpose can go byound that simple use
-			    with additional features been added or special templetes been chosen.
-			</h4>
-      {% endif %}
-		    </a>
-		</div>
-	    </div>
-	    <br>
-	    <div class="media">
-		<a data-toggle="collapse" href="#dropdown-lvl2"><span class="fa fa-4x fa-television text-muted media-object pull-left"></span></a>
-		    <div class="media-body">
-			<h4 class="text text-primary">
-        <a data-toggle="collapse" href="#dropdown-lvl2">
-          {% if ar %}
-          <u class="ar1">شاشة الإستعراض :</u>
-          {% else %}
-          <u>Display Screen :</u>
-          {% endif %}
-        </a>
-        <span class="fa fa-mouse-pointer text-muted"></span>
-      </h4>
-			<a data-toggle="collapse" href="#dropdown-lvl2">
+	  </div>
+	  <div class="panel-body">
+	    <h4 class="text text-primary text-center ar2 mt-2">
         {% if ar %}
-        <h4 class="text text-muted ar2"  >
-        المنصة التي يتم فيها تخصيص شكل شاشة الإستعراض , شاشة الإستعراض هيا الشاشة
-        التي يعرض فيها أرقام التذاكر بشكل تسلسلي و يتم فيها إستدعاء و تنبيه صاحب الرقم
-        الذي آل إليه الدور , في هذه المنصة يمكن تخصيص اشكال العناوين و التذكرة الحالية وتذاكر
-        الإنتظار كذالك  , كما يمكن تخصيص نظام المنادات الإلكتروني
-        </h4>
+        <strong class="ar1">
+          تمكيين مستخدميين النظام من تخصيص كل جزء من واجهات الإستخدام التي يتعامل معها عملاء النظام
+          , كل عينة تظهر في شاشات اللمس أو الإستعراض يمكن تخصيصها بدقة و بقيم مختلفة
+          كا تخصيص الخطوط ,الألوان , الأحجام , و كذالك الخلفيات كل ذالك من خلال واجهة سهلة و مبسطة
+		    </strong>
         {% else %}
-			    <h4 class="text text-muted">
-				It's the screen in-which tickets are displayed in sequance of pulling,utlizing
-				live feed with each ticket unique ticket generted from the tocuh scrren by user
-				will be orgnaized under waiting tickets and each ticket pulled by an operator
-				of any given office will be positioned in current ticket. Each element of them
-				will have its uniqe style to indeicate to the viewer the differance in-between
-				each.
-			    </h4>
+		    <strong>
+		      Allowing the user to customize every bit of the interface, which the customer be
+		      confronted and interacts with. Every element style has the option to be customized
+		      with its font, color, size and background color. Via the simple navigation bar
+		      on the side each main component is displayed with its own customizable element listed under it.
+		    </strong>
         {% endif %}
-			</a>
+	    </h4>
+	    <hr class='mb-4'>
+	    <div class="media">
+		    <span class="fa fa-4x fa-music text-muted media-object pull-left"></span>
+		    <div class="media-body">
+          {% if ar %}
+          <h4 class="text text-primary ar1">
+            <u>الوسائط المتعددة :</u>
+          </h4>
+		      <h4 class="text text-muted ar2">
+            المنصة التي يتم فيها رفع و إدارة ملفات الوسائط المتعددة , ليتم إستخدامها
+            لاحقاً في مهمة تخصيص لوحات الإستخدام يمكن إضافة الملفات الصوتية كتنبيه صوتي
+            أو ملف صورة كخلفية للشاشة , كذالك يمن رفع ملفات الفيديو ليتم إستخدامها في شاشة العرض
+            , إستخدام ملفات الوسائط المتعددة ليس بالضاروري لكنه يجعل من لوحات الإستخدام أكثر
+            جاذبية و فاعلية
+		      </h4>
+          {% else %}
+          <h4 class="text text-primary ar1">
+            <u>Multimedia :</u>
+          </h4>
+		      <h4 class="text text-muted ar2 mb-1">
+			      The place where all multimedia files meant to be uploaded to, for the purpose of later
+			      use in other components which has the option to incorporate the uploaded multimedia
+			      files like jpg backgrounds instead of statically colored backgrounds and wav audio files
+			      to be incorporated withe visual notification message as well as png images to attach
+			      a transparent logo to slides for example ..
+		      </h4>
+          {% endif %}
 		    </div>
 	    </div>
-      <br />
+	    <div class="media">
+		    <a data-toggle="collapse" href="#dropdown-lvl1">
+		      <span class="fa fa-4x fa-desktop text-muted media-object pull-left"></span>
+		    </a>
+		    <div class="media-body">
+		      <h4 class="text text-primary ar1">
+            <a data-toggle="collapse" href="#dropdown-lvl1">
+              {% if ar %}
+              <u class="ar1"> شاشة اللمس :</u>
+              {% else %}
+              <u>Touch Screen :</u>
+              {% endif %}
+            </a>
+            <span class="fa fa-mouse-pointer text-muted"></span>
+          </h4>
+		      <a data-toggle="collapse" href="#dropdown-lvl1">
+            {% if ar %}
+            <h4 class="text text-muted ar2"  >
+              المنصة التي تمكن من تخصيص واجهة شاشة اللمس , الشاشة التي تمكن العملاء من
+              إختيار مهمة أو خدمة معينة ليتم سحب أو تسجيل تذكرة لها , هذه المنصة تمكنك من
+              تخصيص كل من العنواين و اشكالها كذالك المهمات و اشكالها و التبيهات الصوتية
+			      </h4>
+            {% else %}
+			      <h4 class="text text-muted ar2 mb-1">
+			        It's the screen with-which the customer chooses any given task from a list of
+			        managed tasks, That will generate a uniqe ticket with each click and display
+			        a response notification. Touch screen purpose can go byound that simple use
+			        with additional features been added or special templetes been chosen.
+			      </h4>
+            {% endif %}
+		      </a>
+		    </div>
+	    </div>
+	    <div class="media">
+		    <a data-toggle="collapse" href="#dropdown-lvl2"><span class="fa fa-4x fa-television text-muted media-object pull-left"></span></a>
+		    <div class="media-body">
+			    <h4 class="text text-primary ar1">
+            <a data-toggle="collapse" href="#dropdown-lvl2">
+              {% if ar %}
+              <u class="ar1">شاشة الإستعراض :</u>
+              {% else %}
+              <u>Display Screen :</u>
+              {% endif %}
+            </a>
+            <span class="fa fa-mouse-pointer text-muted"></span>
+          </h4>
+			    <a data-toggle="collapse" href="#dropdown-lvl2">
+            {% if ar %}
+            <h4 class="text text-muted ar2"  >
+              المنصة التي يتم فيها تخصيص شكل شاشة الإستعراض , شاشة الإستعراض هيا الشاشة
+              التي يعرض فيها أرقام التذاكر بشكل تسلسلي و يتم فيها إستدعاء و تنبيه صاحب الرقم
+              الذي آل إليه الدور , في هذه المنصة يمكن تخصيص اشكال العناوين و التذكرة الحالية وتذاكر
+              الإنتظار كذالك  , كما يمكن تخصيص نظام المنادات الإلكتروني
+            </h4>
+            {% else %}
+			      <h4 class="text text-muted ar2 mb-1">
+				      It's the screen in-which tickets are displayed in sequance of pulling,utlizing
+				      live feed with each ticket unique ticket generted from the tocuh scrren by user
+				      will be orgnaized under waiting tickets and each ticket pulled by an operator
+				      of any given office will be positioned in current ticket. Each element of them
+				      will have its uniqe style to indeicate to the viewer the differance in-between
+				      each.
+			      </h4>
+            {% endif %}
+			    </a>
+		    </div>
+	    </div>
       {% if vtrue == 2 %}
 	    <div class="media">
 		    <a data-toggle="collapse" href="#dropdown-lvl3"><span class="fa fa-4x fa-film text-muted media-object pull-left"></span></a>
 		    <div class="media-body">
-		      <h4 class="text text-primary">
+		      <h4 class="text text-primary ar1">
             <a data-toggle="collapse" href="#dropdown-lvl3">
               {% if ar %}
               <u class="ar1"> شاشة عرض الشرائح :</u>
@@ -160,13 +157,13 @@
           </h4>
 		      <a data-toggle="collapse" href="#dropdown-lvl3">
             {% if ar %}
-            <h4 class="text text-muted ar2"  >
-            منصة تتيح للمستخدم إضافة و حذف الشرائح في شاشة العرض مع إمكانية
-            تخصيص كل شريحة بملفات الوسائط المتعددة كذالك يمكن عناوين و محتويات
-            كل شريحة بشكل فعال و سهل
+            <h4 class="text text-muted ar2">
+              منصة تتيح للمستخدم إضافة و حذف الشرائح في شاشة العرض مع إمكانية
+              تخصيص كل شريحة بملفات الوسائط المتعددة كذالك يمكن عناوين و محتويات
+              كل شريحة بشكل فعال و سهل
 			      </h4>
             {% else %}
-			      <h4 class="text text-muted">
+			      <h4 class="text text-muted ar2 mb-1">
 			        Slide show is an added element to the display sceen in which the admin is able
 			        to add any given amount of slides with their captions for any purpose wether
 			        to advertise or to display more info. Display Slide-show will help to manage
@@ -181,7 +178,7 @@
       <div class="media">
         <span class="fa fa-4x fa-video-camera text-muted media-object pull-left"></span>
         <div class="media-body">
-          <h4 class="text text-primary">
+          <h4 class="text text-primary ar1">
             {% if ar %}
             <u class="ar1"> شاشة عرض الفيديو :</u>
             {% else %}
@@ -194,7 +191,7 @@
               إلى منصة الوسائط المتعديدة , ليتم عرضها على شاشة الإستعراض
             </h4>
             {% else %}
-            <h4 class="text text-muted">
+            <h4 class="text text-muted ar2 mb-1">
               Video is an added element to the display sceen in which the admin is able
               to add any uploaded video to multimedia for any purpose wether
               to advertise or to display more info. Display video will help to configure
@@ -204,38 +201,35 @@
         </div>
       </div>
       {% endif %}
-      <br />
-        <div class="media">
-          <span class="fa fa-4x fa-print text-muted media-object pull-left"></span>
-          <div class="media-body">
-            {% if ar %}
-            <h4 class="text text-primary ar1"><u>التذاكر :</u>
-            </h4>
-              <h4 class="text text-muted ar2"  >
-              منصة تتيح للمستخدم تحديد نوع التذاكر التي سيتم إستخدامها , كذالك تتيح
-              المنصة تحديد طابعات اليو أس بي المراد إستخدمها لإصدار التذاكر المطبوعه
-              , تتوفر المنصة في هذه الإصدرة على نوعين من التذاكر التي يمكن تحديدها
-              التذاكر المطبوعة و المتعارف عليها و التي تتطلب توفر طابعة فعالة  ,
-              النوع الثاني هوا التذاكر المسجلة التي تتيح للعميل تسجيل إسمه و يتم حفظ
-              الإسم و ربطه مع التذكرة الرقمية ليتم المنادات عليه لاحقاً
-              </h4>
-            {% else %}
-            <h4 class="text text-primary"><u>Tickets :</u>
-            </h4>
-              <h4 class="text text-muted">
-              Here where the type of tickets which the system will generate is set, two options
-              currently are possible 1.Registered, in-which the customer inserts full name after
-              chosing the specific task, so the system later on will announce the inserted name
-              whenever it's due. 2.Printed the typical queue numbered printed ticket, that requires
-              usb printer to be connected, with which it's configured and set on Tickets too .
-              </h4>
-            {% endif %}
-          </div>
+      <div class="media">
+        <span class="fa fa-4x fa-print text-muted media-object pull-left"></span>
+        <div class="media-body">
+          {% if ar %}
+          <h4 class="text text-primary ar1">
+            <u>التذاكر :</u>
+          </h4>
+          <h4 class="text text-muted ar2"  >
+            منصة تتيح للمستخدم تحديد نوع التذاكر التي سيتم إستخدامها , كذالك تتيح
+            المنصة تحديد طابعات اليو أس بي المراد إستخدمها لإصدار التذاكر المطبوعه
+            , تتوفر المنصة في هذه الإصدرة على نوعين من التذاكر التي يمكن تحديدها
+            التذاكر المطبوعة و المتعارف عليها و التي تتطلب توفر طابعة فعالة  ,
+            النوع الثاني هوا التذاكر المسجلة التي تتيح للعميل تسجيل إسمه و يتم حفظ
+            الإسم و ربطه مع التذكرة الرقمية ليتم المنادات عليه لاحقاً
+          </h4>
+          {% else %}
+          <h4 class="text text-primary ar1"><u>Tickets :</u>
+          </h4>
+          <h4 class="text text-muted ar2 mb-5">
+            Here where the type of tickets which the system will generate is set, two options
+            currently are possible 1.Registered, in-which the customer inserts full name after
+            chosing the specific task, so the system later on will announce the inserted name
+            whenever it's due. 2.Printed the typical queue numbered printed ticket, that requires
+            usb printer to be connected, with which it's configured and set on Tickets too .
+          </h4>
+          {% endif %}
         </div>
       </div>
-      {{ brp * 4 }}
-	</div>
     </div>
+	</div>
 </div>
-<br>
 {% endblock %}

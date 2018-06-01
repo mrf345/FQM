@@ -213,14 +213,20 @@ def user_u(u_id):
         flash(get_lang(8),
               "danger")
         return redirect(url_for("administrate.users"))
-    if data.Office.query.filter_by(operator_id=u.id).first() is not None:
-        flash(get_lang(9),
-              "danger")
-        return redirect(url_for("administrate.users"))
     if form.validate_on_submit():
         u.name = form.name.data
         u.password = form.password.data
         u.role_id = form.role.data
+        # Remove operator if role has changed
+        if form.role.data == 3:
+            db.session.add(data.Operators(
+                u.id,
+                form.offices.data
+            ))
+        else:
+            toRemove = data.Operators.query.filter_by(id=u.id).first()
+            if toRemove is not None:
+                db.session.delete(toRemove)
         db.session.commit()
         flash(get_lang(10),
               "info")
@@ -231,10 +237,10 @@ def user_u(u_id):
     # fetch office id if operator
     if u.role_id == 3:
         form.offices.data = data.Operators.query.filter_by(id=u.id).first().office_id
-    return render_template('user_update.html',
+    return render_template('user_add.html',
                            form=form, navbar='#snb3',
                            ptitle='Update user : ' + u.name,
-                           u=u)
+                           u=u, update=True)
 
 
 @administrate.route('/user_d/<int:u_id>')
@@ -253,17 +259,6 @@ def user_d(u_id):
         flash(get_lang(8),
               "danger")
         return redirect(url_for("administrate.users"))
-    # if data.Office.query.filter_by(operator_id=u.id).first() is not None:
-    #     flash(get_lang(9),
-    #           "danger")
-    #       return redirect(url_for("administrate.users"))
-    # Fix: multiple operators for office
-    # checking if user is assigned operator
-    # !! Removed checking on second though it seems useless since assinging became obligatory
-    # if data.Operators.query.filter_by(id=u.id).first() is not None:
-    #     flash(get_lang(9),
-    #           "danger")
-    #     return redirect(url_for("administrate.users"))
     # delete from operators if user is operator
     if u.role_id == 3:
         db.session.delete(data.Operators.query.filter_by(id=u.id).first())

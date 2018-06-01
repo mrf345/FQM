@@ -14,109 +14,74 @@
 {{ super() }}
 <script type="text/javascript">
 $(document).ready(function() {
-  var tcs = $('#status option:selected').val()
-  if (tcs=='1') {
-    $('#warn').removeClass('hide');
-  }
+  if ($('#status option:selected').val() === '1') $('#warn').removeClass('hide')
   $('#status').change(function(){
-    var ncs = $('#status option:selected').val()
-    if (ncs=='1') {
-      $('#warn').removeClass('hide');
-    }
-    if (ncs!='1') {
-      $('#warn').addClass('hide');
-    }
-  });
-});
+    $('#status option:selected').val() === '1' ? $('#warn').removeClass('hide') : $('#warn').addClass('hide')
+  })
+})
 </script>
 {% endblock %}
 
 {% block page_content %}
 {% from "_helpers.html" import render_field %}
+{% from '_modals.html' import qrModal %}
 <div class="col-md-12">
-    <form method="POST" enctype="multipart/form-data">
-	<div class="panel panel-default" id="p1">
+  <form method="POST" enctype="multipart/form-data">
+	  <div class="panel panel-default" id="p1">
 	    <div class="panel-heading text-center">
-		<h3 class="text-muted">
-      <span class="fa fa-film"></span>
-      {% if ar %}
-      <strong class="ar1">
-        عرض الشرائح - الإعدادات
-      </strong>
-      {% else %}
-      <strong>
-        Slide-show -   Settings
-      </strong>
-      {% endif %}
-    </h3>
+		    <h3 class="text-muted">
+          <span class="fa fa-film"></span>
+            {% if ar %}
+            <strong class="ar1">
+              عرض الشرائح - الإعدادات
+            </strong>
+            {% else %}
+            <strong>
+              Slide-show -   Settings
+            </strong>
+            {% endif %}
+        </h3>
 	    </div>
 	    <div class="panel-body">
-		<br><br>
-		{{ form.csrf_token }}
-    <center>
-      <a data-toggle="modal" data-target="#mym">
-          <img class="img-responsive img-thumbnail pic" id="map" width="40%"
-          alt="Map image"
-          src="{{ url_for('static', filename='images/slideshow.jpg') }}">
-      </a>
-    </center>
-    {{ brp * 2 }}
-		{{ render_field(form.status, class="form-control") }}
-    {{ brp * 2 }}
-    {% if ar %}
-    <p id="warn" class="h4 warn hide text-center text-danger ar2">
-      | تنبيه : لتفعيل عرض الفيديو يتطلب عليك تعطيل عرض الشرائح |
-		</p>
-    {% else %}
-		<p id="warn" class="h4 warn hide text-center text-danger">
-      | Notice: To enable video you must first diable slide-show |
-		</p>
-    {% endif %}
-    {{ brp * 2 }}
-		<a data-toggle="modal" data-target="#mym">
-		    <center><img class="img-responsive img-thumbnail" id="map" width="15%" src="{{ url_for('static', filename='images/slideshow_nav.jpg') }}"></center>
-		</a>
-    {{ brp * 2 }}
-		{{ render_field(form.navigation, class="form-control") }}
-    {{ brp * 2 }}
-		{{ render_field(form.effect, class="form-control") }}
-    {{ brp * 2 }}
-		{{ render_field(form.rotation, class="form-control") }}
-    {{ brp * 2 }}
-		<center>
-      {% if ar %}
-		    {{ form.submit(class_="btn btn-md btn-danger ar1") }}
-      {% else %}
-		    {{ form.submit(class_="btn btn-md btn-danger") }}
-      {% endif %}
-		</center>
+		    {{ form.csrf_token }}
+        <center>
+          <a data-toggle="modal" data-target="#mym">
+            <img class="img-responsive img-thumbnail mb-2 mt-5 pic" id="map" width="40%"
+              alt="Map image"
+              src="{{ url_for('static', filename='images/slideshow.jpg') }}"
+            >
+          </a>
+        </center>
+		    {{ render_field(form.status, class="form-control") }}
+        <p class="pt-2"></p>
+        {% if ar %}
+        <p id="warn" class="h4 warn hide text-center text-danger ar2">
+          | تنبيه : لتفعيل عرض الفيديو يتطلب عليك تعطيل عرض الشرائح |
+		    </p>
+        {% else %}
+		    <p id="warn" class="h3 ar2 mb-2 warn hide text-center text-danger">
+          | Notice: To enable video you must first disable slide-show |
+		    </p>
+        {% endif %}
+		    <a data-toggle="modal" data-target="#mym">
+		      <center><img class="img-responsive img-thumbnail mb-2 mt-2" id="map" width="15%" src="{{ url_for('static', filename='images/slideshow_nav.jpg') }}"></center>
+		    </a>
+		    {{ render_field(form.navigation, class="form-control") }}
+		    {{ render_field(form.effect, class="form-control") }}
+        {{ render_field(form.rotation, class="form-control") }}
+        <p class="pt-5"></p>
+		    <center>
+          {% if ar %}
+		        {{ form.submit(class_="btn btn-md btn-danger ar1") }}
+          {% else %}
+		        {{ form.submit(class_="btn btn-md btn-danger") }}
+          {% endif %}
+        </center>
+        <p class="pb-2"></p>
 	    </div>
-	</div>
-    </form>
+	  </div>
+  </form>
 </div>
-<br>
-<div class="modal fade" id="mym">
-    <div class="modal-dialog">
-	<div class="modal-content">
-	    <div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">&times;</button>
-    {% if ar %}
-		<h4 class="modal-title ar1">خارطة عرض الشرائح</h4>
-    {% else %}
-		<h4 class="modal-title">Slideshow template</h4>
-    {% endif %}
-	    </div>
-	    <div class="modal-body">
-		<center><img class="img-thumbnail img-responsive" src="{{ url_for('static', filename='images/slideshow.jpg') }}" alt="Map image"></center>
-	    </div>
-	    <div class="modal-footer">
-    {% if ar %}
-		<button type="button" class="close ar1" data-dismiss="modal">إلغاء</button>
-    {% else %}
-		<button type="button" class="close" data-dismiss="modal">Close</button>
-    {% endif %}
-	    </div>
-	</div>
-    </div>
-</div>
+
+{{ qrModal([['mym', 'Slideshow template', url_for('static', filename='images/slideshow.jpg')]]) }}
 {% endblock %}

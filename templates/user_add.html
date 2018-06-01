@@ -9,77 +9,84 @@
 {% from "_helpers.html" import render_field %}
 <script type='text/javascript'>
 $(document).ready(function () {
+	// adding hidden user roles reminders instead
+	var toShuffle = ['.admin', '.monitor', '.operator']
+	$(toShuffle[($('#role').val() - 1)]).removeClass('hide')
 	// to hide and display offices list when operator is selected
 	if ($('#role').val() == 3) $('.offices').removeClass('hide')
 	$('#role').change(function () {
 		if ($('#role').val() == 3) $('.offices').removeClass('hide')
 		else $('.offices').addClass('hide')
+		toShuffle.forEach(function (item) { $(item).addClass('hide') })
+		$(toShuffle[($('#role').val() - 1)]).removeClass('hide')
 	})
 })
 </script>
 <div class="col-md-12">
     <form method="POST" enctype="multipart/form-data" id="fm">
-	<div class="panel panel-default">
-	    <div class="panel-heading text-center">
-		<h3 class="text-muted">
-      {% if ar %}
-      <strong class="ar1">
-        <span class="fa fa-plus"></span> إضافة مستخدم جديد
-      </strong>
-      {% else %}
-		    <strong>
-			<span class="fa fa-plus"></span>  Add new user
-		    </strong>
-      {% endif %}
-		</h3>
-	    </div>
-	  <div class="panel-body">
-      {{ brp*4 }}
-		  {{ form.csrf_token }}
-		  <br>
-		  {{ render_field(form.name, class="form-control") }}<br>
-		  {{ render_field(form.password, class="form-control") }}<br><br>
-      {% if ar %}
-      <p class="h4 text-center text-muted ar2">
-        | Admin : حساب المدير لديه المقدرة على تنظيم و إدارة كل شي , بما في
-        ذالك إضافة و حذف المستخدميين |
-		  </p>
-		  <p class="h4 text-center text-muted ar2">
-        | Monitor : حساب المنظم لديه المقدرة على تنظيم و تخصيص كل شيئ , لكن
-        ليس لديه المقدرة على الإدارة بما في ذالك إدارة المستخدميين |
-		  </p>
-		  <p class="h4 text-center text-muted ar2">
-        | Operator : حساب المشغل لديه المقدرة على تشغيل و تنظيم مكتب معين ,
-        يتم تعينه عن طريق حساب المدير و لا يملك أي من صلاحيات الإدارة و التخصيص |
-		  </p>
-      {% else %}
-		  <p class="h4 text-center text-muted">
-		      |  Admin : has the permissions to access and monitor everything  |
-		  </p>
-		  <p class="h4 text-center text-muted">
-		      |  Monitor : has permissions to monitor and access everything except Administrate  |
-		  </p>
-		  <p class="h4 text-center text-muted">
-		    | Operator : has limited permissions only to access and monitor the office assigned to |
-		  </p>
-      {% endif %}
-		  <br>
-		  {{ render_field(form.role, class="form-control") }}<br/>
-		  <div class='offices hide'>
-			{{ render_field(form.offices, class="form-control") }} <br/>
-		  </div>
-		  {{ brp * 3 }}
-		  <center>
-        {% if ar %}
-		    {{ form.submit(class_="btn btn-md btn-danger ar1") }}
-        {% else %}
-		    {{ form.submit(class_="btn btn-md btn-danger") }}
-        {% endif %}
-		  </center>
-      {{ brp*4 }}
-	   </div>
-	</div>
+		<div class="panel panel-default">
+	    	<div class="panel-heading text-center">
+				<h3 class="text-muted">
+      				{% if ar %}
+      				<strong class="ar1">
+      				  <span class="fa fa-plus"></span> إضافة مستخدم جديد
+      				</strong>
+      				{% else %}
+		    		<strong>
+						<span class="fa fa-plus"></span>  
+						{% if update %}
+						Update user
+						{% else %}
+						Add new user
+						{% endif %}
+		    		</strong>
+      				{% endif %}
+				</h3>
+	    	</div>
+	  		<div class="panel-body">
+      			<p class="pt-3"></p>
+				{{ form.csrf_token }}
+				{{ render_field(form.name, class="form-control") }}
+				{{ render_field(form.password, class="form-control") }}
+				{{ render_field(form.role, class="form-control") }}
+				{% if ar %}
+      			<p class="h4 text-center text-muted ar2">
+        			| Admin : حساب المدير لديه المقدرة على تنظيم و إدارة كل شي , بما في
+        			ذالك إضافة و حذف المستخدميين |
+		  		</p>
+		  		<p class="h4 text-center text-muted ar2">
+        			| Monitor : حساب المنظم لديه المقدرة على تنظيم و تخصيص كل شيئ , لكن
+        				ليس لديه المقدرة على الإدارة بما في ذالك إدارة المستخدميين |
+		  		</p>
+		  		<p class="h4 text-center text-muted ar2">
+        			| Operator : حساب المشغل لديه المقدرة على تشغيل و تنظيم مكتب معين ,
+        			يتم تعينه عن طريق حساب المدير و لا يملك أي من صلاحيات الإدارة و التخصيص |
+		  		</p>
+      			{% else %}
+		  		<p class="h3 ar2 mt-2 mb-2 text-center text-muted admin hide">
+		      		|  Admin : has the permissions to access and monitor everything  |
+		  		</p>
+		  		<p class="h3 ar2 mt-2 mb-2 text-center text-muted monitor hide">
+		      		|  Monitor : has permissions to monitor and access everything except Administrate  |
+		  		</p>
+		  		<p class="h3 ar2 mt-2 mb-2 text-center text-muted operator hide">
+		    		| Operator : has limited permissions only to access and monitor the office assigned to |
+		  		</p>
+      			{% endif %}  
+		  		<div class='offices hide'>
+					{{ render_field(form.offices, class="form-control") }}
+				</div>
+				<p class="pb-5"></p>
+		  		<center>
+					{% if update %}
+					<button class='btn btn-md btn-danger'>Update</button>
+					{% else %}
+					{{ form.submit(class_="btn btn-md btn-danger") }}
+					{% endif %}
+		  		</center>
+				<p class="pb-3"></p>
+	   		</div>
+		</div>
     </form>
-    <br>
 </div>
 {% endblock %}

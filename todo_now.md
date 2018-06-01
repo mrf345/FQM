@@ -2,24 +2,21 @@
 
 ## To Fix:
 
-- [ ] CSS:
-> - [ ] Move, improve general css to mstyle.css
-> - [ ] Move all template inline css to style tag based on classes
-> - [ ] Make google fonts default regardless of lang
-> - [ ] use macros for inline css
+- [x] CSS: (6/1st)
+> - [x] use less flask-less (6/1st)
+> - [x] replace brp with pt (6/1st)
+> - [x] Move, improve general css to mstyle.css (6/1st)
+> - [x] Move all template inline css to style tag based on classes (6/1st)
+> - [x] Make google fonts default regardless of lang (6/1st)
+> - [x] use macros for inline css (6/1st)
 
 - [ ] JsonStream:
 > - [ ] Fix mdruation and effect_duration
 
-- [ ] Template:
-> - [ ] look for template repetitiveness and replace it with macros
-> - [ ] replace manage panel headers and footers with macros
-> - [ ] replace background css in base and base_s with macro
-
-- [ ] Improve User management:
-> - [ ] add configurable profile for users
-> - [ ] add activities log to profile
-> - [ ] improve office operators interface
+- [x] Template: (6/1st)
+> - [x] look for template repetitiveness and replace it with macros (6/1st)
+> - [x] replace manage panel headers and footers with macros (6/1st)
+> - [x] replace background css in base and base_s with macro (6/1st)
 
 - [x] Nested audio announcement: (5/7th)
 > ~~use check boxes to get langs~~
@@ -98,20 +95,3 @@
 > - [ ] remove values from db
 > - [ ] remove old values from display template
 > - [ ] test if that solves repeating same name
-
-- [ ] create smart tickets display
-> - [ ] method to generate special identifier for the device based on time + date + randint
-> - [ ] new serial for s-tickets that generates ticket with the special identifier stored in db
-> - [ ] new feed for s-tickets that takes special identifer as an arg
-> - [ ] s-ticket layout integrated with json_stream and audio_sequence 
-
-- [ ] New Tickets
-> - [ ] add printed tickets section from old tickets
-> - [ ] add registered tickets section with new settings like name, number, message color text font and button color text font
-> - [ ] add s-ticket layout customization background title colors fonts sound notification and audio notification
-> - [ ] add special args for touch_screen to redirect to registered or printed tickets
-> - [ ] remove old tickets from template and db
-
-#### move these, to todo_next:
-
-- [ ] Create and use python module based on pos module for cross-platform drawn printing

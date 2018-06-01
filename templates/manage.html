@@ -5,7 +5,7 @@
 {% extends "base.html" %}
 {% block title %} FQM - {{ ptitle  }} {% endblock %}
 
-{% from "beloadingNotifier.html" import beloadingNotifier %}
+{% from "_beloadingNotifier.html" import beloadingNotifier %}
 {% block head %}
 {{ super() }}
 {{ datepicker.loader() }}
@@ -20,222 +20,107 @@
 {% block page_content %}
 <div class="col-md-12">
     <div class="panel panel-default">
-	<div class="panel-heading text-center">
-    {% if ar %}
-	    <h3 class="text-muted ar1"><strong>التنظيم</strong></h3>
-    {% else %}
-	    <h3 class="text-muted"><strong>Management</strong></h3>
-    {% endif %}
-	</div>
-	<div class="panel-body">
-    {{ brp * 2 }}
-	    <h4 class="text text-primary text-center">
-    {% if ar %}
-    <strong class="ar1">
-      قسم التنظيم يحتوي على منصات متعددة تتيح للمستخدم إدارة التذاكر من خلال
-      إضافة أو حذف أو تعديل المكاتب و المهمات , كل مكتب يحتوي على مهمات محددة
-      عن طريق المستخدم لتتيح للعميل التفاعل مع النظام و تتيح للمستخدم إدارة النظام
-      , كذالك يمكن تخصيص مستخدم خاص لكل مكتب و المهمات التي يحتويها
-		</strong>
-    {% else %}
-		<strong>
-		    Allowing the admin and his assigned operators to manage the flow of tickets, by adding
-		    , modifing offices and task which are the virtual representation of the actual offices,
-		    tasks on-which tickets will be stored and pulled from to ease the proccess of dealing with
-		    queue management.
-		</strong>
-    {% endif %}
-	    </h4>
-	    <br><hr><br>
-      {{ brp * 2 }}
-	    {% if current_user.role_id != 3 %}
-	    <div class="media">
-		<span class="fa fa-4x fa-search text-muted media-object pull-left"></span>
-		<div class="media-body">
-      {% if ar %}
-      <h4 class="text text-primary ar1"><u>البحث :</u>
-      </h4>
-      <h4 class="text text-muted ar2">
-      منصة تتيح للمستخدم العام أو المستخدم الخاص المسموح له بالبحث عن التذاكر
-      التي تم إصدارها من خلال تحديد أحد القيم المتوفرة كتاريخ إصدار التذكرة أو
-      المكتب المسؤول عن إصدار التذكرة
-      </h4>
-      {% else %}
-		    <h4 class="text text-primary"><u>Search :</u>
-        </h4>
-		    <h4 class="text text-muted">
-			Allows the admin, permitted by admin operators to search with given parametars of
-			ticket number, ticket prefix and or ticket date to reach to the specific ticket meant to
-			be searched in a dynamic and felixable manner, that was well intended in design.
-		    </h4>
-      {% endif %}
+		<div class="panel-heading text-center">
+    	{% if ar %}
+		    <h3 class="text-muted ar1"><strong>التنظيم</strong></h3>
+    	{% else %}
+		    <h3 class="text-muted"><strong>Management</strong></h3>
+    	{% endif %}
 		</div>
-	    </div>
-	    <br>
-	    <div class="media">
-		<span class="fa fa-4x fa-ticket text-muted media-object pull-left"></span>
-		<div class="media-body">
-      {% if ar %}
-      <h4 class="text text-primary ar1"><u>كل التذاكر :</u></h4>
-      <h4 class="text text-muted ar2">
-        منصة لعرض التذاكر الصادرة من كل المكاتب و المهمات , و يتم ترتيبها بشكل تنازلي من
-        الأقدم إلى الأجدد و تعطي المستخدم العام المقدرة على إعدة تهيئ أو حذف كل المكاتب أو
-        المهمات مع التذكر التبعة لكليهما , مع توفر عدادات للإشرة و التوضيح إلى عدد التذاكر
-        في الإنتظار و التذاكر التي تم معالجتها
-      </h4>
-      {% else %}
-		    <h4 class="text text-primary"><u>All Tickets :</u></h4>
-		    <h4 class="text text-muted">
-			Displays all existing tickets from all offices in a decending order from the newset to
-			the oldest, and given the admin and permitted operators the options of reseting to
-			zero or deleting all offices properly. As well as few indecators and counters that
-			displays the number of offices, total, proccessed and waiting tickets accourdingly.
+		<div class="panel-body">
+		    <h4 class="text text-primary text-center ar2 mt-2">
+    			{% if ar %}
+    			<strong class="ar1">
+    			  قسم التنظيم يحتوي على منصات متعددة تتيح للمستخدم إدارة التذاكر من خلال
+    			  إضافة أو حذف أو تعديل المكاتب و المهمات , كل مكتب يحتوي على مهمات محددة
+    			  عن طريق المستخدم لتتيح للعميل التفاعل مع النظام و تتيح للمستخدم إدارة النظام
+    			  , كذالك يمكن تخصيص مستخدم خاص لكل مكتب و المهمات التي يحتويها
+					</strong>
+    			{% else %}
+					<strong>
+					    Allowing the admin and his assigned operators to manage the flow of tickets, by adding
+					    , modifying offices and task which are the virtual representation of the actual offices,
+					    tasks on-which tickets will be stored and pulled from to ease the process of dealing with
+					    queue management.
+					</strong>
+    			{% endif %}
 		    </h4>
-      {% endif %}
-		</div>
-	    </div>
-	    <br>
-	    <div class="media">
-		<span class="fa fa-4x fa-plus text-muted media-object pull-left"></span>
-		<div class="media-body">
-        {% if ar %}
-        <h4 class="text text-primary ar1"><u>إضافة مكتب :</u></h4>
-		    <h4 class="text text-muted ar2">
-        توفير منصة للمستخدم العام لإضافة مكاتب جديدة , مع توفير المقدرة على تحديد
-        مستخدم خاص للمكتب المضاف , المكتب في ما بعد سيحتوي على عدد لا متناهي من المهمات
-        التي بإمكان المستخدم العام أو المستخدم المعين الخاص بإضافتها ليتم تمكيين العملاء من
-        سحب أو تسجيل تذاكر تحت المكاتب و المهمات المضافة
-		    </h4>
-        {% else %}
-		    <h4 class="text text-primary"><u>Add office :</u></h4>
-		    <h4 class="text text-muted">
-			Allowing the admin and his permitted operators to add an office, that will later on
-			contain multiple task and tickets, that will be always referanced to the created
-			office via its chosen unqie number and prefix, which will be used as a visual key
-			code to referance tickets to their offices.
-		    </h4>
-        {% endif %}
-		</div>
-	    </div>
-	    <br>
-	    {% endif %}
-	    {% if offices.count() > 0 %}
-	    <div class="media">
-		<a data-toggle="collapse" href="#dropdown-lvl1" onclick="$('#cls').collapse('toggle');"><span class="fa fa-4x fa-desktop text-muted media-object pull-left"></span></a>
-		<div class="media-body">
-		    <h4 class="text text-primary">
-          <a data-toggle="collapse" href="#dropdown-lvl1" onclick="$('#cls').collapse('toggle');">
-            {% if ar %}
-            <u class="ar1"> المكتب الأول :</u>
-            {% else %}
-            <u> Office 1 :</u>
-            {% endif %}
-          </a>
-          <span class="fa fa-mouse-pointer text-muted"></span>
-		    </h4>
-		    <a data-toggle="collapse" href="#dropdown-lvl1" onclick="$('#cls').collapse('toggle');">
-      {% if ar %}
-      <h4 class="text text-muted ar2">
-			    قائمة قابلة لطي تتحتوي على المهمات و التذاكر الخاصة بالمكتب , مع توفير
-          إمكانية إضافة و حذف و تعديل المهمات و محتويتها , بمقدرة المستخدم الخاص
-          المعين و المستخدم العام على شكل سواء التعامل مع هذه القائمة
-			</h4>
-      {% else %}
-			<h4 class="text text-muted">
-			    Drop-down menu that contains all the different multiple specifications and
-			    commands, that allow the admin and his permitted operators to manipulate
-			    each specific office through veraity of opetions of pulling its tickets, filtering
-			    tickets by selecting each specific task tickets to be displayed. Adding modifing
-			    tasks and more ....
-			</h4>
-      {% endif %}
-		    </a>
-		    <br>
-		    <div class="col-md-8 col-md-offset-2">
-			<div class="collapse" id="cls">
-			    <div class="media">
+			<hr class="mb-4">
+		    {% if current_user.role_id != 3 %}
+		    <div class="media mb-1">
+				<span class="fa fa-4x fa-search text-muted media-object pull-left"></span>
+				<div class="media-body">
+    	  			{% if ar %}
+    	  			<h4 class="text text-primary ar1">
+						  <u>البحث :</u>
+    	  			</h4>
+    	  			<h4 class="text text-muted ar2">
+						منصة تتيح للمستخدم العام أو المستخدم الخاص المسموح له بالبحث عن التذاكر
+    				  التي تم إصدارها من خلال تحديد أحد القيم المتوفرة كتاريخ إصدار التذكرة أو
+    				  المكتب المسؤول عن إصدار التذكرة
+    				</h4>
+    	  			{% else %}
+			    	<h4 class="text text-primary">
+						<u>Search :</u>
+    	    		</h4>
+			    	<h4 class="text text-muted ar2">
+						Allows the admin, permitted by admin operators to search with given parameters of
+						ticket number, ticket prefix and or ticket date to reach to the specific ticket meant to
+						be searched in a dynamic and fixable manner, that was well intended in design.
+			    	</h4>
+    	  			{% endif %}
+				</div>
+		    </div>
+		    <div class="media mb-1">
 				<span class="fa fa-4x fa-ticket text-muted media-object pull-left"></span>
 				<div class="media-body">
-          {% if ar %}
-          <h4 class="text text-primary">
-            <u class="ar1">كل تذاكر المكتب الأول : </u>
-          </h4>
-          <h4 class="text text-muted ar2">
-          منصة لإستعراض التذاكر الخاصة بالمكتب الأول , مع توفير المقدرة
-          للمستخدم الخاص أو العام لتعديل و التعامل مع التذاكر و المهمات
-          التابعة للمكتب الأول
-          </h4>
-          {% else %}
-				    <h4 class="text text-primary">
-					    <u>All office tickets :</u>
-				    </h4>
-				    <h4 class="text text-muted">
-					Displays all existing tickets from this specific office in a decending order from the
-					newset to the oldest, and given the admin and permitted operators the options
-					of reseting to zero or deleting all offices properly. As well as few indecators and
-					counters that displays the number of offices, total, proccessed and waiting
-					tickets accourdingly.
-				    </h4>
-            {% endif %}
+    	  			{% if ar %}
+    	  			<h4 class="text text-primary ar1"><u>كل التذاكر :</u></h4>
+    	  			<h4 class="text text-muted ar2">
+    	  			  منصة لعرض التذاكر الصادرة من كل المكاتب و المهمات , و يتم ترتيبها بشكل تنازلي من
+    	  			  الأقدم إلى الأجدد و تعطي المستخدم العام المقدرة على إعدة تهيئ أو حذف كل المكاتب أو
+    	  			  المهمات مع التذكر التبعة لكليهما , مع توفر عدادات للإشرة و التوضيح إلى عدد التذاكر
+    	  			  في الإنتظار و التذاكر التي تم معالجتها
+    	  			</h4>
+    	  			{% else %}
+					<h4 class="text text-primary ar1"><u>All Tickets :</u></h4>
+					<h4 class="text text-muted ar2">
+						Displays all existing tickets from all offices in a descending order from the newest to
+						the oldest, and given the admin and permitted operators the options of resetting to
+						zero or deleting all offices properly. As well as few indicators and counters that
+						displays the number of offices, total, processed and waiting tickets accordingly.
+					</h4>
+    	  			{% endif %}
 				</div>
-			    </div>
-			    <br>
-			    <div class="media">
-				<span class="fa fa-4x fa-minus text-muted media-object pull-left"></span>
-				<div class="media-body">
-          {% if ar %}
-          <h4 class="text text-primary">
-            <u class="ar1">سحب التذكرة :</u>
-          </h4>
-          <h4 class="text text-muted ar2">
-            توفير المقدرة للمستخدم العام و الخاص للمكتب سحب التذاكر المسجلة تحت المكتب
-          </h4>
-          {% else %}
-				    <h4 class="text text-primary">
-					    <u>Pull a ticket :</u>
-				    </h4>
-				    <h4 class="text text-muted">
-					    Pulling ticket is the action of taking a registered ticket from the witing list,
-					    into the proccessed tickets list under the specified office .
-				    </h4>
-          {% endif %}
-				</div>
-			    </div>
-			    <br>
-			    <div class="media">
+		    </div>
+		    <div class="media mb-1">
 				<span class="fa fa-4x fa-plus text-muted media-object pull-left"></span>
 				<div class="media-body">
-            {% if ar %}
-            <h4 class="text text-primary">
-					    <u class="ar1">إضافة مهمة جديدة : </u>
-				    </h4>
-				    <h4 class="text text-muted ar2">
-              منصة تتيح للمستخدم الخاص أو العام إضافة مهمات جديدة بعنوان مميز
-              يضهر للعميل من خلال شاشة اللمس و يمكن للمستخدميين إدارة المهمات و التعامل
-              مع التذاكر المسجلة تحتها
-				    </h4>
-            {% else %}
-				    <h4 class="text text-primary">
-					    <u>Add new task :</u>
-				    </h4>
-				    <h4 class="text text-muted">
-					    Allowing the admin and his permitted operators to add a task under
-					    theis specific office. The visual side of task rather than the mangerial side
-					    comes when the user interacts with the touch screen , the options that
-					    appears to the user will be tasks.	That will be added inside this office.
-				    </h4>
-            {% endif %}
+    	    		{% if ar %}
+    	    		<h4 class="text text-primary ar1">
+						<u>إضافة مكتب :</u>
+					</h4>
+			    	<h4 class="text text-muted ar2">
+    	    		توفير منصة للمستخدم العام لإضافة مكاتب جديدة , مع توفير المقدرة على تحديد
+    	    		مستخدم خاص للمكتب المضاف , المكتب في ما بعد سيحتوي على عدد لا متناهي من المهمات
+    	    		التي بإمكان المستخدم العام أو المستخدم المعين الخاص بإضافتها ليتم تمكيين العملاء من
+    	    		سحب أو تسجيل تذاكر تحت المكاتب و المهمات المضافة
+			    	</h4>
+    	    		{% else %}
+			    	<h4 class="text text-primary ar1"><u>Add office :</u></h4>
+			    	<h4 class="text text-muted ar2">
+						Allowing the admin and his permitted operators to add an office, that will later on
+						contain multiple task and tickets, that will be always referanced to the created
+						office via its chosen unqie number and prefix, which will be used as a visual key
+						code to referance tickets to their offices.
+			    	</h4>
+    	    		{% endif %}
 				</div>
-			    </div>
-			    <br>
 			</div>
-		    </div>
+			<p class="pb-10"></p>
+			<p class="pb-10"></p>
+		    {% endif %}
 		</div>
-		{% endif %}
-    {{ brp * 4 }}
-	    </div>
-	</div>
     </div>
 </div>
-<br>
 {% endblock %}

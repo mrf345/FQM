@@ -1,0 +1,126 @@
+{% macro qrModal (modals=[],vid=False) %}
+    <!-- Receives [['id', 'title', 'qr()'], ...] -->
+    {% for theModal in modals%}
+        <div class="modal fade" id="{{theModal[0]}}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-danger close" data-dismiss="modal">&times;</button>
+                        {% if ar %}
+                        <h4 class="modal-title ar1">شفرة QR - شاشة اللمس</h4>
+                        {% else %}
+                        <h4 class="modal-title ar1">{{theModal[1]}}</h4>
+                        {% endif %}
+                    </div>
+                    <div class="modal-body">
+                        <center>
+                            {% if vid %}
+                            <video src="{{theModal[2]}}" controls class='img-responsive'></video>
+                            {% else %}
+                            <img class="img-thumbnail img-responsive pic"
+                                src="{{theModal[2]}}"
+                                alt="{{theModal[1]}}"
+                            >
+                            {% endif %}
+                        </center>
+                    </div>
+                    <div class="modal-footer">
+                        {% if ar %}
+                        <button type="button" class="close ar1" data-dismiss="modal">إلغاء</button>
+                        {% else %}
+                        <button type="button" class="btn-danger close" data-dismiss="modal">Close</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}
+
+{% macro confirmModal (modals=[]) %}
+    <!-- Receives [['id', 'title', 'message', 'link'], ...] -->
+    {% for theModal in modals%}
+        <div class="modal fade" id="{{theModal[0]}}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        {% if ar %}
+                         <h4 class="modal-title text-center ar1">تنبيه : إعدة تهيئ الجميع </h4>
+                        {% else %}
+                        <h4 class="modal-title text-center ar1"> {{theModal[1]}} </h4>
+                        {% endif %}
+                    </div>
+                    <div class="modal-body">
+                        {% if ar %}
+                        <h4 class="text-danger text-center text-warning ar2 mb-10 mt-10">
+                            <strong>
+                                تحاول القيام بإعادة تهيئة شاملة و كلية لكل من المكاتب , المهمات و التذاكر كذالك ,
+                                تريد الإستمرار في ذالك ؟
+                            </strong><br><br>
+                        </h4>
+                        {% else %}
+                        <h4 class="text-danger text-center text-warning ar2 mb-10 mt-10">
+                            <strong>
+                                {{theModal[2]}}
+                            </strong>
+                        </h4>
+                        {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                       {% if ar %}
+                        <button type="button" class="close btn btn-md btn-warning pull-left ar1" data-dismiss="modal">إلغاء</button>
+                            <a href="{{ url_for('core.serial_ra') }}">
+                                <button type="button" class="close btn btn-md btn-danger ar1">إستمرار</button>
+                            </a>
+                        {% else %}
+                        <button type="button" class="close btn btn-md btn-warning pull-left" data-dismiss="modal">No, don't</button>
+                            <a href="{{theModal[3]}}">
+                                <button type="button" class="close btn btn-md btn-danger">Yes, sure</button>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}
+
+{% macro mapModal (modals=[]) %}
+    <!-- Receives [['id', 'title', 'img'], ...] -->
+    {% for theModal in modals%}
+    <div class="modal fade" id="{{theModal[0]}}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close btn-danger" data-dismiss="modal">&times;</button>
+                    {% if ar %}
+                        <h4 class="modal-title ar1">خارطة القالب</h4>
+                    {% else %}
+                        <h4 class="modal-title ar1">{{theModal[1]}}</h4>
+                    {% endif %}
+                </div>
+                <div class="modal-body">
+                    <center>
+                        <img class="img-responsive img-thumbnail tobc"
+                            {% if ar %}
+                            src="{{ url_for('static', filename='images/map2_ar.jpg') }}"
+                            {% else %}
+                            src="{{theModal[2]}}"
+                            {% endif %}
+                            alt="Map image"
+                        >
+                    </center>
+                </div>
+                <div class="modal-footer">
+                    {% if ar %}
+                    <button type="button" class="close ar1" data-dismiss="modal">إلغاء</button>
+                    {% else %}
+                    <button type="button" class="close btn-danger" data-dismiss="modal">Close</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endmacro %}

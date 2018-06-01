@@ -35,6 +35,8 @@ from printer import listp
 from flask_datepicker import datepicker
 from flask_colorpicker import colorpicker
 from flask_fontpicker import fontpicker
+from flask_less import lessc
+from flask_htmlmin import HTMLMIN
 from languages import GUI as LANGUAGES
 
 
@@ -57,6 +59,7 @@ def create_app():
     app.config['UPLOADED_FILES_DEST'] = r_path('static/multimedia')
     app.config['UPLOADED_FILES_ALLOW'] = mdal
     app.config['SECRET_KEY'] = os.urandom(24)
+    app.config['MINIFY_PAGE'] = True
     # Intiating extensions before registering blueprints
     moment = Moment(app)
     qrc = QRcode(app)
@@ -72,6 +75,8 @@ def create_app():
         'static/webfont.select.js',
         'static/css/webfont.select.css'
     ])
+    lessc(app)
+    HTMLMIN(app)
     # Register blueprints
     app.register_blueprint(administrate)
     app.register_blueprint(core)
@@ -492,6 +497,6 @@ def run_app():
             adme = True
         return dict(is_connected=check_ping, path=path,
                     adme=adme, brp=Markup("<br>"), ar=ar,
-                    version=version)
+                    version=version, str=str)
     QCoreApplication.processEvents()
     appg.exec_()

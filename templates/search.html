@@ -19,49 +19,42 @@ are
 {% block page_content %}
 {% from "_helpers.html" import render_field %}
 <div class="col-md-12">
-    <form method="POST" enctype="multipart/form-data" id="fm">
-	<div class="panel panel-default">
+  <form method="POST" enctype="multipart/form-data" id="fm">
+	  <div class="panel panel-default">
 	    <div class="panel-heading text-center">
-		<h3 class="text-muted">
-      <span class="fa fa-search"></span>
-      {% if ar %}
-      <strong class="ar1">بحث عن التذاكر</strong>
-      {% else %}
-      <strong> Search tickets </strong>
-      {% endif %}
-    </h3>
+		    <h3 class="text-muted">
+          <span class="fa fa-search"></span>
+          {% if ar %}
+          <strong class="ar1">بحث عن التذاكر</strong>
+          {% else %}
+          <strong> Search tickets </strong>
+          {% endif %}
+        </h3>
 	    </div>
 	    <div class="panel-body">
-    {{ brp * 4 }}
-		{{ form.csrf_token }}
-		<center><span class="fa fa-5x img-thumbnail text-primary fa-search"></span></center>
-		<br><br />
-    {% if ar %}
-    <p class="h4 text-center text-muted ar2">
-      | تستطيع البحث عن أي تذكرة مسجلة بإي من المعطيات المتوفرة بالأسفل , إذا كنت تريد
-      أن تقوم بالبحث عن طريق معطى وحيد يمكنك ترك أي من حقول المعطيات فارغ |
-		</p>
-    {% else %}
-		<p class="h4 text-center text-muted">
-		    | You can search tickets with any of the following paramaters, if you wish to exclude any of them, simply leave it unchanged  |
-		</p>
-    {% endif %}
-		<br><hr /><br />
-		{{ render_field(form.tl, class="form-control") }}<br>
-		{{ render_field(form.number, class="form-control") }}<br>
-		{{ render_field(form.date, class="form-control") }}<br>
-		<br><br>
-		<center>
-      {% if ar %}
-      {{ form.submit(class_="btn btn-md btn-danger ar1") }}
-      {% else %}
-      {{ form.submit(class_="btn btn-md btn-danger") }}
-      {% endif %}
-    </center>
-    {{ brp * 4 }}
+		    {{ form.csrf_token }}
+		    <center><span class="fa fa-5x mt-2 mb-3 img-thumbnail text-primary fa-search"></span></center>
+        {% if ar %}
+        <p class="h4 text-center text-muted ar2">
+          | تستطيع البحث عن أي تذكرة مسجلة بإي من المعطيات المتوفرة بالأسفل , إذا كنت تريد
+          أن تقوم بالبحث عن طريق معطى وحيد يمكنك ترك أي من حقول المعطيات فارغ |
+		    </p>
+        {% else %}
+		    <p class="h3 text-center text-muted ar2">
+		      | You can search tickets with any of the following parameters, if you wish to exclude any of them, simply leave it unchanged  |
+		    </p>
+        {% endif %}
+		    <hr>
+		    {{ render_field(form.tl, class="form-control") }}
+		    {{ render_field(form.number, class="form-control") }}
+        {{ render_field(form.date, class="form-control") }}
+        <p class="pt-6"></p>
+		    <center>
+          {{ form.submit(class_="btn btn-md btn-danger") }}
+        </center>
+        <p class="pt-2"></p>
 	    </div>
-	</div>
-    </form>
-    <br>
+    </div>
+  </form>
 </div>
 {% endblock %}

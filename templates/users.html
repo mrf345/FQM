@@ -9,276 +9,125 @@
 
 {% block page_content %}
 {% from "_helpers.html" import render_field %}
+{% from "_modals.html" import confirmModal %}
+{% from "_footers.html" import spacer, panelFooter %}
 <div class="col-xs-12">
     <div class="panel panel-primary">
         <div class="panel-heading">
-	    <h3 class="text text-center">
-        {% if ar %}
-        <strong class="ar1">قائمة المستخدمين</strong>
-        {% else %}
-        <strong>Users list</strong>
-        {% endif %}
-      </h3>
-	    <div class="row">
-		<div class="col-md-12 text-center">
-		    <div class="btn-group-justified">
-          <a href="{{ url_for('administrate.user_a') }}" class="btn btn-primary ">
-    			    <span class="fa fa-plus"></span>
-              {% if ar %}
-    			    <strong class="ar1"> إضافة مستخدم </strong>
-              {% else %}
-    			    <strong>  Add user  </strong>
-              {% endif %}
-    			</a>
-			    <a data-toggle="modal" data-target="#dall" class="btn btn-danger ">
-			      <span class="fa fa-trash"></span>
-            {% if ar %}
-			      <strong class="ar1"> حذف الجميع </strong>
-            {% else %}
-			      <strong>  Delete all  </strong>
-            {% endif %}
-			    </a>
-		    </div>
+	    	<h3 class="text text-center">
+        		{% if ar %}
+        		<strong class="ar1">قائمة المستخدمين</strong>
+        		{% else %}
+        		<strong>Users list</strong>
+        		{% endif %}
+      		</h3>
+	    	<div class="row">
+				<div class="col-md-12 text-center">
+		    		<div class="btn-group-justified">
+          				<a href="{{ url_for('administrate.user_a') }}" class="btn btn-primary ">
+    			    		<span class="fa fa-plus"></span>
+              				{% if ar %}
+    							<strong class="ar1"> إضافة مستخدم </strong>
+              				{% else %}
+    							<strong>  Add user  </strong>
+              				{% endif %}
+    					</a>
+			    		<a data-toggle="modal" data-target="#dall" class="btn btn-danger ">
+			      			<span class="fa fa-trash"></span>
+            				{% if ar %}
+			      			<strong class="ar1"> حذف الجميع </strong>
+            				{% else %}
+			      			<strong>  Delete all  </strong>
+            				{% endif %}
+			    		</a>
+		    		</div>
+				</div>
+	    	</div>
 		</div>
-	    </div>
-	</div>
         <div class="panel-body">
-	    <div class="row text-center h3 text-muted hidden-xs">
-        {% if ar %}
-        <div class="col-sm-3 ar2">
-    		    (الإسم)
-    		</div>
-    		<div class="col-sm-3 ar2">
-    		    (الدور)
-    		</div>
-    		<div class="col-sm-4 ar2">
-    		    (آخر دخول)
-    		</div>
-    		<div class="col-sm-2 ar2">
-    		    (خيارات)
-    		</div>
-        {% else %}
-		<div class="col-sm-3">
-		    (ID.Name)
-		</div>
-		<div class="col-sm-3">
-		    (Role)
-		</div>
-		<div class="col-sm-4">
-		    (Last Seen)
-		</div>
-		<div class="col-sm-2">
-		    (Actions)
-		</div>
-    {% endif %}
-	    </div>
-	    {% if len(usersp) > 0 %}
-	    {% for u in usersp %}
-	    <div class="row well h4 text-center {% if u.role_id == 1 %} text-danger {% elif u.role_id == 2 %} text-warning {% else %} text-primary {% endif %}">
-		<div class="col-xs-12 col-sm-3">
-        {% if ar %}
-		    <strong class="ar1">{{ u.id }}. {{ u.name }}</strong>
-        {% else %}
-		    <strong>{{ u.id }}. {{ u.name }}</strong>
-        {% endif %}
-		</div>
-		<div class="col-xs-12 col-sm-3 {% if ar %} ar1 {% endif %}">
-		    {% if u.role_id == 1 %} <u> Administrator </u>
-		    {% elif u.role_id == 2 %} <u> Monitor </u>
-		    {% else %}
-		    <u>
-			Operator
-			{% if operators.filter_by(id=u.id).first() is not none %}
-			 of : <em>
-			{{ offices.filter_by(id=operators.filter_by(id=u.id).first().office_id).first().prefix }}{{ offices.filter_by(id=operators.filter_by(id=u.id).first().office_id).first().name }} </em>
+	    	<div class="row text-center h3 text-muted hidden-xs ar2">
+        		{% if ar %}
+        		<div class="col-sm-3 ar2">
+    			    (الإسم)
+    			</div>
+    			<div class="col-sm-3 ar2">
+    			    (الدور)
+    			</div>
+    			<div class="col-sm-4 ar2">
+    			    (آخر دخول)
+    			</div>
+    			<div class="col-sm-2 ar2">
+    			    (خيارات)
+    			</div>
+        		{% else %}
+				<div class="col-sm-3">
+				    (ID.Name)
+				</div>
+				<div class="col-sm-3">
+				    (Role)
+				</div>
+				<div class="col-sm-4">
+				    (Last Seen)
+				</div>
+				<div class="col-sm-2">
+				    (Actions)
+				</div>
+    			{% endif %}
+	    	</div>
+	    	{% if len(usersp) > 0 %}
+	    	{% for u in usersp %}
+	    	<div class="row well h4 ar1 text-center {% if u.role_id == 1 %} text-danger {% elif u.role_id == 2 %} text-warning {% else %} text-primary {% endif %}">
+				<div class="col-xs-12 col-sm-3">
+        			{% if ar %}
+			    	<strong class="ar1">{{ u.id }}. {{ u.name }}</strong>
+        			{% else %}
+			    	<strong>{{ u.id }}. {{ u.name }}</strong>
+        			{% endif %}
+				</div>
+				<div class="col-xs-12 col-sm-3 {% if ar %} ar1 {% endif %}">
+		    		{% if u.role_id == 1 %} <u> Administrator </u>
+		    		{% elif u.role_id == 2 %} <u> Monitor </u>
+		    		{% else %}
+		    		<u>
+						Operator
+						{% if operators.filter_by(id=u.id).first() is not none %}
+						 of : <em>
+						{{ offices.filter_by(id=operators.filter_by(id=u.id).first().office_id).first().prefix }}{{ offices.filter_by(id=operators.filter_by(id=u.id).first().office_id).first().name }} </em>
+						{% endif %}
+		    		</u>
+		    		{% endif %}
+				</div>
+				<div class="col-xs-12 col-sm-4">
+				    <u> {{ moment(u.last_seen).fromNow() }} </u>
+				</div>
+				{% if u.id != 1 %}
+				<div class="col-xs-12 col-sm-2 ">
+		    		<a href="{{ url_for('administrate.user_u', u_id=u.id) }}"
+						data-toggle="tooltip" {% if ar %} title="تحديث" {% else %} title="Update" {% endif %}
+					>
+          				<span class="fa fa-pencil text-primary"></span>
+        			</a>
+		    		<a href="#" data-toggle="modal" data-target="#dell{{ u.id }}"
+						data-toggle="tooltip" {% if ar %} title="حذف" {% else %} title="Delete" {% endif %}
+					>
+        				<span class="fa fa-trash text-warning"></span>
+        			</a>
+				</div>
+				{% endif %}
+			</div>
+			{{ confirmModal([['dell' + str(u.id), 'Warning : Delete user', "You are attempting to delete a user which won't be retrievable , Are you sure of that ?", url_for('administrate.user_d', u_id=u.id)]]) }}
+	    	{% endfor %}
 			{% endif %}
-
-		    </u>
-		    {% endif %}
+			{{ spacer(['No users exist yet to display ...', len(usersp)]) }}
 		</div>
-		<div class="col-xs-12 col-sm-4">
-		    <u> {{ moment(u.last_seen).fromNow() }} </u>
-		</div>
-		{% if u.id != 1 %}
-		<div class="col-xs-12 col-sm-2 ">
-		    <a href="{{ url_for('administrate.user_u', u_id=u.id) }}"
-        data-toggle="tooltip" {% if ar %} title="تحديث" {% else %} title="Update" {% endif %}>
-          <span class="fa fa-pencil text-primary"></span>
-        </a>
-		    <a href="#" data-toggle="modal" data-target="#dell{{ u.id }}"
-        data-toggle="tooltip" {% if ar %} title="حذف" {% else %} title="Delete" {% endif %}>
-        <span class="fa fa-trash text-warning"></span>
-        </a>
-		</div>
-		{% endif %}
-	    </div>
-	    <div class="modal fade" id="dell{{ u.id }}">
-		<div class="modal-dialog">
-		    <div class="modal-content">
-			<div class="modal-header">
-			    <button type="button" class="close" data-dismiss="modal">&times;</button>
-          {% if ar %}
-			    <h4 class="modal-title text-center ar1">تنبيه : حذف المستخدم</h4>
-          {% else %}
-			    <h4 class="modal-title text-center">Warning : Delete user  </h4>
-          {% endif %}
-			</div>
-			<div class="modal-body">
-			    <h4 class="text-danger text-center text-danger">
-            {% if ar %}
-            <u class="text-warning h5 ar1">
-            | تنبيه : إذا كان المستخدم معيين من أحد المكاتب , يتوجب عليك
-            تحديث أو حذف المكتب لتتمكن بعد ذالك من حذف المستخدم |
-				    </u>
-				    {{ brp*3 }}
-				    <strong class="ar2">
-              تحاول القيام بحذف المستخدم , و لن يكون بإمكانك إسترجاعه لاحقاً ,
-              تريد بالفعل الإستمرار في ذالك ؟
-            </strong>
-            {% else %}
-				    <u class="text-warning h5">
-              | Notice: if the user is in use by an office,
-				      you must first update or delete the offfice |
-				    </u>
-				    {{ brp*3 }}
-				    <strong>
-              You are attempting to delete a user
-				      which won't be retrievable , Are you sure of that ?
-            </strong>
-            {% endif %}
-			    </h4>
-			    <br>
-			</div>
-			<div class="modal-footer">
-          {% if ar %}
-          <button type="button" class="close btn btn-md btn-warning pull-left ar1" data-dismiss="modal">إلغاء</button>
-			    <a href="{{ url_for('administrate.user_d', u_id=u.id) }}"><button type="button" class="close btn btn-md btn-danger ar1">إستمرار</button></a>
-          {% else %}
-			    <button type="button" class="close btn btn-md btn-warning pull-left" data-dismiss="modal">No, don't</button>
-			    <a href="{{ url_for('administrate.user_d', u_id=u.id) }}"><button type="button" class="close btn btn-md btn-danger">Yes, sure</button></a>
-          {% endif %}
-			</div>
-		    </div>
-		</div>
-	    </div>
-	    {% endfor %}
-	    {% endif %}
-	    {% if len(usersp) == 0 %}
-	    <div class="well">
-		{{ brp*8 }}
-		<center>
-      {% if ar %}
-      <h3 class="text-danger ar1">لا يوجد أي مستخدميين ليتم إستعراضهم</h3>
-      {% else %}
-      <h3 class="text-danger">No users exist to display ..</h3>
-      {% endif %}
-    </center>
-		{{ brp*8 }}
-	    </div>
-      {% elif len(usersp) == 1 %}
-      {{ brp*25 }}
-      {% elif len(usersp) <= 2 %}
-      {{ brp*20 }}
-	    {% elif len(usersp) <= 5 %}
-	    {{ brp*15 }}
-	    {% endif %}
-	    <br>
-	</div>
         <div class="panel-footer text-center">
-	    <div class="row">
-        {% if ar %}
-        <div class="col-xs-12 col-sm-6 h4 ar1">
-    		    إجمالي المستخدميين :
-            <br /><br />
-    		    <span class="label label-info">
-    			<i> {{ users.count() }} </i>
-    		    </span>
-    		</div>
-    		<div class="col-xs-12 col-sm-6 h4 ar1">
-    		    Administrators
-            <br /><br />
-    		    <span class="label label-danger">
-    			<i> {{ users.filter_by(role_id=1).count() }}</i>
-    		    </span>
-    		</div>
-        {% else %}
-		<div class="col-xs-12 col-sm-6 h4">
-		    Users total :
-		    <span class="label label-info">
-			<i> {{ users.count() }} </i>
-		    </span>
-		</div>
-		<div class="col-xs-12 col-sm-6 h4">
-		    Administrators :
-		    <span class="label label-danger">
-			<i> {{ users.filter_by(role_id=1).count() }}</i>
-		    </span>
-		</div>
-    {% endif %}
-	    </div>
-	    <div class="row">
-		<div class="col-xs-12 col-sm-6 h4 {% if ar %} ar1 {% endif %}">
-		    Monitors :
-        {% if ar %}
-        {{ brp * 2 }}
-        {% endif %}
-		    <span class="label label-warning">
-			<i>{{ users.filter_by(role_id=2).count() }}</i>
-		    </span>
-		</div>
-		<div class="col-xs-12 col-sm-6 h4 {% if ar %} ar1 {% endif %}">
-		    Operators :
-        {% if ar %}
-        {{ brp * 2 }}
-        {% endif %}
-		    <span class="label label-info">
-			<i>{{ users.filter_by(role_id=3).count() }}</i>
-		    </span>
-		</div>
-	    </div>
-	    <div class="row text-center">
-		{{ macros.pagination_widget(pagination, '.users') }}
-	    </div>
+			{{ panelFooter([[['Users total', users.count()], ['Administrators', users.filter_by(role_id=1).count()]], [['Monitors', users.filter_by(role_id=2).count()], ['Operators', users.filter_by(role_id=3).count()]]]) }}
+	    	<div class="row text-center">
+				{{ macros.pagination_widget(pagination, '.users') }}
+	    	</div>
         </div>
     </div>
 </div>
-</div>
-<div class="modal fade" id="dall">
-    <div class="modal-dialog">
-	<div class="modal-content">
-	    <div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">&times;</button>
-    {% if ar %}
-		<h4 class="modal-title text-center ar1">تنبيه : حذف جميع المستخدميين</h4>
-    {% else %}
-		<h4 class="modal-title text-center">Warning : Delete All </h4>
-    {% endif %}
-	    </div>
-	    <div class="modal-body">
-		<h4 class="text-danger text-center text-warning">
-      {% if ar %}
-      <strong class="ar2">
-        تحاول القيام بحذف جميع المستخدميين غير المعينين بمكاتب , و لن
-        يكون بإمكانك التراجع عن هذه الخطوة بعد تنفيذها , تريد الإستمرار
-        في ذالك ؟
-      </strong>
-      {% else %}
-		    <strong> You are attempting to delete every user unassigned to an office,
-			that won't be retrievable , Are you sure of that ? </strong>
-      {% endif %}
-      <br><br>
-		</h4>
-	    </div>
-	    <div class="modal-footer">
-    {% if ar %}
-    <button type="button" class="close btn btn-md btn-warning pull-left ar1" data-dismiss="modal">إلغاء</button>
-		<a href="{{ url_for('administrate.user_da') }}"><button type="button" class="close btn btn-md btn-danger ar1">إستمرار</button></a>
-    {% else %}
-		<button type="button" class="close btn btn-md btn-warning pull-left" data-dismiss="modal">No, don't</button>
-		<a href="{{ url_for('administrate.user_da') }}"><button type="button" class="close btn btn-md btn-danger">Yes, sure</button></a>
-    {% endif %}
-	    </div>
-	</div>
-    </div>
-</div>
+
+{{ confirmModal([['dall', 'Warning : Delete all', "You are attempting to delete all users except Admin. that won't be retrievable, Are you sure of that ?", url_for('administrate.user_da')]]) }}
 {% endblock %}

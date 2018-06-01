@@ -30,7 +30,10 @@
         {% if ar %}
         كل التذاكر
         {% else %}
-        All Tickets
+		All Tickets
+		<span class="badge pull-right">
+			{{ serial.filter_by(p=False).count() }}
+		</span>
         {% endif %}
 			    </a>
 			</li>
@@ -53,7 +56,7 @@
 				<span class="fa fa-desktop"></span>
 				{{ office.id }}.{% if ar %}مكتب{% else %}office{% endif %}  {{ office.prefix }}{{ office.name }}
 				<span class="caret"></span>
-				{% if serial.filter_by(p=False, office_id=office.id).count() != 0 %}
+				{% if serial.filter_by(p=False, office_id=office.id).count() > 1 %}
 				<span class="badge pull-right">
 				    {{ serial.filter_by(p=False, office_id=office.id).count() }}
 				</span>
@@ -80,6 +83,9 @@
 					المستخدميين
 					{% else %}
 					Operators
+					<span class="badge pull-right">
+						{{ operators.filter_by(office_id=office.id).count() }}
+					</span>
 					{% endif %}
 								</a>
 							</li>
@@ -111,7 +117,7 @@
 								{% else %}
 									Pull a ticket
 								{% endif %}
-								{% if serial.filter_by(p=False, task_id=task.id).count() != 0 %}
+								{% if serial.filter_by(p=False, task_id=task.id).count() > 1 %}
 								<span class="badge pull-right">
 									{{ serial.filter_by(p=False, task_id=task.id).count() }}
 								</span>

@@ -2,563 +2,462 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-{% from "beloadingNotifier.html" import beloadingNotifier %}
+{% from "_beloadingNotifier.html" import beloadingNotifier %}
 <html>
-  <head>
-    <title>{% block title %} FQM {% endblock %}</title>
-    {% block head %}
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-compatible" content="IE=edge">
-    <meta id="playlist" data-playlist="{{ snb }}">
-    <link href="{{ url_for('static', filename='backstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='backstrap/css/bootstrap-theme.min.css.map') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/neede.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/mstyle.css') }}" rel="stylesheet">
-    <link rel="icon"
-        type="image/png"
-        href="{{ url_for('static', filename='images/favicon.png') }}">
-    <link href="{{ url_for('static', filename='css/gfonts.css') }}" rel="stylesheet">
-    <style>
-    /* To solve header footer background compatiblity cross browsers */
-    .widw2 {
-        background: url({{ url_for('static', filename='images/dbgo.jpg') }});
-        width:100%;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-position:center;
-    }
-    .widw {
-        background: url({{ url_for('static', filename='images/dbgo.jpg') }});
-        width:100%;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-position:center;
-    }
-
-    @-moz-document url-prefix() {
-        .widw2 {
-      background-image : linear-gradient(rgb(0, 0, 0, 0.8) , rgb(0, 0, 0, 0.1)),url({{ url_for('static', filename='images/dbg.jpg') }});
-      width:100%;
-      height:50%;
-      height:calc(100% - 1px);
-      background-size:cover;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-position:center;
-        }
-        .widw {
-      background: linear-gradient(rgb(0, 0, 0, 0.1) , rgb(0, 0, 0, 0.8)), url({{ url_for('static', filename='images/dbg.jpg') }});
-      width:100%;
-      background-size:cover;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-position:center;
-        }
-    }
-    </style>
-    <script src="{{ url_for('static', filename='backstrap/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='jquery-ui.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='backstrap/js/bootstrap.min.js') }}"></script>
-    {{ moment.include_moment(local_js='/static/backstrap/moment.min.js') }}
-    <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
-    <script src="{{ url_for('static', filename='disciple.js') }}"></script>
-    {{ beloadingNotifier(version, beload=False) }}
-    <script type="text/javascript">
-     window.onload = function () {
-         {% if dropdown %} $("{{ dropdown }}").collapse('show') {% endif %} // sidebar collapse for all
-         {% if hash %} $("{{ hash }}").addClass('active') {% endif %} // activating item regardless of uniqueness activation
-         {% if navbar %} $("{{ navbar }}").addClass("active") {% endif %} // activating navbar category
-         {% if current_user.role_id == 3 %}
-            $('#cls').collapse('show')
-            $('#dropdown-lvl{{ ooid }}').collapse('show')
-         {% endif %}
-         // TODO: Move disciple to beloadingNotifier after multilang interface & mod uniqueness_btns
-         window.debDis = disciple({
-            identifier: 'form',
-            {% if ar %}
-            msg_text: 'قمت بتعديل معطيات أحد الحقول من غير حفظها , تود ؟',
-            restore_text: 'إسترجاع',
-            later_text: 'فيما بعد',
-            forget_text: 'تجاهل',
-            restoring_text: 'يتم الإسترجاع',
-            msg_classes: ['ar1'],
-            restore_classes: ['ar1', 'btn', 'lightit'],
-            later_classes: ['ar1', 'btn', 'lightit'],
-            forget_classes: ['ar1', 'btn', 'btn-danger', 'lightit'],
-            restoring_classes: ['ar1']
-            {% else %}
-            restore_classes: ['btn', 'lightit'],
-            later_classes: ['btn', 'lightit'],
-            forget_classes: ['btn', 'btn-danger', 'lightit'],
-            {% endif %}
-         })
-     }
-    </script>
-    {% endblock %}
-  </head>
-
-  <body>
-    <noscript>
-        /* checking if nojs is on */
-        <style>html{display:none;}</style>
-        <meta http-equiv="refresh" content="0.0;url=/nojs/3">
-    </noscript>
-    <div class="widw2">
-        <center><img class="img-responsive"  style="width: 30%;" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo"></center>
-        <br>
-        <nav class="navbar navbar-inverse shb" style="margin-bottom: 3%; background: rgba(0,0,0,0.7)" id="navb">
-    	<div  class="container-fluid">
-    	    <!-- Brand and toggle get grouped for better mobile display -->
-    	    <div class="navbar-header">
-    		<button type="button" class="navbar-toggle navbar-toggle-sidebar collapsed">
-    		    <span class="sr-only">Toggle</span>
-    		    <span class="fa fa-1x fa-toggle-off"></span>
-    		</button>
-    		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-    		    <span class="sr-only">Toggle navigation</span>
-    		    <span class="icon-bar"></span>
-    		    <span class="icon-bar"></span>
-    		    <span class="icon-bar"></span>
-    		</button>
-    		<a class="navbar-brand" href="{{ url_for('core.root') }}"><img src="{{ url_for('static', filename='images/favicon.png') }}" style="width: 28%" id="blogo"/></a>
-    	    </div>
-
-    	    <!-- Collect the nav links, forms, and other content for toggling -->
-    	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-    		<ul class="nav navbar-nav navbar-left">
-            {% if ar %}
-            <li id="snb1" class="ar1"><a href="{{ url_for('manage_app.manage') }}">تظيم</a></li>
-            {% else %}
-            <li id="snb1"><a href="{{ url_for('manage_app.manage') }}">Manage</a></li>
-            {% endif %}
-            {% if current_user.role_id == 1 %}
-            {% if ar %}
-    		    <li id="snb2" class="ar1"><a href="{{ url_for('cust_app.customize') }}">تخصيص</a></li>
-            {% else %}
-    		    <li id="snb2"><a href="{{ url_for('cust_app.customize') }}">Customize</a></li>
-            {% endif %}
-            <li class="dropdown {% if ar %} ar1 {% endif %}" id='snb3'>
-    			    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                {% if ar %}
-                إدارة
-                {% else %}
-                Administrate
+    <head>
+        <title>{% block title %} FQM {% endblock %}</title>
+        {% block head %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-compatible" content="IE=edge">
+        <meta id="playlist" data-playlist="{{ snb }}">
+        <link href="{{ url_for('static', filename='backstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='backstrap/css/bootstrap-theme.min.css.map') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/neede.css') }}" rel="stylesheet">
+        {{ cssify('static/css/main.less') }}
+        {{ cssify('static/css/spacing.less') }}
+        <link rel="shortcut icon"
+            href="{{ url_for('static', filename='images/favicon.ico') }}"
+        >
+        <link href="{{ url_for('static', filename='css/gfonts.css') }}" rel="stylesheet">
+        <script src="{{ url_for('static', filename='backstrap/jquery.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='jquery-ui.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='backstrap/js/bootstrap.min.js') }}"></script>
+        {{ moment.include_moment(local_js='/static/backstrap/moment.min.js') }}
+        <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
+        <script src="{{ url_for('static', filename='disciple.js') }}"></script>
+        <script src="{{ url_for('static', filename='wallpapers.js') }}"></script>
+        {{ beloadingNotifier(version, beload=False) }}
+        <script type="text/javascript">
+            window.onload = function () {
+                {% if dropdown %} $("{{ dropdown }}").collapse('show') {% endif %} // sidebar collapse for all
+                {% if hash %} $("{{ hash }}").addClass('active') {% endif %} // activating item regardless of uniqueness activation
+                {% if navbar %} $("{{ navbar }}").addClass("active") {% endif %} // activating navbar category
+                {% if current_user.role_id == 3 %}
+                    $('#cls').collapse('show')
+                    $('#dropdown-lvl{{ ooid }}').collapse('show')
                 {% endif %}
-    			      <span class="caret"></span></a>
-    			      <ul class="dropdown-menu" role="menu">
-                {% if ar %}
-                <center>
-                <li class="dropdown-header" id="ar1">( المستخدمين )</li>
-                </center>
-    			      <li id="ar2">
-    				      <a href="{{ url_for('administrate.users') }}">
-    				        <span class="fa fa-users"></span>
-    				        كل المستخدمين
-                  </a>
-    			      </li>
-    			      <li id="ar2">
-    				      <a href="{{ url_for('administrate.user_a') }}">
-    				        <span class="fa fa-user"></span>
-    				        إضافة مستخدم
-                  </a>
-    			      </li>
-                <center>
-                <li class="dropdown-header" id="ar1">( قاعدة البيانات )</li>
-                </center>
-                <li id="ar2">
-                  <a href="{{ url_for('administrate.csvd', t_name=0) }}">
-                    <span class="fa fa-database"></span>
-                    إستخراج البيانات
-                  </a>
-                </li>
-                {% else %}
-                <center>
-    			      <li class="dropdown-header">( Users )</li>
-                </center>
-    			      <li>
-    				      <a href="{{ url_for('administrate.users') }}">
-    				        <span class="fa fa-users"></span>
-    				        All users
-                  </a>
-    			      </li>
-    			      <li>
-    				      <a href="{{ url_for('administrate.user_a') }}">
-    				        <span class="fa fa-user"></span>
-    				        Add user
-                  </a>
-    			      </li>
-                <center>
-                <li class="dropdown-header">( Database )</li>
-                </center>
-                <li>
-                  <a href="{{ url_for('administrate.csvd', t_name=0) }}">
-                    <span class="fa fa-database"></span>
-                    Export CSV
-                  </a>
-                </li>
-                {% endif %}
-              </ul>
-            </a>
-          </li>
-    		    {% endif %}
-    		</ul>
-        {% if ar %}
-        <ul class="nav navbar-nav navbar-right">
-    		    <li class="dropdown" id="ar1">
-    			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    			    شاشات الإستخدام
-    			    <span class="caret"></span></a>
-    			<ul class="dropdown-menu" role="menu">
-            <center>
-    			    <li class="dropdown-header">( شاشة جديدة )</li>
-            </center>
-    			    <li class="ar2">
-    				<a href="{{ url_for('core.touch', a=0) }}" target="_blank">
-    				    <span class="fa fa-desktop"></span>
-    				    شاشة اللمس</a>
-    			    </li>
-    			    <li class="ar2">
-    				<a href="{{ url_for('core.display') }}" target="_blank">
-    				    <span class="fa fa-television"></span>
-    				    شاشة الإستعراض</a>
-    			    </li>
-              <center>
-              <li class="dropdown-header">( شفرة QR )</li>
-              </center>
-              <li class="ar2">
-            <a href="#" data-target="#touch_qr" data-toggle="modal">
-                <span class="fa fa-desktop"></span>
-    				    شاشة اللمس</a>
-              </li>
-              <li class="ar2">
-            <a href="#" data-toggle="modal" data-target="#display_qr">
-                <span class="fa fa-television"></span>
-    				    شاشة الإستعراض</a>
-              </li>
-    			</ul>
-        {% else %}
-    		<ul class="nav navbar-nav navbar-right">
-    		    <li class="dropdown">
-    			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    			    Screens
-    			    <span class="caret"></span></a>
-    			<ul class="dropdown-menu" role="menu">
-            <center>
-            <li class="dropdown-header">( New tab )</li>
-            </center>
-    			    <li>
-    				<a href="{{ url_for('core.touch', a=0) }}" target="_blank">
-    				    <span class="fa fa-desktop"></span>
-    				    Touch Screen</a>
-    			    </li>
-    			    <li>
-    				<a href="{{ url_for('core.display') }}" target="_blank">
-    				    <span class="fa fa-television"></span>
-    				    Display screen</a>
-    			    </li>
-              <center>
-              <li class="dropdown-header">( QR Codes )</li>
-              </center>
-              <li>
-            <a href="#" data-target="#touch_qr" data-toggle="modal">
-                <span class="fa fa-desktop"></span>
-                Touch Screen</a>
-              </li>
-              <li>
-            <a href="#" data-toggle="modal" data-target="#display_qr">
-                <span class="fa fa-television"></span>
-                Display screen</a>
-              </li>
-    			</ul>
-          {% endif %}
-          {% if ar %}
-          <li class="dropdown" id="ar1">
-    			    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    				{{ current_user.name }}
-    				<span class="caret"></span></a>
-    			    <ul class="dropdown-menu" role="menu">
-            <center>
-        		<li class="dropdown-header">
-    				    ( {% if current_user.role_id == 1 %} Administrator
-    				    {% elif current_user.role_id == 2 %} Monitor
-    				    {% else %} Operator {% endif %} )
-    				</li>
-            </center>
-    				{% if current_user.id != 1 and current_user.role_id != 3 %}
-    				<li class="ar2"><a href="{{ url_for('administrate.user_u', u_id=current_user.id) }}">
-    				    <span class="fa fa-pencil"></span>
-    				    تعديل  </a>
-    				</li>
-    				{% endif %}
-            {% if current_user.id == 1 %}
-            <li class="ar2"><a href="{{ url_for('administrate.admin_u') }}">
-                <span class="fa fa-pencil"></span>
-                تعديل الحساب الرئيسي  </a>
-            </li>
-            {% endif %}
-    				<li class="ar2"><a href="{{ url_for('administrate.logout') }}">
-    				    <span class="fa fa-sign-out"></span>
-    				    تسجيل الخروج</a>
-    				</li>
-    			    </ul>
-          {% else %}
-    			<li class="dropdown ">
-    			    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    				{{ current_user.name }}
-    				<span class="caret"></span></a>
-    			    <ul class="dropdown-menu" role="menu">
-    				<li class="dropdown-header">
-
-    				    ( {% if current_user.role_id == 1 %} Administrator
-    				    {% elif current_user.role_id == 2 %} Monitor
-    				    {% else %} Operator {% endif %} )
-    				</li>
-    				{% if current_user.id != 1 and current_user.role_id != 3 %}
-    				<li class=""><a href="{{ url_for('administrate.user_u', u_id=current_user.id) }}">
-    				    <span class="fa fa-pencil"></span>
-    				    Update  </a>
-    				</li>
-    				{% endif %}
-            {% if current_user.id == 1 %}
-            <li class=""><a href="{{ url_for('administrate.admin_u') }}">
-                <span class="fa fa-pencil"></span>
-                Update Admin  </a>
-            </li>
-            {% endif %}
-    				<li><a href="{{ url_for('administrate.logout') }}">
-    				    <span class="fa fa-sign-out"></span>
-    				    Logout</a>
-    				</li>
-    			    </ul>
-              {% endif %}
-              {% if ar %}
-              <li class="dropdown" id="ar1">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                اللغات
-                <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-                <li {% if ar != True %} class="active" {% endif %} id="ar2">
-              <a href="{{ url_for('lang_switch' , lang=2) }}">
-                  <span class="fa fa-globe"></span>
-                  الإنجليزية
-                  </a>
-                </li>
-                <li {% if ar %} class="active" {% endif %} id="ar2">
-              <a href="{{ url_for('lang_switch', lang=1) }}">
-                  <span class="fa fa-language"></span>
-                  العربية
-                </a>
-                </li>
-            </ul>
-    			</li>
-              {% else %}
-              <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                Languages
-                <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-                <li {% if ar != True %} class="active" {% endif %}>
-              <a href="{{ url_for('lang_switch' , lang=2) }}">
-                  <span class="fa fa-globe"></span>
-                  English</a>
-                </li>
-                <li {% if ar %} class="active" {% endif %}>
-              <a href="{{ url_for('lang_switch', lang=1) }}">
-                  <span class="fa fa-language"></span>
-                  Arabic</a>
-                </li>
-            </ul>
-    			</li>
-          {% endif %}
-    		</ul>
-    	    </div><!-- /.navbar-collapse -->
-    	</div><!-- /.container-fluid -->
-        </nav>
-    </div>
-    <div class="container-fluid main-container">
-        {% block sidebar %}
+                redditWallpapers({
+                    isFixed: 'true',
+                    id: '.widw',
+                    isOverlayed: 'true',
+                    overlay: 'rgba(0,0,0,0.7)',
+                    duration: 60,
+                    limit: 100,
+                    timeout: 1,
+                    category: ['CityPorn'],
+                    defaultImg: "{{ url_for('static', filename='images/dbg.jpg') }}"
+                })
+                // TODO: Move disciple to beloadingNotifier after multilang interface & mod uniqueness_btns
+                window.debDis = disciple({
+                    identifier: 'form',
+                    {% if ar %}
+                    msg_text: 'قمت بتعديل معطيات أحد الحقول من غير حفظها , تود ؟',
+                    restore_text: 'إسترجاع',
+                    later_text: 'فيما بعد',
+                    forget_text: 'تجاهل',
+                    restoring_text: 'يتم الإسترجاع',
+                    msg_classes: ['ar1'],
+                    restore_classes: ['ar1', 'btn', 'lightit'],
+                    later_classes: ['ar1', 'btn', 'lightit'],
+                    forget_classes: ['ar1', 'btn', 'btn-danger', 'lightit'],
+                    restoring_classes: ['ar1']
+                    {% else %}
+                    restore_classes: ['btn', 'lightit'],
+                    later_classes: ['btn', 'lightit'],
+                    forget_classes: ['btn', 'btn-danger', 'lightit'],
+                    {% endif %}
+                })
+            }
+        </script>
         {% endblock %}
-        {% for category, message in get_flashed_messages(with_categories=true) %}
-        {% if adme %}
-        <div class="col-md-12 content">
-        {% else %}
-        <div class="col-md-10 content">
-        {% endif %}
-    	<div class="alert alert-{{ category }} alert-dismissable">
-    	    <button class="close" type="button" data-dismiss="alert">&times;</button>
-    	    <h4 class="text text-center" {% if ar %} id="ar1" {% endif %}>[ {{ message }} ]</h4>
-    	</div>
+    </head>
+    <body>
+        <noscript>
+            /* checking if nojs is on */
+            <style>html{display:none;}</style>
+            <meta http-equiv="refresh" content="0.0;url=/nojs/3">
+        </noscript>
+        <div class="widw">
+            <center><img class="img-responsive mb-1"  style="width: 30%;" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo"></center>
+            <nav class="navbar navbar-inverse">
+    	        <div class="container-fluid">
+    	            <div class="navbar-header">
+    		            <button type="button" class="navbar-toggle navbar-toggle-sidebar collapsed">
+    		                <span class="sr-only">Toggle</span>
+    		                <span class="fa fa-1x fa-toggle-off"></span>
+    		            </button>
+    		            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+    		                <span class="sr-only">Toggle navigation</span>
+    		                <span class="icon-bar"></span>
+    		                <span class="icon-bar"></span>
+    		                <span class="icon-bar"></span>
+    		            </button>
+    		            <a class="navbar-brand" href="{{ url_for('core.root') }}">
+                            <img src="{{ url_for('static', filename='images/favicon.png') }}" style="width: 28%" />
+                        </a>
+    	            </div>
+    	            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    		            <ul class="nav navbar-nav navbar-left">
+                            {% if ar %}
+                            <li id="snb1" class="ar1"><a href="{{ url_for('manage_app.manage') }}">تظيم</a></li>
+                            {% else %}
+                            <li id="snb1"><a href="{{ url_for('manage_app.manage') }}">Manage</a></li>
+                            {% endif %}
+                            {% if current_user.role_id == 1 %}
+                                {% if ar %}
+    		                    <li id="snb2" class="ar1"><a href="{{ url_for('cust_app.customize') }}">تخصيص</a></li>
+                                {% else %}
+    		                    <li id="snb2"><a href="{{ url_for('cust_app.customize') }}">Customize</a></li>
+                                {% endif %}
+                            <li class="dropdown" id='snb3'>
+    			                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    {% if ar %}
+                                    إدارة
+                                    {% else %}
+                                    Administrate
+                                    {% endif %}
+                                    <span class="caret"></span>
+                                </a>
+    			                <ul class="dropdown-menu" role="menu">
+                                    {% if ar %}
+                                    <center>
+                                        <li class="dropdown-header" id="ar1">( المستخدمين )</li>
+                                    </center>
+    			                    <li id="ar2">
+    				                    <a href="{{ url_for('administrate.users') }}">
+    				                        <span class="fa fa-users"></span>
+    				                        كل المستخدمين
+                                        </a>
+    			                    </li>
+    			                    <li id="ar2">
+    				                    <a href="{{ url_for('administrate.user_a') }}">
+    				                        <span class="fa fa-user"></span>
+    				                        إضافة مستخدم
+                                        </a>
+    			                    </li>
+                                    <center>
+                                        <li class="dropdown-header" id="ar1">( قاعدة البيانات )</li>
+                                    </center>
+                                    <li id="ar2">
+                                        <a href="{{ url_for('administrate.csvd', t_name=0) }}">
+                                            <span class="fa fa-database"></span>
+                                            إستخراج البيانات
+                                        </a>
+                                    </li>
+                                    {% else %}
+    			                    <li class="dropdown-header">( Users )</li>
+    			                    <li>
+    				                    <a href="{{ url_for('administrate.users') }}">
+    				                        <span class="fa fa-users"></span>
+    				                        All users
+                                        </a>
+    			                    </li>
+    			                    <li>
+    				                    <a href="{{ url_for('administrate.user_a') }}">
+    				                        <span class="fa fa-user"></span>
+    				                        Add user
+                                        </a>
+    			                    </li>
+                                    <li class="dropdown-header">( Database )</li>
+                                    <li>
+                                        <a href="{{ url_for('administrate.csvd', t_name=0) }}">
+                                            <span class="fa fa-database"></span>
+                                            Export CSV
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+    		                {% endif %}
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if ar %}
+    		                <li class="dropdown" id="ar1">
+    			                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    			                    شاشات الإستخدام
+                                    <span class="caret"></span>
+                                </a>
+    			                <ul class="dropdown-menu" role="menu">
+    			                    <li class="dropdown-header">( شاشة جديدة )</li>
+    			                    <li class="ar2">
+    				                    <a href="{{ url_for('core.touch', a=0) }}" target="_blank">
+    				                        <span class="fa fa-desktop"></span>
+                                            شاشة اللمس
+                                        </a>
+    			                    </li>
+    			                    <li class="ar2">
+    				                    <a href="{{ url_for('core.display') }}" target="_blank">
+    				                        <span class="fa fa-television"></span>
+                                            شاشة الإستعراض
+                                        </a>
+    			                    </li>
+                                    <li class="dropdown-header">( شفرة QR )</li>
+                                    <li class="ar2">
+                                        <a href="#" data-target="#touch_qr" data-toggle="modal">
+                                            <span class="fa fa-desktop"></span>
+                                            شاشة اللمس
+                                        </a>
+                                    </li>
+                                    <li class="ar2">
+                                        <a href="#" data-toggle="modal" data-target="#display_qr">
+                                            <span class="fa fa-television"></span>
+                                            شاشة الإستعراض
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            {% else %}
+    		                <li class="dropdown">
+    			                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    			                    Screens
+                                    <span class="caret"></span>
+                                </a>
+    			                <ul class="dropdown-menu" role="menu">
+                                    <li class="dropdown-header">( New tab )</li>
+    			                    <li>
+    				                    <a href="{{ url_for('core.touch', a=0) }}" target="_blank">
+    				                        <span class="fa fa-desktop"></span>
+                                            Touch Screen
+                                        </a>
+    			                    </li>
+    			                    <li>
+    				                    <a href="{{ url_for('core.display') }}" target="_blank">
+    				                        <span class="fa fa-television"></span>
+                                            Display screen
+                                        </a>
+    			                    </li>
+                                    <li class="dropdown-header">( QR Codes )</li>
+                                    <li>
+                                        <a href="#" data-target="#touch_qr" data-toggle="modal">
+                                            <span class="fa fa-desktop"></span>
+                                            Touch Screen
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-toggle="modal" data-target="#display_qr">
+                                            <span class="fa fa-television"></span>
+                                            Display screen
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            {% endif %}
+                            {% if ar %}
+                            <li class="dropdown">
+    			                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    				                {{ current_user.name }}
+                                    <span class="caret"></span>
+                                </a>
+    			                <ul class="dropdown-menu" role="menu">
+        		                    <li class="dropdown-header">
+    				                    ( {% if current_user.role_id == 1 %} Administrator
+    				                        {% elif current_user.role_id == 2 %} Monitor
+    				                    {% else %} Operator {% endif %} )
+    				                </li>
+    				                {% if current_user.id != 1 and current_user.role_id != 3 %}
+    				                    <li class="ar2">
+                                            <a href="{{ url_for('administrate.user_u', u_id=current_user.id) }}">
+    				                            <span class="fa fa-pencil"></span>
+                                                تعديل  
+                                            </a>
+    				                    </li>
+    				                {% endif %}
+                                    {% if current_user.id == 1 %}
+                                        <li class="ar2">
+                                            <a href="{{ url_for('administrate.admin_u') }}">
+                                                <span class="fa fa-pencil"></span>
+                                                تعديل الحساب الرئيسي  
+                                            </a>
+                                        </li>
+                                    {% endif %}
+    				                <li class="ar2">
+                                        <a href="{{ url_for('administrate.logout') }}">
+    				                        <span class="fa fa-sign-out"></span>
+                                            تسجيل الخروج
+                                        </a>
+    				                </li>
+                                </ul>
+                            </li>
+                            {% else %}
+    			            <li class="dropdown">
+    			                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    				                {{ current_user.name }}
+                                    <span class="caret"></span>
+                                </a>
+    			                <ul class="dropdown-menu" role="menu">
+    				                <li class="dropdown-header">
+    				                    ( {% if current_user.role_id == 1 %} Administrator
+    				                    {% elif current_user.role_id == 2 %} Monitor
+    				                    {% else %} Operator {% endif %} )
+    				                </li>
+    				                {% if current_user.id != 1 and current_user.role_id != 3 %}
+    				                    <li class="">
+                                            <a href="{{ url_for('administrate.user_u', u_id=current_user.id) }}">
+    				                            <span class="fa fa-pencil"></span>
+                                                Update  
+                                            </a>
+    				                    </li>
+    				                {% endif %}
+                                    {% if current_user.id == 1 %}
+                                        <li class="">
+                                            <a href="{{ url_for('administrate.admin_u') }}">
+                                                <span class="fa fa-pencil"></span>
+                                                Update Admin  
+                                            </a>
+                                        </li>
+                                    {% endif %}
+    				                <li>
+                                        <a href="{{ url_for('administrate.logout') }}">
+    				                        <span class="fa fa-sign-out"></span>
+                                            Logout
+                                        </a>
+    				                </li>
+                                </ul>
+                            </li>
+                            {% endif %}
+                            {% if ar %}
+                            <li class="dropdown" id="ar1">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    اللغات
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li {% if ar != True %} class="active" {% endif %}>
+                                        <a href="{{ url_for('lang_switch' , lang=2) }}">
+                                            <span class="fa fa-globe"></span>
+                                            الإنجليزية
+                                        </a>
+                                    </li>
+                                    <li {% if ar %} class="active" {% endif %}>
+                                        <a href="{{ url_for('lang_switch', lang=1) }}">
+                                            <span class="fa fa-language"></span>
+                                            العربية
+                                        </a>
+                                    </li>
+                                </ul>
+    			            </li>
+                            {% else %}
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    Languages
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li {% if ar != True %} class="active" {% endif %}>
+                                        <a href="{{ url_for('lang_switch' , lang=2) }}">
+                                            <span class="fa fa-globe"></span>
+                                            English
+                                        </a>
+                                    </li>  
+                                    <li {% if ar %} class="active" {% endif %}>
+                                        <a href="{{ url_for('lang_switch', lang=1) }}">
+                                            <span class="fa fa-language"></span>
+                                            Arabic
+                                        </a>
+                                    </li>
+                                </ul>
+    			            </li>
+                            {% endif %}
+    		            </ul>
+    	            </div>
+    	        </div>
+            </nav>
         </div>
-        {% endfor %}
-        {% if adme %}
-        <div class="col-md-12 content">
-        {% else %}
-        <div class="col-md-10 content">
-        {% endif %}
-    	{% block page_content %} {% endblock %}
-      <br />
+        <div class="container-fluid main-container">
+            {% block sidebar %}{% endblock %}
+            {% for category, message in get_flashed_messages(with_categories=true) %}
+                <div class="col-md-{% if adme %}12{% else %}10{% endif %} content">
+                    <div class="alert alert-{{ category }} alert-dismissable">
+    	                <button class="close" type="button" data-dismiss="alert">&times;</button>
+    	                <h4 class="text text-center ar2">[ {{ message }} ]</h4>
+    	            </div>
+                </div>
+            {% endfor %}
+            <div class="col-md-{% if adme %}12{% else %}10{% endif %} content mb-1">
+    	        {% block page_content %} {% endblock %}
+            </div>
+            <footer class="pull-left footer widw mt-3">
+    	        <div class="row mt-1">
+    	            <div class="col-xs-8 col-md-3 col-xs-offset-2 col-md-offset-2 pb-1">
+                        {% if ar %}
+                        <a href="{{ url_for('static', filename='mpl.html') }}" target="_blank"
+                            data-toggle="tooltip"
+                            title=" رخصة الإستخدام"
+                        >
+                            <center>
+                                <img src="{{ url_for('static', filename='images/license.png') }}" 
+                                    class="lightit mb-1 img-responsive" width="50%"
+                                >
+                            </center>
+                            <h4 class="text text-center lightit text-muted" id="ar1">
+                                <strong>
+                                    حقوق نشر هذا البرنامج محفوظة و تخضع لرخصة البرامج الحرة و مفتوحة المصدر
+                                    Mozilla Public License version 2.0 .
+                                </strong>
+                            </h4>
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('static', filename='mpl.html') }}" target="_blank"
+                            data-toggle="tooltip" title="License"
+                        >
+                            <center>
+                                <img src="{{ url_for('static', filename='images/license.png') }}"
+                                    class="lightit mb-1 img-responsive" width="35%"
+                                >
+                            </center>
+                            <h4 class="text text-center lightit ar1 text-muted">
+                                <strong>
+    		                        All credit reserved to the author of FQM. This work is a free,
+                                    open-source project licensed under Mozilla Public License version 2.0 .
+                                </strong>
+                            </h4>
+                        </a>
+                        {% endif %}
+    	            </div>
+    	            <div class="col-sm-6">
+    		            <div class="row pt-1">
+                            {% for theRow in
+                                [["col-xs-12 hidden-lg hidden-md text-center col-sm-offset-6 pb-1", "3x"], 
+                                ["col-md-7 col-lg-8  hidden-xs hidden-sm col-md-offset-4 col-lg-offset-4 pb-1", "5x"]] 
+                            %}
+    		                    <div class="{{ theRow[0] }}">
+                                    <a href="https://www.youtube.com/channel/UC9_zci_JGr2hXBxziYbMMBw/videos" target="_blank"
+                                        data-toggle="tooltip"
+                                        title="{% if ar %} Youtube : شروح {% else %} Youtube : tutorials {% endif %}"
+                                    >
+                                        <i class="fa fa-{{theRow[1]}} fa-fw fa-youtube text-muted"></i>
+                                    </a>
+                                    <a href="https://fqms.github.io/" target="_blank"
+                                        data-toggle="tooltip"
+                                        title="{% if ar %} الموقع الرسمي {% else %} FQM Website {% endif %}"
+                                    >
+                                        <i class="fa fa-{{theRow[1]}} fa-fw fa-rss text-muted"></i>
+                                    </a>
+    		    	                <a href="https://github.com/mrf345/fqm" target="_blank"
+                                        data-toggle="tooltip"
+                                        title="{% if ar %} Github : المصدر المفتوح {% else %} Github : FQM source code {% endif %}"
+                                    >
+                                        <i class="fa fa-{{theRow[1]}} fa-fw fa-github text-muted"></i>
+                                    </a>
+    		    	                <a href="#" data-toggle="modal" data-target="#root_qr"
+                                        data-toggle="tooltip"
+                                        title="{% if ar %} QR Code : الصفحة الرئيسية {% else %} QR Code : index page {% endif %}"
+                                    >
+                                        <i class="fa fa-{{theRow[1]}} fa-fw fa-qrcode text-muted"></i>
+                                    </a>
+                                </div>
+                            {% endfor %}
+        	    	    </div>
+    	            </div>
+    	        </div>
+            </footer>
         </div>
-        <footer class="pull-left footer widw shb" style="margin-top: 3%; width: 100%;">
-        <br />
-    	<div class="row">
-    	    <div class="col-xs-8 col-md-3 col-xs-offset-2 col-md-offset-2">
-        {% if ar %}
-        <a href="{{ url_for('static', filename='mpl.html') }}" target="_blank"
-        data-toggle="tooltip"
-        title=" رخصة الإستخدام"
-        ><center><img src="{{ url_for('static', filename='images/license.png') }}" class="img-responsive" width="50%" id="blogo"></center>
-        <br />
-        <h4 class="text text-center lightit text-muted" id="ar1"><strong>
-        حقوق نشر هذا البرنامج محفوظة و تخضع لرخصة البرامج الحرة و مفتوحة المصدر
-        Mozilla Public License version 2.0 .
-        </strong></h4>
-        </a>
-        {% else %}
-        <a href="{{ url_for('static', filename='mpl.html') }}" target="_blank"
-        data-toggle="tooltip"
-        title="License"
-        ><center><img src="{{ url_for('static', filename='images/license.png') }}" class="img-responsive" width="35%" id="blogo"></center>
-        <br />
-        <h4 class="text text-center lightit text-muted"><strong>
-    		    All credit reserved to the author of FQM. This work is a free,
-            open-source project licensed under Mozilla Public License version 2.0 .
-    		</strong></h4>
-        </a>
-        {% endif %}
-        <br />
-    	    </div>
-    	    <div class="col-sm-6">
-    		<p class="text-info text-right">
-    		    <br>
-    		</p>
-    		<div class="row">
-    		    <div class="col-xs-12 hidden-lg hidden-md text-center col-sm-offset-6">
-              <a href="https://www.youtube.com/channel/UC9_zci_JGr2hXBxziYbMMBw/videos" target="_blank"
-              data-toggle="tooltip"
-              title="{% if ar %} Youtube : شروح {% else %} Youtube : tutorials {% endif %}"
-              ><i class="fa fa-3x fa-fw fa-youtube text-muted"></i></a>
-              <a href="https://fqms.github.io/" target="_blank"
-              data-toggle="tooltip"
-              title="{% if ar %} الموقع الرسمي {% else %} FQM Website {% endif %}"
-              ><i class="fa fa-3x fa-fw fa-rss text-muted"></i></a>
-    			    <a href="https://github.com/mrf345/fqm" target="_blank"
-              data-toggle="tooltip"
-              title="{% if ar %} Github : المصدر المفتوح {% else %} Github : FQM source code {% endif %}"
-              ><i class="fa fa-3x fa-fw fa-github text-muted"></i></a>
-    			    <a href="#" data-toggle="modal" data-target="#root_qr"
-              data-toggle="tooltip"
-              title="{% if ar %} QR Code : الصفحة الرئيسية {% else %} QR Code : index page {% endif %}"
-              ><i class="fa fa-3x fa-fw fa-qrcode text-muted"></i></a>
-    		    </div>
-    		    <br>
-    		</div>
-    		<div class="row">
-    		    <div class="col-md-7 col-lg-8  hidden-xs hidden-sm col-md-offset-4 col-lg-offset-4">
-              <a href="https://www.youtube.com/channel/UC9_zci_JGr2hXBxziYbMMBw/videos" target="_blank"
-              data-toggle="tooltip"
-              title="{% if ar %} Youtube : شروح {% else %} Youtube : tutorials {% endif %}"
-              ><i class="fa fa-5x fa-fw fa-youtube text-muted"></i></a>
-        			<a href="https://fqms.github.io/" target="_blank"
-              data-toggle="tooltip"
-              title="{% if ar %} الموقع الرسمي {% else %} FQM Website {% endif %}"
-              ><i class="fa fa-5x fa-fw fa-rss text-muted"></i></a>
-    			  <a href="https://github.com/mrf345/fqm" target="_blank"
-            data-toggle="tooltip"
-            title="{% if ar %} Github : المصدر المفتوح {% else %} Github : FQM source code {% endif %}"
-            ><i class="fa fa-5x fa-fw fa-github text-muted"></i></a>
-    			  <a href="#" data-toggle="modal" data-target="#root_qr"
-            data-toggle="tooltip"
-            title="{% if ar %} QR Code : الصفحة الرئيسية {% else %} QR Code : index page {% endif %}"
-            ><i class="fa fa-5x fa-fw fa-qrcode text-muted"></i></a>
-    		    </div>
-    		    <br>
-    		</div>
-    	    </div>
-    	</div>
-        </footer>
-    </div>
-    <div class="modal fade" id="touch_qr">
-        <div class="modal-dialog">
-    	<div class="modal-content">
-    	    <div class="modal-header">
-    		<button type="button" class="close" data-dismiss="modal">&times;</button>
-        {% if ar %}
-        <h4 class="modal-title ar1">شفرة QR - شاشة اللمس</h4>
-        {% else %}
-    		<h4 class="modal-title">QR code - Touch screen</h4>
-        {% endif %}
-    	    </div>
-    	    <div class="modal-body">
-    		<center><img class="img-thumbnail img-responsive pic"
-           src="{{ qrcode(url_for('core.touch', a=0, _external=True)) }}"
-           alt="QR image"></center>
-    	    </div>
-    	    <div class="modal-footer">
-        {% if ar %}
-    		<button type="button" class="close ar1" data-dismiss="modal">إلغاء</button>
-        {% else %}
-    		<button type="button" class="close" data-dismiss="modal">Close</button>
-        {% endif %}
-    	    </div>
-    	</div>
-        </div>
-    </div>
-    <div class="modal fade" id="display_qr">
-        <div class="modal-dialog">
-    	<div class="modal-content">
-    	    <div class="modal-header">
-    		<button type="button" class="close" data-dismiss="modal">&times;</button>
-        {% if ar %}
-        <h4 class="modal-title ar1">شفرة QR - شاشة العرض</h4>
-        {% else %}
-    		<h4 class="modal-title">QR code - Display screen</h4>
-        {% endif %}
-    	    </div>
-    	    <div class="modal-body">
-    		<center><img class="img-thumbnail img-responsive pic"
-          src="{{ qrcode(url_for('core.display', _external=True)) }}"
-          alt="QR image"></center>
-    	    </div>
-    	    <div class="modal-footer">
-        {% if ar %}
-    		<button type="button" class="close ar1" data-dismiss="modal">إلغاء</button>
-        {% else %}
-    		<button type="button" class="close" data-dismiss="modal">Close</button>
-        {% endif %}
-    	    </div>
-    	</div>
-        </div>
-    </div>
-    <div class="modal fade" id="root_qr">
-        <div class="modal-dialog">
-    	<div class="modal-content">
-    	    <div class="modal-header">
-    		<button type="button" class="close" data-dismiss="modal">&times;</button>
-        {% if ar %}
-        <h4 class="modal-title ar1">شفرة QR - الصفحة الرئيسية</h4>
-        {% else %}
-    		<h4 class="modal-title">QR code - Index page</h4>
-        {% endif %}
-    	    </div>
-    	    <div class="modal-body">
-    		<center><img class="img-thumbnail img-responsive"
-          src="{{ qrcode(url_for('core.root', _external=True)) }}"
-          alt="QR image"></center>
-    	    </div>
-    	    <div class="modal-footer">
-        {% if ar %}
-    		<button type="button" class="close ar1" data-dismiss="modal">إلغاء</button>
-        {% else %}
-    		<button type="button" class="close" data-dismiss="modal">Close</button>
-        {% endif %}
-    	    </div>
-    	</div>
-        </div>
-    </div>
-</body>
+        {% from '_modals.html' import qrModal %}
+        {{ qrModal([['touch_qr', 'QR code - Touch screen', qrcode(url_for('core.touch', a=0, _external=True))],
+        ['display_qr', 'QR code - Display screen', qrcode(url_for('core.display', _external=True))],
+        ['root_qr', 'QR code - Index page', qrcode(url_for('core.root', _external=True))]]) }}
+    </body>
 </html>

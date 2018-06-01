@@ -13,108 +13,70 @@
 {% block head %}
 {{ super() }}
 <script>
-$(document).ready(function() {
-  var tcs = $('#enable option:selected').val()
-  if (tcs=='1') {
-    $('#warn').removeClass('hide');
-  }
-  $('#enable').change(function(){
-    var ncs = $('#enable option:selected').val()
-    if (ncs=='1') {
-      $('#warn').removeClass('hide');
-    }
-    if (ncs!='1') {
-      $('#warn').addClass('hide');
-    }
-  });
-});
+$(document).ready(function () {
+  if ($('#enable option:selected').val() === '1') $('#warn').removeClass('hide')
+  $('#enable').change(function (){
+    $('#enable option:selected').val() === '1' ? $('#warn').removeClass('hide') : $('#warn').addClass('hide')
+  })
+})
 </script>
 {% endblock %}
 
 {% block page_content %}
 {% from "_helpers.html" import render_field %}
+{% from "_modals.html" import qrModal %}
 <div class="col-md-12">
     <form method="POST" enctype="multipart/form-data">
-	<div class="panel panel-default" id="p1">
-	    <div class="panel-heading text-center">
-		<h3 class="text-muted">
-      {% if ar %}
-      <strong class="ar1">
-        إعدادات عرض الفيديو
-        <span class="fa fa-video-camera"></span>
-      </strong>
-      {% else %}
-      <strong><span class="fa fa-video-camera"></span>  Display Video settings  </strong>
-      {% endif %}
-    </h3>
+	    <div class="panel panel-default" id="p1">
+	      <div class="panel-heading text-center">
+		      <h3 class="text-muted">
+            {% if ar %}
+            <strong class="ar1">
+              إعدادات عرض الفيديو
+              <span class="fa fa-video-camera"></span>
+            </strong>
+            {% else %}
+            <strong><span class="fa fa-video-camera"></span>  Display Video settings  </strong>
+            {% endif %}
+          </h3>
+	      </div>
+	      <div class="panel-body">
+		      {{ form.csrf_token }}
+          <center>
+            <a data-toggle="modal" data-target="#mym">
+              <img class="img-responsive mt-2 mb-4 img-thumbnail pic" id="map" width="40%"
+                alt="Map image"
+                src="{{ url_for('static', filename='images/map2_video.jpg') }}"
+              >
+            </a>
+          </center>
+		      {{ render_field(form.enable, class="form-control") }}
+          {% if ar %}
+          <p id="warn" class="h4 text-center hide text-danger ar2">
+            | تنبيه : يتوجب عليك تعطيل عرض الفيديو ليمكنك إعداد و تفعيل عرض الشرائح |
+		      </p>
+          {% else %}
+		      <p id="warn" class="h3 mt-2 mb-2 text-center hide text-danger ar2">
+		          | Notice: To enable slide show you must disable video |
+		      </p>
+          {% endif %}
+          {{ render_field(form.video, class="form-control") }}
+		      {{ render_field(form.ar, class="form-control") }}
+		      {{ render_field(form.controls, class="form-control") }}
+          {{ render_field(form.mute, class="form-control") }}
+          <p class="pt-5"></p>
+		      <center>
+            {% if ar %}
+		          {{ form.submit(class_="btn btn-md btn-danger ar1") }}
+            {% else %}
+		          {{ form.submit(class_="btn btn-md btn-danger") }}
+            {% endif %}
+		      </center>
+          <p class="pb-3"></p>
 	    </div>
-	    <div class="panel-body">
-		<br><br>
-		{{ form.csrf_token }}
-    <center>
-      <a data-toggle="modal" data-target="#mym">
-          <img class="img-responsive img-thumbnail pic" id="map" width="40%"
-          alt="Map image"
-          src="{{ url_for('static', filename='images/map2_video.jpg') }}">
-      </a>
-    </center>
-    {{ brp * 2 }}
-		{{ render_field(form.enable, class="form-control") }}
-    {{ brp * 2 }}
-    {% if ar %}
-    <p id="warn" class="h4 text-center hide text-danger ar2">
-      | تنبيه : يتوجب عليك تعطيل عرض الفيديو ليمكنك إعداد و تفعيل عرض الشرائح |
-		</p>
-    {% else %}
-		<p id="warn" class="h4 text-center hide text-danger">
-		    | Notice: To enable slide show you must disable video |
-		</p>
-    {% endif %}
-    {{ brp * 2 }}
-    {{ render_field(form.video, class="form-control") }}
-    {{ brp * 2 }}
-		{{ render_field(form.ar, class="form-control") }}
-    {{ brp * 2 }}
-		{{ render_field(form.controls, class="form-control") }}
-    {{ brp * 2 }}
-		{{ render_field(form.mute, class="form-control") }}
-    {{ brp * 4 }}
-		<center>
-      {% if ar %}
-		    {{ form.submit(class_="btn btn-md btn-danger ar1") }}
-      {% else %}
-		    {{ form.submit(class_="btn btn-md btn-danger") }}
-      {% endif %}
-		</center>
-    {{ brp * 3 }}
-	    </div>
-	</div>
-    </form>
+  	</div>
+  </form>
 </div>
-<div class="modal fade" id="mym">
-    <div class="modal-dialog">
-	<div class="modal-content">
-	    <div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">&times;</button>
-    {% if ar %}
-		<h4 class="modal-title ar1">خارطة الفيدو</h4>
-    {% else %}
-		<h4 class="modal-title">Video template</h4>
-    {% endif %}
-	    </div>
-	    <div class="modal-body">
-		<center><img class="img-thumbnail img-responsive pic"
-      src="{{ url_for('static', filename='images/map2.jpg') }}"
-      alt="Map image"></center>
-	    </div>
-	    <div class="modal-footer">
-    {% if ar %}
-		<button type="button" class="close ar1" data-dismiss="modal">إلغاء</button>
-    {% else %}
-		<button type="button" class="close" data-dismiss="modal">Close</button>
-    {% endif %}
-	    </div>
-	</div>
-    </div>
-</div>
+
+{{ qrModal([['mym', 'Video template', url_for('static', filename='images/map2.jpg')]]) }}
 {% endblock %}

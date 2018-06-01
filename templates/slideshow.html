@@ -14,337 +14,219 @@
 {% block page_content %}
 <link href="{{ url_for('static', filename='css/gfonts.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/fade.css') }}" rel="stylesheet">
+{% from '_modals.html' import confirmModal %}
+{% from '_footers.html' import spacer, panelFooter %}
 <div class="col-xs-12">
     <div class="panel panel-primary">
         <div class="panel-heading">
-	    <h3 class="text text-center">
-    {% if ar %}
-		<strong class="ar1">قائمة الشرائح</strong>
-    {% else %}
-		<strong>Slides list</strong>
-    {% endif %}
-	    </h3>
-	    <div class="row">
-		<div class="col-xs-12 text-center">
-		    <div class="btn-group-justified">
-			<a data-toggle="modal" data-target="#fss" class="btn btn-primary">
-			    <span class="fa fa-eye hidden-xs"></span>
-          {% if ar %}
-			    <strong class="ar1">إستعراض الجميع</strong>
-          {% else %}
-			    <strong>Preview all</strong>
-          {% endif %}
-			</a>
-			<a data-toggle="modal" data-target="#dall" class="btn btn-danger">
-			    <span class="fa fa-trash hidden-xs"></span>
-          {% if ar %}
-			    <strong class="ar1">حذف الجميع</strong>
-          {% else %}
-			    <strong>Delete all</strong>
-          {% endif %}
-			</a>
-		    </div>
-		</div>
-	    </div>
+	    	<h3 class="text text-center">
+    			{% if ar %}
+					<strong class="ar1">قائمة الشرائح</strong>
+    			{% else %}
+					<strong>Slides list</strong>
+    			{% endif %}
+	    	</h3>
+	    	<div class="row">
+				<div class="col-xs-12 text-center">
+		    		<div class="btn-group-justified">
+						<a data-toggle="modal" data-target="#fss" class="btn btn-primary">
+			    			<span class="fa fa-eye hidden-xs"></span>
+          					{% if ar %}
+								    <strong class="ar1">إستعراض الجميع</strong>
+          					{% else %}
+								    <strong>Preview all</strong>
+          					{% endif %}
+						</a>
+						<a data-toggle="modal" data-target="#dall" class="btn btn-danger">
+			    			<span class="fa fa-trash hidden-xs"></span>
+          					{% if ar %}
+								    <strong class="ar1">حذف الجميع</strong>
+          					{% else %}
+								    <strong>Delete all</strong>
+          					{% endif %}
+						</a>
+		    		</div>
+				</div>
+	    	</div>
         </div>
         <div class="panel-body">
-	    <div class="row text-center h3 text-muted hidden-xs">
-    {% if ar %}
-    <div class="col-sm-6 ar2">
-		    (العنوان)
-		</div>
-		<div class="col-sm-4 ar2">
-		    (الخلفية)
-		</div>
-		<div class="col-sm-2 ar2">
-		    (خيارات)
-		</div>
-    {% else %}
-		<div class="col-sm-6">
-		    (ID.Title)
-		</div>
-		<div class="col-sm-4">
-		    (Background)
-		</div>
-		<div class="col-sm-2">
-		    (Actions)
-		</div>
-    {% endif %}
-	    </div>
-	    {% if len(slides) > 0 %}
-	    {% for mfile in slides %}
-	    <div class="row well h4 text-center {% if mfile.ikey == 00 %} text-primary {% else %} text-danger {% endif %}">
-		<div class="col-xs-12 col-sm-6 {% if ar %} ar1 {% endif %}">
-		    {{ mfile.id }}.{% if mfile.title != "" %} {{ mfile.title }}
-		    {% else %}
-        {% if ar %} لا عنوان {% else %} Empty {% endif %}
-        {% endif %}
-		</div>
-		<div class="col-xs-12 col-sm-4">
-		    {% if mfile.ikey == 00 %}
-            {% if ar %}
-            <u class="ar1">خلفية ملونة</u>
-            {% else %}
-            <u> Colored Background</u>
-            {% endif %}
-		    {% else %} <u {% if ar %} class="ar1" {% endif %}>{{ mfile.bname }} </u>{% endif %}
-		</div>
-		<div class="col-xs-12 col-sm-2">
-		    <a href="#" data-toggle="modal" data-target="#preview{{ mfile.id }}"
-        data-toggle="tooltip" {% if ar %} title="عرض الشريحة" {% else %} title="View slide" {% endif %}>
-			<span class="fa fa-eye text-primary"></span></a>
-		    <a href="#" data-toggle="modal" data-target="#dell{{ mfile.id }}"
-        data-toggle="tooltip" {% if ar %} title="حذف الشريحة" {% else %} title="Delete slide" {% endif %}>
-			<span class="fa fa-trash text-warning"></span></a>
-		</div>
-	    </div>
-	    <div class="modal fade" id="dell{{ mfile.id }}">
-		<div class="modal-dialog">
-		    <div class="modal-content">
-			<div class="modal-header">
-			    <button type="button" class="close" data-dismiss="modal">&times;</button>
-          {% if ar %}
-			    <h4 class="modal-title text-center ar1">تحذير : حذف شريحة</h4>
-          {% else %}
-			    <h4 class="modal-title text-center">Warning : Delete slide </h4>
-          {% endif %}
-			</div>
-			<div class="modal-body">
-			    <h4 class="text-danger text-center text-warning">
-          {% if ar %}
-          <strong class="ar2">
-            تحاول القيام بحذف شريحة مسجلة , لن يكون بإمكانك إسترجعها ,
-            تريد بالفعل الإستمرار في ذالك ؟
-          </strong>
-          {% else %}
-				  <strong>
-            You are attempting to delete a slide
-				    which won't be retrievable , Are you sure of that ?
-          </strong>
-          {% endif %}
-			    </h4>
-			    <br><br>
-			</div>
-			<div class="modal-footer">
-          {% if ar %}
-          <button type="button" class="close btn btn-md btn-warning pull-left ar1" data-dismiss="modal">إلغاء</button>
-			    <a href="{{ url_for('cust_app.slide_r', f_id=mfile.id) }}"><button type="button" class="close btn btn-md btn-danger ar1">إستمرار</button></a>
-          {% else %}
-			    <button type="button" class="close btn btn-md btn-warning pull-left" data-dismiss="modal">No, don't</button>
-			    <a href="{{ url_for('cust_app.slide_r', f_id=mfile.id) }}"><button type="button" class="close btn btn-md btn-danger">Yes, sure</button></a>
-          {% endif %}
-			</div>
-		    </div>
-		</div>
-	    </div>
-	    <div class="modal fade" id="preview{{ mfile.id }}">
-		<div class="modal-dialog">
-		    <div class="modal-content">
-			<div class="modal-header">
-			    <button type="button" class="close" data-dismiss="modal">&times;</button>
-          {% if ar %}
-			    <h4 class="modal-title text-center ar1">إستعراض الشريحة</h4>
-          {% else %}
-			    <h4 class="modal-title text-center">Preview slide </h4>
-          {% endif %}
-			</div>
-			<div class="modal-body">
-			    <div id="carousel-example{{ mfile.id }}" class="carousel slide" data-ride="carousel">
-				<ol class="carousel-indicators">
-				    <li data-target="#carousel-example{{ mfile.id }}" data-slide-to="0"></li>
-				</ol>
-				<div class="carousel-inner">
-				    <div class="item active">
-					{% if mfile.bname[:3]=="rgb" %}
-					<span class="img-responsive" style="background: {{ mfile.bname }};height: 400px; width: 1000px">
-					</span>
-					{% else %}
-					<img src="{{ url_for('static', filename='multimedia/'+mfile.bname) }}" class="img-responsive">
-					{% endif %}
-					<div class="carousel-caption">
-					    <h2 style="color: {{ mfile.hcolor }}; font-family: {{ mfile.hfont }}; size: {{ mfile.hsize }}; background: {{ mfile.hbg }};">{{ mfile.title }}</h2>
-					    <p style="color: {{ mfile.tcolor }}; font-family: {{ mfile.tfont }}; size: {{ mfile.tsize }}; background: {{ mfile.hbg }};">{{ mfile.subti }}</p>
-					</div>
-				    </div>
+	    	<div class="row text-center h3 ar2 text-muted hidden-xs">
+    			{% if ar %}
+    			<div class="col-sm-6 ar2">
+				    (العنوان)
 				</div>
-			    </div>
+				<div class="col-sm-4 ar2">
+				    (الخلفية)
+				</div>
+				<div class="col-sm-2 ar2">
+				    (خيارات)
+				</div>
+    			{% else %}
+				<div class="col-sm-6">
+				    (ID.Title)
+				</div>
+				<div class="col-sm-4">
+				    (Background)
+				</div>
+				<div class="col-sm-2">
+				    (Actions)
+				</div>
+    			{% endif %}
+	    	</div>
+	    	{% if len(slides) > 0 %}
+	    	{% for mfile in slides %}
+	    	<div class="row well h4 text-center {% if mfile.ikey == 00 %} text-primary {% else %} text-danger {% endif %}">
+				<div class="col-xs-12 col-sm-6 ar1">
+			    	{{ mfile.id }}.{% if mfile.title != "" %} {{ mfile.title }}
+			    	{% else %}
+        			{% if ar %} لا عنوان {% else %} Empty {% endif %}
+        			{% endif %}
+				</div>
+				<div class="col-xs-12 col-sm-4 ar1">
+		   			{% if mfile.ikey == 00 %}
+           			{% if ar %}
+           			<u class="ar1">خلفية ملونة</u>
+           			{% else %}
+           			<u> Colored Background</u>
+           			{% endif %}
+		   			{% else %} <u {% if ar %} class="ar1" {% endif %}>{{ mfile.bname }} </u>{% endif %}
+				</div>
+				<div class="col-xs-12 col-sm-2">
+		    		<a href="#" data-toggle="modal" data-target="#preview{{ mfile.id }}"
+						data-toggle="tooltip" {% if ar %} title="عرض الشريحة" {% else %} title="View slide" {% endif %}
+					>
+						<span class="fa fa-eye text-primary"></span>
+					</a>
+		    		<a href="#" data-toggle="modal" data-target="#dell{{ mfile.id }}"
+						data-toggle="tooltip" {% if ar %} title="حذف الشريحة" {% else %} title="Delete slide" {% endif %}
+					>
+						<span class="fa fa-trash text-warning"></span>
+					</a>
+				</div>
 			</div>
-			<div class="modal-footer">
-          {% if ar %}
-			    <button type="button" class="close btn btn-md btn-danger pull-right ar1" data-dismiss="modal">إلغاء</button>
-          {% else %}
-			    <button type="button" class="close btn btn-md btn-danger pull-right" data-dismiss="modal">Close</button>
-          {% endif %}
-			</div>
-		    </div>
+			{{ confirmModal([['dell' + str(mfile.id), 'Warning : Delete slide', "You are attempting to delete a slide which won't be retrievable , Are you sure of that ?", url_for('cust_app.slide_r', f_id=mfile.id)]]) }}
+	    	<div class="modal fade" id="preview{{ mfile.id }}">
+				<div class="modal-dialog">
+		    		<div class="modal-content">
+						<div class="modal-header">
+			    			<button type="button" class="close" data-dismiss="modal">&times;</button>
+          					{% if ar %}
+								<h4 class="modal-title text-center ar1">إستعراض الشريحة</h4>
+          					{% else %}
+								<h4 class="modal-title text-center ar1">Preview slide</h4>
+          					{% endif %}
+						</div>
+						<div class="modal-body">
+			    			<div id="carousel-example{{ mfile.id }}" class="carousel slide" data-ride="carousel">
+								<ol class="carousel-indicators">
+				    				<li data-target="#carousel-example{{ mfile.id }}" data-slide-to="0"></li>
+								</ol>
+								<div class="carousel-inner">
+				    				<div class="item active">
+										{% if mfile.bname[:3]=="rgb" %}
+										<span class="img-responsive" style="background: {{ mfile.bname }};height: 400px; width: 1000px">
+										</span>
+										{% else %}
+										<img src="{{ url_for('static', filename='multimedia/'+mfile.bname) }}" class="img-responsive">
+										{% endif %}
+										<div class="carousel-caption">
+					    					<h2 style="color: {{ mfile.hcolor }}; font-family: {{ mfile.hfont }}; size: {{ mfile.hsize }}; background: {{ mfile.hbg }};">{{ mfile.title }}</h2>
+					    					<p style="color: {{ mfile.tcolor }}; font-family: {{ mfile.tfont }}; size: {{ mfile.tsize }}; background: {{ mfile.hbg }};">{{ mfile.subti }}</p>
+										</div>
+				    				</div>
+								</div>
+			    			</div>
+						</div>
+						<div class="modal-footer">
+          					{% if ar %}
+			    			<button type="button" class="close btn btn-md btn-danger pull-right ar1" data-dismiss="modal">إلغاء</button>
+          					{% else %}
+			    			<button type="button" class="close btn btn-md btn-danger pull-right" data-dismiss="modal">Close</button>
+          					{% endif %}
+						</div>
+		    		</div>
+				</div>
+	    	</div>
+	    	{% endfor %}
+			{% endif %}
+			{{ spacer(['No slides exist to display ...', len(slides)]) }}
 		</div>
-	    </div>
-	    {% endfor %}
-	    {% endif %}
-	    {% if len(slides) == 0 %}
-	    <div class="well">
-		{{ brp*15 }}
-		<center>
-      {% if ar %}
-      <h3 class="text-danger ar1">لا شرائح تم إضافتها لتستعرض</h3>
-      {% else %}
-      <h3 class="text-danger">No slides exist to display ..</h3>
-      {% endif %}
-    </center>
-		{{ brp*15 }}
-	    </div>
-      {% elif len(slides) <= 1 %}
-      {{ brp * 25 }}
-	    {% elif len(slides) <= 3 %}
-      {{ brp * 20 }}
-	    {% elif len(slides) <= 5 %}
-	    {{ brp*15 }}
-	    {% endif %}
-	</div>
-        <div class="panel-footer">
-            <div class="row text-center">
-                <div class="col-xs-12 col-sm-4 h4 {% if ar %} ar1 {% endif %}">
-                  {% if ar %}
-                    إجمالي الشرائح
-                    <br /><br />
-                    <span class="label label-info">{{ mmm.count() }}</span>
-                  {% else %}
-                    Total slides <span class="label label-info">{{ mmm.count() }}</span>
-                  {% endif %}
-                </div>
-		<div class="col-xs-12 col-sm-4 h4 {% if ar %} ar1 {% endif %}">
-                    {% if ar %}
-                    شرائح بصور
-                    <br /><br />
-                    <span class="label label-danger">{{ sm }}</span>
-                    {% else %}
-                    Image slides <span class="label label-danger">{{ sm }}</span>
-                    {% endif %}
-                </div>
-		<div class="col-xs-12 col-sm-4 h4 {% if ar %} ar1 {% endif %}">
-                    {% if ar %}
-                    شرائح ملونة
-                    <br /><br />
-                    <span class="label label-info">{{ mmm.filter_by(ikey=00).count() }}</span>
-                    {% else %}
-                    Colored slides <span class="label label-info">{{ mmm.filter_by(ikey=00).count() }}</span>
-                    {% endif %}
-                </div>
-            </div>
-	    <div class="row text-center">
-		{{ macros.pagination_widget(pagination, '.slideshow') }}
-	    </div>
+        <div class="panel-footer text-center">
+			{{ panelFooter([[['Total slides', mmm.count()], ['Image slides', sm], ['Colored slides', mmm.filter_by(ikey=00).count()]]], True) }}
+	    	<div class="row text-center">
+				{{ macros.pagination_widget(pagination, '.slideshow') }}
+	    	</div>
         </div>
     </div>
 </div>
-<br>
-<div class="modal fade" id="dall">
-    <div class="modal-dialog">
-	<div class="modal-content">
-	    <div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">&times;</button>
-    {% if ar %}
-		<h4 class="modal-title text-center ar1"> تحذير : حذف الشرائح</h4>
-    {% else %}
-		<h4 class="modal-title text-center">Warning : Delete all </h4>
-    {% endif %}
-	    </div>
-	    <div class="modal-body">
-		<h4 class="text-danger text-center text-warning">
-      {% if ar %}
-      <strong class="ar2">
-        تحاول القيام بحذف جميع الشرائح المسجلة , و لن يكون بإمكانك إسترجاعها
-        فيما بعد , تود بالفعل الإستمرار في ذالك ؟
-      </strong>
-      {% else %}
-		    <strong> You are attempting to delete all slides
-			which won't be retrievable , Are you sure of that ? </strong>
-      {% endif %}
-      <br><br>
-		</h4>
-	    </div>
-	    <div class="modal-footer">
-    {% if ar %}
-    <button type="button" class="close btn btn-md btn-warning pull-left ar1" data-dismiss="modal">إلغاء</button>
-		<a href="{{ url_for('cust_app.slide_r', f_id=00) }}"><button type="button" class="close btn btn-md btn-danger ar1">إستمرار</button></a>
-    {% else %}
-		<button type="button" class="close btn btn-md btn-warning pull-left" data-dismiss="modal">No, don't</button>
-		<a href="{{ url_for('cust_app.slide_r', f_id=00) }}"><button type="button" class="close btn btn-md btn-danger">Yes, sure</button></a>
-    {% endif %}
-	    </div>
-	</div>
-    </div>
-</div>
+
+{{ confirmModal([['dall', 'Warning : Delete all', "You are attempting to delete all slides which won't be retrievable , Are you sure of that ?", url_for('cust_app.slide_r', f_id=00)]]) }}
 <div class="modal fade" id="fss">
     <div class="modal-dialog">
-	<div class="modal-content">
-	    <div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">&times;</button>
-    {% if ar %}
-    <h4 class="modal-title text-center ar1">إستعراض جميع الشرائح</h4>
-    {% else %}
-    <h4 class="modal-title text-center">Preview all slides-show </h4>
-    {% endif %}
-      </div>
-	    <div class="modal-body">
-		{% if mmm.count() == 0 %}
-    {% if ar %}
-		<h1 class="text text-center text-danger ar1"> لا شرائح تم إضافتها بعد</h1>
-    {% else %}
-		<h1 class="text text-center text-danger"> No slides created to be displayed ..</h1>
-    {% endif %}
-		{% else %}
-		<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="{{ sli.rotation }}">
-		    <!-- Indicators -->
-		    <ol class="carousel-indicators">
-			{% for a in range(0, mmm.count()) %}
-			{% if a == 0 %}
-			<li data-target="#myCarousel" data-slide-to="{{ a }}" class="active"></li>
-			{% endif %}
-			<li data-target="#myCarousel" data-slide-to="{{ a }}"></li>
-			{% endfor %}
-		    </ol>
-
-		    <!-- Wrapper for slides -->
-		    <div class="carousel-inner">
-
-			{% for m in mmm %}
-			{% if m.id == mmm.first().id %} <div class="item active"> {% else %} <div class="item"> {% endif %}
-			{% if m.bname[:3]=="rgb" %}
-			<span class="img-responsive" style="background: {{ m.bname }}; height: 600px; width: 1300p"></span>
-			{% else %}
-			<img style="height: 600px; width: 1300p" src="{{ url_for('static', filename='multimedia/'+m.bname) }}" alt="Slide {{ m.id }}" style="width:100%;" class="img-responsive">
-			{% endif %}
-			<div class="carousel-caption">
-			    <h2 style="color: {{ m.hcolor }}; font-family: {{ m.hfont }} ; size: {{ m.hsize }}; background: {{ m.hbg }};">{{ m.title }}</h2>
-			    <p style="color: {{ m.tcolor }}; font-family: {{ m.tfont }} size: {{ m.tsize }}; background: {{ m.hbg }};">{{ m.subti }}</p>
+		<div class="modal-content">
+	    	<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+    			{% if ar %}
+    			<h4 class="modal-title text-center ar1">إستعراض جميع الشرائح</h4>
+    			{% else %}
+    			<h4 class="modal-title text-center ar1">Preview all slides-show </h4>
+    			{% endif %}
+      		</div>
+	    	<div class="modal-body">
+				{% if mmm.count() == 0 %}
+    				{% if ar %}
+					<h1 class="text text-center text-danger ar1"> لا شرائح تم إضافتها بعد</h1>
+    				{% else %}
+					<h1 class="text text-center text-danger"> No slides created to be displayed ...</h1>
+    				{% endif %}
+				{% else %}
+				<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="{{ sli.rotation }}">
+		    		<!-- Indicators -->
+		    		<ol class="carousel-indicators">
+						{% for a in range(0, mmm.count()) %}
+						{% if a == 0 %}
+						<li data-target="#myCarousel" data-slide-to="{{ a }}" class="active"></li>
+						{% endif %}
+						<li data-target="#myCarousel" data-slide-to="{{ a }}"></li>
+						{% endfor %}
+		    		</ol>
+		    		<div class="carousel-inner">
+						{% for m in mmm %}
+						<div class="item {% if m.id == mmm.first().id %} active {% endif %}">
+							{% if m.bname[:3]=="rgb" %}
+							<span class="img-responsive" style="background: {{ m.bname }}; height: 600px; width: 1300p"></span>
+							{% else %}
+							<img style="height: 600px; width: 1300p" src="{{ url_for('static', filename='multimedia/'+m.bname) }}" alt="Slide {{ m.id }}" style="width:100%;" class="img-responsive">
+							{% endif %}
+							<div class="carousel-caption">
+			    				<h2 style="color: {{ m.hcolor }}; font-family: {{ m.hfont }} ; size: {{ m.hsize }}; background: {{ m.hbg }};">{{ m.title }}</h2>
+			    				<p style="color: {{ m.tcolor }}; font-family: {{ m.tfont }} size: {{ m.tsize }}; background: {{ m.hbg }};">{{ m.subti }}</p>
+							</div>
+						</div>
+						{% endfor %}
+						<!-- Left and right controls -->
+						{% if sli.navigation %}
+						<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+			    			<span class="glyphicon glyphicon-chevron-left"></span>
+			    			<span class="sr-only">Previous</span>
+						</a>
+						<a class="right carousel-control" href="#myCarousel" data-slide="next">
+			    			<span class="glyphicon glyphicon-chevron-right"></span>
+			    			<span class="sr-only">Next</span>
+						</a>
+						{% endif %}
+					</div>
+		   		</div>
+		    	{% endif %}
 			</div>
+			<div class="modal-footer">
+        		{% if ar %}
+				<button type="button" class="close btn btn-md btn-danger pull-right ar1" data-dismiss="modal">إلغاء</button>
+        		{% else %}
+				<button type="button" class="close btn btn-md btn-danger pull-right" data-dismiss="modal">Close</button>
+        		{% endif %}
 			</div>
-			{% endfor %}
-
-			<!-- Left and right controls -->
-			{% if sli.navigation %}
-			<a class="left carousel-control" href="#myCarousel" data-slide="prev">
-			    <span class="glyphicon glyphicon-chevron-left"></span>
-			    <span class="sr-only">Previous</span>
-			</a>
-			<a class="right carousel-control" href="#myCarousel" data-slide="next">
-			    <span class="glyphicon glyphicon-chevron-right"></span>
-			    <span class="sr-only">Next</span>
-			</a>
-			{% endif %}
-			</div>
-		    </div>
-		    {% endif %}
 		</div>
-		<div class="modal-footer">
-        {% if ar %}
-		    <button type="button" class="close btn btn-md btn-danger pull-right ar1" data-dismiss="modal">إلغاء</button>
-        {% else %}
-		    <button type="button" class="close btn btn-md btn-danger pull-right" data-dismiss="modal">Close</button>
-        {% endif %}
-		</div>
-	    </div>
 	</div>
-    </div>
+</div>
 {% endblock %}
