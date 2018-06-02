@@ -36,7 +36,7 @@ from flask_datepicker import datepicker
 from flask_colorpicker import colorpicker
 from flask_fontpicker import fontpicker
 from flask_less import lessc
-from flask_htmlmin import HTMLMIN
+from flask_minify import minify
 from languages import GUI as LANGUAGES
 
 
@@ -59,7 +59,6 @@ def create_app():
     app.config['UPLOADED_FILES_DEST'] = r_path('static/multimedia')
     app.config['UPLOADED_FILES_ALLOW'] = mdal
     app.config['SECRET_KEY'] = os.urandom(24)
-    app.config['MINIFY_PAGE'] = True
     # Intiating extensions before registering blueprints
     moment = Moment(app)
     qrc = QRcode(app)
@@ -76,7 +75,7 @@ def create_app():
         'static/css/webfont.select.css'
     ])
     lessc(app)
-    HTMLMIN(app)
+    minify(app, js=True)
     # Register blueprints
     app.register_blueprint(administrate)
     app.register_blueprint(core)

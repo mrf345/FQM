@@ -39,6 +39,10 @@
                     $('#cls').collapse('show')
                     $('#dropdown-lvl{{ ooid }}').collapse('show')
                 {% endif %}
+                if (!sessionStorage.toClear) {
+                    localStorage.redWallIndex = undefined
+                    sessionStorage.toClear = 'yes'
+                }
                 redditWallpapers({
                     isFixed: 'true',
                     id: '.widw',
