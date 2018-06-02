@@ -231,7 +231,7 @@ class Touch_store(db.Model):
         self.tmp = tmp
 
 
-# -- Touch custimization table
+# -- Touch customization table
 
 
 class Display_store(db.Model):
@@ -259,7 +259,6 @@ class Display_store(db.Model):
     anrt = db.Column(db.String(100))
     effect = db.Column(db.String(100))
     repeats = db.Column(db.String(100))
-    afile = db.Column(db.String(100))
     bgcolor = db.Column(db.String(100))
     tmp = db.Column(db.Integer)
     akey = db.Column(db.Integer, db.ForeignKey("media.id",
@@ -281,7 +280,7 @@ class Display_store(db.Model):
                  hfont="El Messiri", tfont="Mada", repeats="3", effect="fade",
                  sfont="Amiri", mduration="3000", rrate="2000",
                  announce="en-us", ikey=4, vkey=6, akey=5,
-                 anr=2, anrt="each", bgcolor="49.jpg", afile=" ", tmp=0):
+                 anr=2, anrt="each", bgcolor="rgb(0,0,0)", tmp=0):
         self.id = 0
         self.tfont = tfont
         self.hfont = hfont
@@ -305,7 +304,6 @@ class Display_store(db.Model):
         self.audio = audio
         self.announce = announce
         self.bgcolor = bgcolor
-        self.afile = afile
         self.tmp = tmp
         self.anr = anr
         self.anrt = anrt

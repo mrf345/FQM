@@ -37,6 +37,7 @@ from flask_colorpicker import colorpicker
 from flask_fontpicker import fontpicker
 from flask_less import lessc
 from flask_minify import minify
+from flask_gtts import gtts
 from languages import GUI as LANGUAGES
 
 
@@ -76,6 +77,7 @@ def create_app():
     ])
     lessc(app)
     minify(app, js=True)
+    gtts(app=app, route=True)
     # Register blueprints
     app.register_blueprint(administrate)
     app.register_blueprint(core)

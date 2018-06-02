@@ -71,10 +71,6 @@
 > - [ ] remove ar pics from watchIt
 
 
-- [ ] More manage
-> - [ ] add pull from all office
-> - [ ] add general tasks (Require DB resign, Tasks over Offices)
-
 - [x] implement uniqueness instead of dumb something() (5/4th)
 > - [x] add option in uniqueness to always enforce hash tags (5/4th)
 > - [x] get next, prev and customize btns working with hashtags (5/4th)
@@ -90,8 +86,8 @@
 > - [x] create and utilize browser_notifier front-end solution (5/12th)
 > - [x] remove browser detection from back-end (5/12th)
 
-- [ ] Implement flask_gtts **Fixing ticket repeating announcement**
-> - [ ] use gTTS from the display template instead
-> - [ ] remove values from db
-> - [ ] remove old values from display template
-> - [ ] test if that solves repeating same name
+- [x] Implement flask_gtts **Fixing ticket repeating announcement** (6/3rd)
+> - [x] use gTTS from the display template instead (6/3rd)
+> - [x] remove values from db (6/3rd)
+> - [x] remove old values from display template (6/3rd)
+> - [x] test if that solves repeating same name (6/3rd)

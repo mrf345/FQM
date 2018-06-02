@@ -8,7 +8,7 @@ from database import db
 import os
 from httplib import HTTPConnection as htp
 from flask import session
-import lanuages as LANGUAGES
+import languages as LANGUAGES
 from gtts import gTTS as gt
 # Extra functions
 

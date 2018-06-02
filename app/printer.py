@@ -16,7 +16,7 @@ from datetime import datetime
 from ex_functions import r_path
 from os import remove, getcwd, path, name
 from database import version
-from lanuages import PRINTER
+from languages import PRINTER
 
 
 class find_class(object):

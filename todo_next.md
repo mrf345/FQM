@@ -19,3 +19,7 @@
 > - [ ] add s-ticket layout customization background title colors fonts sound notification and audio notification
 > - [ ] add special args for touch_screen to redirect to registered or printed tickets
 > - [ ] remove old tickets from template and db
+
+- [ ] More manage
+> - [ ] add pull from all office
+> - [ ] add general tasks (Require DB resign, Tasks over Offices)

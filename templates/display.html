@@ -11,6 +11,14 @@
 <script src="{{ url_for('static', filename='extFunctions.js') }}" type='text/javascript'></script>
 <script type='text/javascript'>
 	reloadIf()
+	var TTS = {
+		// text-to-speech announcement text
+		'en-us': ' , please proceed to the office number : ',
+		'ar': ' : توجه إلى المكتب رقم ',
+		'fr': ", s'il vous plaît procéder au numéro de bureau : ",
+		'es': ' , por favor diríjase al número de la oficina : ',
+		'it': " , si prega di procedere al numero dell'ufficio : "
+	}
 	var aplayer = undefined
 	var langs = "{{ ts.announce }}".split(',')
 	var stream = JsonStream({
@@ -25,15 +33,22 @@
 		ensure_value: 'w9',
 		todo: function (data, toPlay=[]) {
 			if (aplayer) aplayer.exit(false)
-			{% if ts.audio != 'false' %}toPlay.push("{{'/static/multimedia/'+ts.audio}}"){% endif %}
-			langs.forEach(function (lang) {
-				toPlay.push('/static/tts/' + lang + data.anf)
+			Promise.all(langs.map(function (lang, i) {
+				return fetch(window.location.origin + '/gtts/' + lang + '/' + data.cot + TTS[lang] + data.con)
+				.then(function (resp) {
+					return resp.json()
+				}).then(function (obj) {
+					return obj.mp3
+				})
+			})).then(function (results) {
+				{% if ts.audio != 'false' %}results.push("{{'/static/multimedia/'+ts.audio}}"){% endif %}
+				aplayer = AudioSequence({
+					files: results.map(function (i) { if (i !== "") return i}),
+					repeats: parseInt("{{ ts.anr }}"),
+					{% if ts.anrt == 'whole' %}repeat_whole{% else %}repeat_each{% endif %}: 'true'
+				})
 			})
-			aplayer = AudioSequence({
-				files: toPlay.map(function (i) { if (i !== "") return i}),
-				repeats: parseInt("{{ ts.anr }}"),
-				{% if ts.anrt == 'whole' %}repeat_whole{% else %}repeat_each{% endif %}: 'true'
-			})
+			
 		}
 	})
 </script>

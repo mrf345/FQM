@@ -7,19 +7,15 @@ from flask import url_for, flash, render_template, redirect
 from flask import session, jsonify, Blueprint
 from flask_login import current_user, login_required, login_user
 import os
-from random import randint
-# from gtts import gTTS as gt
 from datetime import datetime
 import forms
 import data
 import printer as ppp
 from database import db
 import ex_functions
-from ex_functions import get_lang, say_it
-from shutil import rmtree
+from ex_functions import get_lang
 from multiprocessing.pool import ThreadPool
 from sys import platform
-from lanuages import TTS
 
 core = Blueprint('core', __name__)
 
@@ -304,10 +300,6 @@ def serial_rt(t_id):
 @core.route('/pull/<int:o_id>')
 @login_required
 def pull(o_id):
-    if os.name == 'nt':
-        path = ex_functions.r_path('static\\tts\\')
-    else:
-        path = ex_functions.r_path('static/tts/')
     # FIX: pulling tickets by task_id instead of office_id
     # to allow for pulling form specific office
     if data.Task.query.filter_by(id=o_id).first() is None:
@@ -358,23 +350,6 @@ def pull(o_id):
     lang = data.Display_store.query.first()
     tnumber = data.Printer.query.first().value
     office = cl.oname
-    if lang.announce != "false":
-        if os.path.isdir(path):
-            rmtree(path)
-        os.mkdir(path)
-        langs = lang.announce.split(',')
-        ticket = cl.name if cl.n else cl.ticket
-        fileCode = str(randint(1, 999999)) + ".mp3"
-        for l in langs:
-            ms = TTS[l][0] if tnumber == 1 and not data.Printer.query.first().active else TTS[l][1]
-            ms += (ticket).encode('utf-8')
-            ms += TTS[l][2]
-            ms += (office).encode('utf-8')
-            say_it(ms, l, path + l + fileCode)
-        lang.afile = fileCode
-        db.session.add(lang)
-        db.session.commit()
-    # attempt to fix overleaping issue " Waiting instance is already deleted"
     # --- Reassigning cs seems to fix it
     # Fix: pulling tickets by task_id instead of office_id
     # modifying removing from  waiting with task_id 
@@ -399,11 +374,6 @@ def pull(o_id):
 
 @core.route('/feed', methods=['GET'])
 def feed():
-    # Checking if auto refresh is due and do it
-    autoref = None
-    if session.get('autoref') == 1:
-        autoref = 1
-        session['autoref'] = None
     hl = []
     co = data.Waiting_c.query.first()
     if co is None:
@@ -443,15 +413,11 @@ def feed():
             hcounter = "Empty"
     # End of fix
     f = data.Display_store.query.filter_by(id=0).first()
-    if f.announce != "false" and f.afile != " ":
-        af = f.afile
-    else:
-        af = "Empty"
     return jsonify(con=con, cot=cot, cott=cott,
                    w1=hl[0], w2=hl[1], w3=hl[2],
                    w4=hl[3], w5=hl[4], w6=hl[5],
                    w7=hl[6], w8=hl[7],
-                   w9=hcounter, anf=af, refre=autoref)
+                   w9=hcounter)
 
 
 @core.route('/display')
