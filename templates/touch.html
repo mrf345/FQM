@@ -29,25 +29,25 @@ reloadIf('/touch/0')
 {% from "_footers.html" import touchFooter %}
 <style>
  body {
-     {% if ts.bgcolor[:3] == "rgb" %}
-     background: {{ ts.bgcolor }};
-     {% else %}
-     background-image: url({{ url_for('static', filename='multimedia/'+ts.bgcolor) }});
-     {% endif %}
-     background-repeat: no-repeat;
-     background-attachment: fixed;
-     background-position: center;
-     background-size: cover;
+  {% if ts.bgcolor[:3] == "rgb" %}
+  background-color: {{ ts.bgcolor }};
+  {% else %}
+  background-image: url({{ url_for('static', filename='multimedia/'+ts.bgcolor) }});
+  {% endif %}
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
  }
  .vertical-center {
-     min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-     min-height: 100vh; /* These two lines are counted as one :-)       */
-     display: flex;
-     align-items: center;
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+  display: flex;
+  align-items: center;
  }
  .title {
   color: {{ ts.hcolor }}; 
-  background: {{ ts.hbg }} 
+  background: {{ ts.hbg }}
   font-size: {{ ts.hsize }};
   font-family: '{{ ts.hfont }}';
   margin-top: 1%;
@@ -55,21 +55,21 @@ reloadIf('/touch/0')
  }
  .titles {
   color: {{ ts.hcolor }}; 
-  background: {{ ts.hbg }} 
+  background: {{ ts.hbg }}
   font-family: '{{ ts.hfont }}';
   margin-top: 1%;
   margin-bottom: 1%; 
  }
  .message {
   color: {{ ts.mcolor }}; 
-  background: {{ ts.hbg }};
+  background: {{ ts.hbg }}
   font-family: '{{ ts.mfont }}';
   font-size: {{ ts.msize }};
   margin-bottom: 1%; 
  }
  .messages {
   color: {{ ts.mcolor }}; 
-  background: {{ ts.hbg }};
+  background: {{ ts.hbg }}
   font-family: '{{ ts.mfont }}'; 
   margin-bottom: 1%; 
  }
