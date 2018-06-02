@@ -71,5 +71,5 @@ Flask-Datepicker==0.8
 Flask-Colorpicker==0.9
 Flask-Fontpicker==0.2
 Flask-Less==0.3
-Flask-Minify==0.1
+Flask-Minify==0.2
 # pypiwin32 # in Windows only
