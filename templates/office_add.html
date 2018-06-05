@@ -18,17 +18,10 @@
 		<div class="panel panel-default">
 	    	<div class="panel-heading text-center">
 				<h3 class="text-muted ar1">
-        			{% if ar %}
-			  		<span class="fa fa-plus"></span>
-        			<strong class="ar1">
-          				إضافة مكتب جديد
-		    		</strong>
-        			{% else %}
 		    		<strong>
 						<span class="fa fa-plus"></span>
-						  Office - Add new office
+						  {{ translate('Add new office', 'en', [defLang]) }}
 		    		</strong>
-        			{% endif %}
 				</h3>
 	    	</div>
 	    	<div class="panel-body">
@@ -36,30 +29,20 @@
 				<a data-toggle="modal" data-target="#mym">
 		    		<center><img class="img-responsive img-thumbnail mt-4 mb-2" id="map" width="40%" src="{{ url_for('static', filename='images/manage_office.jpg') }}"></center>
 				</a>
-    			{% if ar %}
-    			<p class="h3 text-center text-muted ar2">
-    			    | المكتب : يقدم الإمكانية لإضافة المهمات و التعمال مع التذاكر المضافة و سحبها |
-    			</p>
-    			{% else %}
 				<p class="h3 text-center text-muted ar2">
-				    | Office : the virtual representation of an office on-which tickets are pulled and managed |
+				    | {{ translate("Office : the virtual representation of an office on-which tickets are pulled and managed", 'en', [defLang]) }} |
 				</p>
-    			{% endif %}
 				<hr>
 				{{ render_field(form.name, class="form-control") }}
 				{{ render_field(form.prefix, class="form-control") }}
 				<p class="pb-5"></p>
 				<center>
-      				{% if ar %}
-		    		{{ form.submit(class_="btn btn-md btn-danger ar1") }}
-      				{% else %}
-		    		{{ form.submit(class_="btn btn-md btn-danger") }}
-      				{% endif %}
+		    		<button class="btn btn-md btn-danger"> {{ translate('Add office', 'en', [defLang]) }}</button>
 				</center>
     			<p class="pb-2"></p>
 	    	</div>
 		</div>
     </form>
 </div>
-{{ qrModal([['mym', 'Management template', url_for('static', filename='images/manage_map.jpg')]])}}
+{{ qrModal([['mym', translate('Management template', 'en', [defLang]), url_for('static', filename='images/manage_map.jpg')]], close=translate('Exit', 'en', [defLang]))}}
 {% endblock %}

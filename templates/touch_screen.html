@@ -1,6 +1,6 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
-   - License, v. 2.0. If a copy of the MPL was not distributed with this
-   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+- License, v. 2.0. If a copy of the MPL was not distributed with this
+- file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
 {% extends "base.html" %}
 {% block title %} FQM - {{ ptitle  }} {% endblock %}
@@ -27,15 +27,9 @@ $(document).ready( function () {
     watchIt(
       '#touch',
       '.tobc',
-      {% if ar %}
-      ["{{ url_for('static', filename='images/map_ar.jpg') }}",
-      "{{ url_for('static', filename='images/map3_ar.jpg') }}",
-      "{{ url_for('static', filename='images/map4_ar.jpg') }}"]
-      {% else %}
       ["{{ url_for('static', filename='images/map.jpg') }}",
       "{{ url_for('static', filename='images/map3.jpg') }}",
       "{{ url_for('static', filename='images/map4.jpg') }}"]
-      {% endif %}
     )
 })
 </script>
@@ -55,277 +49,158 @@ $(document).ready( function () {
     <form method="POST" enctype="multipart/form-data">
         <div class="panel panel-default uniqueness">
             <div class="panel-heading text-center">
-                {% if ar %}
                 <h3 class="text-muted">
-                    <strong class="ar1"><span class="fa fa-desktop"></span>  شاشة اللمس -
-                    <span class="fa fa-windows"></span>  القالب</strong>
+                    <strong><span class="fa fa-desktop"></span> {{ translate('Touch screen', 'en', [defLang]) }} - {{ translate('Template', 'en', [defLang]) }} </strong> 
                 </h3>
-                {% else %}
-                <h3 class="text-muted">
-                    <strong><span class="fa fa-desktop"></span>  Touch Screen - <span class="fa fa-windows">
-                    </span>  Template</strong>
-                </h3>
-                {% endif %}
             </div>
             <div class="panel-body">
-                <div class="col-xs-12">
-                    <center>
-                        <a data-toggle="modal" data-target="#mym">
-                            <img class="img-responsive mt-3 img-thumbnail tobc" id="map" width="40%"
-                                {% if ar %}
-                                src="{{ url_for('static', filename='images/map.jpg') }}"
-                                {% else %}
-                                src="{{ url_for('static', filename='images/map.jpg') }}"
-                                {% endif %}
-                            >
-                        </a>
-                        {% if ar %}
-                        <p class="h3 text-muted ar2">
-                            | تنبيه : الصورة الممثلة للقالب المختار يتم عرضها تلقائياً مع إختياره |
-  		                </p>
-                        {% else %}
-  		                <p class="h3 ar2 text-muted ar2 mt-2">
-  		                    | The picture of the template is automatically changed to the one selected |
-  		                </p>
-                        {% endif %}
-                    </center>
-                </div>
+                <center>
+                    <a data-toggle="modal" data-target="#mym">
+                        <img class="img-responsive mt-3 img-thumbnail tobc" id="map" width="40%" src="{{ url_for('static', filename='images/map.jpg') }}">
+                    </a>
+                      <p class="h3 ar2 text-muted ar2 mt-2">
+                          | {{ translate('The picture of the template is automatically changed to the one selected', 'en', [defLang]) }} |
+                      </p>
+                </center>
                 <hr>
                 {{ form.csrf_token }}
                 {{ render_field(form.touch, class="form-control") }}
-                {% if ar %}
-                <h4 class="text-center text-danger ar2">
-                  | تنبيه : شاشة اللمس صممت مع خاصية قابلية العرض في شاشات بمتعددة الأحجام |
-                </h4>
-                {% else %}
                 <h4 class="text-center ar2 text-danger mb-7 mt-2">
-                  | Reminder: Touch screen meant to be displayed on different sized monitors so it supports it |
+                  | {{ translate('Reminder: Touch screen meant to be displayed on different sized monitors so it supports it', 'en', [defLang]) }} |
                 </h4>
-                {% endif %}
-                {% if ar %}
-                    {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
-                {% else %}
-                    {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
-                {% endif %}
+                {{ unique_btns(translate('Previous', 'en', [defLang]), translate('Apply', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
                 <p class="pb-3"></p>
             </div>
         </div>
-	    <div class="panel panel-default uniqueness">
-	        <div class="panel-heading text-center">
-		        <h3 class="text-muted">
-                    {% if ar %}
-                    <strong class="ar1"><span class="fa fa-desktop"></span>  شاشة اللمس - <span class="fa fa-text-width"></span>  العنوان</strong>
-                    {% else %}
-                    <strong><span class="fa fa-desktop"></span>  Touch Screen - <span class="fa fa-text-width"></span>  Title</strong>
-                    {% endif %}
+        <div class="panel panel-default uniqueness">
+            <div class="panel-heading text-center">
+                <h3 class="text-muted">
+                    <strong><span class="fa fa-desktop"></span> {{ translate('Touch screen', 'en', [defLang]) }} -  {{ translate('Title', 'en', [defLang]) }} </strong> 
                 </h3>
-	        </div>
-	        <div class="panel-body">
-		        <div class="col-xs-12">
-		            <center>
-			            <a data-toggle="modal" data-target="#mym">
-			                <img class="img-responsive mt-4 img-thumbnail" id="map" width="40%"
-                                {% if ar %}
-                                src="{{ url_for('static', filename='images/map_title_ar.jpg') }}"
-                                {% else %}
-                                src="{{ url_for('static', filename='images/map_title.jpg') }}"
-                                {% endif %}
-                            >
-			            </a>
-                        {% if ar %}
-                        <h3 class="text text-muted text-center ar2">
-                            | الحقل النصي الرئيسي الذي يتيح المستخدم إرشاد العميل إلى إختيار مهمة أو الإشارة إلى شيئ
-                            معين |
-			            </h3>
-                        {% else %}
-			            <h3 class="text text-muted mt-2 ar2 text-center">
-			                | Main text box that, can be used to showcase the company brand or instruct the user to choose a task from the listed below title |
-			            </h3>
-                        {% endif %}
-		            </center>
-		        </div>
-	            <hr>
-		        {{ render_field(form.title, class="form-control") }}
-		        {{ render_field(form.hsize, class="form-control") }}
-		        {{ render_field(form.hcolor, class="sp") }}
-		        {{ render_field(form.hbg, class="spa") }}
-  	            {{ render_field(form.hfont, class="form-control") }}
-		        <p class="pt-5"></p>
-                {% if ar %}
-                    {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
-                {% else %}
-                    {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
-                {% endif %}
+            </div>
+            <div class="panel-body">
+                <center>
+                    <a data-toggle="modal" data-target="#mym">
+                        <img class="img-responsive mt-4 img-thumbnail" id="map" width="40%"
+                            src="{{ url_for('static', filename='images/map_title.jpg') }}"
+                        >
+                    </a>
+                    <h3 class="text text-muted mt-2 ar2 text-center">
+                        | {{ translate('Main text box that, can be used to showcase the company brand or instruct the user to choose a task from the listed below title', 'en', [defLang]) }} |
+                    </h3>
+                </center>
+                <hr>
+                {{ render_field(form.title, class="form-control") }}
+                {{ render_field(form.hsize, class="form-control") }}
+                {{ render_field(form.hcolor, class="sp") }}
+                {{ render_field(form.hbg, class="spa") }}
+                  {{ render_field(form.hfont, class="form-control") }}
+                <p class="pt-5"></p>
+                {{ unique_btns(translate('Previous', 'en', [defLang]), translate('Apply', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
                 <p class="pb-3"></p>
             </div>
-	    </div>
-	    <div class="panel panel-default uniqueness">
-	        <div class="panel-heading text-center">
-  		        <h3 class="text-muted">
-                    {% if ar %}
-                    <strong class="ar1"><span class="fa fa-desktop"></span>  شاشة اللمس -
-                    <span class="fa fa-text-tasks"></span>
-                    المهمات
-                    </strong>
-                    {% else %}
-                    <strong><span class="fa fa-desktop"></span>  Touch Screen -
-                    <span class="fa fa-tasks"></span>  Tasks</strong>
-                    {% endif %}
+        </div>
+        <div class="panel panel-default uniqueness">
+            <div class="panel-heading text-center">
+                  <h3 class="text-muted">
+                    <strong><span class="fa fa-desktop"></span> {{ translate('Touch screen', 'en', [defLang]) }} - {{ translate('Tasks', 'en', [defLang]) }} </strong>
                 </h3>
-	        </div>
-	        <div class="panel-body">
-		        <center>
-		            <a data-toggle="modal" data-target="#mym">
-			            <img class="img-responsive mt-4 img-thumbnail" id="map" width="35%"
-                            {% if ar %}
-                            src="{{ url_for('static', filename='images/map_task_ar.jpg') }}"
-                            {% else %}
+            </div>
+            <div class="panel-body">
+                <center>
+                    <a data-toggle="modal" data-target="#mym">
+                        <img class="img-responsive mt-4 img-thumbnail" id="map" width="35%"
                             src="{{ url_for('static', filename='images/map_task.jpg') }}"
-                            {% endif %}
                         >
-		            </a>
-                    {% if ar %}
-                    <h3 class="text text-muted text-center ar2">
-                    | المهمات التي يتاح للمستخدم الإختيار منها ليتم إضافة تذكرة خاصة به |
-		            </h3>
-                    {% else %}
-		            <h3 class="text text-muted mt-2 ar2 text-center">
-			            | Tasks are the options that a the customer can select from and his unique ticket will be generated by |
-		            </h3>
-                    {% endif %}
-		        </center>
-	            <hr>
-	            {{ render_field(form.tsize, class="form-control") }}
-	            {{ render_field(form.tcolor, class="form-control") }}
+                    </a>
+                    <h3 class="text text-muted mt-2 ar2 text-center">
+                        | {{ translate('Tasks are the options that a the customer can select from and his unique ticket will be generated by', 'en', [defLang]) }} |
+                    </h3>
+                </center>
+                <hr>
+                {{ render_field(form.tsize, class="form-control") }}
+                {{ render_field(form.tcolor, class="form-control") }}
                 {{ render_field(form.tfont, class="form-control") }}
                 <p class="pt-5"></p>
-                {%if ar %}
-                    {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
-                {% else %}
-                    {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
-                {% endif %}
+                {{ unique_btns(translate('Previous', 'en', [defLang]), translate('Apply', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
                 <p class="pb-3"></p>
             </div>
-	    </div>
-	    <div class="panel panel-default uniqueness">
-	        <div class="panel-heading text-center">
-    	        <h3 class="text-muted">
-                    {% if ar %}
-                    <strong class="ar1"><span class="fa fa-desktop"></span>
-                    شاشة اللمس -
-                    <span class="fa fa-flag"></span>
-                    التنبيهات
-                    </strong>
-                    {% else %}
-                    <strong><span class="fa fa-desktop"></span>
-                    Touch Screen - <span class="fa fa-flag"></span>  Notification</strong>
-                    {% endif %}
+        </div>
+        <div class="panel panel-default uniqueness">
+            <div class="panel-heading text-center">
+                <h3 class="text-muted">
+                    <strong><span class="fa fa-desktop"></span> {{ translate('Touch screen', 'en', [defLang]) }} - {{ translate('Notification', 'en', [defLang]) }} </strong> 
                 </h3>
-	        </div>
-	        <div class="panel-body">
-		        <center>
-		            <a data-toggle="modal" data-target="#mym">
-			            <img class="img-resoinsive mt-4 img-thumbnail" id="map" width="40%"
-                            {% if ar %}
-                            src="{{ url_for('static', filename='images/map_message_ar.jpg') }}"
-                            {% else %}
+            </div>
+            <div class="panel-body">
+                <center>
+                    <a data-toggle="modal" data-target="#mym">
+                        <img class="img-resoinsive mt-4 img-thumbnail" id="map" width="40%"
                             src="{{ url_for('static', filename='images/map_message.jpg') }}"
-                            {% endif %}
                         >
-		            </a>
-                    {% if ar %}
-		            <h3 class="text text-muted text-center ar2">
-                        | حقل نصي لإعلام العميل أن المهمة المختارة تم تسجيلها و أن التذكرة تم تحريرها |
-                    </h3>
-                    {% else %}
-		                <h3 class="text ar2 mt-2 text-muted text-center">| Text box that will appear to inform the customer that his selection is made and ticket's been generated |</h3>
-                    {% endif %}
-		        </center>
-		        <hr>
-		        {{ render_field(form.message, class="form-control") }}
-		        {{ render_field(form.mduration, class="form-control") }}
-		        {{ render_field(form.msize, class="form-control") }}
-		        {{ render_field(form.mcolor, class="sp") }}
-		        {{ render_field(form.mbg, class="spa") }}
-  	            {{ render_field(form.mfont) }}
-		        <center>
-		            <a data-toggle="modal" data-target="#mym">
-			            <span class="img-responsive img-thumbnail mt-3 fa fa-5x fa-bell" id="map"></span>
-		            </a>
-                    {% if ar %}
-		            <h3 class="text text-muted text-center ar2">
-		                | إشعار صوتي تشغيله عندما يقوم العميل بإختيار المهمة المحددة |
-		            </h3>
-                    {% else %}
-		            <h3 class="text ar2 mt-2 text-muted text-center">| A sound tune that will be played whenever the customer select a task of his choice |</h3>
-                    {% endif %}
-		        </center>
-		        <center>{{ render_field(form.naudio, class="form-control") }}</center>
+                    </a>
+                    <h3 class="text ar2 mt-2 text-muted text-center">| {{ translate('Text box that will appear to inform the customer that his selection is made and ticket has been generated', 'en', [defLang]) }} |</h3>
+                </center>
+                <hr>
+                {{ render_field(form.message, class="form-control") }}
+                {{ render_field(form.mduration, class="form-control") }}
+                {{ render_field(form.msize, class="form-control") }}
+                {{ render_field(form.mcolor, class="sp") }}
+                {{ render_field(form.mbg, class="spa") }}
+                  {{ render_field(form.mfont) }}
+                <center>
+                    <a data-toggle="modal" data-target="#mym">
+                        <span class="img-responsive img-thumbnail mt-3 fa fa-5x fa-bell" id="map"></span>
+                    </a>
+                    <h3 class="text ar2 mt-2 text-muted text-center">| {{ translate('A sound tune that will be played whenever the customer select a task of his choice', 'en', [defLang]) }} |</h3>
+                </center>
+                <center>{{ render_field(form.naudio, class="form-control") }}</center>
                 <p class="pt-5"></p>
-                {% if ar %}
-                {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
-                {% else %}
-                {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
-                {% endif %}
+                {{ unique_btns(translate('Previous', 'en', [defLang]), translate('Apply', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
                 <p class="pt-3"></p>
-	        </div>
-	    </div>
-	    <div class="panel panel-default uniqueness">
-	        <div class="panel-heading text-center">
-  		        <h3 class="text-muted">
-                    {% if ar %}
-                    <strong class="ar1"><span class="fa fa-desktop"></span>
-                        شاشة اللمس - <span class="fa fa-picture-o"></span>
-                        الخلفية
-                    </strong>
-                    {% else %}
-                    <strong><span class="fa fa-desktop"></span>
-                        Touch Screen - <span class="fa fa-picture-o"></span>  Background</strong>
-                    {% endif %}
+            </div>
+        </div>
+        <div class="panel panel-default uniqueness">
+            <div class="panel-heading text-center">
+                  <h3 class="text-muted">
+                    <strong><span class="fa fa-desktop"></span> {{ translate('Touch screen', 'en', [defLang]) }} - {{ translate('Background', 'en', [defLang]) }} </strong> 
                 </h3>
-	        </div>
-	        <div class="panel-body">
-		        <center>
-		            <a data-toggle="modal" data-target="#mym">
-			            <img class="img-responsive mt-4 img-thumbnail" id="map" width="30%"
+            </div>
+            <div class="panel-body">
+                <center>
+                    <a data-toggle="modal" data-target="#mym">
+                        <img class="img-responsive mt-4 img-thumbnail" id="map" width="30%"
                             src="{{ url_for('static', filename='images/map_background.jpg') }}"
                         >
                     </a>
-		        </center>
-                {% if ar  %}
-		        <h3 class="text text-muted text-center ar2"> | الخلفية التي يتم عليها عرض كل الحقول النصية التابعة لشاشة اللمس | </h3>
-                {% else %}
-		        <h3 class="text text-muted text-center ar2 mt-2">| The background image on-which all elements of the Touch Screen will be displayed on . You can choose between a limited varity of default images or to select a specific color and lastly you can as well chose to upload your own special background image | </h3>
-                {% endif %}
-		        <hr>
-		        <center> 
+                </center>
+                <h3 class="text text-muted text-center ar2 mt-2">| {{ translate('The background image on-which all elements of the Touch Screen will be displayed on . You can choose between a limited variety of default images or to select a specific color and lastly you can as well chose to upload your own special background image', 'en', [defLang]) }} | </h3>
+                <hr>
+                <center> 
                     {{ render_field(form.background, class="form-control") }}
                     <p class="pt-2"></p>
-		            {{ form.bcolor(class_="sp") }}
-		        </center> 
-		        {% if form.errors %}
-		        <div class="well mt-2 mb-2">
-		            <h3 class="text-center text-warning">- Errors :</h3>
-		            <ol class="text-center ar2 h4 text-danger">
-			        {% for field_name, field_errors in form.errors|dictsort if field_errors %}
-			            {% for error in field_errors %}
-			                <li>{{ form[field_name].name }}: {{ error }}</li>
-			            {% endfor %}
-			        {% endfor %}
-		            </ol>
+                    {{ form.bcolor(class_="sp") }}
+                </center> 
+                {% if form.errors %}
+                <div class="well mt-2 mb-2">
+                    <h3 class="text-center text-warning">- {{ translate('Errors', 'en', [defLang]) }} :</h3>
+                    <ol class="text-center ar2 h4 text-danger">
+                    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                        {% for error in field_errors %}
+                            <li>{{ form[field_name].name }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    </ol>
                 </div>
                 {% endif %}
                 <p class="pt-5"></p>
-		        {% if ar %}
-                {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
-                {% else %}
-                {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
-                {% endif %}
+                {{ unique_btns(translate('Previous', 'en', [defLang]), translate('Apply', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
                 <p class="pb-3"></p>
-	        </div>
-	    </div>
+            </div>
+        </div>
     </form>
 </div>
 
-{{ qrModal([['mym', 'Template map', url_for('static', filename='images/map.jpg')]]) }}
+{{ qrModal([['mym', translate('Template map', 'en', [defLang]), url_for('static', filename='images/map.jpg')]], close=translate('Exit', 'en', [defLang])) }}
 {% endblock %}
+   

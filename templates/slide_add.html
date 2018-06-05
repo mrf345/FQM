@@ -36,15 +36,9 @@
 	    	<div class="panel-heading text-center">
 				<h3 class="text-muted">
       				<span class="fa fa-plus"></span>
-      				{% if ar %}
-      				<strong class="ar1">
-        				عرض الشرائح - إضافة شريحة
-      				</strong>
-      				{% else %}
       				<strong>
-        				Slide-show - Add slide
+						{{ translate('Slideshow', 'en', [defLang]) }} - {{ translate('Add a slide', 'en', [defLang]) }}
       				</strong>
-      				{% endif %}
     			</h3>
 	    	</div>
 	    	<div class="panel-body">
@@ -52,26 +46,16 @@
 				<a data-toggle="modal" data-target="#mym">
 		    		<center><img class="img-responsive img-thumbnail mt-5 mb-2" id="map" src="{{ url_for('static', filename='images/slideshow_title.jpg') }}"></center>
 				</a>
-    			{% if ar %}
-				<p class="h3 text-center text-danger ar2">
-      				| العنوان : الحقل النصي الرئيسي في الشريحة المضافة |
-				</p>
-    			{% else %}
     			<p class="h3 mb-2 text-center text-danger ar2">
-		    		| Title : Main text box that displays main heading of a slide |
+		    		| {{ translate('Title : Main text box that displays main heading of a slide', 'en', [defLang]) }} |
 				</p>
-    			{% endif %}
 				{{ render_field(form.title, class="form-control") }}<br>
 				{{ render_field(form.hsize, class="form-control") }}<br>
 				{{ render_field(form.hcolor, class="sp", value="rgb(255,255,0)") }}<br>
 				{{ render_field(form.hbg, class="spa", value="rgba(0,0,0,0.5)") }}<br>
 				{{ render_field(form.hfont, class="form-control") }}
 				<p class="pt-5"></p>
-				{% if ar %}
-					{{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
-				{% else %}
-					{{ unique_btns('Previous', 'Customize', 'Next', ar) }}
-				{% endif %}
+					{{ unique_btns(translate('Previous', 'en', [defLang]), translate('Add', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
 				<p class="pb-2"></p>
 	    	</div>
 		</div>
@@ -79,55 +63,35 @@
 	    	<div class="panel-heading text-center">
 				<h3 class="text-muted">
       				<span class="fa fa-plus"></span>
-      				{% if ar %}
-      				<strong class="ar1">  عرض الشرائح - إضافة شريحة  </strong>
-      				{% else %}
-      				<strong> Slide-show - Add slide </strong>
-      				{% endif %}
+      				<strong>{{ translate('Slideshow', 'en', [defLang]) }} - {{ translate('Add a slide', 'en', [defLang]) }}</strong>
     			</h3>
 	    	</div>
 	    	<div class="panel-body">
 				<a data-toggle="modal" data-target="#mym">
 		    		<center><img class="img-responsive img-thumbnail mt-5 mb-2" id="map"  src="{{ url_for('static', filename='images/slideshow_subtitle.jpg') }}"></center>
 				</a>
-    			{% if ar %}
-					<p class="h3 text-center text-danger ar2">
-    			    | العنوان الجانبي : حقل نصي لإضافة تعليمات نصية بأسفل العنوان الرئيسي |
-					</p>
-    			{% else %}
     			<p class="h3 text-center text-danger mb-2 ar2">
-    			    | Subtitle : Secondary text box will be displayed under main title |
+    			    | {{ translate('Subtitle : Secondary text box will be displayed under main title', 'en', [defLang]) }} |
     			</p>
-    			{% endif %}
 				{{ render_field(form.subti, class="form-control") }}<br>
 				{{ render_field(form.tsize, class="form-control") }}<br>
 				{{ render_field(form.tcolor, class="sp", value="rgb(0,0,255)") }}<br>
 				{{ render_field(form.tbg, class="spa", value="rgba(0,0,0,0.5)") }}<br>
   				{{ render_field(form.tfont, class="form-control") }}<br>
 				<hr>
-    			{% if ar %}
-    			<p class="h3 text-center text-danger ar2">
-    			    | لإختيار خلفية صورية أو ملونة ليعرض عليها الحقول النصية |
-				</p>
-    			{% else %}
 				<p class="h3 text-center mb-2 mt-2 ar2 text-danger">
-				    | To select a background on-which slide content be displayed  |
+				    | {{ translate('To select a background on-which slide content be displayed', 'en', [defLang]) }} |
 				</p>
-    			{% endif %}
 				{{ render_field(form.background, class="form-control") }}
 				<p class="pb-2"></p>
 				<center>{{ form.bgcolor(class_="sp") }}</center>
 				<p class="pb-5"></p>
-				{% if ar %}
-					{{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
-				{% else %}
-					{{ unique_btns('Previous', 'Customize', 'Next', ar) }}
-				{% endif %}
+				{{ unique_btns(translate('Previous', 'en', [defLang]), translate('Add', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
 				<p class="pb-2"></p>
 	    	</div>
 		</div>
     </form>
 </div>
 
-{{ qrModal([['mym', 'Slideshow template', url_for('static', filename='images/slideshow.jpg')]]) }}
+{{ qrModal([['mym', translate('Slideshow template', 'en', [defLang]), url_for('static', filename='images/slideshow.jpg')]], close=translate('Exit', 'en', [defLang])) }}
 {% endblock %}

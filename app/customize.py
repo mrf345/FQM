@@ -53,9 +53,7 @@ def ticket():
         flash(get_lang(0),
               'danger')
         return redirect(url_for('core.root'))
-    form = forms.Printer_f(lll)
-    if session.get('lang') == "AR":
-        form = forms.Printer_f_ar(lll)
+    form = forms.Printer_f(lll, session.get('lang'))
     tc = data.Touch_store.query.first()
     pr = data.Printer.query.first()
     if form.validate_on_submit():
@@ -115,9 +113,7 @@ def video():
         flash(get_lang(28),
               'danger')
         return redirect(url_for('cust_app.slide_c'))
-    form = forms.Video()
-    if session.get('lang') == "AR":
-        form = forms.Video_ar()
+    form = forms.Video(session.get('lang'))
     vdb = data.Vid.query.first()
     if form.validate_on_submit():
         if form.video.data == 00:
@@ -200,9 +196,7 @@ def slide_a():
         flash(get_lang(31),
               'danger')
         return redirect(url_for('cust_app.video'))
-    form = forms.Slide_a()
-    if session.get('lang') == 'AR':
-        form = forms.Slide_a_ar()
+    form = forms.Slide_a(session.get('lang'))
     if form.validate_on_submit():
         if form.background.data == 00:
             bb = form.bgcolor.data
@@ -250,9 +244,7 @@ def slide_c():
         flash(get_lang(31),
               'danger')
         return redirect(url_for('cust_app.video'))
-    form = forms.Slide_c()
-    if session.get('lang') == 'AR':
-        form = forms.Slide_c_ar()
+    form = forms.Slide_c(session.get('lang'))
     sc = data.Slides_c.query.first()
     if form.validate_on_submit():
         sc.rotation = form.rotation.data
@@ -350,9 +342,7 @@ def multimedia(aa):
         return redirect(url_for('cust_app.multimedia', aa=1))
     pagination = data.Media.query.paginate(page, per_page=10,
                                            error_out=False)
-    form = forms.Multimedia()
-    if session.get('lang') == "AR":
-        form = forms.Multimedia_ar()
+    form = forms.Multimedia(session.get('lang'))
     if mmm.count() >= 1:
         from sqlalchemy.sql import or_
         for me in mmm:
@@ -494,9 +484,7 @@ def displayscreen_c(stab):
               "danger")
         return redirect(url_for('core.root'))
     ex_functions.mse()
-    form = forms.Display_c()
-    if session.get('lang') == 'AR':
-        form = forms.Display_c_ar()
+    form = forms.Display_c(session.get('lang'))
     if stab not in range(1, 9):
         flash(get_lang(4), "danger")
         return redirect(url_for('core.root'))
@@ -549,10 +537,7 @@ def displayscreen_c(stab):
             touch_s.akey = form.naudio.data
         db.session.add(touch_s)
         db.session.commit()
-        flash(get_lang(41),
-              "info")
-        # Adding autoreload to display screen
-        session['autoref'] = 1
+        flash(get_lang(41), "info")
         return redirect(url_for("cust_app.displayscreen_c", stab=1))
     form.display.data = touch_s.tmp
     form.title.data = touch_s.title
@@ -603,9 +588,7 @@ def touchscreen_c(stab):
         flash(get_lang(0),
               "danger")
         return redirect(url_for('core.root'))
-    form = forms.Touch_c()
-    if session.get('lang') == 'AR':
-        form = forms.Touch_c_ar()
+    form = forms.Touch_c(defLang=session.get('lang'))
     ex_functions.mse()
     if stab not in range(0, 6):
         flash(get_lang(4), "danger")

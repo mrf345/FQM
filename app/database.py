@@ -6,6 +6,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_uploads import UploadSet, ALL
+from flask_googletrans import translator
 
 """ Work around for flask imports and registering blueprints
     currently needed for sql alchemy, login manager and flask-uploads"""
@@ -18,3 +19,4 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 login_manager.login_view = "login"
 files = UploadSet('files', ALL)
+gtranslator = translator(cache=True, skip_app=True)

@@ -44,9 +44,7 @@ def admin_u():
     if current_user.id != 1:
         flash(get_lang(1), 'danger')
         return redirect(url_for('core.root'))
-    form = forms.U_admin()
-    if session.get('lang') == "AR":
-        form = forms.U_admin_ar()
+    form = forms.U_admin(session.get('lang'))
     admin = data.User.query.filter_by(id=1).first()
     if form.validate_on_submit():
         admin.password = form.password.data
@@ -66,9 +64,7 @@ def csvd(t_name):
         flash(get_lang(0),
               'danger')
         return redirect(url_for('core.root'))
-    form = forms.CSV()
-    if session.get('lang') == "AR":
-        form = forms.CSV_ar()
+    form = forms.CSV(session.get('lang'))
     t_ids = ['User', 'Office', 'Task', 'Serial',
                      'Waiting', 'Roles']
     if t_name in t_ids:
@@ -166,9 +162,7 @@ def user_a():
         flash(get_lang(4),
               "danger")
         return redirect(url_for('core.root'))
-    form = forms.User_a()
-    if session.get('lang') == "AR":
-        form = forms.User_a_ar()
+    form = forms.User_a(session.get('lang'))
     if form.validate_on_submit():
         if data.User.query.filter_by(name=form.name.data).first() is not None:
             flash(get_lang(5),
@@ -197,13 +191,11 @@ def user_a():
 @administrate.route('/user_u/<int:u_id>', methods=['GET', 'POST'])
 @login_required
 def user_u(u_id):
-    if current_user.role_id != 1 and current_user.id != u_id:
+    if current_user.role_id != 1:
         flash(get_lang(0),
               "danger")
         return redirect(url_for('core.root'))
-    form = forms.User_a()
-    if session.get('lang') == "AR":
-        form = forms.User_a_ar()
+    form = forms.User_a(session.get('lang'))
     u = data.User.query.filter_by(id=u_id).first()
     if u is None:
         flash(get_lang(7),
@@ -219,10 +211,11 @@ def user_u(u_id):
         u.role_id = form.role.data
         # Remove operator if role has changed
         if form.role.data == 3:
-            db.session.add(data.Operators(
-                u.id,
-                form.offices.data
-            ))
+            if data.Operators.query.filter_by(id=u.id).first() is None:
+                db.session.add(data.Operators(
+                    u.id,
+                    form.offices.data
+                ))
         else:
             toRemove = data.Operators.query.filter_by(id=u.id).first()
             if toRemove is not None:

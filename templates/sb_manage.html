@@ -17,34 +17,22 @@
 			<li id="da1" {% if ar %} class="ar1" {% endif %}>
 			    <a href="{{ url_for('manage_app.search') }}">
 				<span class="fa fa-search"></span>
-        {% if ar %}
-        بحث
-        {% else %}
-        Search
-        {% endif %}
+				{{ translate('Search', 'en', [defLang]) }}
 			    </a>
 			</li>
 			<li id="da2" {% if ar %} class="ar1" {% endif %}>
 			    <a href="{{ url_for('manage_app.all_offices') }}">
 				<span class="fa fa-ticket"></span>
-        {% if ar %}
-        كل التذاكر
-        {% else %}
-		All Tickets
-		<span class="badge pull-right">
-			{{ serial.filter_by(p=False).count() }}
-		</span>
-        {% endif %}
+				{{ translate('All tickets', 'en', [defLang]) }}
+					<span class="badge pull-right">
+						{{ serial.filter_by(p=False).count() }}
+					</span>
 			    </a>
 			</li>
 			<li id="da3" {% if ar %} class="ar1" {% endif %}>
 			    <a href="{{ url_for('manage_app.office_a') }}">
 				<span class="fa fa-plus"></span>
-        {% if ar %}
-        إضافة مكتب
-        {% else %}
-        Add new office
-        {% endif %}
+				{{ translate('Add new office', 'en', [defLang]) }}
 			    </a>
 			</li>
 			{% endif %}
@@ -54,7 +42,7 @@
 			<li class="panel panel-default da{{ office.id+3 }} {% if ar %} ar1 {% endif %}" id="dropdown">
 			    <a data-toggle="collapse" href="#dropdown-lvl{{ office.id }}">
 				<span class="fa fa-desktop"></span>
-				{{ office.id }}.{% if ar %}مكتب{% else %}office{% endif %}  {{ office.prefix }}{{ office.name }}
+				{{ office.id }}.{{ translate('Office', 'en', [defLang]) }}  {{ office.prefix }}{{ office.name }}
 				<span class="caret"></span>
 				{% if serial.filter_by(p=False, office_id=office.id).count() > 1 %}
 				<span class="badge pull-right">
@@ -69,36 +57,24 @@
 					<li  id="t1{{ office.id }}" {% if ar %} class="ar1" {% endif %}>
 					    <a href="{{ url_for('manage_app.offices', o_id=office.id) }}">
 						<span class="fa fa-ticket"></span>
-            {% if ar %}
-            كل تذاكر المكتب
-            {% else %}
-						All office tickets
-            {% endif %}
+						{{ translate('All tickets', 'en', [defLang]) }}
 					    </a>
 					</li>
 					<li  id="to{{ office.id }}" {% if ar %} class="ar1" {% endif %}>
-								<a href="{{ url_for('administrate.operators', t_id=office.id) }}">
-								<span class="fa fa-user"></span>
-					{% if ar %}
-					المستخدميين
-					{% else %}
-					Operators
-					<span class="badge pull-right">
-						{{ operators.filter_by(office_id=office.id).count() }}
-					</span>
-					{% endif %}
-								</a>
-							</li>
+						<a href="{{ url_for('administrate.operators', t_id=office.id) }}">
+						<span class="fa fa-user"></span>
+						{{ translate('Operators', 'en', [defLang]) }}
+						<span class="badge pull-right">
+							{{ operators.filter_by(office_id=office.id).count() }}
+						</span>
+						</a>
+					</li>
 			<!-- Fix: pulling tickets by task_id instead of office_id -->
 			<!-- Will include pull ticket under task instead of all tickets, fast and simple -->
 					<li  id="t3{{ office.id }}" {% if ar %} class="ar1" {% endif %}>
 					    <a href="{{ url_for('manage_app.task_a', o_id=office.id) }}">
 						<span class="fa fa-plus"></span>
-            {% if ar %}
-            إضافة مهمة
-            {% else %}
-						Add new task
-            {% endif %}
+						{{ translate('Add new task', 'en', [defLang]) }}
 					    </a>
 					</li>
 					{% for task in tasks %}
@@ -112,11 +88,7 @@
 					<li  id="tf{{ office.id }}" {% if ar %} class="ar1" {% endif %}>
 						<a href="{{ url_for('core.pull', o_id=task.id) }}">
 								<span class="fa fa-minus"></span>
-								{% if ar %}
-									سحب تذكرة
-								{% else %}
-									Pull a ticket
-								{% endif %}
+								{{ translate('Pull a ticket', 'en', [defLang]) }}
 								{% if serial.filter_by(p=False, task_id=task.id).count() > 1 %}
 								<span class="badge pull-right">
 									{{ serial.filter_by(p=False, task_id=task.id).count() }}

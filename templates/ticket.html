@@ -20,18 +20,18 @@ var toRemove = function (theList=[], toAdd=false) {
 }
 $(document).ready(function () {
   if ($('#langu option:selected').val() !== 'en' && $('#kind option:selected').val() === '2') toRemove(['#warn'])
-  $('#kind option:selected').val() === '2' ? toRemove(['#warn2', '#warn3', '.tohide']) : toRemove(['.nhide'])
+  $('#kind option:selected').val() === '2' ? toRemove(['#warn2', '#warn3', '.tohide', '.printed']) : toRemove(['.nhide', '.registered'])
   $('#langu').change(function () {
     $('#langu option:selected').val() !== 'en' ? toRemove(['#warn']) : toRemove(['#warn'], true)
   })
   $('#kind').change(function () {
     if ($('#kind option:selected').val() === '2') {
-      toRemove(['#warn2', '#warn3', '.tohide'])
-      toRemove(['.nhide'], true)
+      toRemove(['#warn2', '#warn3', '.tohide', '.printed'])
+      toRemove(['.nhide', '.registered'], true)
       if ($('#langu option:selected').val() !== 'en') toRemove(['#warn'])
     } else {
-      toRemove(['#warn2', '#warn3', '.tohide'], true)
-      toRemove(['.nhide'])
+      toRemove(['#warn2', '#warn3', '.tohide', '.printed'], true)
+      toRemove(['.nhide', '.registered'])
     }
   })
 })
@@ -47,11 +47,7 @@ $(document).ready(function () {
 	      <div class="panel-heading text-center">
 		      <h3 class="text-muted">
             <span class="fa fa-print"></span>
-            {% if ar %}
-            <strong class="ar1">التذاكر</strong>
-            {% else %}
-            <strong> Tickets </strong>
-            {% endif %}
+            <strong> {{ translate('Tickets', 'en', [defLang]) }} </strong>
           </h3>
 	      </div>
 	      <div class="panel-body">
@@ -60,64 +56,35 @@ $(document).ready(function () {
             <a data-toggle="modal" data-target="#mym">
               <img class="img-responsive img-thumbnail mt-4 mb-2 pic" id="map" width="40%" src="{{ url_for('static', filename='images/manage_task.jpg') }}">
             </a>
-            {% if ar %}
-            <p class="h4 text-danger ar2">
-              | مسجلة : نوع التذكرة هذه تسمح للعميل بتسجيل إسمه بعد إختياره
-              لي مهمة معينة و سيستخدم الإسم للإشارة إلى العميل كبديل لرقم التذكرة |
+		        <p class="h3 ar2 mt-1 mb-4 text-muted hide registered">
+		          | {{ translate("Registered : allows the customer to register his name and that will be used to refer by, instead of a typical printed ticket", 'en', [defLang]) }} |
 		        </p>
-            <p class="h4 text-danger ar2">
-              | مطبوعة : نوع التذكرة المتعارف عليها و التي تتطلب توفر طابعة معرفة |
+            <p class="h3 ar2 mb-4 mt-1 text-muted hide printed">
+              | {{ translate('Printed : the typical printed unique customer ticket number', 'en', [defLang]) }} |
             </p>
-            {% else %}
-		        <p class="h3 ar2 text-muted">
-		          | Registered : allows the customer
-              to register his name and that will be used to refer by,
-              instead of a typical printed ticket |
-		        </p>
-            <p class="h3 ar2 mb-3 mt-1 text-muted">
-              | Printed : the typical printed unique customer ticket number  |
-            </p>
-            {% endif %}
           </center>
 		      {{ render_field(form.kind, class="form-control touch") }}
-          {% if ar %}
-          <h4 id="warn2" class="text-center text-danger hide ar2">
-            | تنبيه : لإستخدام التذاكر المطبوعة يتطلب منك توفير و تعريف طابعة |
-          </h4>
-          <h4 id="warn3" class="text-center text-danger hide ar2">
-            | تنبيه : طابعات اليو إس بي , الطابعات الوحيدة التي يمكن لنظام التعرف عليها |
-          </h4>
-          {% else %}
           <h4 id="warn2" class="text-center ar2 mt-3  text-danger hide">
-            | Reminder: to use printed tickets you must assign available printer |
+            | {{ translate('Reminder: to use printed tickets you must assign available printer', 'en', [defLang]) }} |
           </h4>
           <h4 id="warn3" class="text-center ar2 mt-1 text-danger hide">
-            | Reminder: Only supported printers currently are usb printers |
+            | {{ translate('Reminder: Only supported printers currently are usb printers', 'en', [defLang]) }} |
           </h4>
-          {% endif %}
           <div class="nhide hide">
             {{ render_field(form.value, class="form-control") }}
           </div>
           <div class="tohide hide">
             {{ render_field(form.langu, class="form-control") }}
           </div>
-          {% if ar %}
-          <h4 id="warn" class="text-center text-danger ar2 hide">
-            | تنبيه : الطباعة باللغة العربية لازلت قيد التجريب و إستخدامها
-            قد يحدث أخطاء غير متوقعة |
-          </h4>
-          {% else %}
           <h4 id="warn" class="text-center ar2 mb-3 mt-3 text-danger hide">
-            | Reminder : printing with languages other than English , is still under testing and might
-            cause unintended errors |
+            | {{ translate('Reminder : printing with languages other than English , is still under testing and might cause unintended errors', 'en', [defLang]) }} |
           </h4>
-          {% endif %}
           <div class="tohide hide">
   		      {{ render_field(form.printers, class="form-control") }}
           </div>
 		    <center>
           <p class="pt-5"></p>
-          {{ form.submit(class_="btn btn-md btn-danger") }}
+          <button class="btn btn-md btn-danger" type="submit">{{ translate('Apply', 'en', [defLang]) }}</button>
           <p class="pb-2"></p>
 		    </center>
 	    </div>
@@ -125,5 +92,5 @@ $(document).ready(function () {
   </form>
 </div>
 
-{{ qrModal([['mym', 'Tickets template', url_for('static', filename='images/manage_map.jpg')]]) }}
+{{ qrModal([['mym', translate('Tickets template', 'en', [defLang]), url_for('static', filename='images/manage_map.jpg')]], close=translate('Exit', 'en', [defLang])) }}
 {% endblock %}

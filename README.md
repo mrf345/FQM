@@ -5,6 +5,7 @@
 <h3 align='center'> Free Queue Manager (beta). A web based queue management system built with Python Flask as back-end, and Bootstrap, jQuery as front-end. </h3>
 <hr />
 
+
 ## Features:
 > - Support for POS USB printers on major operating systems. <br />
 > - Customize-able interfaces. <br />

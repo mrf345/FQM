@@ -8,62 +8,31 @@
 {% block page_content %}
 {% from "_helpers.html" import render_field %}
 <div class="col-md-12">
-    <form method="POST" enctype="multipart/form-data" id="fm">
-	<div class="panel panel-default">
-	    <div class="panel-heading text-center">
-		<h3 class="text-muted">
-		    <strong>
-      {% if ar %}
-			<span class="fa fa-pencil"></span>
-      تحديث الحساب الرئيسي
-      {% else %}
-			<span class="fa fa-pencil"></span>  Update admin password
-      {% endif %}
-		    </strong>
-		</h3>
-	    </div>
-	  <div class="panel-body">
-      {{ brp * 4 }}
-		  {{ form.csrf_token }}
-      {% if ar %}
-      <p class="h3 text-center text-danger" id="ar2">
-        | ينصح بتغير كلمة السر الإفتراضية للحساب الرئيسي |
-      </p>
-      {% else %}
-      <p class="h3 text-center text-danger">
-        | It is highly recommanded to change the default password for
-        security reasons |
-      </p>
-      {% endif %}
-      {{ brp * 3 }}
-      {% if ar %}
-      <p class="h4 text-center text-muted" id="ar2">
-		    | كلمة السر القيمة الوحيدة القابلة للتعديل في الحساب الرئيسي |
-		  </p>
-      {% else %}
-      <p class="h4 text-center text-muted">
-		    |  the only update-able attribute to the main admin accound is
-        password  |
-		  </p>
-      {% endif %}
-      {{ brp * 3 }}
-      {% if ar %}
-		  {{ render_field(form.password, class="form-control ar1") }}
-      {% else %}
-		  {{ render_field(form.password, class="form-control") }}
-      {% endif %}
-      {{ brp * 3 }}
-		  <center>
-      {% if ar %}
-		    {{ form.submit(class_="btn btn-md btn-danger ar1") }}
-      {% else %}
-		    {{ form.submit(class_="btn btn-md btn-danger") }}
-      {% endif %}
-		  </center>
-      {{ brp*4 }}
-	   </div>
-	</div>
-    </form>
-    <br>
+  <form method="POST" enctype="multipart/form-data" id="fm">
+	  <div class="panel panel-default">
+	      <div class="panel-heading text-center">
+	  	<h3 class="text-muted">
+	  	    <strong>
+	  		    <span class="fa fa-pencil"></span> {{ translate('Update admin password', 'en', [defLang]) }}
+	  	    </strong>
+	  	</h3>
+	      </div>
+	    <div class="panel-body">
+	  	  {{ form.csrf_token }}
+        <p class="h3 ar2 text-center mt-4 mb-3 text-danger">
+          | {{ translate('It is highly recommended to change the default password for security reasons', 'en', [defLang]) }} |
+        </p>
+        <p class="h4 text-center mt-1 mb-3 text-muted">
+	  	    |  {{ translate('the only update-able attribute to the main admin account is password', 'en', [defLang]) }}  |
+	  	  </p>
+	  	  {{ render_field(form.password, class="form-control") }}
+        <p class="pt-5"></p>
+	  	  <center>
+          <button class="btn btn-md btn-danger" type="submit">{{ translate('Update', 'en', [defLang]) }}</button>
+	  	  </center>
+        <p class="pb-3"></p>
+	     </div>
+	  </div>
+  </form>
 </div>
 {% endblock %}

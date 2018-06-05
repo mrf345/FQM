@@ -23,36 +23,20 @@
     <div class="panel panel-primary">
         <div class="panel-heading">
 	    	<h3 class="text text-center">
-        		{% if ar %}
-        		<strong class="ar1">قائمة المستخدمين</strong>
-        		{% else %}
-        		<strong>Operators list</strong>
-        		{% endif %}
+        		<strong>{{ translate('Operators list', 'en', [defLang]) }}</strong>
       		</h3>
 		</div>
         <div class="panel-body">
 	    	<div class="row text-center ar2 h3 text-muted hidden-xs">
-        		{% if ar %}
-        		<div class="col-sm-4 ar2">
-    		    	(الإسم)
-    			</div>
-    			<div class="col-sm-5 ar2">
-    		    	(آخر دخول)
-    			</div>
-    			<div class="col-sm-3 ar2">
-    		    	(تذاكر مسحوبة)
-    			</div>
-        		{% else %}
 				<div class="col-sm-4">
-				    (ID.Name)
+				    ({{ translate('ID . Name', 'en', [defLang]) }})
 				</div>
 				<div class="col-sm-5">
-				    (Last Seen)
+				    ({{ translate('Last seen', 'en', [defLang]) }})
 				</div>
 				<div class="col-sm-3">
-				    (Tickets pulled)
+				    ({{ translate('Tickets pulled', 'en', [defLang]) }})
 				</div>
-    			{% endif %}
 	    	</div>
 			{% if len(usersp) > 0 %}
 	    	{% for u in usersp %}
@@ -73,19 +57,16 @@
 	    	</div>
 	    	{% endfor %}
 			{% endif %}
-			{{ spacer(["No operators assigned yet ...", len(usersp)]) }}
+			{{ spacer([translate("No operators assigned yet", 'en', [defLang]), len(usersp)]) }}
 		</div>
         <div class="panel-footer text-center">
 	    	<div class="row text-center mb-2 ar2">
-        		{% if ar %}
-        		{% else %}
 				<div class="col-xs-12 col-sm-12 h4">
-			    	Operators total :
+					{{ translate('Operators total', 'en', [defLang]) }} :<br /><br />
 			    	<span class="label label-info">
 						<i> {{ len(usersp) }} </i>
 			    	</span>
 				</div>
-  	  			{% endif %}
 	    	</div>
 	    	<div class="row text-center">
 				{{ macros.pagination_widget(pagination, '.users') }}

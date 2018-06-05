@@ -24,26 +24,22 @@
 
 {% block page_content %}
 {%- from "auto_reload.html" import auto_reloader with context %}
-{% from "_footers.html" import panelFooter %}
+{% from "_footers.html" import panelFooter, spacer %}
 <div class="col-md-12">
     <div class="panel panel-primary">
     	<div class="panel-heading">
 	    	<div class="row">
-				{{ auto_reloader(True) }}
+				{{ auto_reloader(True, duration=translate('Duration', 'en', [defLang]), refresh=translate('Auto reload', 'en', [defLang]), durMsg=translate('Enter a duration in seconds to auto-reload the page in :', 'en', [defLang])) }}
     			<div class="col-xs-12 hidden-md hidden-lg text-center mb-1">
         			<a href="#" data-toggle="modal" data-target="#branch_qr"
         				data-toggle="tooltip"
-        				title="{% if ar %} QR Code : كل تذاكر المكاتب{% else %} QR Code : all offices {% endif %}"
+        				title="QR - {{ translate('All tickets', 'en', [defLang]) }}"
 					>
 						<i class="fa fa-3x fa-fw fa-qrcode fa-spin qrw" style="color: white;"></i>
 					</a>
     			</div>
 				<div class="col-xs-12">
-      				{% if ar %}
-		    		<h2 class="text text-center ar1"><strong> كل تذاكر المكاتب </strong></h2>
-      				{% else %}
-		    		<h2 class="text text-center"><strong> All offices Tickets </strong></h2>
-      				{% endif %}
+		    		<h2 class="text text-center"><strong> {{ translate('All tickets', 'en', [defLang]) }} </strong></h2>
 				</div>
 	    	</div>
 	    	<div class="row">
@@ -51,19 +47,11 @@
 		    		<div class="btn-group-justified">
 						<a class="btn btn-warning" data-toggle="modal" data-target="#rall">
 			    			<span class="fa fa-reply-all"></span>
-          					{% if ar %}
-			    			<strong class="ar1">إعادة تهيئ</strong>
-          					{% else %}
-			    			<strong>Reset all</strong>
-          					{% endif %}
+			    			<strong>{{ translate('Reset all', 'en', [defLang]) }}</strong>
 						</a>
 						<a class="btn btn-danger" data-toggle="modal" data-target="#dall">
 			    			<span class="fa fa-trash"></span>
-          					{% if ar %}
-			    			<strong class="ar1">حذف الجميع</strong>
-          					{% else %}
-			    			<strong>Delete all</strong>
-          					{% endif %}
+			    			<strong>{{ translate('Delete all', 'en', [defLang]) }}</strong>
 						</a>
 		    		</div>
 				</div>
@@ -71,39 +59,21 @@
         </div>
         <div class="panel-body">
 	    	<div class="row text-center ar2 h3 text-muted hidden-xs">
-	        	{% if ar %}
-    		    <div class="col-xs-2 ar2">
-    			    (التذكرة)
-    			</div>
-    			<div class="col-xs-2 ar2">
-    		    	(الإصدار)
-    			</div>
-    			<div class="col-xs-3 ar2">
-    		    	(السحب)
-    			</div>
-    			<div class="col-xs-3 ar2">
-    		    	(القيمة)
-    			</div>
-    			<div class="col-xs-2 ar2">
-    		    	(نوع التذكرة)
-    			</div>
-        		{% else %}
 				<div class="col-xs-2">
-		    		(Ticket)
+		    		({{ translate('Ticket', 'en', [defLang]) }})
 				</div>
 				<div class="col-xs-2">
-		    		(Issued)
+		    		({{ translate('Issued', 'en', [defLang]) }})
 				</div>
 				<div class="col-xs-3">
-		    		(Pulled)
+		    		({{ translate('pulled', 'en', [defLang]) }})
 				</div>
 				<div class="col-xs-3">
-		    		(Value)
+		    		({{ translate('Value', 'en', [defLang]) }})
 				</div>
 				<div class="col-xs-2">
-		    		(Ticket Type)
+		    		({{ translate('Ticket type', 'en', [defLang]) }})
 				</div>
-    			{% endif %}
 	    	</div>
 	    	{% for o in officesp %}
 	      	{% if o.number != 100 %}
@@ -116,38 +86,24 @@
 		  		</div>
 		  		<div class="col-xs-12 col-sm-3">
 		    		{% if o.p %} <u>{{ users.filter_by(id=o.pulledBy).first().name }} / {{ moment(o.pdt).fromNow() }}</u>
-		    		{% else %} {% if ar %} <u class="ar1"> في الإنتظار</u> {% else %}<u>Waiting ..</u> {% endif %}{% endif %}
+		    		{% else %} <u>{{ translate('Waiting', 'en', [defLang]) }}</u> {% endif %}
 		  		</div>
 		  		<div class="col-xs-12 col-sm-3">
-		    		{% if o.n %}<u> {{ o.name }} </u> {% else %}
-		      		{% if ar %} <u class="ar1"> لا إسم</u> {% else %} <u> None </u> {% endif %}{% endif %}
+		    		{% if o.n %}<u> {{ o.name }} </u> {% else %} <u> {{ translate('None', 'en', [defLang]) }} </u> {% endif %}
 		  		</div>
 		  		<div class="col-xs-12 col-sm-2">
-		    		{% if ar %}
-		      		<u class="ar1"> {% if o.n %} مسجلة {% else %} مطبوعة {% endif %} </u>
-		    		{% else %}
-		      		<u> {% if o.n %} Registered {% else %} Printed {% endif %} </u>
-		    		{% endif %}
+		      		<u> {% if o.n %} {{ translate('Registered', 'en', [defLang]) }} {% else %} {{ translate('Printed', 'en', [defLang]) }} {% endif %} </u>
 		  		</div>
 			</div>
 	      	{% endif %}
-	    	{% endfor %}
-	    	{% if len(officesp) <= tasks.count() or tasks.count() == 0 %}
-			<div class="well">
-				{% if ar %}
-				{% else %}
-				<h3 class="text-danger text-center pt-10 pb-10">No tickets been issued yet to display</h3>
-				{% endif %}
-			</div>
-	    	{% elif len(officesp) <= 4 %}
-			<p class='pb-10'></p>
-	    	{% endif %}
+			{% endfor %}
+			{{ spacer([translate('No tickets been issued yet to display', 'en', [defLang]), len(officesp) - serial.filter_by(number=100).count()]) }}
     	</div>
 		<div class="panel-footer text-center">
 			{{ panelFooter([
-			[['Offices total', offices.count()], ['Tickets total', serial.count()]],
-			[['Processed', serial.filter_by(p=True).count()], ['Waiting', serial.filter_by(p=False).count()]]
-			]) }}
+			[[translate('Offices total', 'en', [defLang]), offices.count()], [translate('Tickets total', 'en', [defLang]), serial.count()]],
+			[[translate('Processed', 'en', [defLang]), serial.filter_by(p=True).count()], [translate('Waiting', 'en', [defLang]), serial.filter_by(p=False).count()]]
+			], toWarn=translate('Waiting', 'en', [defLang])) }}
 	    	<div class="row text-center">
 				<div class="pagination">
 		    		{{ macros.pagination_widget(pagination, '.all_offices') }}
@@ -157,16 +113,15 @@
 	</div>
 </div>
 
-{% from '_modals.html' import confirmModal %}
+{% from '_modals.html' import confirmModal, qrModal %}
 {{ confirmModal(
-	[['rall', 'Warning : Reset All', 
-	"You are attempting to reset every office and task to zero, with all tickets erased, that won't be retrievable , Are you sure of that ?",
+	[['rall', translate('Warning : Resetting all', 'en', [defLang]),
+	translate("You are attempting to reset every office and task to zero, with all tickets erased, that won't be retrievable , Are you sure of that ?", 'en', [defLang]),
 	url_for('core.serial_ra')
 	],
-	['dall', 'Warning: Delete All',
-	"You are attempting to delete every office and task under it with all tickets, which won't be retrievable , Are you sure of that ?",
+	['dall', translate('Warning : Deleting all', 'en', [defLang]),
+	translate("You are attempting to delete every office and task under it with all tickets, which won't be retrievable , Are you sure of that ?", 'en', [defLang]),
 	url_for('manage_app.office_da')]]
-)}}
-{% from '_modals.html' import qrModal %}
-{{ qrModal([['branch_qr', 'QR code - All offices', qrcode(url_for('manage_app.all_offices', _external=True))]]) }}
+, yes=translate('Yes', 'en', [defLang]), no=translate('No', 'en', [defLang]))}}
+{{ qrModal([['branch_qr', translate('QR code : All tickets', 'en', [defLang]), qrcode(url_for('manage_app.all_offices', _external=True))]], close=translate('Exit', 'en', [defLang])) }}
 {% endblock %}

@@ -80,29 +80,17 @@ reloadIf('/touch/0')
   	    <form method="POST" enctype="multipart/form-data" id="fm">
   	      {{ form.csrf_token }}
           {% if tnumber %}
-            {% if ar %}
-              <p class="h2 ar1 text-center text-danger ar2">
-  		          | الرجاء إدخال الرقم ليتم تسجيله مع التذكرة الإفتارضية |
-              </p>
-            {% else %}
               <p class="h2 ar1 text-center mt-2 text-danger">
-               | Please, enter the number to be registered along with your ticket |
+               | {{ translate('Please, enter the number to be registered along with your ticket', 'en', [defLang]) }} |
               </p>
-            {% endif %}
           {% else %}
-            {% if ar %}
-              <p class="h2 ar1 text-center text-danger ar2">
-  		          | الرجاء إدخال الإسم ليتم تسجيله مع التذكرة الإفتارضية |
-              </p>
-            {% else %}
   	          <p class="h2 ar1 text-center mt-2 text-danger">
-  		         | Please, enter the name to be registered along with your ticket |
+  		         | {{ translate('Please, enter the name to be registered along with your ticket', 'en', [defLang]) }} |
   	          </p>
-            {% endif %}
           {% endif %}
   	    {{ render_field(form.name, class="form-control mt-1 mb-2") }}
   	    <center>
-          {{ form.submit(class_="btn btn-lg btn-danger ar1") }}
+          <button class="btn btn-lg btn-danger ar1" type="submit">{{ translate('Register', 'en', [defLang]) }}</button>
         </center>
   	  </form>
     </div>
@@ -125,7 +113,7 @@ reloadIf('/touch/0')
       </div>
   </div>
   {% if tasks == 0 %}
-  {{ touchFooter() }}
+  {{ touchFooter(translate('no tasks created yet', 'en', [defLang])) }}
   {% else %}
   {% for t in tasks %}
   <div class="row">
@@ -160,7 +148,7 @@ reloadIf('/touch/0')
       </div>
     </div>
     {% if tasks == 0 %}
-    {{ touchFooter() }}
+    {{ touchFooter(translate('no tasks created yet', 'en', [defLang])) }}
     {% else %}
     <div class="row">
       {% for t in tasks %}
@@ -210,7 +198,7 @@ reloadIf('/touch/0')
       </div>
   </div>
   {% else %}
-  {{ touchFooter() }}
+  {{ touchFooter(translate('no tasks created yet', 'en', [defLang])) }}
   {% endif %}
 {% endif %} <!-- end of displaying different templates conditions -->
 

@@ -132,9 +132,7 @@ def office_a():
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
-    form = forms.Offices_a()
-    if session.get('lang') == 'AR':
-        form = forms.Offices_a_ar()
+    form = forms.Offices_a(defLang=session.get('lang'))
     if form.validate_on_submit():
         if data.Office.query.filter_by(name=form.name.
                                        data).first() is not None:
@@ -222,9 +220,7 @@ def search():
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
-    form = forms.Search_s()
-    if session.get('lang') == 'AR':
-        form = forms.Search_s_ar()
+    form = forms.Search_s(session.get('lang'))
     if form.validate_on_submit() or request.args.get("page"):
         from sqlalchemy.sql import and_
         terms = []
@@ -389,9 +385,7 @@ def task_d(t_id):
 @manage_app.route('/task_a/<int:o_id>', methods=['GET', 'POST'])
 @login_required
 def task_a(o_id):
-    form = forms.Task_a()
-    if session.get('lang') == 'AR':
-        form = forms.Task_a_ar()
+    form = forms.Task_a(session.get('lang'))
     if data.Office.query.filter_by(id=o_id).first() is None:
         flash(get_lang(4),
               "danger")

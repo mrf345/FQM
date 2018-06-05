@@ -31,15 +31,9 @@ $(document).ready(function() {
 	    <div class="panel-heading text-center">
 		    <h3 class="text-muted">
           <span class="fa fa-film"></span>
-            {% if ar %}
-            <strong class="ar1">
-              عرض الشرائح - الإعدادات
-            </strong>
-            {% else %}
             <strong>
-              Slide-show -   Settings
+              {{ translate('Slideshow', 'en', [defLang]) }} - {{ translate('Settings', 'en', [defLang]) }}
             </strong>
-            {% endif %}
         </h3>
 	    </div>
 	    <div class="panel-body">
@@ -54,15 +48,9 @@ $(document).ready(function() {
         </center>
 		    {{ render_field(form.status, class="form-control") }}
         <p class="pt-2"></p>
-        {% if ar %}
-        <p id="warn" class="h4 warn hide text-center text-danger ar2">
-          | تنبيه : لتفعيل عرض الفيديو يتطلب عليك تعطيل عرض الشرائح |
-		    </p>
-        {% else %}
 		    <p id="warn" class="h3 ar2 mb-2 warn hide text-center text-danger">
-          | Notice: To enable video you must first disable slide-show |
+          | {{ translate('Notice: To enable video you must first disable slideshow', 'en', [defLang]) }} |
 		    </p>
-        {% endif %}
 		    <a data-toggle="modal" data-target="#mym">
 		      <center><img class="img-responsive img-thumbnail mb-2 mt-2" id="map" width="15%" src="{{ url_for('static', filename='images/slideshow_nav.jpg') }}"></center>
 		    </a>
@@ -71,11 +59,7 @@ $(document).ready(function() {
         {{ render_field(form.rotation, class="form-control") }}
         <p class="pt-5"></p>
 		    <center>
-          {% if ar %}
-		        {{ form.submit(class_="btn btn-md btn-danger ar1") }}
-          {% else %}
-		        {{ form.submit(class_="btn btn-md btn-danger") }}
-          {% endif %}
+		        <button class="btn btn-md btn-danger" type="submit">{{ translate('Apply', 'en', [defLang]) }}</button>
         </center>
         <p class="pb-2"></p>
 	    </div>
@@ -83,5 +67,5 @@ $(document).ready(function() {
   </form>
 </div>
 
-{{ qrModal([['mym', 'Slideshow template', url_for('static', filename='images/slideshow.jpg')]]) }}
+{{ qrModal([['mym', translate('Slideshow template', 'en', [defLang]), url_for('static', filename='images/slideshow.jpg')]], close=translate('Exit', 'en', [defLang])) }}
 {% endblock %}

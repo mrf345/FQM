@@ -20,30 +20,18 @@
     <div class="panel panel-primary">
         <div class="panel-heading">
 	    	<h3 class="text text-center">
-    			{% if ar %}
-					<strong class="ar1">قائمة الشرائح</strong>
-    			{% else %}
-					<strong>Slides list</strong>
-    			{% endif %}
+    			<strong>{{ translate('Slideshow', 'en', [defLang]) }} - {{ translate('Slides list', 'en', [defLang]) }}</strong>
 	    	</h3>
 	    	<div class="row">
 				<div class="col-xs-12 text-center">
 		    		<div class="btn-group-justified">
 						<a data-toggle="modal" data-target="#fss" class="btn btn-primary">
 			    			<span class="fa fa-eye hidden-xs"></span>
-          					{% if ar %}
-								    <strong class="ar1">إستعراض الجميع</strong>
-          					{% else %}
-								    <strong>Preview all</strong>
-          					{% endif %}
+          					<strong>{{ translate('Preview all', 'en', [defLang]) }}</strong>
 						</a>
 						<a data-toggle="modal" data-target="#dall" class="btn btn-danger">
 			    			<span class="fa fa-trash hidden-xs"></span>
-          					{% if ar %}
-								    <strong class="ar1">حذف الجميع</strong>
-          					{% else %}
-								    <strong>Delete all</strong>
-          					{% endif %}
+          					<strong>{{ translate('Delete all', 'en', [defLang]) }}</strong>
 						</a>
 		    		</div>
 				</div>
@@ -51,27 +39,15 @@
         </div>
         <div class="panel-body">
 	    	<div class="row text-center h3 ar2 text-muted hidden-xs">
-    			{% if ar %}
-    			<div class="col-sm-6 ar2">
-				    (العنوان)
-				</div>
-				<div class="col-sm-4 ar2">
-				    (الخلفية)
-				</div>
-				<div class="col-sm-2 ar2">
-				    (خيارات)
-				</div>
-    			{% else %}
 				<div class="col-sm-6">
-				    (ID.Title)
+				    ({{ translate('ID . Title', 'en', [defLang]) }})
 				</div>
 				<div class="col-sm-4">
-				    (Background)
+				    ({{ translate('Background', 'en', [defLang]) }})
 				</div>
 				<div class="col-sm-2">
-				    (Actions)
+				    ({{ translate('Actions', 'en', [defLang]) }})
 				</div>
-    			{% endif %}
 	    	</div>
 	    	{% if len(slides) > 0 %}
 	    	{% for mfile in slides %}
@@ -79,42 +55,34 @@
 				<div class="col-xs-12 col-sm-6 ar1">
 			    	{{ mfile.id }}.{% if mfile.title != "" %} {{ mfile.title }}
 			    	{% else %}
-        			{% if ar %} لا عنوان {% else %} Empty {% endif %}
+        			{{ translate('Empty', 'en', [defLang]) }}
         			{% endif %}
 				</div>
 				<div class="col-xs-12 col-sm-4 ar1">
 		   			{% if mfile.ikey == 00 %}
-           			{% if ar %}
-           			<u class="ar1">خلفية ملونة</u>
-           			{% else %}
-           			<u> Colored Background</u>
-           			{% endif %}
+           			{{ translate('Colored background', 'en', [defLang]) }}
 		   			{% else %} <u {% if ar %} class="ar1" {% endif %}>{{ mfile.bname }} </u>{% endif %}
 				</div>
 				<div class="col-xs-12 col-sm-2">
 		    		<a href="#" data-toggle="modal" data-target="#preview{{ mfile.id }}"
-						data-toggle="tooltip" {% if ar %} title="عرض الشريحة" {% else %} title="View slide" {% endif %}
+						data-toggle="tooltip" title="{{ translate('View', 'en', [defLang]) }}"
 					>
 						<span class="fa fa-eye text-primary"></span>
 					</a>
 		    		<a href="#" data-toggle="modal" data-target="#dell{{ mfile.id }}"
-						data-toggle="tooltip" {% if ar %} title="حذف الشريحة" {% else %} title="Delete slide" {% endif %}
+						data-toggle="tooltip" title="{{ translate('Delete', 'en', [defLang]) }}"
 					>
 						<span class="fa fa-trash text-warning"></span>
 					</a>
 				</div>
 			</div>
-			{{ confirmModal([['dell' + str(mfile.id), 'Warning : Delete slide', "You are attempting to delete a slide which won't be retrievable , Are you sure of that ?", url_for('cust_app.slide_r', f_id=mfile.id)]]) }}
+			{{ confirmModal([['dell' + str(mfile.id), translate('Warning : Delete a slide', 'en', [defLang]), translate("You are attempting to delete a slide which will not be retrievable , Are you sure of that ?", 'en', [defLang]), url_for('cust_app.slide_r', f_id=mfile.id)]], yes=translate('Yes', 'en', [defLang]), no=translate('No', 'en', [defLang])) }}
 	    	<div class="modal fade" id="preview{{ mfile.id }}">
 				<div class="modal-dialog">
 		    		<div class="modal-content">
 						<div class="modal-header">
 			    			<button type="button" class="close" data-dismiss="modal">&times;</button>
-          					{% if ar %}
-								<h4 class="modal-title text-center ar1">إستعراض الشريحة</h4>
-          					{% else %}
-								<h4 class="modal-title text-center ar1">Preview slide</h4>
-          					{% endif %}
+								<h4 class="modal-title text-center ar1">{{ translate('Preview slide', 'en', [defLang]) }}</h4>
 						</div>
 						<div class="modal-body">
 			    			<div id="carousel-example{{ mfile.id }}" class="carousel slide" data-ride="carousel">
@@ -138,21 +106,17 @@
 			    			</div>
 						</div>
 						<div class="modal-footer">
-          					{% if ar %}
-			    			<button type="button" class="close btn btn-md btn-danger pull-right ar1" data-dismiss="modal">إلغاء</button>
-          					{% else %}
-			    			<button type="button" class="close btn btn-md btn-danger pull-right" data-dismiss="modal">Close</button>
-          					{% endif %}
+			    			<button type="button" class="close btn btn-md btn-danger pull-right" data-dismiss="modal">{{ translate('Exit', 'en', [defLang]) }}</button>
 						</div>
 		    		</div>
 				</div>
 	    	</div>
 	    	{% endfor %}
 			{% endif %}
-			{{ spacer(['No slides exist to display ...', len(slides)]) }}
+			{{ spacer([translate('No slides exist to display', 'en', [defLang]), len(slides)]) }}
 		</div>
         <div class="panel-footer text-center">
-			{{ panelFooter([[['Total slides', mmm.count()], ['Image slides', sm], ['Colored slides', mmm.filter_by(ikey=00).count()]]], True) }}
+			{{ panelFooter([[[translate('Total slides', 'en', [defLang]), mmm.count()], [translate('Image slides', 'en', [defLang]), sm], [translate('Colored slides', 'en', [defLang]), mmm.filter_by(ikey=00).count()]]], True, toWarn=translate('Image slides', 'en', [defLang])) }}
 	    	<div class="row text-center">
 				{{ macros.pagination_widget(pagination, '.slideshow') }}
 	    	</div>
@@ -160,25 +124,17 @@
     </div>
 </div>
 
-{{ confirmModal([['dall', 'Warning : Delete all', "You are attempting to delete all slides which won't be retrievable , Are you sure of that ?", url_for('cust_app.slide_r', f_id=00)]]) }}
+{{ confirmModal([['dall', translate('Warning : Delete all', 'en', [defLang]), translate("You are attempting to delete all slides which will not be retrievable, Are you sure of that ?", 'en', [defLang]), url_for('cust_app.slide_r', f_id=00)]], yes=translate('Yes', 'en', [defLang]), no=translate('No', 'en', [defLang])) }}
 <div class="modal fade" id="fss">
     <div class="modal-dialog">
 		<div class="modal-content">
 	    	<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
-    			{% if ar %}
-    			<h4 class="modal-title text-center ar1">إستعراض جميع الشرائح</h4>
-    			{% else %}
-    			<h4 class="modal-title text-center ar1">Preview all slides-show </h4>
-    			{% endif %}
+    			<h4 class="modal-title text-center ar1">{{ translate('Preview all slides', 'en', [defLang]) }}</h4>
       		</div>
 	    	<div class="modal-body">
 				{% if mmm.count() == 0 %}
-    				{% if ar %}
-					<h1 class="text text-center text-danger ar1"> لا شرائح تم إضافتها بعد</h1>
-    				{% else %}
-					<h1 class="text text-center text-danger"> No slides created to be displayed ...</h1>
-    				{% endif %}
+					<h1 class="text text-center text-danger">{{ translate('No slides created to be displayed', 'en', [defLang]) }}</h1>
 				{% else %}
 				<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="{{ sli.rotation }}">
 		    		<!-- Indicators -->
@@ -208,11 +164,11 @@
 						{% if sli.navigation %}
 						<a class="left carousel-control" href="#myCarousel" data-slide="prev">
 			    			<span class="glyphicon glyphicon-chevron-left"></span>
-			    			<span class="sr-only">Previous</span>
+			    			<span class="sr-only">{{ translate('Previous', 'en', [defLang]) }}</span>
 						</a>
 						<a class="right carousel-control" href="#myCarousel" data-slide="next">
 			    			<span class="glyphicon glyphicon-chevron-right"></span>
-			    			<span class="sr-only">Next</span>
+			    			<span class="sr-only">{{ translate('Next', 'en', [defLang]) }}</span>
 						</a>
 						{% endif %}
 					</div>
@@ -220,11 +176,7 @@
 		    	{% endif %}
 			</div>
 			<div class="modal-footer">
-        		{% if ar %}
-				<button type="button" class="close btn btn-md btn-danger pull-right ar1" data-dismiss="modal">إلغاء</button>
-        		{% else %}
-				<button type="button" class="close btn btn-md btn-danger pull-right" data-dismiss="modal">Close</button>
-        		{% endif %}
+				<button type="button" class="close btn btn-md btn-danger pull-right" data-dismiss="modal">{{ translate('Exit', 'en', [defLang]) }}</button>
 			</div>
 		</div>
 	</div>

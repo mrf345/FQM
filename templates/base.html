@@ -29,7 +29,7 @@
         <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
         <script src="{{ url_for('static', filename='disciple.js') }}"></script>
         <script src="{{ url_for('static', filename='wallpapers.js') }}"></script>
-        {{ beloadingNotifier(version, beload=False) }}
+        {{ beloadingNotifier(version, beload=False, release=translate("You are using an older version of FQM, a newer release is available on fqms.github.io", 'en', [defLang]), firefox=translate("You are not using Firefox browser, which this project is designed and most suited for.", 'en', [defLang])) }}
         <script type="text/javascript">
             window.onload = function () {
                 {% if dropdown %} $("{{ dropdown }}").collapse('show') {% endif %} // sidebar collapse for all
@@ -57,22 +57,16 @@
                 // TODO: Move disciple to beloadingNotifier after multilang interface & mod uniqueness_btns
                 window.debDis = disciple({
                     identifier: 'form',
-                    {% if ar %}
-                    msg_text: 'قمت بتعديل معطيات أحد الحقول من غير حفظها , تود ؟',
-                    restore_text: 'إسترجاع',
-                    later_text: 'فيما بعد',
-                    forget_text: 'تجاهل',
-                    restoring_text: 'يتم الإسترجاع',
+                    msg_text: "{{ translate('You made changes on the previous form without submitting. Do you wish to restore it ?', 'en', [defLang]) }}",
+                    restore_text: "{{ translate('Now', 'en', [defLang]) }}",
+                    later_text: "{{ translate('Later', 'en', [defLang]) }}",
+                    forget_text: "{{ translate('Forget it', 'en', [defLang]) }}",
+                    restoring_text: "{{ translate('Restoring the form', 'en', [defLang]) }}",
                     msg_classes: ['ar1'],
                     restore_classes: ['ar1', 'btn', 'lightit'],
                     later_classes: ['ar1', 'btn', 'lightit'],
                     forget_classes: ['ar1', 'btn', 'btn-danger', 'lightit'],
                     restoring_classes: ['ar1']
-                    {% else %}
-                    restore_classes: ['btn', 'lightit'],
-                    later_classes: ['btn', 'lightit'],
-                    forget_classes: ['btn', 'btn-danger', 'lightit'],
-                    {% endif %}
                 })
             }
         </script>
@@ -105,187 +99,74 @@
     	            </div>
     	            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     		            <ul class="nav navbar-nav navbar-left">
-                            {% if ar %}
-                            <li id="snb1" class="ar1"><a href="{{ url_for('manage_app.manage') }}">تظيم</a></li>
-                            {% else %}
-                            <li id="snb1"><a href="{{ url_for('manage_app.manage') }}">Manage</a></li>
-                            {% endif %}
+                            <li id="snb1"><a href="{{ url_for('manage_app.manage') }}">{{ translate('Management', 'en', [defLang]) }}</a></li>
                             {% if current_user.role_id == 1 %}
-                                {% if ar %}
-    		                    <li id="snb2" class="ar1"><a href="{{ url_for('cust_app.customize') }}">تخصيص</a></li>
-                                {% else %}
-    		                    <li id="snb2"><a href="{{ url_for('cust_app.customize') }}">Customize</a></li>
-                                {% endif %}
+    		                    <li id="snb2"><a href="{{ url_for('cust_app.customize') }}">{{ translate('Customization', 'en', [defLang]) }}</a></li>
                             <li class="dropdown" id='snb3'>
     			                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {% if ar %}
-                                    إدارة
-                                    {% else %}
-                                    Administrate
-                                    {% endif %}
+                                    {{ translate('Administration', 'en', [defLang]) }}
                                     <span class="caret"></span>
                                 </a>
     			                <ul class="dropdown-menu" role="menu">
-                                    {% if ar %}
-                                    <center>
-                                        <li class="dropdown-header" id="ar1">( المستخدمين )</li>
-                                    </center>
-    			                    <li id="ar2">
-    				                    <a href="{{ url_for('administrate.users') }}">
-    				                        <span class="fa fa-users"></span>
-    				                        كل المستخدمين
-                                        </a>
-    			                    </li>
-    			                    <li id="ar2">
-    				                    <a href="{{ url_for('administrate.user_a') }}">
-    				                        <span class="fa fa-user"></span>
-    				                        إضافة مستخدم
-                                        </a>
-    			                    </li>
-                                    <center>
-                                        <li class="dropdown-header" id="ar1">( قاعدة البيانات )</li>
-                                    </center>
-                                    <li id="ar2">
-                                        <a href="{{ url_for('administrate.csvd', t_name=0) }}">
-                                            <span class="fa fa-database"></span>
-                                            إستخراج البيانات
-                                        </a>
-                                    </li>
-                                    {% else %}
-    			                    <li class="dropdown-header">( Users )</li>
+    			                    <li class="dropdown-header">( {{ translate('Users', 'en', [defLang]) }} )</li>
     			                    <li>
     				                    <a href="{{ url_for('administrate.users') }}">
     				                        <span class="fa fa-users"></span>
-    				                        All users
+    				                        {{ translate('All users', 'en', [defLang]) }}
                                         </a>
     			                    </li>
     			                    <li>
     				                    <a href="{{ url_for('administrate.user_a') }}">
     				                        <span class="fa fa-user"></span>
-    				                        Add user
+    				                        {{ translate('Add user', 'en', [defLang]) }}
                                         </a>
     			                    </li>
                                     <li class="dropdown-header">( Database )</li>
                                     <li>
                                         <a href="{{ url_for('administrate.csvd', t_name=0) }}">
                                             <span class="fa fa-database"></span>
-                                            Export CSV
+                                            {{ translate('Export ', 'en', [defLang]) }} CSV
                                         </a>
                                     </li>
-                                    {% endif %}
                                 </ul>
                             </li>
     		                {% endif %}
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            {% if ar %}
-    		                <li class="dropdown" id="ar1">
-    			                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    			                    شاشات الإستخدام
-                                    <span class="caret"></span>
-                                </a>
-    			                <ul class="dropdown-menu" role="menu">
-    			                    <li class="dropdown-header">( شاشة جديدة )</li>
-    			                    <li class="ar2">
-    				                    <a href="{{ url_for('core.touch', a=0) }}" target="_blank">
-    				                        <span class="fa fa-desktop"></span>
-                                            شاشة اللمس
-                                        </a>
-    			                    </li>
-    			                    <li class="ar2">
-    				                    <a href="{{ url_for('core.display') }}" target="_blank">
-    				                        <span class="fa fa-television"></span>
-                                            شاشة الإستعراض
-                                        </a>
-    			                    </li>
-                                    <li class="dropdown-header">( شفرة QR )</li>
-                                    <li class="ar2">
-                                        <a href="#" data-target="#touch_qr" data-toggle="modal">
-                                            <span class="fa fa-desktop"></span>
-                                            شاشة اللمس
-                                        </a>
-                                    </li>
-                                    <li class="ar2">
-                                        <a href="#" data-toggle="modal" data-target="#display_qr">
-                                            <span class="fa fa-television"></span>
-                                            شاشة الإستعراض
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            {% else %}
     		                <li class="dropdown">
     			                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    			                    Screens
+    			                    {{ translate('Screens', 'en', [defLang]) }}
                                     <span class="caret"></span>
                                 </a>
     			                <ul class="dropdown-menu" role="menu">
-                                    <li class="dropdown-header">( New tab )</li>
+                                    <li class="dropdown-header">( {{ translate('New tab', 'en', [defLang]) }} )</li>
     			                    <li>
     				                    <a href="{{ url_for('core.touch', a=0) }}" target="_blank">
     				                        <span class="fa fa-desktop"></span>
-                                            Touch Screen
+                                            {{ translate('Touch screen', 'en', [defLang]) }}
                                         </a>
     			                    </li>
     			                    <li>
     				                    <a href="{{ url_for('core.display') }}" target="_blank">
     				                        <span class="fa fa-television"></span>
-                                            Display screen
+                                            {{ translate('Display screen', 'en', [defLang]) }}
                                         </a>
     			                    </li>
                                     <li class="dropdown-header">( QR Codes )</li>
                                     <li>
                                         <a href="#" data-target="#touch_qr" data-toggle="modal">
                                             <span class="fa fa-desktop"></span>
-                                            Touch Screen
+                                            {{ translate('Touch screen', 'en', [defLang]) }}
                                         </a>
                                     </li>
                                     <li>
                                         <a href="#" data-toggle="modal" data-target="#display_qr">
                                             <span class="fa fa-television"></span>
-                                            Display screen
+                                            {{ translate('Display screen', 'en', [defLang]) }}
                                         </a>
                                     </li>
                                 </ul>
                             </li>
-                            {% endif %}
-                            {% if ar %}
-                            <li class="dropdown">
-    			                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    				                {{ current_user.name }}
-                                    <span class="caret"></span>
-                                </a>
-    			                <ul class="dropdown-menu" role="menu">
-        		                    <li class="dropdown-header">
-    				                    ( {% if current_user.role_id == 1 %} Administrator
-    				                        {% elif current_user.role_id == 2 %} Monitor
-    				                    {% else %} Operator {% endif %} )
-    				                </li>
-    				                {% if current_user.id != 1 and current_user.role_id != 3 %}
-    				                    <li class="ar2">
-                                            <a href="{{ url_for('administrate.user_u', u_id=current_user.id) }}">
-    				                            <span class="fa fa-pencil"></span>
-                                                تعديل  
-                                            </a>
-    				                    </li>
-    				                {% endif %}
-                                    {% if current_user.id == 1 %}
-                                        <li class="ar2">
-                                            <a href="{{ url_for('administrate.admin_u') }}">
-                                                <span class="fa fa-pencil"></span>
-                                                تعديل الحساب الرئيسي  
-                                            </a>
-                                        </li>
-                                    {% endif %}
-    				                <li class="ar2">
-                                        <a href="{{ url_for('administrate.logout') }}">
-    				                        <span class="fa fa-sign-out"></span>
-                                            تسجيل الخروج
-                                        </a>
-    				                </li>
-                                </ul>
-                            </li>
-                            {% else %}
     			            <li class="dropdown">
     			                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     				                {{ current_user.name }}
@@ -297,11 +178,11 @@
     				                    {% elif current_user.role_id == 2 %} Monitor
     				                    {% else %} Operator {% endif %} )
     				                </li>
-    				                {% if current_user.id != 1 and current_user.role_id != 3 %}
+    				                {% if current_user.id != 1 and current_user.role_id == 1 %}
     				                    <li class="">
                                             <a href="{{ url_for('administrate.user_u', u_id=current_user.id) }}">
     				                            <span class="fa fa-pencil"></span>
-                                                Update  
+                                                {{ translate('Update ', 'en', [defLang]) }}
                                             </a>
     				                    </li>
     				                {% endif %}
@@ -309,62 +190,37 @@
                                         <li class="">
                                             <a href="{{ url_for('administrate.admin_u') }}">
                                                 <span class="fa fa-pencil"></span>
-                                                Update Admin  
+                                                {{ translate('Update ', 'en', [defLang]) }} Admin
                                             </a>
                                         </li>
                                     {% endif %}
     				                <li>
                                         <a href="{{ url_for('administrate.logout') }}">
     				                        <span class="fa fa-sign-out"></span>
-                                            Logout
+                                            {{ translate('Logout', 'en', [defLang]) }}
                                         </a>
     				                </li>
                                 </ul>
                             </li>
-                            {% endif %}
-                            {% if ar %}
-                            <li class="dropdown" id="ar1">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    اللغات
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li {% if ar != True %} class="active" {% endif %}>
-                                        <a href="{{ url_for('lang_switch' , lang=2) }}">
-                                            <span class="fa fa-globe"></span>
-                                            الإنجليزية
-                                        </a>
-                                    </li>
-                                    <li {% if ar %} class="active" {% endif %}>
-                                        <a href="{{ url_for('lang_switch', lang=1) }}">
-                                            <span class="fa fa-language"></span>
-                                            العربية
-                                        </a>
-                                    </li>
-                                </ul>
-    			            </li>
-                            {% else %}
                             <li class="dropdown">
+                                {% set languages = [['en', 'English'], ['it', 'Italian'], ['es', 'Spanish'], ['ar', 'Arabic'], ['fr', 'French']] %}
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    Languages
+                                    {% for curLang in languages %}
+                                    {% if defLang == curLang[0] %} {{ curLang[1] }} {% endif %}
+                                    {% endfor %}
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li {% if ar != True %} class="active" {% endif %}>
-                                        <a href="{{ url_for('lang_switch' , lang=2) }}">
-                                            <span class="fa fa-globe"></span>
-                                            English
+                                    {% for curLang in languages %}
+                                    <li {% if defLang == curLang[0] %} class="active" {% endif %}>
+                                        <a href="{{ url_for('lang_switch' , lang=curLang[0]) }}">
+                                            <span class="fa fa-{% if curLang[0] == 'en' %}globe{% else %}language{% endif %}"></span>
+                                            {{curLang[1]}}
                                         </a>
                                     </li>  
-                                    <li {% if ar %} class="active" {% endif %}>
-                                        <a href="{{ url_for('lang_switch', lang=1) }}">
-                                            <span class="fa fa-language"></span>
-                                            Arabic
-                                        </a>
-                                    </li>
+                                    {% endfor %}
                                 </ul>
     			            </li>
-                            {% endif %}
     		            </ul>
     	            </div>
     	        </div>
@@ -376,7 +232,7 @@
                 <div class="col-md-{% if adme %}12{% else %}10{% endif %} content">
                     <div class="alert alert-{{ category }} alert-dismissable">
     	                <button class="close" type="button" data-dismiss="alert">&times;</button>
-    	                <h4 class="text text-center ar2">[ {{ message }} ]</h4>
+    	                <h4 class="text text-center ar2">[ {{ translate(message, 'en', [defLang]) }} ]</h4>
     	            </div>
                 </div>
             {% endfor %}
@@ -386,26 +242,8 @@
             <footer class="pull-left footer widw mt-3">
     	        <div class="row mt-1">
     	            <div class="col-xs-8 col-md-3 col-xs-offset-2 col-md-offset-2 pb-1">
-                        {% if ar %}
                         <a href="{{ url_for('static', filename='mpl.html') }}" target="_blank"
-                            data-toggle="tooltip"
-                            title=" رخصة الإستخدام"
-                        >
-                            <center>
-                                <img src="{{ url_for('static', filename='images/license.png') }}" 
-                                    class="lightit mb-1 img-responsive" width="50%"
-                                >
-                            </center>
-                            <h4 class="text text-center lightit text-muted" id="ar1">
-                                <strong>
-                                    حقوق نشر هذا البرنامج محفوظة و تخضع لرخصة البرامج الحرة و مفتوحة المصدر
-                                    Mozilla Public License version 2.0 .
-                                </strong>
-                            </h4>
-                        </a>
-                        {% else %}
-                        <a href="{{ url_for('static', filename='mpl.html') }}" target="_blank"
-                            data-toggle="tooltip" title="License"
+                            data-toggle="tooltip" title="{{ translate('License', 'en', [defLang]) }}"
                         >
                             <center>
                                 <img src="{{ url_for('static', filename='images/license.png') }}"
@@ -414,12 +252,10 @@
                             </center>
                             <h4 class="text text-center lightit ar1 text-muted">
                                 <strong>
-    		                        All credit reserved to the author of FQM. This work is a free,
-                                    open-source project licensed under Mozilla Public License version 2.0 .
+                                    {{ translate('All credit reserved to the author of FQM. This work is a free, open-source project licensed under Mozilla Public License version 2.0 .', 'en', [defLang]) }}
                                 </strong>
                             </h4>
                         </a>
-                        {% endif %}
     	            </div>
     	            <div class="col-sm-6">
     		            <div class="row pt-1">
@@ -430,25 +266,25 @@
     		                    <div class="{{ theRow[0] }}">
                                     <a href="https://www.youtube.com/channel/UC9_zci_JGr2hXBxziYbMMBw/videos" target="_blank"
                                         data-toggle="tooltip"
-                                        title="{% if ar %} Youtube : شروح {% else %} Youtube : tutorials {% endif %}"
+                                        title="Youtube {{ translate('tutorials', 'en', [defLang]) }}"
                                     >
                                         <i class="fa fa-{{theRow[1]}} fa-fw fa-youtube text-muted"></i>
                                     </a>
                                     <a href="https://fqms.github.io/" target="_blank"
                                         data-toggle="tooltip"
-                                        title="{% if ar %} الموقع الرسمي {% else %} FQM Website {% endif %}"
+                                        title="FQM {{ translate('website', 'en', [defLang]) }}"
                                     >
                                         <i class="fa fa-{{theRow[1]}} fa-fw fa-rss text-muted"></i>
                                     </a>
     		    	                <a href="https://github.com/mrf345/fqm" target="_blank"
                                         data-toggle="tooltip"
-                                        title="{% if ar %} Github : المصدر المفتوح {% else %} Github : FQM source code {% endif %}"
+                                        title="FQM {{ translate('source-code', 'en', [defLang]) }}"
                                     >
                                         <i class="fa fa-{{theRow[1]}} fa-fw fa-github text-muted"></i>
                                     </a>
     		    	                <a href="#" data-toggle="modal" data-target="#root_qr"
                                         data-toggle="tooltip"
-                                        title="{% if ar %} QR Code : الصفحة الرئيسية {% else %} QR Code : index page {% endif %}"
+                                        title="QR - {{ translate('main page', 'en', [defLang]) }}"
                                     >
                                         <i class="fa fa-{{theRow[1]}} fa-fw fa-qrcode text-muted"></i>
                                     </a>
@@ -460,8 +296,8 @@
             </footer>
         </div>
         {% from '_modals.html' import qrModal %}
-        {{ qrModal([['touch_qr', 'QR code - Touch screen', qrcode(url_for('core.touch', a=0, _external=True))],
-        ['display_qr', 'QR code - Display screen', qrcode(url_for('core.display', _external=True))],
-        ['root_qr', 'QR code - Index page', qrcode(url_for('core.root', _external=True))]]) }}
+        {{ qrModal([['touch_qr', translate('QR code touch screen', 'en', [defLang]), qrcode(url_for('core.touch', a=0, _external=True))],
+        ['display_qr', translate('QR code display screen', 'en', [defLang]), qrcode(url_for('core.display', _external=True))],
+        ['root_qr', translate('QR code main page', 'en', [defLang]), qrcode(url_for('core.root', _external=True))]], close=translate('Exit', 'en', [defLang])) }}
     </body>
 </html>

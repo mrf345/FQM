@@ -1,4 +1,4 @@
-{% macro beloadingNotifier(version, beload=True) %}
+{% macro beloadingNotifier(version, beload=True, firefox="firefox", release="new release") %}
 <!-- 
     Simple macro to load beloading for fading and browser_notifier for
     firefox confirmation and new release confirmation 
@@ -11,6 +11,7 @@ $(document).ready(function () {
     var toLoadNotify = function () {
         browserNotifier({
         storeVal: 'browserNotifier',
+        text: "{{ firefox }}",
         validator: function () {
             return new Promise(function (resolve, reject) {
               if (navigator.userAgent.indexOf('Firefox') === -1) {
@@ -19,7 +20,7 @@ $(document).ready(function () {
             })
         }}, function () {
             browserNotifier({
-                text: "You're using an older version of FQM, a newer release is available on fqms.github.io",
+                text: "{{ release }}",
                 iconLink: 'https://fqms.github.io/#download',
                 iconClass: 'fa fa-download',
                 storeVal: 'verNotifier',

@@ -27,20 +27,14 @@ $(document).ready(function () {
 		<div class="panel panel-default">
 	    	<div class="panel-heading text-center">
 				<h3 class="text-muted">
-      				{% if ar %}
-      				<strong class="ar1">
-      				  <span class="fa fa-plus"></span> إضافة مستخدم جديد
-      				</strong>
-      				{% else %}
 		    		<strong>
 						<span class="fa fa-plus"></span>  
 						{% if update %}
-						Update user
+						{{ translate('Update user', 'en', [defLang]) }}
 						{% else %}
-						Add new user
+						{{ translate('Add new user', 'en', [defLang]) }}
 						{% endif %}
 		    		</strong>
-      				{% endif %}
 				</h3>
 	    	</div>
 	  		<div class="panel-body">
@@ -49,39 +43,24 @@ $(document).ready(function () {
 				{{ render_field(form.name, class="form-control") }}
 				{{ render_field(form.password, class="form-control") }}
 				{{ render_field(form.role, class="form-control") }}
-				{% if ar %}
-      			<p class="h4 text-center text-muted ar2">
-        			| Admin : حساب المدير لديه المقدرة على تنظيم و إدارة كل شي , بما في
-        			ذالك إضافة و حذف المستخدميين |
-		  		</p>
-		  		<p class="h4 text-center text-muted ar2">
-        			| Monitor : حساب المنظم لديه المقدرة على تنظيم و تخصيص كل شيئ , لكن
-        				ليس لديه المقدرة على الإدارة بما في ذالك إدارة المستخدميين |
-		  		</p>
-		  		<p class="h4 text-center text-muted ar2">
-        			| Operator : حساب المشغل لديه المقدرة على تشغيل و تنظيم مكتب معين ,
-        			يتم تعينه عن طريق حساب المدير و لا يملك أي من صلاحيات الإدارة و التخصيص |
-		  		</p>
-      			{% else %}
 		  		<p class="h3 ar2 mt-2 mb-2 text-center text-muted admin hide">
-		      		|  Admin : has the permissions to access and monitor everything  |
+		      		|  Admin : {{ translate('has the permissions to access and monitor everything', 'en', [defLang]) }} |
 		  		</p>
 		  		<p class="h3 ar2 mt-2 mb-2 text-center text-muted monitor hide">
-		      		|  Monitor : has permissions to monitor and access everything except Administrate  |
+		      		|  Monitor : {{ translate('has permissions to monitor and access everything except Administrate', 'en', [defLang]) }} |
 		  		</p>
 		  		<p class="h3 ar2 mt-2 mb-2 text-center text-muted operator hide">
-		    		| Operator : has limited permissions only to access and monitor the office assigned to |
+		    		| Operator : {{ translate('has limited permissions only to access and monitor the office assigned to', 'en', [defLang]) }} |
 		  		</p>
-      			{% endif %}  
 		  		<div class='offices hide'>
 					{{ render_field(form.offices, class="form-control") }}
 				</div>
 				<p class="pb-5"></p>
 		  		<center>
 					{% if update %}
-					<button class='btn btn-md btn-danger'>Update</button>
+					<button class='btn btn-md btn-danger'>{{ translate('Update user', 'en', [defLang]) }}</button>
 					{% else %}
-					{{ form.submit(class_="btn btn-md btn-danger") }}
+					<button class='btn btn-md btn-danger'>{{ translate('Add user', 'en', [defLang]) }}</button>
 					{% endif %}
 		  		</center>
 				<p class="pb-3"></p>

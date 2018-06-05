@@ -24,9 +24,7 @@ core = Blueprint('core', __name__)
 @core.route('/log/<n>', methods=['GET', 'POST'])
 def root(n=None):
     b = None
-    form = forms.Login()
-    if session.get('lang') == 'AR':
-        form = forms.Login_ar()
+    form = forms.Login(session.get('lang'))
     if n is not None and n == 'a':
         n = True
     elif n is not None and n == 'b':
@@ -83,23 +81,12 @@ def root(n=None):
 @core.route('/serial/<int:t_id>', methods=['POST', 'GET'])
 def serial(t_id):
     ex_functions.mse()
-    form = forms.Touch_name()
-    if session.get('lang') == "AR":
-        form = forms.Touch_name_ar()
+    form = forms.Touch_name(session.get('lang'))
     tsk = data.Task.query.filter_by(id=t_id).first()
     if tsk is None:
         flash(get_lang(4),
               "danger")
         return redirect(url_for("core.root"))
-    # Fix: to allow non users to generate tickets
-    # if current_user.role_id == 3:
-    #     flash(get_lang(18),
-    #           "danger")
-    #     return redirect(url_for('core.root'))
-    # if current_user.role_id == 3 and tsk.office_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
-    #     flash(get_lang(18),
-    #           "danger")
-    #    return redirect(url_for('core.root'))
     if not form.validate_on_submit() and data.Touch_store.query.first().n:
         ts = data.Touch_store.query.filter_by(id=0).first()
         tnumber = False

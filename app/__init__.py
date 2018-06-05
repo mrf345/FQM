@@ -25,7 +25,7 @@ from customize import cust_app, mdal
 from errorsh import errorsh_app
 from manage import manage_app
 from ex_functions import mse, check_ping, r_path, get_lang
-from database import db, login_manager, files, version
+from database import db, login_manager, files, version, gtranslator
 from flask_uploads import configure_uploads
 from flask_login import login_required, current_user
 from jinja2 import FileSystemLoader
@@ -78,6 +78,7 @@ def create_app():
     lessc(app)
     minify(app, js=True)
     gtts(app=app, route=True)
+    gtranslator.init_app(app)
     # Register blueprints
     app.register_blueprint(administrate)
     app.register_blueprint(core)
@@ -459,17 +460,18 @@ def run_app():
     window = NewWindow(app)
 
     # switching the language with template folder path
-    @app.route('/lang_switch/<int:lang>')
+    @app.route('/lang_switch/<lang>')
     def lang_switch(lang):
-        if lang == 1:
-            session['lang'] = 'AR'
-        else:
-            session['lang'] = 'EN'
+        session['lang'] = lang
         if current_user.is_authenticated:
             return redirect(str(request.referrer))
         return redirect(url_for('core.root'))
-    # Adding error handlers on main app instance
+    @app.before_first_request
+    def defLanguage():
+        if session.get('lang') not in ['en', 'ar', 'fr', 'it', 'es']:
+            session['lang'] = 'en'
 
+    # Adding error handlers on main app instance
     @app.errorhandler(404)
     @app.errorhandler(500)
     @app.errorhandler(413)
@@ -498,6 +500,6 @@ def run_app():
             adme = True
         return dict(is_connected=check_ping, path=path,
                     adme=adme, brp=Markup("<br>"), ar=ar,
-                    version=version, str=str)
+                    version=version, str=str, defLang=session.get('lang'))
     QCoreApplication.processEvents()
     appg.exec_()

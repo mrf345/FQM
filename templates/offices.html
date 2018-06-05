@@ -40,46 +40,33 @@
 {% from "_helpers.html" import render_field %}
 {%- from "auto_reload.html" import auto_reloader with context %}
 {% from "_modals.html" import confirmModal, qrModal %}
-{% from "_footers.html" import panelFooter %}
+{% from "_footers.html" import panelFooter, spacer %}
 <div class="col-md-12">
     <div class="panel panel-primary">
         <div class="panel-heading">
 	    	<div class="row">
-				{{ auto_reloader(True) }}
+				{{ auto_reloader(True, duration=translate('Duration', 'en', [defLang]), refresh=translate('Auto reload', 'en', [defLang]), durMsg=translate('Enter a duration in seconds to auto-reload the page in :', 'en', [defLang])) }}
     			<div class="col-xs-12 hidden-md hidden-lg text-center mt-2">
         			<a href="#" data-toggle="modal" data-target="#branch_qr"
         				data-toggle="tooltip"
-        				title="{% if ar %} QR Code : المكتب {% else %} QR Code : Office page {% endif %}"
+        				title="{{ translate('QR Code : Office', 'en', [defLang]) }}"
 					>
 						<i class="fa fa-4x fa-fw fa-qrcode fa-spin qrw" style="color: white;"></i>
 					</a>
     			</div>
 				<div class="col-xs-12">
 		    		<h2 class="text text-center">
-      					{% if ar %}
-						<strong class="ar1">مكتب : {{ offices.filter_by(id=o_id).first().name }}</strong>
-      					{% else %}
-						<strong>Office : {{ offices.filter_by(id=o_id).first().name }}</strong>
-      					{% endif %}
+						<strong>{{ translate('Office', 'en', [defLang]) }} : {{ offices.filter_by(id=o_id).first().name }}</strong>
 		    		</h2>
 				</div>
 	    	</div>
 	    	<div class="row text-center text-muted h4 ar2">
-    			{% if ar %}
-    			<div class="col-sm-10 col-sm-offset-1 col-lg-offset-2 col-md-4 well ar1">
-					    رمز حرفي : <u>{{ offices.filter_by(id=o_id).first().prefix }}</u>
-					</div>
-					<div class="col-sm-10 col-sm-offset-1 col-md-offset-0 col-md-4 well ar1">
-					    تم الإضافة : <u> {{ moment(offices.filter_by(id=o_id).first().timestamp).format('L') }}</u>
-					</div>
-    			{% else %}
-					<div class="col-sm-10 col-sm-offset-1 col-lg-offset-2 col-md-4 well">
-					    Prefix : <u>{{ offices.filter_by(id=o_id).first().prefix }}</u>
-					</div>
-					<div class="col-sm-10 col-sm-offset-1 col-md-offset-0 col-md-4 well">
-					    Created : <u> {{ moment(offices.filter_by(id=o_id).first().timestamp).format('L') }}</u>
-					</div>
-    			{% endif %}
+				<div class="col-sm-10 col-sm-offset-1 col-lg-offset-2 col-md-4 well">
+					{{ translate('Prefix', 'en', [defLang]) }} : <u>{{ offices.filter_by(id=o_id).first().prefix }}</u>
+				</div>
+				<div class="col-sm-10 col-sm-offset-1 col-md-offset-0 col-md-4 well">
+					{{ translate('Created', 'en', [defLang]) }} : <u> {{ moment(offices.filter_by(id=o_id).first().timestamp).format('L') }}</u>
+				</div>
 	    	</div>
 	    	<div class="row">
 				<div class="col-xs-12 text-center">
@@ -87,29 +74,17 @@
 						{% if current_user.role_id != 3 %}
 						<a class="btn btn-info" data-toggle="modal" data-target="#upd">
 			    			<span class="fa fa-pencil hidden-xs"></span>
-          					{% if ar %}
-          					<strong class="ar1">تحديث</strong>
-          					{% else %}
-			    			<strong>Update</strong>
-          					{% endif %}
+			    			<strong>{{ translate('Update', 'en', [defLang]) }}</strong>
 						</a>
 						{% endif %}
 						<a class="btn btn-warning" data-toggle="modal" data-target="#rall">
 			    			<span class="fa fa-reply hidden-xs"></span>
-          					{% if ar %}
-          					<strong class="ar1">إعادة تهيئه</strong>
-          					{% else %}
-          					<strong>Reset</strong>
-          					{% endif %}
+          					<strong>{{ translate('Reset', 'en', [defLang]) }}</strong>
 						</a>
 						{% if current_user.role_id != 3 %}
 						<a class="btn btn-danger" data-toggle="modal" data-target="#dall">
 			    			<span class="fa fa-trash hidden-xs"></span>
-          					{% if ar %}
-          					<strong class="ar1">حذف</strong>
-          					{% else %}
-			    			<strong>Delete</strong>
-          					{% endif %}
+			    			<strong>{{ translate('Delete', 'en', [defLang]) }}</strong>
 						</a>
 						{% endif %}
 		    		</div>
@@ -118,39 +93,21 @@
 		</div>
         <div class="panel-body">
 	    	<div class="row text-center h3 text-muted hidden-xs ar2">
-    			{% if ar %}
-    			<div class="col-xs-2 ar2">
-					    (التذكرة)
-					</div>
-					<div class="col-xs-2 ar2">
-					    (الإصدار)
-					</div>
-					<div class="col-xs-3 ar2">
-					    (السحب)
-					</div>
-					<div class="col-xs-3 ar2">
-					    (القيمة)
-					</div>
-					<div class="col-xs-2 ar2">
-					    (نوع التذكرة)
-					</div>
-    			{% else %}
-					<div class="col-xs-2">
-					    (Ticket)
-					</div>
-					<div class="col-xs-2">
-					    (Issued)
-					</div>
-					<div class="col-xs-3">
-					    (Pulled)
-					</div>
-					<div class="col-xs-3">
-					    (Value)
-					</div>
-					<div class="col-xs-2">
-					    (Ticket Type)
-					</div>
-    			{% endif %}
+				<div class="col-xs-2">
+				    ({{ translate('Ticket', 'en', [defLang]) }})
+				</div>
+				<div class="col-xs-2">
+				    ({{ translate('Issued', 'en', [defLang]) }})
+				</div>
+				<div class="col-xs-3">
+				    ({{ translate('Pulled', 'en', [defLang]) }})
+				</div>
+				<div class="col-xs-3">
+				    ({{ translate('Value', 'en', [defLang]) }})
+				</div>
+				<div class="col-xs-2">
+				    ({{ translate('Ticket type', 'en', [defLang]) }})
+				</div>
 	    	</div>
 	    	{% for o in officesp %}
 	     	{% if o.number != 100 %}
@@ -163,45 +120,25 @@
 		  			</div>
 		  			<div class="col-xs-12 col-sm-3">
 						{% if o.p %} <u>{{ users.filter_by(id=o.pulledBy).first().name }} / {{ moment(o.pdt).fromNow() }}</u>
-		  				{% else %} {% if ar %} <u class="ar1"> في الإنتظار</u> {% else %}<u>Waiting ..</u> {% endif %}{% endif %}
+		  				{% else %} <u>{{ translate('Waiting', 'en', [defLang]) }}</u> {% endif %}
 		  			</div>
 		  			<div class="col-xs-12 col-sm-3">
 		  		  		{% if o.n %}<u> {{ o.name }} </u> {% else %}
-		  		    	{% if ar %} <u class="ar1"> لا إسم</u> {% else %} <u> None </u> {% endif %}{% endif %}
+		  		    	<u> {{ translate('None', 'en', [defLang]) }} </u> {% endif %}
 		  			</div>
 		  			<div class="col-xs-12 col-sm-2">
-		  		  		{% if ar %}
-		  		    	<u class="ar1"> {% if o.n %} مسجلة {% else %} مطبوعة {% endif %} </u>
-		  		  		{% else %}
-		  		    	<u> {% if o.n %} Registered {% else %} Printed {% endif %} </u>
-		  		  		{% endif %}
+		  		    	<u> {% if o.n %} {{ translate('Registered', 'en', [defLang]) }} {% else %} {{ translate('Printed', 'en', [defLang]) }} {% endif %} </u>
 		  			</div>
 				</div>
 	      	{% endif %}
-	    	{% endfor %}
-	    	{% if len(officesp) <= 1 %}
-	    	<div class="well">
-				<p class="pt-10"></p>
-    			{% if ar %}
-    			<h3 class="text-danger text-center ar1">
-		    		لا يوجد تذاكر مسجلة إلى الآن
-				</h3>
-    			{% else %}
-				<h3 class="text-danger text-center mt-10 mb-10">
-		    		No tickets been issued yet to display ..
-				</h3>
-    			{% endif %}
-				<p class="pb-10"></p>
-	    	</div>
-	    	{% elif len(officesp) <= 4 %}
-				<p class="pb-20"></p>
-	    	{% endif %}
+			{% endfor %}
+			{{ spacer([translate('No tickets been issued yet to display', 'en', [defLang]), len(officesp) - serial.filter_by(office_id=o_id, number=100).count()]) }}
 	    </div>
 	    <div class="panel-footer text-center">
 			{{ panelFooter([
-			[['Tasks total', tasks.filter_by(office_id=o_id).count()], ['Tickets total', serial.filter_by(office_id=o_id).count()]],
-			[['Processed', serial.filter_by(p=True, office_id=o_id).count()], ['Waiting', serial.filter_by(p=False, office_id=o_id).count()]]
-			]) }}
+			[[translate('Tasks total', 'en', [defLang]), tasks.filter_by(office_id=o_id).count()], [translate('Tickets total', 'en', [defLang]), serial.filter_by(office_id=o_id).count()]],
+			[[translate('Processed', 'en', [defLang]), serial.filter_by(p=True, office_id=o_id).count()], [translate('Waiting', 'en', [defLang]), serial.filter_by(p=False, office_id=o_id).count()]]
+			], toWarn=translate('Waiting', 'en', [defLang])) }}
 			<div class="row text-center">
 		    	<div class="pagination">
 					{{ macros.pagination_widget(pagination, '.offices', o_id=o_id) }}
@@ -212,21 +149,17 @@
 </div>
 
 {{ confirmModal([
-	['rall', 'Warning : Rest all tasks', "You are attempting to reset an office to zero, with its all tickets been deleted and  won't be retrievable , Are you sure of that ?", url_for('core.serial_r', o_id=o_id)],
-	['dall', 'Warning : Delete office', "You are attempting to delete an office with its all tickets which won't be retrievable , Are you sure of that ?", url_for('manage_app.office_d', o_id=o_id)]	
-]) }}
-{{ qrModal([['branch_qr', 'QR code - Office' + str(offices.filter_by(id=o_id).first().name), qrcode(url_for('manage_app.offices', o_id=o_id, _external=True))]])}}
+	['rall', translate('Warning : Rest all tasks', 'en', [defLang]), translate("You are attempting to reset an office to zero, with its all tickets been deleted and will not be retrievable , Are you sure of that ?", 'en', [defLang]), url_for('core.serial_r', o_id=o_id)],
+	['dall', translate('Warning : Delete office', 'en', [defLang]), translate("You are attempting to delete an office with its all tickets which will not be retrievable , Are you sure of that ?", 'en', [defLang]), url_for('manage_app.office_d', o_id=o_id)]
+], yes=translate('Yes', 'en', [defLang]), no=translate('No', 'en', [defLang])) }}
+{{ qrModal([['branch_qr', translate('QR code - Office', 'en', [defLang]) + ' ' + str(offices.filter_by(id=o_id).first().name), qrcode(url_for('manage_app.offices', o_id=o_id, _external=True))]], close=translate('Exit', 'en', [defLang]))}}
 
 <div class="modal fade" id="upd">
     <div class="modal-dialog">
 		<div class="modal-content">
 	    	<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
-    			{% if ar %}
-				<h4 class="modal-title text-center ar1">تحديث المكتب </h4>
-    			{% else %}
-				<h4 class="modal-title text-center ar1">Update office </h4>
-    			{% endif %}
+				<h4 class="modal-title text-center ar1">{{ translate('Update office', 'en', [defLang]) }}</h4>
 	    	</div>
 	    	<form method="POST" enctype="multipart/form-data" id="fm">
 				<div class="modal-body">
@@ -237,13 +170,8 @@
 		    		<p class="pt-10"></p>
 				</div>
 				<div class="modal-footer">
-        			{% if ar %}
-        			<button type="button" class="close btn btn-md btn-warning pull-left ar1" data-dismiss="modal">إلغاء</button>
-					    <button type="submit" class="close btn btn-md btn-danger ar1">تحديث</button></a>
-        			{% else %}
-					    <button type="button" class="close btn btn-md btn-warning pull-left" data-dismiss="modal">Cancel</button>
-					    <button type="submit" class="close btn btn-md btn-danger">Update</button></a>
-        			{% endif %}
+					<button type="button" class="close btn btn-md btn-warning pull-left" data-dismiss="modal">{{ translate('Exit', 'en', [defLang]) }}</button>
+					<button type="submit" class="close btn btn-md btn-danger">{{ translate('Update', 'en', [defLang]) }}</button>
 				</div>
 	    	</form>
 		</div>

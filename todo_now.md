@@ -13,6 +13,9 @@
 - [ ] JsonStream:
 > - [ ] Fix mdruation and effect_duration
 
+- [ ] Fix date in printed ticket
+> from UTC now to local datetime
+
 - [x] Template: (6/1st)
 > - [x] look for template repetitiveness and replace it with macros (6/1st)
 > - [x] replace manage panel headers and footers with macros (6/1st)
@@ -60,15 +63,15 @@
 > - [ ] add special recall value /feed
 > - [ ] add exception to repeat on display.html when special /feed value met
 
-- [ ] Implement flask_googletrans:
-> - [ ] add fr, es, it en to /lang
-> - [ ] fix extra_function get_lang, __Add warning if cache not found and fail to connect__
-> - [ ] add langs to dropdown menu base.html
-> - [ ] put back and cache all flash messages
-> - [ ] cache wtforms and remove ar_forms
-> - [ ] remove ar from templates and cache templates
-> - [ ] remove ar from app/* and cache them
-> - [ ] remove ar pics from watchIt
+- [x] Implement flask_googletrans: (6/5th)
+> - [x] add fr, es, it en to /lang (6/5th)
+> - [x] fix extra_function get_lang, __Add warning if cache not found and fail to connect__ (6/5th)
+> - [x] add langs to dropdown menu base.html (6/5th)
+> - [x] put back and cache all flash messages (6/5th)
+> - [x] cache wtforms and remove ar_forms (6/5th)
+> - [x] remove ar from templates and cache templates (6/5th)
+> - [x] remove ar from app/* and cache them (6/5th)
+> - [x] remove ar pics from watchIt (6/5th)
 
 
 - [x] implement uniqueness instead of dumb something() (5/4th)

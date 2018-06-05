@@ -17,11 +17,7 @@
 			<li id="da1" {% if ar %} class="ar1" {% endif %}>
 			    <a href="{{ url_for('cust_app.multimedia', aa=1) }}">
 				<span class="fa fa-music"></span>
-        {% if ar %}
-        الوسائط المتعددة
-        {% else %}
-        Multimedia
-        {% endif %}
+                {{ translate('Multimedia', 'en', [defLang]) }}
 			    </a>
 			</li>
 
@@ -29,11 +25,7 @@
 			<li class="panel panel-default da2{% if ar %} ar1 {% endif %}" id="dropdown">
 			    <a data-toggle="collapse" href="#dropdown-lvl1">
 				<span class="fa fa-desktop"></span>
-        {% if ar %}
-        شاشة اللمس
-        {% else %}
-        Touch Srcreen
-        {% endif %}
+                {{ translate('Touch screen', 'en', [defLang]) }}
         <span class="caret"></span>
 			    </a>
 			    <!-- Dropdown level 1 -->
@@ -41,43 +33,23 @@
 				<div class="panel-body">
 				    <ul class="nav navbar-nav">
               <li  id="ts0"><a href="{{ url_for('cust_app.touchscreen_c', stab=0) }}">
-                {% if ar %}
-                1. القالب
-                {% else %}
-                1. Template
-                {% endif %}
+                    1. {{ translate('Template', 'en', [defLang]) }}
                 <span class="fa fa-windows"></span>  <span class="badge pull-right" id="bb1"></span></a>
               </li>
 					<li  id="ts2"><a href="{{ url_for('cust_app.touchscreen_c', stab=2) }}">
-            {% if ar %}
-            2. العنوان
-            {% else %}
-            2. Title
-            {% endif %}
+                            2. {{ translate('Title', 'en', [defLang]) }}
             <span class="fa fa-text-width"></span>  <span class="badge pull-right" id="bb1"></span></a>
           </li>
 					<li id="ts3"><a href="{{ url_for('cust_app.touchscreen_c', stab=3) }}">
-            {% if ar %}
-            3. المهمات
-            {% else %}
-            3. Tasks
-            {% endif %}
+                        3. {{ translate('Tasks', 'en', [defLang]) }}
             <span class="fa fa-tasks"></span>  <span class="badge pull-right" id="bb2"></span></a>
           </li>
 					<li id="ts4"><a href="{{ url_for('cust_app.touchscreen_c', stab=4) }}">
-            {% if ar %}
-            4. التنبيهات
-            {% else %}
-            4. Notification
-            {% endif %}
+                        4. {{ translate('Notification', 'en', [defLang]) }}
             <span class="fa fa-flag"></span>  <span class="badge pull-right" id="bb3"></span></a>
           </li>
 					<li id="ts5"><a href="{{ url_for('cust_app.touchscreen_c', stab=5) }}">
-            {% if ar %}
-            5. الخلفية
-            {% else %}
-            5. Background
-            {% endif %}
+                        5. {{ translate('Background', 'en', [defLang]) }}
             <span class="fa fa-picture-o"></span>  <span class="badge pull-right" id="bb4"></span></a>
           </li>
 				    </ul>
@@ -88,11 +60,7 @@
 			<li class="panel panel-default da3 {% if ar %} ar1 {% endif %}" id="dropdown">
 			    <a data-toggle="collapse" href="#dropdown-lvl2">
 				<span class="fa fa-television"></span>
-        {% if ar %}
-        شاشة العرض
-        {% else %}
-        Display Screen
-        {% endif %}
+                {{ translate('Display screen', 'en', [defLang]) }}
         <span class="caret"></span>
 			    </a>
 
@@ -101,53 +69,25 @@
 				<div class="panel-body">
 				    <ul class="nav navbar-nav">
               <li id="ds1"><a onclick="unique.goto(0)">
-                {% if ar %}
-                1. القالب
-                {% else %}
-                1. Template
-                {% endif %}
+                1. {{ translate('Template', 'en', [defLang]) }}
                 <span class="fa fa-windows"></span>  <span class="badge pull-right"></span></a></li>
 					<li id="ds2"><a onclick="unique.goto(1)">
-            {% if ar %}
-            2. العنوان
-            {% else %}
-            2. Title
-            {% endif %}
+                            2. {{ translate('Title', 'en', [defLang]) }}
             <span class="fa fa-text-width"></span>  <span class="badge pull-right"></span></a></li>
 					<li id="ds3"><a onclick="unique.goto(2)">
-            {% if ar %}
-            3. التذكرة الحالية
-            {% else %}
-            3. Current Ticket
-            {% endif %}
+                            3. {{ translate('Current ticket', 'en', [defLang]) }}
             <span class="fa fa-ticket"></span>  <span class="badge pull-right"></span></a></li>
 					<li id="ds4"><a onclick="unique.goto(3)">
-            {% if ar %}
-            4. المكتب الحالي
-            {% else %}
-            4. Current Office
-            {% endif %}
+                            4. {{ translate('Current office', 'en', [defLang]) }}
             <span class="fa fa-building"></span>  <span class="badge pull-right" id="bb8"></span></a></li>
 					<li id="ds5"><a onclick="unique.goto(4)">
-            {% if ar %}
-            5. لائحة الإنتظار
-            {% else %}
-            5. Waitting Tickets
-            {% endif %}
+                            5. {{ translate('Waiting tickets', 'en', [defLang]) }}
             <span class="fa fa-clock-o"></span>  <span class="badge pull-right"></span></a></li>
 					<li id="ds6"><a onclick="unique.goto(5)">
-            {% if ar %}
-            6. التنبيه الصوتي
-            {% else %}
-            6. Notification Sound
-            {% endif %}
+                            6. {{ translate('Notification sound', 'en', [defLang]) }}
             <span class="fa fa-bell"></span>  <span class="badge pull-right"></span></a></li>
 					<li id="ds7"><a onclick="unique.goto(6)">
-            {% if ar %}
-            7. الخلفية
-            {% else %}
-            7. Background
-            {% endif %}
+                            7. {{ translate('Background', 'en', [defLang]) }}
             <span class="fa fa-picture-o"></span>  <span class="badge pull-right" id="bb11"></span></a></li>
 				    </ul>
 				</div>
@@ -157,11 +97,7 @@
       <li class="panel panel-default da4 {% if ar %} ar1 {% endif %}" id="dropdown">
 			    <a data-toggle="collapse" href="#dropdown-lvl3">
 				    <span class="fa fa-film"></span>
-            {% if ar %}
-            عرض الشرائح
-            {% else %}
-            Display Slide-show
-            {% endif %}
+                    {{ translate('Display slideshow', 'en', [defLang]) }}
             <span class="caret"></span>
 			    </a>
 			    <!-- Dropdown level 1 -->
@@ -169,25 +105,13 @@
 				  <div class="panel-body">
 				    <ul class="nav navbar-nav">
 					    <li id="ss1"><a href="{{ url_for('cust_app.slideshow') }}">
-                {% if ar %}
-                قائمة الشرائح
-                {% else %}
-                Slides list
-                {% endif %}
+                                {{ translate('Slides list', 'en', [defLang]) }}
                 <span class="fa fa-list"></span>  <span class="badge pull-right" id="bb7"></span></a></li>
 					    <li id="ss2"><a href="{{ url_for('cust_app.slide_c') }}">
-                {% if ar %}
-                إعدادات الشرائح
-                {% else %}
-                Slides setttings
-                {% endif %}
+                                {{ translate('Slides settings', 'en', [defLang]) }}
                 <span class="fa fa-cogs"></span>  <span class="badge pull-right" id="bb8"></span></a></li>
 					    <li id="ss3"><a href="{{ url_for('cust_app.slide_a') }}">
-                {% if ar %}
-                إضافة شريحة
-                {% else %}
-                Add a slide
-                {% endif %}
+                                {{ translate('Add a slide', 'en', [defLang]) }}
                 <span class="fa fa-plus"></span>  <span class="badge pull-right" id="bb9"></span></a></li>
             </ul>
 				  </div>
@@ -198,22 +122,14 @@
       <li id="da5" {% if ar %} class="ar1" {% endif %}>
           <a href="{{ url_for('cust_app.video') }}">
         <span class="fa fa-video-camera"></span>
-        {% if ar %}
-        عرض الفيديو
-        {% else %}
-        Display Video
-        {% endif %}
+        {{ translate('Display video', 'en', [defLang]) }}
           </a>
       </li>
       {% endif %}
       <li id="da7" {% if ar %} class="ar1" {% endif %}>
 			    <a href="{{ url_for('cust_app.ticket') }}">
 				<span class="fa fa-print"></span>
-        {% if ar %}
-        التذاكر
-        {% else %}
-        Tickets
-        {% endif %}
+                {{ translate('Tickets', 'en', [defLang]) }}
 			    </a>
 			</li>
 		</div><!-- /.navbar-collapse -->

@@ -26,16 +26,9 @@
         watchIt(
             '#display',
             '.tobc',
-            // TODO: Remove AR pics, when multilang UI implemented 
-            {% if ar %}
-            ["{{ url_for('static', filename='images/map2_ar.jpg') }}",
-            "{{ url_for('static', filename='images/map5_ar.jpg') }}",
-            "{{ url_for('static', filename='images/map6_ar.jpg') }}"],
-            {% else %}
             ["{{ url_for('static', filename='images/map2.jpg') }}",
             "{{ url_for('static', filename='images/map5.jpg') }}",
             "{{ url_for('static', filename='images/map6.jpg') }}"],
-            {% endif %}
             function (position) {
                 if (position === '1' || position === '2') $('.warn').removeClass('hide')
                 else $('.warn').addClass('hide')
@@ -59,111 +52,56 @@
       <div class="panel panel-default uniqueness">
     	    <div class="panel-heading text-center">
     		    <h3 class="text-muted">
-                    <span class="fa fa-television"></span>
-                    {% if ar %}
-                    <strong class="ar1"> شاشة العرض -  </strong>
-                    {% else %}
-                    <strong> Display Screen - </strong>
-                    {% endif %}
-                    <span class="fa fa-windows"></span>
-                    {% if ar %}
-                    <strong class="ar1"> القالب </strong>
-                    {% else %}
-                    <strong> Template </strong>
-                    {% endif %}
+                    <strong>
+						<span class="fa fa-television"></span>
+						                    {{ translate('Display screen', 'en', [defLang]) }} - {{ translate('Template', 'en', [defLang]) }}
+					</strong>
                 </h3>
     	    </div>
     	    <div class="panel-body">
-                {{ brp * 3 }}
     		    <center>
     		        <a data-toggle="modal" data-target="#mym">
     			        <img class="img-responsive img-thumbnail tobc mt-2 mb-2" id="map" width="45%"
-                            {% if ar %}
-                            src="{{ url_for('static', filename='images/map2_ar.jpg') }}"
-                            {% else %}
                             src="{{ url_for('static', filename='images/map2.jpg') }}"
-                            {% endif %}
                         >
     		        </a>
-                    {% if ar %}
-                    <p class="h3 text-muted ar2">
-                      | تنبيه : الصورة الممثلة للقالب المختار يتم عرضها تلقائياً مع إختياره |
-  		            </p>
-                    {% else %}
   		            <p class="h3 ar2 text-muted mt-2 mb-2">
-  		               | The picture of the template is automatically changed to the one selected |
+  		               | {{ translate('The picture of the template is automatically changed to the one selected', 'en', [defLang]) }} |
   		            </p>
-                    {% endif %}
     		    </center>
                 <hr>
-                {% if ar %}
-                <h4 class="text-center text-danger ar2">
-                | تنبيه : شاشة العرض لا تدعم العرض بشكل منسق على جميع الشاشات بمختلف الأحجام ,
-                    لإنها صممت لتدعم و تتناسب مع شاشات العرض الكبيرة كشاشة التلفاز و غيرها |
-                </h4>
-                {% else %}
                 <h4 class="text-center text-danger pt-3 pb-3 ar2">
-                  | Reminder: Display screen is meant to be displayed on large sized screen so it doesn't support scalability |
+                  | {{ translate('Reminder: Display screen is meant to be displayed on large sized screen so it does not support scalability', 'en', [defLang]) }} |
                 </h4>
-                {% endif %}
     		    {{ form.csrf_token }}
     		    {{ render_field(form.display, class="form-control") }}
-                {% if ar %}
-                <h4 class="text-center text-danger ar2 warn hide">
-                    | تنبيه : القالب الأول لشاشة العرض هوا القالب الوحيد الذي يسمح بعرض الفيديو و شرائح العرض |
-                </h4>
-                {% else %}
                 <h4 class="text-center text-danger warn hide pb-1 pt-3 ar2">
-                    | Reminder: First template is the only template that supports slideshow and video . |
+                    | {{ translate('Reminder: First template is the only template that supports slideshow and video .', 'en', [defLang]) }} |
                 </h4>
-                {% endif %}
                 <p class='pb-5'></p>
-                {% if ar %}
-                    {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
-                {% else %}
-                    {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
-                {% endif %}
+                {{ unique_btns(translate('Previous', 'en', [defLang]), translate('Apply', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
                 <p class='pb-3'></p>
     	    </div>
     	</div>
 	    <div class="panel panel-default uniqueness">
 	        <div class="panel-heading text-center">
 		        <h3 class="text-muted ar1">
-                    <span class="fa fa-television"></span>
-                    {% if ar %}
-                    <strong class="ar1"> شاشة العرض -  </strong>
-                    {% else %}
-                    <strong> Display Screen - </strong>
-                    {% endif %}
-                    <span class="fa fa-text-width"></span>
-                    {% if ar %}
-                    <strong class="ar1"> العنوان </strong>
-                    {% else %}
-                    <strong> Title </strong>
-                    {% endif %}
+                    <strong>
+						<span class="fa fa-television"></span>
+						                    {{ translate('Display screen', 'en', [defLang]) }} - {{ translate('Title', 'en', [defLang]) }}
+					</strong>
                 </h3>
 	        </div>
 	        <div class="panel-body">
 		        <center>
 		            <a data-toggle="modal" data-target="#mym">
 			            <img class="img-responsive img-thumbnail mt-2" id="map" width="45%"
-                            {% if ar %}
-                            src="{{ url_for('static', filename='images/map2_title_ar.jpg') }}"
-                            {% else %}
                             src="{{ url_for('static', filename='images/map2_title.jpg') }}"
-                            {% endif %}
                         >
 		            </a>
-                    {% if ar %}
-                    <h3 class="text text-muted text-center ar2">
-		            	| الخانة النصية الرئيسية , يمكن إستخدامها كعنوان للشاشة |
-		            </h3>
-                    {% else %}
 		            <h3 class="text text-muted text-center mt-2">
-		            	| Main text box that, can be used to showcase the company brand
-		            	or describe the template displayed to the customers |
+		            	| {{ translate('Main text box that, can be used to showcase the company brand or describe the template displayed to the customers', 'en', [defLang]) }} |
 		            </h3>
-                    {% endif %}
 		        </center>
 		        <hr>
 		        {{ render_field(form.title, class="form-control") }}
@@ -174,133 +112,75 @@
                 {{ render_field(form.effect, class="form-control text-center") }}
                 {{ render_field(form.repeats, class="text-center form-control") }}
                 {{ render_field(form.mduration, class="form-control text-center mb-6") }}
-		        {% if ar %}
-                    {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
-                {% else %}
-                    {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
-                {% endif %}
+		        {{ unique_btns(translate('Previous', 'en', [defLang]), translate('Apply', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
                 <p class="pb-3"></p>
 	        </div>
 	    </div>
 	    <div class="panel panel-default uniqueness">
 	        <div class="panel-heading text-center">
 		        <h3 class="text-muted ar1">
-                    <span class="fa fa-television"></span>
-                    {% if ar %}
-                    <strong class="ar1"> شاشة العرض -  </strong>
-                    {% else %}
-                    <strong> Display Screen - </strong>
-                    {% endif %}
-                    <span class="fa fa-ticket"></span>
-                    {% if ar %}
-                    <strong class="ar1"> التذكرة الحالية </strong>
-                    {% else %}
-                    <strong> Current Ticket </strong>
-                    {% endif %}
+                    <strong>
+						<span class="fa fa-television"></span>
+						                    {{ translate('Display screen', 'en', [defLang]) }} - {{ translate('Current ticket', 'en', [defLang]) }}
+					</strong>
                 </h3>
 	        </div>
 	        <div class="panel-body">
 		        <center>
 		            <a data-toggle="modal" data-target="#mym">
 			            <img class="img-responsive img-thumbnail mt-3" id="map" width="40%"
-                            {% if ar %}
-                            src="{{ url_for('static', filename='images/map2_ticket_ar.jpg') }}"
-                            {% else %}
                             src="{{ url_for('static', filename='images/map2_ticket.jpg') }}"
-                            {% endif %}
                         >
 		            </a>
-                    {% if ar %}
-                    <h3 class="text text-muted text-center ar2">
-                        | خانة نصية رئيسية لعرض آخر تذكرة حالية تم سحبها |
-		            </h3>
-                    {% else %}
 		            <h3 class="text text-muted text-center mt-2 ar2">
-			            | Current ticket meant to display the lastly pulled ticket by an office
-			            and it displays the ticket , its holder specified details |
+			            | {{ translate('Current ticket meant to display the lastly pulled ticket by an office and it displays the ticket , its holder specified details', 'en', [defLang]) }} |
 		            </h3>
-                    {% endif %}
 		        </center>
 		        <hr>
 		        {{ render_field(form.h2size, class="form-control") }}
 		        {{ render_field(form.h2color, class="sp") }}
                 {{ render_field(form.h2font, class="form-control") }}
                 <p class="pb-7"></p>
-		        {% if ar %}
-                    {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
-                {% else %}
-                    {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
-                {% endif %}
+		        {{ unique_btns(translate('Previous', 'en', [defLang]), translate('Apply', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
                 <p class="pb-4"></p>
 	        </div>
 	    </div>
     	<div class="panel panel-default uniqueness">
 	        <div class="panel-heading text-center">
 		        <h3 class="text-muted">
-                    <span class="fa fa-television"></span>
-                    {% if ar %}
-                    <strong class="ar1"> شاشة العرض -  </strong>
-                    {% else %}
-                    <strong> Display Screen - </strong>
-                    {% endif %}
-                    <span class="fa fa-building"></span>
-                    {% if ar %}
-                    <strong class="ar1"> المكتب الحالي </strong>
-                    {% else %}
-                    <strong> Current Office </strong>
-                    {% endif %}
+                    <strong>
+						<span class="fa fa-television"></span>
+						                    {{ translate('Display screen', 'en', [defLang]) }} - {{ translate('Current office', 'en', [defLang]) }}
+					</strong>
                 </h3>
 	        </div>
 	        <div class="panel-body">
 		        <center>
 		            <a data-toggle="modal" data-target="#mym">
 			            <img class="img-responsive img-thumbnail mt-3" id="map" width="40%"
-                            {% if ar %}
-                            src="{{ url_for('static', filename='images/map2_office_ar.jpg') }}"
-                            {% else %}
                             src="{{ url_for('static', filename='images/map2_office.jpg') }}"
-                            {% endif %}
                         >
 		            </a>
-                    {% if ar %}
-                    <h3 class="text text-muted text-center ar2">
-                        | خانة نصية لعرض المكتب الحالي للتذكرة الحالية |
-		            </h3>
-                    {% else %}
 		            <h3 class="text text-muted text-center mt-2 ar2">
-		            	| Current office meant to display the details of the lastly repsonsible
-		            	office of pulling a ticket for proccessing |
+		            	| {{ translate('Current office meant to display the details of the lastly responsible office of pulling a ticket for processing', 'en', [defLang]) }} |
 		            </h3>
-                    {% endif %}
 		        </center>
 		        <hr>
 		        {{ render_field(form.tsize, class="form-control") }}
 		        {{ render_field(form.tcolor, class="sp") }}
 		        {{ render_field(form.tfont, class="form-control") }}
                 <p class="pb-7"></p>
-                {% if ar %}
-                    {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
-                {% else %}
-                    {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
-                {% endif %}
+                {{ unique_btns(translate('Previous', 'en', [defLang]), translate('Apply', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
                 <p class="pb-3"></p>
 	        </div>
 	    </div>
 	    <div class="panel panel-default uniqueness">
 	        <div class="panel-heading text-center">
 		        <h3 class="text-muted">
-                    <span class="fa fa-television"></span>
-                    {% if ar %}
-                    <strong class="ar1"> شاشة العرض -  </strong>
-                    {% else %}
-                    <strong> Display Screen - </strong>
-                    {% endif %}
-                    <span class="fa fa-clock-o"></span>
-                    {% if ar %}
-                    <strong class="ar1"> لائحة الإنتظار </strong>
-                    {% else %}
-                    <strong> Waiting list </strong>
-                    {% endif %}
+                    <strong>
+						<span class="fa fa-television"></span>
+						{{ translate('Display screen', 'en', [defLang]) }} - {{ translate('Waiting list', 'en', [defLang]) }}
+					</strong>
                 </h3>
 	        </div>
 	        <div class="panel-body">
@@ -308,66 +188,36 @@
 		            <a data-toggle="modal" data-target="#mym">
 		        	    <img class="img-responsive img-thumbnail mt-3" id="map" width="40%" src="{{ url_for('static', filename='images/map2_waiting.jpg') }}">
 		            </a>
-                    {% if ar %}
-                    <h3 class="text text-muted text-center ar2">
-                        | خانات نصية لعرض لائحة للتذاكر في حالة الإنتظار |
-		            </h3>
-                    {% else %}
 		            <h3 class="text text-muted text-center mt-2 ar2">
-		            	| Waiting list of tickets which meant to display , the list of tickets
-		            	on wait to be proccessed by one of the offices |
+		            	| {{ translate('Waiting list of tickets which meant to display , the list of tickets on wait to be processed by one of the offices', 'en', [defLang]) }} |
 		            </h3>
-                    {% endif %}
 		        </center>
 		        <hr>
 		        {{ render_field(form.ssize, class="form-control") }}
 		        {{ render_field(form.scolor, class="sp") }}
 		        {{ render_field(form.sfont, class="form-control") }}
                 <p class="pb-9"></p>
-                {% if ar %}
-                  {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
-                {% else %}
-                  {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
-                {% endif %}
+                {{ unique_btns(translate('Previous', 'en', [defLang]), translate('Apply', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
                 <p class="pb-3"></p>
 	        </div>
 	    </div>
 	    <div class="panel panel-default uniqueness">
 	        <div class="panel-heading text-center">
 		        <h3 class="text-muted">
-                    <span class="fa fa-television"></span>
-                    {% if ar %}
-                    <strong class="ar1"> شاشة العرض -  </strong>
-                    {% else %}
-                    <strong> Display Screen - </strong>
-                    {% endif %}
-                    <span class="fa fa-flag"></span>
-                    {% if ar %}
-                    <strong class="ar1"> التنبيه الصوتي </strong>
-                    {% else %}
-                    <strong> Notification Sound </strong>
-                    {% endif %}
+                    <strong>
+						<span class="fa fa-television"></span>
+						{{ translate('Display screen', 'en', [defLang]) }} - {{ translate('Notification sound', 'en', [defLang]) }}
+					</strong>
                 </h3>
 	        </div>
 	        <div class="panel-body">
-                {{ brp * 4 }}
 		        <center>
 		            <a data-toggle="modal" data-target="#mym">
-		        	    <span class="img-responsive img-thumbnail fa fa-5x fa-bell" id="map"></span>
+		        	    <span class="img-responsive img-thumbnail fa mt-4 fa-5x fa-bell" id="map"></span>
 		            </a>
-                    {% if ar %}
-                    <h3 class="text text-muted text-center ar2">
-                        | تنبيه صوتي يتم ضبطه بإختيار إحدا الملفات الصوتية المرفوعه على منصة
-                        الملتيميديا , كذالك يمكن ضبط نظام المنادات الصوتي للتذاكر النصية مع إمكانية
-                        تحديد لغة المنادات |
-		            </h3>
-                    {% else %}
 		            <h3 class="text text-muted text-center mt-2 mb-4 ar2">
-		            	| A sound tune that will be played whenever the customer
-		            	ticket has been pulled . As well as a text to speech announcement
-		            	which will be played in the language selected |
+		            	| {{ translate('A sound tune that will be played whenever the customer ticket has been pulled . As well as a text to speech announcement which will be played in the language selected', 'en', [defLang]) }} |
 		            </h3>
-                    {% endif %}
 		        </center>
 		        <hr>
 		        {{ render_field(form.naudio, class="form-control") }}
@@ -375,29 +225,17 @@
                 {{ render_field(form.anr, class='form-control') }}
                 {{ render_field(form.anrt, class="form-control")}}
                 <p class="pb-6"></p>
-                {% if ar %}
-                    {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
-                {% else %}
-                    {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
-                {% endif %}
+                {{ unique_btns(translate('Previous', 'en', [defLang]), translate('Apply', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
                 <p class="pb-4"></p>
 	        </div>
 	    </div>
 	    <div class="panel panel-default uniqueness">
 	        <div class="panel-heading text-center">
 		        <h3 class="text-muted">
-                    <span class="fa fa-television"></span>
-                    {% if ar %}
-                    <strong class="ar1"> شاشة العرض -  </strong>
-                    {% else %}
-                    <strong> Display Screen - </strong>
-                    {% endif %}
-                    <span class="fa fa-picture-o"></span>
-                    {% if ar %}
-                    <strong class="ar1"> الخلفية </strong>
-                    {% else %}
-                    <strong> background </strong>
-                    {% endif %}
+                    <strong>
+						<span class="fa fa-television"></span>
+						{{ translate('Display screen', 'en', [defLang]) }} - {{ translate('Background', 'en', [defLang]) }}
+					</strong>
                 </h3>
 	        </div>
 	        <div class="panel-body">
@@ -407,23 +245,9 @@
                             src="{{ url_for('static', filename='images/map2_background.jpg') }}"
                         >
 		            </a>
-                    {% if ar %}
-                    <h3 class="text text-muted text-center ar2">
-                        | حقل صوري يتيح للمستخدم تحديد صورة قد تم رفعها إلى منصة الوسائط
-                        المتعددة , بالإمكان تحديد خلفية بإختيار لون معين كبديل لإستخدام صورة
-                        , لإستخدام أي من الخيريين يتوجب عليك إختيار أحدهم و ترك القيمة الأخرى مفرغة
-                        , كذالك يمكن تحديد مدة تجديد البيانات المعروضة في شاشة العرض بإختار الثواني
-                        كتوقيت لتجديد البيانات المحدثه |
-		            </h3>
-                    {% else %}
 		            <h3 class="text text-muted text-center ar2 mt-2 mb-4">
-		            	| The background image on-which all elements of
-		            	the display screen will appear. you can select a specific color
-		            	or chose to select your
-		            	own special background image from the multimedia
-		            	uploaded images. And finally the refreash rate of the Display screen |
+		            	| {{ translate('The background image on-which all elements of the display screen will appear. you can select a specific color or chose to select your own special background image from the multimedia uploaded images. And finally the refresh rate of the Display screen', 'en', [defLang]) }} |
 		            </h3>
-                    {% endif %}
 		        </center>
 		        <hr>
 		        {{ render_field(form.background, class="mb-3 form-control") }}
@@ -433,13 +257,8 @@
                 <p class="pb-3"></p>
 		        {% if form.errors %}
 		        <div class="well">
-                    {% if ar %}
-                    <h3 class="text-center text-warning ar1">- الأخطاء :</h3>
-		                <ol class="text-center h4 text-danger ar1">
-                    {% else %}
-		                <h4 class="text-center text-warning">- Errors :</h4>
+		                <h4 class="text-center text-warning">- {{ translate('Errors', 'en', [defLang]) }} :</h4>
 		                <ol class="text-center h4 text-danger ar2">
-                    {% endif %}
 			                {% for field_name, field_errors in form.errors|dictsort if field_errors %}
 			                {% for error in field_errors %}
 			                <li class="ar1">{{ form[field_name].name }}: {{ error }}</li>
@@ -449,11 +268,7 @@
                 </div>
                 {% endif %}
                 <p class="pb-4"></p>
-		        {% if ar %}
-                    {{ unique_btns('تراجع', 'تخصيص', 'تقدم', ar) }}
-                {% else %}
-                    {{ unique_btns('Previous', 'Customize', 'Next', ar) }}
-                {% endif %}
+		        {{ unique_btns(translate('Previous', 'en', [defLang]), translate('Apply', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
                 <p class="pt-4"></p>
 	        </div>
 	    </div>
@@ -463,8 +278,8 @@
 {% from '_modals.html' import mapModal %}
 {{ mapModal([[
     'mym',
-    'Template Map',
+    translate('Template map', 'en', [defLang]),
     url_for('static', filename='images/map2.jpg')
-]]) }}
+]], close=translate('Exit', 'en', [defLang])) }}
 
 {% endblock %}

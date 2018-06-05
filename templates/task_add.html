@@ -17,36 +17,21 @@
 	<form method="POST" enctype="multipart/form-data" id="fm">
 		<div class="panel panel-default">
 	  	<div class="panel-heading text-center">
-    		{% if ar %}
-    		<h3 class="text-muted"><span class="fa fa-plus"></span><strong class="ar1"> المكتب - إضافة مهمة جديدة </strong></h3>
-    		{% else %}
-    		<h3 class="text-muted"><strong><span class="fa fa-plus"></span>  Office - Add new task </strong></h3>
-    		{% endif %}
+    		<h3 class="text-muted"><strong><span class="fa fa-plus"></span> {{ translate('Add new task', 'en', [defLang]) }} </strong></h3>
 	    </div>
 	    <div class="panel-body">
-				{{ form.csrf_token }}
-				<a data-toggle="modal" data-target="#mym">
-		    	<center><img class="img-responsive mt-5 mb-2 img-thumbnail" id="map" width="40%" src="{{ url_for('static', filename='images/manage_task.jpg') }}"></center>
-				</a>
-    		{% if ar %}
-    		<p class="h4 text-center text-muted ar2">
-      		| مهمة : عبارة عن عنوان نصي حيث يتم إصدار التذاكر عن طريقه و يتيح إدارة و تنظيم التذاكر
-      			للمستخدميين |
-				</p>
-    		{% else %}
-				<p class="h3 text-center text-muted ar2">
-		    	| Task : the option that its title appears to the user on the Touch screen to choose from and dispatch a ticket for it |
-				</p>
-    		{% endif %}
-				<hr class='mb-4'>
-				{{ render_field(form.name, class="form-control") }}
-				<p class="pt-6"></p>
-				<center>
-    			{% if ar %}
-      		{{ form.submit(class_="btn btn-md btn-danger ar1") }}
-    			{% else %}
-      		{{ form.submit(class_="btn btn-md btn-danger") }}
-    			{% endif %}
+			{{ form.csrf_token }}
+			<a data-toggle="modal" data-target="#mym">
+		    <center><img class="img-responsive mt-5 mb-2 img-thumbnail" id="map" width="40%" src="{{ url_for('static', filename='images/manage_task.jpg') }}"></center>
+			</a>
+			<p class="h3 text-center text-muted ar2">
+		    	| {{ translate("Task : the option that its title appears to the user on the Touch screen to choose from and dispatch a ticket for it", 'en', [defLang]) }} |
+			</p>
+			<hr class='mb-4'>
+			{{ render_field(form.name, class="form-control") }}
+			<p class="pt-6"></p>
+			<center>
+				<button class="btn btn-md btn-danger">{{ translate('Add task', 'en', [defLang]) }}</button>
     		</center>
     		<p class="pb-2"></p>
 	    </div>
@@ -54,5 +39,5 @@
   </form>
 </div>
 
-{{ qrModal([['mym', 'Management template', url_for('static', filename='images/manage_map.jpg')]]) }}
+{{ qrModal([['mym', translate('Management template', 'en', [defLang]), url_for('static', filename='images/manage_map.jpg')]], close=translate('Exit', 'en', [defLang])) }}
 {% endblock %}

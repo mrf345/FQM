@@ -9,7 +9,7 @@ import os
 from httplib import HTTPConnection as htp
 from flask import session
 import languages as LANGUAGES
-from gtts import gTTS as gt
+from database import gtranslator
 # Extra functions
 
 
@@ -89,14 +89,11 @@ def r_path(relative_path):
 def get_lang(i_num):
     """ function to get the set language and return the correct flash
     messages list """
-    msgl = LANGUAGES.msgsl_en
-    if session.get('lang') == 'AR':
-        msgl = LANGUAGES.msgsl_ar
-    return msgl[i_num]
+    return LANGUAGES.flashMessages[i_num]
 
 
-def say_it(msg="say something", lang="en-us",
-           path="static/tts/"):
-    """ Google text to speech function to be threaded """
-    say = gt(text=msg, lang=lang)
-    say.save(path)
+def transAll():
+    """ to translate all flash messages """
+    for l in LANGUAGES.flashMessages:
+        gtranslator.translate(l, 'en', ['ar', 'fr', 'it', 'es'])
+    return True

@@ -40,49 +40,25 @@
             <div class="col-xs-12 text-center snb coat pt-2 pb-2" style="background: rgba(0,0,0,0.9);">
                 <a href="https://www.mozilla.org/en-US/firefox/new/" class='lightit' target="_blank">
                   <img src="{{ url_for('static', filename='images/nojs.png') }}" class="image-responsive mt-3" id="blogo" width="35%">
-                  {% if ar %}
-                  <h1 class="text text-danger ar1">لم يتم العثور على جافاسكربت</h1>
-                  <br />
-                      <h3 class='text text-muted i ar1'><a href="{{ url_for('lang_switch', lang=2) }}">إنجليزي</a> | <a href="{{ url_for('lang_switch', lang=1) }}">عربي</a></h3>
-                </a>
-		            <br><br />
-		            <h3 class="text text-warning ar2">
-		              بعض من ميزات هذا البرنامج تتعتمد بشكل كلي على لغة جافاسكربت
-                  المتوفرة في جميع المتصفحات الحديثة , قد يكون عدم توفرها في
-                  متصفحك بسبب إضافة تقوم تلقائياً بتعطيلها , أو لستخدامك لمتصفح قديم جداً
-		            </h3>
-                <br />
-	             	<h3 class="text text-muted ar1">
-	             	    لذالك ننصح بتفعيل جافاسكربت في المتصفح , أو القيام بتنصيب آخر نسخة
-                    متوفرة من متصفح يدعم اللغة كمتصفح فيرفوكس
-	             	</h3>
-	             	<br><br>
-	             	<a class="btn btn-lg btn-warning" href="{{ url_for('core.root') }}">
-	             	    <strong class="ar1">نعم , قمت بتفعيلها</strong>
-	             	</a>
-                  {% else %}
-                  <h1 class="text text-danger mb-2" >Javascript is disabled</h1>
+                  <h1 class="text text-danger mb-2" >Javascript {{ translate('is disabled', 'en', [defLang]) }}</h1>
                   <h3 class='text text-muted i mb-2'>
-                      <a href="{{ url_for('lang_switch', lang=2) }}">English</a> | 
-                      <a href="{{ url_for('lang_switch', lang=2) }}">Italian</a> | 
-                      <a href="{{ url_for('lang_switch', lang=2) }}">Spanish</a> | 
-                      <a href="{{ url_for('lang_switch', lang=2) }}">French</a> | 
-                      <a href="{{ url_for('lang_switch', lang=1) }}">Arabic</a>
+                      <a href="{{ url_for('lang_switch', lang='en') }}">English</a> | 
+                      <a href="{{ url_for('lang_switch', lang='it') }}">Italian</a> | 
+                      <a href="{{ url_for('lang_switch', lang='es') }}">Spanish</a> | 
+                      <a href="{{ url_for('lang_switch', lang='fr') }}">French</a> | 
+                      <a href="{{ url_for('lang_switch', lang='ar') }}">Arabic</a>
                   </h3>
 		           <h3 class="text text-warning mt-2 mb-2">
-		              This application relays heavily on Javascript, it seems you have it disabled,
-		              for some reason : you might be using an old out-dated browser or might be using a browser
-		              that intentionally does not support Javascript. Browsing this application without
-		              Javascript enabled will result in unintentional dysfunctions.
+                        {{ translate("This application relays heavily on Javascript, it seems you have it disabled, for some reason : you might be using an old out-dated browser or might be using a browser that intentionally does not support Javascript. Browsing this application without Javascript enabled will result in unintentional dysfunctions.", 'en', [defLang]) }}
 		          </h3>
 	             	<h3 class="text text-muted mb-3">
-	             	    <u>So we recommend you to enable Javascript or to use an equipped with
-                      Javascript browser like Firefox.</u>
+	             	    <u>
+                            {{ translate("So we recommend you to enable Javascript or to use an equipped with Javascript browser like Firefox.", 'en', [defLang]) }}
+                        </u>
 	             	</h3>
 	             	<a class="btn btn-lg btn-warning ar2 mb-4" href="{{ url_for('errorsh_app.nojs', ino=1) }}">
-	             	    <strong>Sure, I enabled Javascript</strong>
+	             	    <strong>{{ translate('Sure, I enabled Javascript', 'en', [defLang]) }}</strong>
 	             	</a>
-                {% endif %}
             </div>
 	    </div>
     </div>
