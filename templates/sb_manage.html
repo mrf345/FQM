@@ -14,13 +14,13 @@
 		<div class="side-menu-container">
 		    <ul class="nav navbar-nav">
 			{% if current_user.role_id != 3 %}
-			<li id="da1" {% if ar %} class="ar1" {% endif %}>
+			<li id="da1" >
 			    <a href="{{ url_for('manage_app.search') }}">
 				<span class="fa fa-search"></span>
 				{{ translate('Search', 'en', [defLang]) }}
 			    </a>
 			</li>
-			<li id="da2" {% if ar %} class="ar1" {% endif %}>
+			<li id="da2" >
 			    <a href="{{ url_for('manage_app.all_offices') }}">
 				<span class="fa fa-ticket"></span>
 				{{ translate('All tickets', 'en', [defLang]) }}
@@ -29,11 +29,17 @@
 					</span>
 			    </a>
 			</li>
-			<li id="da3" {% if ar %} class="ar1" {% endif %}>
+			<li id="da3" >
 			    <a href="{{ url_for('manage_app.office_a') }}">
 				<span class="fa fa-plus"></span>
 				{{ translate('Add new office', 'en', [defLang]) }}
 			    </a>
+			</li>
+			<li id="da4" >
+				<a onclick="announce()">
+				<span class="glyphicon glyphicon-refresh"></span>
+				{{ translate('Repeat announcement', 'en', [defLang]) }}
+				</a>
 			</li>
 			{% endif %}
 			<!-- Dropdown-->
@@ -54,13 +60,21 @@
 			    <div id="dropdown-lvl{{ office.id }}" class="panel-collapse collapse">
 				<div class="panel-body">
 				    <ul class="nav navbar-nav">
-					<li  id="t1{{ office.id }}" {% if ar %} class="ar1" {% endif %}>
+					<li  id="t1{{ office.id }}" >
 					    <a href="{{ url_for('manage_app.offices', o_id=office.id) }}">
 						<span class="fa fa-ticket"></span>
 						{{ translate('All tickets', 'en', [defLang]) }}
 					    </a>
 					</li>
-					<li  id="to{{ office.id }}" {% if ar %} class="ar1" {% endif %}>
+					{% if current_user.role_id == 3 %}
+					<li id="tr{{ office.id }}" >
+						<a onclick="announce()">
+						<span class="glyphicon glyphicon-refresh"></span>
+						{{ translate('Repeat announcement', 'en', [defLang]) }}
+						</a>
+					</li>
+					{% endif %}
+					<li  id="to{{ office.id }}" >
 						<a href="{{ url_for('administrate.operators', t_id=office.id) }}">
 						<span class="fa fa-user"></span>
 						{{ translate('Operators', 'en', [defLang]) }}
@@ -71,7 +85,7 @@
 					</li>
 			<!-- Fix: pulling tickets by task_id instead of office_id -->
 			<!-- Will include pull ticket under task instead of all tickets, fast and simple -->
-					<li  id="t3{{ office.id }}" {% if ar %} class="ar1" {% endif %}>
+					<li  id="t3{{ office.id }}" >
 					    <a href="{{ url_for('manage_app.task_a', o_id=office.id) }}">
 						<span class="fa fa-plus"></span>
 						{{ translate('Add new task', 'en', [defLang]) }}
@@ -79,13 +93,13 @@
 					</li>
 					{% for task in tasks %}
 					{% if task.office_id == office.id %}
-					<li id="tt{{ office.id }}{{ task.id }}" {% if ar %} class="ar1" {% endif %}>
+					<li id="tt{{ office.id }}{{ task.id }}" >
 					    <a href="{{ url_for('manage_app.task', o_id=task.id) }}">
 						{{ task.id }}.  {{ task.name }}
 					    </a>
 					</li>
 					<!-- Pull is shifted to here -->
-					<li  id="tf{{ office.id }}" {% if ar %} class="ar1" {% endif %}>
+					<li  id="tf{{ office.id }}" >
 						<a href="{{ url_for('core.pull', o_id=task.id) }}">
 								<span class="fa fa-minus"></span>
 								{{ translate('Pull a ticket', 'en', [defLang]) }}

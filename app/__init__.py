@@ -471,6 +471,7 @@ def run_app():
         if session.get('lang') not in ['en', 'ar', 'fr', 'it', 'es']:
             session['lang'] = 'en'
 
+
     # Adding error handlers on main app instance
     @app.errorhandler(404)
     @app.errorhandler(500)

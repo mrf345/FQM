@@ -113,7 +113,7 @@ def printwin_ar(pname, ti, ofc, tnu, tas, cticket):
     task = arabic_reshaper.reshape(taskt)
     task = get_display(task)
     datet = u'الوقت : '
-    datet += str(datetime.utcnow())[:-7]
+    datet += str(datetime.now())[:-7]
     date = arabic_reshaper.reshape(datet)
     date = get_display(date)
     aheadt = u'تذاكر قبلك : '

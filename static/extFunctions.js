@@ -26,3 +26,14 @@ var reloadIf = function (toGo=window.location.href, duration=1000) {
         })
     }, duration)
 }
+
+var announce = function () {
+    // to $.post for repeating announcement and displaying flash message for success or failure
+    var flashMsg = function (cate) {
+        $('.postFlash').removeClass('hide')
+        $('.postFlash > .alert-' + cate).removeClass('hide')
+    }
+    $.post(window.origin + '/rean', function (resp) {
+        resp === 'success' ? flashMsg('info') : flashMsg('danger')
+    })
+}

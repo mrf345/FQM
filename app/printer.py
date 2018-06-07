@@ -60,7 +60,7 @@ def printit(printer, ticket, office, tnumber,
         printer.text(PRINTER[lang][4] + str(task) + "\n")
     except:
         pass
-    printer.text(PRINTER[lang][5] + str(datetime.utcnow())[:-7] + "\n")
+    printer.text(PRINTER[lang][5] + str(datetime.now())[:-7] + "\n")
     printer.cut()
     return printer
 
@@ -118,7 +118,7 @@ def printit_ar(pname, ti, ofc, tnu, tas, cticket):
     task = arabic_reshaper.reshape(taskt)
     task = get_display(task)
     datet = u'الوقت : '
-    datet += str(datetime.utcnow())[:-7]
+    datet += str(datetime.now())[:-7]
     date = arabic_reshaper.reshape(datet)
     date = get_display(date)
     aheadt = u'تذاكر قبلك : '

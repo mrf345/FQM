@@ -29,6 +29,7 @@
         <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
         <script src="{{ url_for('static', filename='disciple.js') }}"></script>
         <script src="{{ url_for('static', filename='wallpapers.js') }}"></script>
+        <script src="{{ url_for('static', filename='extFunctions.js') }}"></script>
         {{ beloadingNotifier(version, beload=False, release=translate("You are using an older version of FQM, a newer release is available on fqms.github.io", 'en', [defLang]), firefox=translate("You are not using Firefox browser, which this project is designed and most suited for.", 'en', [defLang])) }}
         <script type="text/javascript">
             window.onload = function () {
@@ -228,6 +229,17 @@
         </div>
         <div class="container-fluid main-container">
             {% block sidebar %}{% endblock %}
+            <div class="col-md-{% if adme %}12{% else %}10{% endif %} content hide postFlash">
+                <!-- For announcement flash message -->
+                <div class="alert alert-dismissable alert-info hide">
+                    <button class="close" onclick="$('.postFlash').addClass('hide')">&times;</button>
+                    <h4 class="text text-center ar2">[ {{ translate('Notice: repeating announcement successfully.', 'en', [defLang]) }} ]</h4>
+                </div>
+                <div class="alert alert-dismissable alert-danger hide">
+                    <button class="close" onclick="$('.postFlash').addClass('hide')">&times;</button>
+                    <h4 class="text text-center ar2">[ {{ translate('Error: failed to repeat announcement.', 'en', [defLang]) }} ]</h4>
+                </div>
+            </div>
             {% for category, message in get_flashed_messages(with_categories=true) %}
                 <div class="col-md-{% if adme %}12{% else %}10{% endif %} content">
                     <div class="alert alert-{{ category }} alert-dismissable">

@@ -605,6 +605,13 @@
         "fr": "Erreur: Aucune tâche à réinstaller",
         "it": "Errore: nessuna attività esistente da reimpostare"
     },
+    "Error: failed to repeat announcement.": {
+        "ar": "خطأ: فشل في تكرار الإعلان.",
+        "en": "Error: failed to repeat announcement.",
+        "es": "Error: no se pudo repetir el anuncio.",
+        "fr": "Erreur: échec de la répétition de l'annonce.",
+        "it": "Errore: impossibile ripetere l'annuncio."
+    },
     "Error: fault in search parameters": {
         "ar": "خطأ: خطأ في معلمات البحث",
         "es": "Error: error en los parámetros de búsqueda",
@@ -1190,6 +1197,7 @@
     },
     "Notice: Display customization has been updated. ..": {
         "ar": "إشعار: تم تحديث تخصيص العرض. ..",
+        "en": "Notice: Display customization has been updated. ..",
         "es": "Aviso: la personalización de la pantalla se ha actualizado. ..",
         "fr": "Remarque: la personnalisation de l'affichage a été mise à jour. ..",
         "it": "Avviso: la personalizzazione della visualizzazione è stata aggiornata. .."
@@ -1220,6 +1228,7 @@
     },
     "Notice: Ticket has been pulled ..": {
         "ar": "ملاحظة: تم سحب التذكرة ..",
+        "en": "Notice: Ticket has been pulled ..",
         "es": "Aviso: el boleto ha sido retirado ..",
         "fr": "Avis: Le billet a été tiré ..",
         "it": "Avviso: il biglietto è stato ritirato .."
@@ -1322,6 +1331,16 @@
         "es": "Aviso: la oficina ha sido actualizada.",
         "fr": "Avis: le bureau a été mis à jour.",
         "it": "Avviso: l'ufficio è stato aggiornato."
+    },
+    "Notice: repeating announcement is issued.": {
+        "en": "Notice: repeating announcement is issued."
+    },
+    "Notice: repeating announcement successfully.": {
+        "ar": "إشعار: تكرار الإعلان بنجاح.",
+        "en": "Notice: repeating announcement successfully.",
+        "es": "Aviso: repetir el anuncio con éxito.",
+        "fr": "Avis: répéter l'annonce avec succès.",
+        "it": "Avviso: annuncio ripetuto con successo."
     },
     "Notice: settings have been updated .": {
         "ar": "إشعار: تم تحديث الإعدادات.",
@@ -1732,6 +1751,13 @@
         "es": "Recordatorio: para usar boletos impresos debe asignar la impresora disponible",
         "fr": "Rappel: pour utiliser des tickets imprimés, vous devez attribuer une imprimante disponible",
         "it": "Promemoria: per utilizzare i biglietti stampati è necessario assegnare la stampante disponibile"
+    },
+    "Repeat announcement": {
+        "ar": "إعلان متكرر",
+        "en": "Repeat announcement",
+        "es": "Repita el anuncio",
+        "fr": "Répéter l'annonce",
+        "it": "Ripeti l'annuncio"
     },
     "Required not less than 5 nor more than 200 letters": {
         "ar": "مطلوب لا يقل عن 5 ولا يزيد عن 200 حرف",

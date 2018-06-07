@@ -10,10 +10,10 @@
 > - [x] Make google fonts default regardless of lang (6/1st)
 > - [x] use macros for inline css (6/1st)
 
-- [ ] JsonStream:
-> - [ ] Fix mdruation and effect_duration
+- [x] JsonStream:
+> - [x] Fix mdruation and effect_duration
 
-- [ ] Fix date in printed ticket
+- [x] Fix date in printed ticket (6/8th)
 > from UTC now to local datetime
 
 - [x] Template: (6/1st)
@@ -59,9 +59,9 @@
 > - [ ] alias for task and office in display and display/announcement
 > - [ ] alias for task and office in app/languages
 
-- [ ] Recall announcement
-> - [ ] add special recall value /feed
-> - [ ] add exception to repeat on display.html when special /feed value met
+- [x] Recall announcement (6/8th)
+> - [x] add special recall value /feed (6/8th)
+> - [x] add exception to repeat on display.html when special /feed value met (6/8th)
 
 - [x] Implement flask_googletrans: (6/5th)
 > - [x] add fr, es, it en to /lang (6/5th)

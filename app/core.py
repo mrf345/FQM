@@ -4,7 +4,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from flask import url_for, flash, render_template, redirect
-from flask import session, jsonify, Blueprint
+from flask import session, jsonify, Blueprint, request
 from flask_login import current_user, login_required, login_user
 import os
 from datetime import datetime
@@ -390,14 +390,20 @@ def feed():
     for a in range(len(hl), 8):
         hl.append("Empty")
     # fixing identical changes bug
-    hcounter = data.Waiting.query.order_by(data.Waiting.id).first()
-    if co:
-        hcounter = co.ticket
-    else:
-        if hcounter is not None:
-            hcounter = hcounter.number
-        else:
-            hcounter = "Empty"
+    # adding intended modification in case of recal 
+    hcounter = co.ticket if co else data.Waiting.query.order_by(data.Waiting.id).first()
+    hcounter = hcounter.number if not co and hcounter is not None else "Empty"
+    # ensure unique val to instigate renouncement, with emptying session
+    if session.get('announce'):
+        hcounter = session.get('announce')
+        session['announce'] = None
+    # if co:
+    #     hcounter = co.ticket
+    # else:
+    #     if hcounter is not None:
+    #         hcounter = hcounter.number
+    #     else:
+    #         hcounter = "Empty"
     # End of fix
     f = data.Display_store.query.filter_by(id=0).first()
     return jsonify(con=con, cot=cot, cott=cott,
@@ -406,6 +412,16 @@ def feed():
                    w7=hl[6], w8=hl[7],
                    w9=hcounter)
 
+
+@core.route('/rean', methods=['POST'])
+def rean():
+    """ to set receive $.get json and activate re-announcement """
+    if current_user.is_authenticated:
+        session['announce'] = datetime.utcnow()
+        return 'success'
+    else:
+        return 'fail'
+    
 
 @core.route('/display')
 def display():
