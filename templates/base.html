@@ -55,9 +55,8 @@
                     category: ['CityPorn'],
                     defaultImg: "{{ url_for('static', filename='images/dbg.jpg') }}"
                 })
-                // TODO: Move disciple to beloadingNotifier after multilang interface & mod uniqueness_btns
-                window.debDis = disciple({
-                    identifier: 'form',
+                disciple({
+                    identifier: '.disciple',
                     msg_text: "{{ translate('You made changes on the previous form without submitting. Do you wish to restore it ?', 'en', [defLang]) }}",
                     restore_text: "{{ translate('Now', 'en', [defLang]) }}",
                     later_text: "{{ translate('Later', 'en', [defLang]) }}",

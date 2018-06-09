@@ -50,7 +50,7 @@
 				<span class="fa fa-desktop"></span>
 				{{ office.id }}.{{ translate('Office', 'en', [defLang]) }}  {{ office.prefix }}{{ office.name }}
 				<span class="caret"></span>
-				{% if serial.filter_by(p=False, office_id=office.id).count() > 1 %}
+				{% if serial.filter_by(p=False, office_id=office.id).count() >= 1 %}
 				<span class="badge pull-right">
 				    {{ serial.filter_by(p=False, office_id=office.id).count() }}
 				</span>
@@ -103,7 +103,7 @@
 						<a href="{{ url_for('core.pull', o_id=task.id) }}">
 								<span class="fa fa-minus"></span>
 								{{ translate('Pull a ticket', 'en', [defLang]) }}
-								{% if serial.filter_by(p=False, task_id=task.id).count() > 1 %}
+								{% if serial.filter_by(p=False, task_id=task.id).count() >= 1 %}
 								<span class="badge pull-right">
 									{{ serial.filter_by(p=False, task_id=task.id).count() }}
 								</span>

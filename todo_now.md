@@ -35,12 +35,12 @@
 - [x] Un-bundled JS (5/12th)
 > - [x] make sure of unique toReturn values in all un-bundled js scripts. to avoid future clashes. (5/12th)
 
-- [ ] Fix type of ticket displayed
-> - [ ] All offices
-> - [ ] Tasks
-> - [ ] Offices
+- [x] Fix type of ticket displayed
+> - [x] All offices
+> - [x] Tasks
+> - [x] Offices
 
-- [ ] GUI smaller sized font for server status
+- [x] GUI smaller sized font for server status
 
 
 ## To Add:

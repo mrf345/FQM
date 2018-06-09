@@ -1,9 +1,9 @@
 // Dependencies: jQuery, jQuery-ui, FontAwesome
 
-var browserNotifier = function (options={}, callback=function () {}) {
-    returnBN = {} // unique object name to return
+var browserNotifier = function (options={}, callback=function () {}, uniVal='v' + Math.floor(Math.random() * 1000000)) {
+    var returnBN = {}; returnBN[uniVal] = {} // unique object name to return
 
-    returnBN.options = {
+    returnBN[uniVal].options = {
         text: options.text || 'You are not using Firefox, which this project is designed and most suited for.',
         textClass: options.textClass || '',
         textStyle: options.textStyle || {
@@ -38,17 +38,17 @@ var browserNotifier = function (options={}, callback=function () {}) {
         } // if returns true notifier will be activated
     }
 
-    returnBN.defaults = { // list of browsers name in navigator and fa- icon names
+    returnBN[uniVal].defaults = { // list of browsers name in navigator and fa- icon names
         elements: { // list of jQuery elements to be appended
-            text: $('<h1>').text(returnBN.options.text).css(returnBN.options.textStyle).addClass('text-center'),
-            button: $('<button>').addClass(returnBN.options.buttonClass).css(returnBN.options.buttonStyle)
-            .text(returnBN.options.buttonText).click(function () {
-                returnBN.__exit__()
+            text: $('<h1>').text(returnBN[uniVal].options.text).css(returnBN[uniVal].options.textStyle).addClass('text-center'),
+            button: $('<button>').addClass(returnBN[uniVal].options.buttonClass).css(returnBN[uniVal].options.buttonStyle)
+            .text(returnBN[uniVal].options.buttonText).click(function () {
+                returnBN[uniVal].__exit__()
                 callback()
             }),
-            icon: $('<a>').attr('href', returnBN.options.iconLink).attr('target', '_blank')
+            icon: $('<a>').attr('href', returnBN[uniVal].options.iconLink).attr('target', '_blank')
             .append(
-                $('<span>').addClass(returnBN.options.iconClass).css(returnBN.options.iconStyle)
+                $('<span>').addClass(returnBN[uniVal].options.iconClass).css(returnBN[uniVal].options.iconStyle)
                 .hover(function () {
                     $(this).animate({'color': 'gray'})
                 }, function () {
@@ -58,13 +58,13 @@ var browserNotifier = function (options={}, callback=function () {}) {
         }
     }
 
-    returnBN.defaults.elements.overlay = $('<div>')
-    .attr('id', 'browserNotifier').addClass(returnBN.options.overlayClass)
+    returnBN[uniVal].defaults.elements.overlay = $('<div>')
+    .attr('id', 'browserNotifier').addClass(returnBN[uniVal].options.overlayClass)
     .css(Object.assign({
         'display': 'flex',
         'position': 'fixed',
         'opacity': '0',
-        'background-color': returnBN.options.overlayColor,
+        'background-color': returnBN[uniVal].options.overlayColor,
         'width': '100%',
         'height': '100%',
         'top': '0',
@@ -75,19 +75,19 @@ var browserNotifier = function (options={}, callback=function () {}) {
         'flex-direction': 'column',
         'align-items': 'center',
         'justify-content': 'space-around'
-    }, returnBN.options.overlayStyle))
-    .append(returnBN.defaults.elements.icon)
-    .append(returnBN.defaults.elements.text)
-    .append(returnBN.defaults.elements.button)
+    }, returnBN[uniVal].options.overlayStyle))
+    .append(returnBN[uniVal].defaults.elements.icon)
+    .append(returnBN[uniVal].defaults.elements.text)
+    .append(returnBN[uniVal].defaults.elements.button)
 
 
-    returnBN.__init__ = function () {
+    returnBN[uniVal].__init__ = function () {
         var todoTwice = function () {
-            returnBN.options.validator()
+            returnBN[uniVal].options.validator()
             .then(
                 function () {
-                    $('body').append(returnBN.defaults.elements.overlay)
-                    $(returnBN.defaults.elements.overlay).animate({'opacity': '1'}, returnBN.options.effectDuration)
+                    $('body').append(returnBN[uniVal].defaults.elements.overlay)
+                    $(returnBN[uniVal].defaults.elements.overlay).animate({'opacity': '1'}, returnBN[uniVal].options.effectDuration)
                 }
             ).catch(
                 function (e) {
@@ -99,16 +99,16 @@ var browserNotifier = function (options={}, callback=function () {}) {
         else $(todoTwice)
     }
 
-    returnBN.__exit__ = function () {
-        $(returnBN.defaults.elements.overlay).animate({'opacity': '0'}, returnBN.options.effectDuration,
+    returnBN[uniVal].__exit__ = function () {
+        $(returnBN[uniVal].defaults.elements.overlay).animate({'opacity': '0'}, returnBN[uniVal].options.effectDuration,
         complete=function () {
-            $(returnBN.defaults.elements.overlay).remove()
-            localStorage[returnBN.options.storeVal] = 'yes'
+            $(returnBN[uniVal].defaults.elements.overlay).remove()
+            localStorage[returnBN[uniVal].options.storeVal] = 'yes'
         })
     }
 
 
-    if (!localStorage[returnBN.options.storeVal]) returnBN.__init__()
+    if (!localStorage[returnBN[uniVal].options.storeVal]) returnBN[uniVal].__init__()
     else callback()
-    return returnBN
+    return returnBN[uniVal]
 }

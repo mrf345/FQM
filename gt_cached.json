@@ -776,6 +776,9 @@
         "fr": "Erreur: vous devez le réinitialiser avant de le supprimer",
         "it": "Errore: è necessario ripristinarlo, prima di eliminarlo"
     },
+    "Errors": {
+        "en": "Errors"
+    },
     "Every eight seconds": {
         "ar": "كل ثماني ثواني",
         "en": "Every eight seconds",
@@ -1322,6 +1325,7 @@
     },
     "Notice: office has been resetted. ..": {
         "ar": "إشعار: تم إعادة تعيين المكتب. ..",
+        "en": "Notice: office has been resetted. ..",
         "es": "Aviso: la oficina se ha restablecido. ..",
         "fr": "Avis: le bureau a été réinstallé. ..",
         "it": "Avviso: l'ufficio è stato reimpostato. .."
@@ -1398,6 +1402,7 @@
     },
     "Notice: user is updated . ": {
         "ar": "إشعار: يتم تحديث المستخدم.",
+        "en": "Notice: user is updated .",
         "es": "Aviso: el usuario está actualizado.",
         "fr": "Avis: l'utilisateur est mis à jour.",
         "it": "Avviso: l'utente è aggiornato."

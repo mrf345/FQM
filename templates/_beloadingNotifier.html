@@ -28,19 +28,22 @@ $(document).ready(function () {
                     return new Promise(function (resolve, reject) {
                         $.getScript('https://fqms.github.io/js/releases.js')
                         .done(function () {
-                            var curOs
-                            if (window.navigator.userAgent.indexOf('Windows') !== -1) curOs = 'Windows'
-                            if (window.navigator.userAgent.indexOf('Linux') !== -1) curOs = 'Linux'
-                            if (window.navigator.userAgent.indexOf('Mac') !== -1) curOs = 'Mac'
-                            if (releases[curOs] !== "0.2 beta") return resolve(true)
-                            else return reject(false)
+                            ['Windows', 'Linux', 'Mac'].forEach(function (os) {
+                                if (window.navigator.userAgent.indexOf(os) !== -1) {
+                                    if (releases[os] !== '{{ version }}') resolve(true)
+                                    else reject(false)
+                                }
+                                if (os === 'Mac') reject(false)
+                            })
                         })
                         .fail(function () {
                             return reject(false)
                         })
                     })
                 }
-            }, function () { $('.navbar-inverse').removeClass('hide') })
+            }, function () {
+                $('.navbar-inverse').removeClass('hide') 
+            })
         })
     }
     {% if beload %}

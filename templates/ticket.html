@@ -13,12 +13,12 @@
 {% block head %}
 {{ super() }}
 <script>
-var toRemove = function (theList=[], toAdd=false) {
-  theList.forEach(function (item) {
-    toAdd ? $(item).addClass('hide') : $(item).removeClass('hide')
-  })
-}
 $(document).ready(function () {
+  var toRemove = function (theList=[], toAdd=false) {
+    theList.forEach(function (item) {
+      toAdd ? $(item).addClass('hide') : $(item).removeClass('hide')
+    })
+  }
   if ($('#langu option:selected').val() !== 'en' && $('#kind option:selected').val() === '2') toRemove(['#warn'])
   $('#kind option:selected').val() === '2' ? toRemove(['#warn2', '#warn3', '.tohide', '.printed']) : toRemove(['.nhide', '.registered'])
   $('#langu').change(function () {

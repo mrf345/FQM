@@ -97,7 +97,7 @@ def serial(t_id):
                                ptitle="Touch Screen - Enter name ",
                                a=4, dire='multimedia/', form=form)
     nm = form.name.data
-    n = False if nm is None else True
+    n = False if data.Touch_store.query.first().n is None else True
     o_id = data.Task.query.filter_by(id=t_id).first().office_id
     ln = data.Serial.query.filter_by(
         office_id=o_id).order_by(data.Serial
@@ -106,9 +106,14 @@ def serial(t_id):
     sr = data.Serial.query.filter_by(number=ln + 1, office_id=o_id,
                                      task_id=t_id).first()
     if sr is None:
-        if n:
-            db.session.add(data.Serial(ln + 1, o_id, t_id, nm, n))
-        else:
+        if n: # registered
+            print('#' * 10)
+            print('registered')
+            print(nm)
+            db.session.add(data.Serial(ln + 1, o_id, t_id, nm, True))
+        else: # printed
+            print('#' * 10)
+            print('printed')
             db.session.add(data.Serial(ln + 1, o_id, t_id, None, False))
             # adding printer support
             q = data.Printer.query.first()

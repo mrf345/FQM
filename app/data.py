@@ -49,10 +49,8 @@ class Serial(db.Model):
     office_id = db.Column(db.Integer, db.ForeignKey('offices.id'))
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
 
-    def __init__(self, number=100,
-                 office_id=1,
-                 task_id=1, pulledBy = 01,
-                 name=None, n=False, p=False):
+    def __init__(self, number=100, office_id=1, task_id=1,
+                 name=None, n=False, p=False, pulledBy = 01):
         self.number = number
         self.office_id = office_id
         self.task_id = task_id

@@ -19,4 +19,4 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 login_manager.login_view = "login"
 files = UploadSet('files', ALL)
-gtranslator = translator(cache=True, skip_app=True)
+gtranslator = translator(cache=True, skip_app=True, fail_safe=True)

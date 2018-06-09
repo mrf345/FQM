@@ -24,7 +24,7 @@ from core import core
 from customize import cust_app, mdal
 from errorsh import errorsh_app
 from manage import manage_app
-from ex_functions import mse, check_ping, r_path, get_lang
+from ex_functions import mse, check_ping, r_path, get_lang, solve_path
 from database import db, login_manager, files, version, gtranslator
 from flask_uploads import configure_uploads
 from flask_login import login_required, current_user
@@ -137,12 +137,9 @@ class NewWindow(QWidget):
         super(NewWindow, self).__init__()
         self.app = app
         glo = QVBoxLayout(self)
-        if os.name == 'nt':
-            icp = r_path('static\\images\\favicon.png')
-        else:
-            icp = r_path('static/images/favicon.png')
+        icp = r_path(solve_path('static/images/favicon.png'))
         # need to used objective message boxs instead of functions to set font
-        self.Arial = QFont("", 15, QFont.Bold)
+        self.Arial = QFont("", 12, QFont.Bold)
         self.Arials = QFont("", 10, QFont.Bold)
         # Language support variable 
         self.Language = 'en'
@@ -174,10 +171,7 @@ class NewWindow(QWidget):
 
     def Flabel(self, glo):
         fontt = self.Arial
-        if os.name == 'nt':
-            self.ic1 = QIcon(r_path('static\\images\\pause.png'))
-        else:
-            self.ic1 = QIcon(r_path('static/images/pause.png'))
+        self.ic1 = QIcon(r_path(solve_path('static/images/pause.png')))
         self.l = QLabel('Icond', self)
         self.ic1 = self.ic1.pixmap(70, 70, QIcon.Active, QIcon.On)
         self.l.setPixmap(self.ic1)
@@ -293,16 +287,10 @@ class NewWindow(QWidget):
         self.mbutton = QPushButton('Start', self)
         self.mbutton.clicked.connect(self.s_server)
         self.mbutton.setFont(self.Arials)
-        if os.name == 'nt':
-            self.mbutton.setIcon(QPixmap(r_path('static\\images\\play.png')))
-        else:
-            self.mbutton.setIcon(QPixmap(r_path('static/images/play.png')))
+        self.mbutton.setIcon(QPixmap(r_path(solve_path('static/images/play.png'))))
         self.mbutton2 = QPushButton('Stop', self)
         self.mbutton2.clicked.connect(self.st_server)
-        if os.name == 'nt':
-            self.mbutton2.setIcon(QPixmap(r_path('static\\images\\pause.png')))
-        else:
-            self.mbutton2.setIcon(QPixmap(r_path('static/images/pause.png')))
+        self.mbutton2.setIcon(QPixmap(r_path(solve_path('static/images/pause.png'))))
         self.mbutton.setToolTip(self.getTrans('4'))
         self.mbutton2.setToolTip(self.getTrans('6'))
         self.mbutton2.setEnabled(False)
@@ -322,10 +310,7 @@ class NewWindow(QWidget):
                 self.mbutton2.setEnabled(True)
                 self.sl.setEnabled(False)
                 self.sl2.setEnabled(False)
-                if os.name == 'nt':
-                    self.ic1 = QIcon(r_path('static\\images\\play.png'))
-                else:
-                    self.ic1 = QIcon(r_path('static/images/play.png'))
+                self.ic1 = QIcon(r_path(solve_path('static/images/play.png')))
                 self.ic1 = self.ic1.pixmap(70, 70, QIcon.Active, QIcon.On)
                 self.l.setPixmap(self.ic1)
                 pp = self.slchange()

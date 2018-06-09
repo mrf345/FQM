@@ -97,3 +97,8 @@ def transAll():
     for l in LANGUAGES.flashMessages:
         gtranslator.translate(l, 'en', ['ar', 'fr', 'it', 'es'])
     return True
+
+
+def solve_path(path):
+    """ fix path for window os """
+    return path.replace('/', '\\') if os.name == 'nt' else path

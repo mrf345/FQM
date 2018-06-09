@@ -73,5 +73,5 @@ Flask-Fontpicker==0.2
 Flask-Less==0.3
 Flask-Minify==0.2
 Flask-gTTs==0.5
-Flask-Googletrans=0.4
+Flask-Googletrans=0.5
 # pypiwin32 # in Windows only
