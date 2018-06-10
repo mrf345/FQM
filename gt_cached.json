@@ -224,6 +224,13 @@
         "fr": "Permettre à l'administrateur et à ses opérateurs autorisés d'ajouter un bureau, qui contiendra plus tard plusieurs tâches et tickets, qui seront toujours référencés au bureau créé via son numéro unique choisi et son préfixe, qui servira de code visuel pour référence des billets pour leurs bureaux.",
         "it": "Consentendo all'amministratore e ai suoi operatori autorizzati di aggiungere un ufficio, che in seguito includerà più attività e ticket, verrà sempre fatto riferimento all'ufficio creato tramite il numero e il prefisso univoci scelti, che verranno utilizzati come codice di riferimento visivo per riferimento biglietti per i loro uffici."
     },
+    "Allowing the admin and his permitted operators to replay the chosen audio announcements on the display screen.": {
+        "ar": "السماح للمشرف ومشغليه المسموح لهم بإعادة عرض الإعلانات الصوتية المختارة على شاشة العرض.",
+        "en": "Allowing the admin and his permitted operators to replay the chosen audio announcements on the display screen.",
+        "es": "Permitir que el administrador y sus operadores autorizados reproduzcan los anuncios de audio elegidos en la pantalla de visualización.",
+        "fr": "Permettre à l'administrateur et à ses opérateurs autorisés de rejouer les annonces audio choisies sur l'écran d'affichage.",
+        "it": "Consentendo all'amministratore e ai suoi operatori autorizzati di riprodurre gli annunci audio scelti sullo schermo del display."
+    },
     "Allowing the user to customize every bit of the interface, which the customer be confronted and interacts with. Every element style has the option to be customized with its font, color, size and background color. Via the simple navigation bar on the side each main component is displayed with its own customizable element listed under it.": {
         "ar": "السماح للمستخدم بتخصيص كل جزء من الواجهة ، التي يواجهها العميل ويتفاعل معها. يحتوي كل عنصر من عناصر العنصر على خيار تخصيصه مع الخط واللون والحجم ولون الخلفية. عبر شريط التنقل البسيط على الجانب ، يتم عرض كل مكون رئيسي مع عنصر قابل للتخصيص مدرج تحته.",
         "en": "Allowing the user to customize every bit of the interface, which the customer be confronted and interacts with. Every element style has the option to be customized with its font, color, size and background color. Via the simple navigation bar on the side each main component is displayed with its own customizable element listed under it.",
@@ -1380,6 +1387,7 @@
     },
     "Notice: logout is done.": {
         "ar": "إشعار: يتم الخروج.",
+        "en": "Notice: logout is done.",
         "es": "Aviso: el cierre de sesión está hecho.",
         "fr": "Remarque: la déconnexion est terminée.",
         "it": "Avviso: il logout è terminato."
@@ -1416,6 +1424,7 @@
     },
     "Notice: office and its all tasks been deleted ": {
         "ar": "إشعار: تم حذف المكتب وجميع مهامه",
+        "en": "Notice: office and its all tasks been deleted",
         "es": "Aviso: la oficina y todas sus tareas han sido eliminadas",
         "fr": "Avis: office et toutes ses tâches ont été supprimées",
         "it": "Avviso: ufficio e tutte le attività sono state cancellate"

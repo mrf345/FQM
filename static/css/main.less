@@ -188,10 +188,14 @@ hr {
 
 .alert {
     margin: 15px;
-    background-color: #FFFFFF !important;
-    background: #FFFFFF !important;
+    background-color: rgba(255, 255, 255, 0.76) !important;
+    background: rgba(255, 255, 255, 0.76) !important;
     margin-bottom: 2%;
     box-shadow: 0 0 4px 4px rgba(128, 128, 128, @fadingPercent);
+}
+
+.alert > .close {
+    opacity: 1 !important;
 }
 
 .alert-info {
@@ -206,15 +210,14 @@ hr {
     border-color: @bWarning;
 }
 
-.alert-info > h4 > strong {
+.alert-info > h4 > strong, .alert.info > .close {
     color: @bPrimary;
 }
 
-
-.alert-danger > h4 > strong {
+.alert-danger > h4 > strong, .alert-danger > button.close {
     color: @bDanger;
 }
 
-.alert-success > h4 > strong {
+.alert-success > h4 > strong, .alert-success > button.close {
     color: @bWarning;
 }

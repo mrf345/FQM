@@ -131,8 +131,9 @@
         	    {% for category, message in get_flashed_messages(with_categories=true) %}
         	    <div class="row mb-1">
         	        <div class="alert alert-{{ category }} alert-dismissable">
-        		        <button class="close" type="button" data-dismiss="alert">&times;</button>
-        		        <h4 class="text text-center ar2"> [ {{ translate(message, 'en', [defLang]) }} ]</h4>
+                        <button class="close" type="button" data-dismiss="alert">&times;</button>
+                        {% set tra = translate(message, 'en', [defLang]).split(':') %}
+        		        <h4 class="text text-center ar2"> [ <strong>{{tra[0]}}</strong>: {{tra[1]}} ]</h4>
         	        </div>
         	    </div>
         	    {% endfor %}

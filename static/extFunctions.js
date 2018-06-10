@@ -33,7 +33,7 @@ var announce = function () {
         $('.postFlash').removeClass('hide')
         $('.postFlash > .alert-' + cate).removeClass('hide')
     }
-    $.post(window.origin + '/rean', function (resp) {
+    $.post(window.location.origin + '/rean', function (resp) {
         resp === 'success' ? flashMsg('info') : flashMsg('danger')
     })
 }
