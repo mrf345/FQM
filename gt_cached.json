@@ -1319,6 +1319,7 @@
     },
     "Notice: New task been added.": {
         "ar": "إشعار: تم إضافة مهمة جديدة.",
+        "en": "Notice: New task been added.",
         "es": "Aviso: Se ha agregado una nueva tarea.",
         "fr": "Avis: Nouvelle tâche ajoutée.",
         "it": "Avviso: è stata aggiunta una nuova attività."
@@ -1406,6 +1407,7 @@
     },
     "Notice: new office been added . ": {
         "ar": "إشعار: تمت إضافة مكتب جديد.",
+        "en": "Notice: new office been added .",
         "es": "Aviso: se ha agregado una nueva oficina.",
         "fr": "Avis: nouveau bureau ajouté.",
         "it": "Avviso: è stato aggiunto un nuovo ufficio."

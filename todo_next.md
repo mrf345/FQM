@@ -1,3 +1,11 @@
+## To Fix :
+
+- [ ] better cross platform JS
+> - [ ] rewrite unbundled audio_sequence with date() for random
+> - [ ] rewrite unbundled redditWallpapers
+> - [ ] remove error handling from all
+> - [ ] create flask_slimit and use with cache
+
 ## To Add :
 
 - [ ] Create and use python module based on pos module for cross-platform drawn printing
