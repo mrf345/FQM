@@ -224,12 +224,13 @@ def user_u(u_id):
         flash(get_lang(10),
               "info")
         return redirect(url_for('administrate.users'))
-    form.name.data = u.name
-    form.role.data = u.role_id
-    # Fix: multiple operators for office
-    # fetch office id if operator
-    if u.role_id == 3:
-        form.offices.data = data.Operators.query.filter_by(id=u.id).first().office_id
+    if not form.errors:
+        form.name.data = u.name
+        form.role.data = u.role_id
+        # Fix: multiple operators for office
+        # fetch office id if operator
+        if u.role_id == 3:
+            form.offices.data = data.Operators.query.filter_by(id=u.id).first().office_id
     return render_template('user_add.html',
                            form=form, navbar='#snb3',
                            ptitle='Update user : ' + u.name,

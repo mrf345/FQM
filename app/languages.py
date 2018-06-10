@@ -2,6 +2,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+from getWithAlias import getWithAlias
 
 # flash msgs list
 flashMessages = [
@@ -64,19 +65,12 @@ flashMessages = [
     "Error: something wrong , or the page is non-existing",
     "Notice: Make sure to make the printer shared on the local network",
     "Notice: Make sure to execute the command `sudo gpasswd -a $(users) lp` and reboot the system",
-    "Error: login is required to access the page"
+    "Error: login is required to access the page",
+    'Notice: aliases got updated successfully.'
 ]
 
-
 PRINTER = {
-    'en': [
-        "Version ",
-        "\nOffice : ",
-        "\nCurrent ticket : ",
-        "\nTickets ahead : ",
-        "\nTask : ",
-        "\nTime : "
-    ],
+    'en': getWithAlias(),
     'it': [
         "Versione ",
         "\nUfficio : ",

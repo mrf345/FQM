@@ -183,3 +183,38 @@ hr {
     }
 }
 
+// Alerts
+@fadingPercent: 0.2;
+
+.alert {
+    margin: 15px;
+    background-color: #FFFFFF !important;
+    background: #FFFFFF !important;
+    margin-bottom: 2%;
+    box-shadow: 0 0 4px 4px rgba(128, 128, 128, @fadingPercent);
+}
+
+.alert-info {
+    border-color: @bPrimary;
+}
+
+.alert-danger {
+    border-color: @bDanger;
+}
+
+.alert-success {
+    border-color: @bWarning;
+}
+
+.alert-info > h4 > strong {
+    color: @bPrimary;
+}
+
+
+.alert-danger > h4 > strong {
+    color: @bDanger;
+}
+
+.alert-success > h4 > strong {
+    color: @bWarning;
+}

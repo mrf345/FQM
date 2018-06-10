@@ -81,11 +81,11 @@ reloadIf('/touch/0')
   	      {{ form.csrf_token }}
           {% if tnumber %}
               <p class="h2 ar1 text-center mt-2 text-danger">
-               | {{ translate('Please, enter the number to be registered along with your ticket', 'en', [defLang]) }} |
+               | {{ translate('Please, enter the ' + alias.number + ' to be registered along with your ticket', 'en', [defLang]) }} |
               </p>
           {% else %}
   	          <p class="h2 ar1 text-center mt-2 text-danger">
-  		         | {{ translate('Please, enter the name to be registered along with your ticket', 'en', [defLang]) }} |
+  		         | {{ translate('Please, enter the ' + alias.name + ' to be registered along with your ticket', 'en', [defLang]) }} |
   	          </p>
           {% endif %}
   	    {{ render_field(form.name, class="form-control mt-1 mb-2") }}

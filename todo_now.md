@@ -35,12 +35,12 @@
 - [x] Un-bundled JS (5/12th)
 > - [x] make sure of unique toReturn values in all un-bundled js scripts. to avoid future clashes. (5/12th)
 
-- [x] Fix type of ticket displayed
-> - [x] All offices
-> - [x] Tasks
-> - [x] Offices
+- [x] Fix type of ticket displayed (6/9th)
+> - [x] All offices (6/9th)
+> - [x] Tasks (6/9th)
+> - [x] Offices (6/9th)
 
-- [x] GUI smaller sized font for server status
+- [x] GUI smaller sized font for server status (6/9th)
 
 
 ## To Add:
@@ -53,11 +53,11 @@
 > - [x] modify browser_notifier (5/19th)
 > - [x] implement new browser_notifier (5/19th)
 
-- [ ] Adding alias
-> - [ ] add alias to display_screen customize settings
-> - [ ] add alias to printed ticket settings
-> - [ ] alias for task and office in display and display/announcement
-> - [ ] alias for task and office in app/languages
+- [x] Adding alias (6/10th)
+> - [x] add alias to display_screen customize settings (6/10th)
+> - [x] add alias to printed ticket settings (6/10th)
+> - [x] alias for task and office in display and display/announcement (6/10th)
+> - [x] alias for task and office in app/languages (6/10th)
 
 - [x] Recall announcement (6/8th)
 > - [x] add special recall value /feed (6/8th)

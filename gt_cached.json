@@ -161,6 +161,34 @@
         "fr": "Administrateurs",
         "it": "Amministratori"
     },
+    "Alias : gives you the ability to change the default naming of the main components into something relevant to your environment. Changes will effect printed, registered tickets and text-to-speech announcements.": {
+        "ar": "الاسم المستعار: يمنحك القدرة على تغيير التسمية الافتراضية للمكونات الرئيسية إلى شيء ذي صلة ببيئتك. ستؤثر التغييرات على النشرات المطبوعة والمسجلة وإعلانات تحويل النص إلى كلام.",
+        "en": "Alias : gives you the ability to change the default naming of the main components into something relevant to your environment. Changes will effect printed, registered tickets and text-to-speech announcements.",
+        "es": "Alias: le da la capacidad de cambiar el nombre predeterminado de los componentes principales en algo relevante para su entorno. Los cambios afectarán los boletos impresos, registrados y los anuncios de texto a voz.",
+        "fr": "Alias: vous permet de modifier la dénomination par défaut des composants principaux en quelque chose de pertinent pour votre environnement. Les changements auront une incidence sur les billets imprimés et enregistrés et les annonces textuelles.",
+        "it": "Alias: ti dà la possibilità di cambiare la denominazione predefinita dei componenti principali in qualcosa di rilevante per il tuo ambiente. Le modifiche avranno effetto su biglietti stampati, registrati e annunci da testo a voce."
+    },
+    "Alias must be at least of 2 and at most 10 letters": {
+        "ar": "يجب أن يكون الاسم المستعار 2 على الأقل وعلى الأكثر 10 أحرف",
+        "en": "Alias must be at least of 2 and at most 10 letters",
+        "es": "Alias ​​debe tener al menos 2 y como máximo 10 letras",
+        "fr": "L'alias doit être au moins de 2 et au plus 10 lettres",
+        "it": "L'alias deve essere almeno di 2 e al massimo 10 lettere"
+    },
+    "Alias template": {
+        "ar": "قالب الاسم المستعار",
+        "en": "Alias template",
+        "es": "Plantilla Alias",
+        "fr": "Alias ​​modèle",
+        "it": "Modello alias"
+    },
+    "Aliases": {
+        "ar": "اسماء مستعارة",
+        "en": "Aliases",
+        "es": "Alias",
+        "fr": "Alias",
+        "it": "alias"
+    },
     "All credit reserved to the author of FQM. This work is a free, open-source project licensed under Mozilla Public License version 2.0 .": {
         "ar": "جميع الائتمان محفوظة لمؤلف FQM. هذا العمل هو مشروع مجاني مفتوح المصدر مرخص بموجب الإصدار 2.0 من Mozilla Public License.",
         "en": "All credit reserved to the author of FQM. This work is a free, open-source project licensed under Mozilla Public License version 2.0 .",
@@ -572,6 +600,65 @@
         "fr": "Entrez un nom d'utilisateur unique:",
         "it": "Inserisci un nome utente univoco:"
     },
+    "Enter alias for Name : ": {
+        "ar": "أدخل الاسم المستعار للاسم:",
+        "en": "Enter alias for Name :",
+        "es": "Ingresa un alias para Nombre:",
+        "it": "Inserisci alias per Nome:"
+    },
+    "Enter alias for Number : ": {
+        "ar": "أدخل الاسم المستعار للرقم:",
+        "en": "Enter alias for Number :",
+        "es": "Ingresa un alias para Número:",
+        "it": "Inserisci alias per Numero:"
+    },
+    "Enter alias for Office : ": {
+        "ar": "أدخل الاسم المستعار لـ Office:",
+        "en": "Enter alias for Office :",
+        "es": "Ingresa un alias para Office:",
+        "it": "Inserisci alias per Office:"
+    },
+    "Enter alias for Task : ": {
+        "ar": "أدخل الاسم المستعار للمهمة:",
+        "en": "Enter alias for Task :",
+        "es": "Ingresa un alias para Tarea:",
+        "it": "Inserisci alias per l'attività:"
+    },
+    "Enter alias for name : ": {
+        "ar": "أدخل الاسم المستعار للاسم:",
+        "en": "Enter alias for name :",
+        "es": "Ingresa un alias para el nombre:",
+        "fr": "Entrez l'alias pour le nom:",
+        "it": "Inserisci alias per nome:"
+    },
+    "Enter alias for number : ": {
+        "ar": "أدخل الاسم المستعار للرقم:",
+        "en": "Enter alias for number :",
+        "es": "Ingresa un alias para el número:",
+        "fr": "Entrez un alias pour le numéro:",
+        "it": "Inserisci un alias per il numero:"
+    },
+    "Enter alias for office : ": {
+        "ar": "أدخل اسمًا مستعارًا للمكتب:",
+        "en": "Enter alias for office :",
+        "es": "Ingresa un alias para la oficina:",
+        "fr": "Entrez l'alias pour le bureau:",
+        "it": "Inserisci un alias per l'ufficio:"
+    },
+    "Enter alias for task : ": {
+        "ar": "أدخل الاسم المستعار للمهمة:",
+        "en": "Enter alias for task :",
+        "es": "Ingresa un alias para la tarea:",
+        "fr": "Entrez un alias pour la tâche:",
+        "it": "Inserisci un alias per l'attività:"
+    },
+    "Enter alias for ticket : ": {
+        "ar": "أدخل اسمًا مستعارًا للتذكرة:",
+        "en": "Enter alias for ticket :",
+        "es": "Ingresa un alias para el ticket:",
+        "fr": "Entrez un alias pour le ticket:",
+        "it": "Inserisci l'alias per il ticket:"
+    },
     "Enter password : ": {
         "ar": "أدخل كلمة المرور:",
         "en": "Enter password :",
@@ -614,6 +701,7 @@
     },
     "Error: fault in search parameters": {
         "ar": "خطأ: خطأ في معلمات البحث",
+        "en": "Error: fault in search parameters",
         "es": "Error: error en los parámetros de búsqueda",
         "fr": "Erreur: erreur dans les paramètres de recherche",
         "it": "Errore: errore nei parametri di ricerca"
@@ -663,6 +751,7 @@
     },
     "Error: no tickets left to pull from ..": {
         "ar": "خطأ: لا توجد تذاكر متبقية لسحبها من ..",
+        "en": "Error: no tickets left to pull from ..",
         "es": "Error: no quedan tickets para tirar de ..",
         "fr": "Erreur: aucun ticket à retirer de ..",
         "it": "Errore: non è rimasto nessun biglietto da cui prelevare .."
@@ -777,7 +866,11 @@
         "it": "Errore: è necessario ripristinarlo, prima di eliminarlo"
     },
     "Errors": {
-        "en": "Errors"
+        "ar": "أخطاء",
+        "en": "Errors",
+        "es": "Errores",
+        "fr": "les erreurs",
+        "it": "Errori"
     },
     "Every eight seconds": {
         "ar": "كل ثماني ثواني",
@@ -1262,6 +1355,9 @@
         "fr": "Remarque: le mot de passe de l'administrateur a été mis à jour.",
         "it": "Avviso: la password dell'amministratore è stata aggiornata."
     },
+    "Notice: aliases got updated successfully.": {
+        "en": "Notice: aliases got updated successfully."
+    },
     "Notice: all unassigned users got deleted.": {
         "ar": "ملاحظة: تم حذف جميع المستخدمين غير المعينين.",
         "es": "Aviso: todos los usuarios no asignados fueron eliminados.",
@@ -1270,6 +1366,7 @@
     },
     "Notice: if you followed the rules, it should be uploaded ..": {
         "ar": "ملاحظة: إذا اتبعت القواعد ، فيجب تحميلها ..",
+        "en": "Notice: if you followed the rules, it should be uploaded ..",
         "es": "Aviso: si siguió las reglas, debería cargarse.",
         "fr": "Remarque: si vous avez suivi les règles, il doit être téléchargé.",
         "it": "Avviso: se hai seguito le regole, dovrebbe essere caricato .."
@@ -1384,6 +1481,7 @@
     },
     "Notice: ticket has been issued . ..": {
         "ar": "ملاحظة: تم إصدار التذكرة. ..",
+        "en": "Notice: ticket has been issued . ..",
         "es": "Aviso: el boleto ha sido emitido. ..",
         "fr": "Avis: le billet a été émis. ..",
         "it": "Avviso: il biglietto è stato emesso. .."
@@ -1540,12 +1638,21 @@
         "fr": "Veuillez entrer un numéro de ticket:",
         "it": "Si prega di inserire un numero di biglietto:"
     },
+    "Please, enter the ID number to be registered along with your ticket": {
+        "en": "Please, enter the ID number to be registered along with your ticket"
+    },
     "Please, enter the name to be registered along with your ticket": {
         "ar": "من فضلك ، أدخل الاسم الذي سيتم تسجيله مع تذكرتك",
         "en": "Please, enter the name to be registered along with your ticket",
         "es": "Por favor, ingrese el nombre para ser registrado junto con su boleto",
         "fr": "S'il vous plaît, entrez le nom à enregistrer avec votre billet",
         "it": "Per favore, inserisci il nome da registrare insieme al tuo biglietto"
+    },
+    "Please, enter the nick name to be registered along with your ticket": {
+        "en": "Please, enter the nick name to be registered along with your ticket"
+    },
+    "Please, enter the number to be registered along with your ticket": {
+        "en": "Please, enter the number to be registered along with your ticket"
     },
     "Prefix": {
         "ar": "اختصار",
@@ -1700,6 +1807,17 @@
         "es": "Recuérdame :",
         "fr": "Souviens-toi de moi :",
         "it": "Ricordati di me :"
+    },
+    "Reminder : aliases are only supported in English.": {
+        "ar": "تذكير: يتم دعم الأسماء المستعارة باللغة الإنجليزية فقط.",
+        "en": "Reminder : aliases are only supported in English.",
+        "es": "Recordatorio: los alias solo son compatibles en inglés.",
+        "fr": "Rappel: les alias ne sont supportés qu'en anglais.",
+        "it": "Promemoria: gli alias sono supportati solo in inglese."
+    },
+    "Reminder : aliasing is only supported in English currently.": {
+        "ar": "تذكير: يتم دعم التعرج فقط باللغة الإنجليزية حاليًا.",
+        "en": "Reminder : aliasing is only supported in English currently."
     },
     "Reminder : must not use the media file, that you want to delete it": {
         "ar": "تذكير: يجب عدم استخدام ملف الوسائط ، الذي تريد حذفه",
@@ -3126,6 +3244,9 @@
         "es": "no hay tareas creadas todavía",
         "fr": "aucune tâche n'a encore été créée",
         "it": "nessuna attività ancora creata"
+    },
+    "number to be registered along with your ticket": {
+        "en": "number to be registered along with your ticket"
     },
     "puff": {
         "ar": "نفخة",

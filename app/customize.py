@@ -86,14 +86,15 @@ def ticket():
         flash(get_lang(27),
               'info')
         return redirect(url_for('cust_app.ticket'))
-    if tc.n:
-        form.kind.data = 1
-    else:
-        form.kind.data = 2
-    form.printers.data = pr.vendor + '_' + pr.product
-    form.printers.data += '_' + str(pr.in_ep) + '_' + str(pr.out_ep)
-    form.langu.data = pr.langu
-    form.value.data = pr.value
+    if not form.errors:
+        if tc.n:
+            form.kind.data = 1
+        else:
+            form.kind.data = 2
+        form.printers.data = pr.vendor + '_' + pr.product
+        form.printers.data += '_' + str(pr.in_ep) + '_' + str(pr.out_ep)
+        form.langu.data = pr.langu
+        form.value.data = pr.value
     return render_template('ticket.html', navbar='#snb2',
                            ptitle='Tickets',
                            vtrue=data.Vid.query.first().enable,
@@ -135,7 +136,7 @@ def video():
         flash(get_lang(29),
               'info')
         return redirect(url_for('cust_app.video'))
-    if vdb is not None:
+    if vdb is not None and not form.errors:
         form.video.data = vdb.vkey
         form.enable.data = vdb.enable
         form.ar.data = vdb.ar
@@ -255,10 +256,11 @@ def slide_c():
         db.session.commit()
         flash(get_lang(33), "info")
         return redirect(url_for("cust_app.slide_c"))
-    form.rotation.data = sc.rotation
-    form.navigation.data = sc.navigation
-    form.effect.data = sc.effect
-    form.status.data = sc.status
+    if not form.errors:
+        form.rotation.data = sc.rotation
+        form.navigation.data = sc.navigation
+        form.effect.data = sc.effect
+        form.status.data = sc.status
     return render_template("slide_settings.html",
                            form=form, navbar="#snb2",
                            hash="#ss2",
@@ -318,11 +320,6 @@ def multimedia(aa):
     if pf is not None:
         pf = pf.name
     if aa == 0:
-        # Fix limited upload folder size
-        # if int(ex_functions.getFolderSize(dire)) >= sfl:
-        #     flash(get_lang(36) + str(sfl) + "MB",
-        #           "danger")
-        #     return redirect(url_for('cust_app.multimedia', aa=1))
         if data.Media.query.count() >= nofl:
             flash(get_lang(37) + str(nofl),
                   "danger")
@@ -539,38 +536,39 @@ def displayscreen_c(stab):
         db.session.commit()
         flash(get_lang(41), "info")
         return redirect(url_for("cust_app.displayscreen_c", stab=1))
-    form.display.data = touch_s.tmp
-    form.title.data = touch_s.title
-    form.hsize.data = touch_s.hsize
-    form.hcolor.data = touch_s.hcolor
-    form.hbg.data = touch_s.hbg
-    form.tsize.data = touch_s.tsize
-    form.tcolor.data = touch_s.tcolor
-    form.h2size.data = touch_s.h2size
-    form.h2color.data = touch_s.h2color
-    form.ssize.data = touch_s.ssize
-    form.scolor.data = touch_s.scolor
-    form.mduration.data = touch_s.mduration
-    form.hfont.data = touch_s.hfont
-    form.tfont.data = touch_s.tfont
-    form.h2font.data = touch_s.h2font
-    form.sfont.data = touch_s.sfont
-    form.mduration.data = touch_s.mduration
-    form.rrate.data = touch_s.rrate
-    form.announce.data = touch_s.announce
-    form.anr.data = touch_s.anr
-    form.anrt.data = touch_s.anrt
-    form.effect.data = touch_s.effect
-    form.repeats.data = touch_s.repeats
-    if touch_s.bgcolor[:3] == "rgb":
-        form.bgcolor.data = touch_s.bgcolor
-        form.background.data = 00
-    else:
-        form.background.data = touch_s.ikey
-    if touch_s.audio == "false":
-        form.naudio.data = 00
-    else:
-        form.naudio.data = touch_s.akey
+    if not form.errors:
+        form.display.data = touch_s.tmp
+        form.title.data = touch_s.title
+        form.hsize.data = touch_s.hsize
+        form.hcolor.data = touch_s.hcolor
+        form.hbg.data = touch_s.hbg
+        form.tsize.data = touch_s.tsize
+        form.tcolor.data = touch_s.tcolor
+        form.h2size.data = touch_s.h2size
+        form.h2color.data = touch_s.h2color
+        form.ssize.data = touch_s.ssize
+        form.scolor.data = touch_s.scolor
+        form.mduration.data = touch_s.mduration
+        form.hfont.data = touch_s.hfont
+        form.tfont.data = touch_s.tfont
+        form.h2font.data = touch_s.h2font
+        form.sfont.data = touch_s.sfont
+        form.mduration.data = touch_s.mduration
+        form.rrate.data = touch_s.rrate
+        form.announce.data = touch_s.announce
+        form.anr.data = touch_s.anr
+        form.anrt.data = touch_s.anrt
+        form.effect.data = touch_s.effect
+        form.repeats.data = touch_s.repeats
+        if touch_s.bgcolor[:3] == "rgb":
+            form.bgcolor.data = touch_s.bgcolor
+            form.background.data = 00
+        else:
+            form.background.data = touch_s.ikey
+        if touch_s.audio == "false":
+            form.naudio.data = 00
+        else:
+            form.naudio.data = touch_s.akey
     return render_template("display_screen.html",
                            form=form,
                            ptitle="Display Screen customize",
@@ -635,30 +633,31 @@ def touchscreen_c(stab):
         flash(get_lang(42),
               "info")
         return redirect(url_for("cust_app.touchscreen_c", stab=0))
-    form.touch.data = touch_s.tmp
-    form.title.data = touch_s.title
-    form.hsize.data = touch_s.hsize
-    form.hcolor.data = touch_s.hcolor
-    form.hbg.data = touch_s.hbg
-    form.mbg.data = touch_s.mbg
-    form.tsize.data = touch_s.tsize
-    form.tcolor.data = touch_s.tcolor
-    form.msize.data = touch_s.msize
-    form.mcolor.data = touch_s.mcolor
-    form.mduration.data = touch_s.mduration
-    form.hfont.data = touch_s.hfont
-    form.tfont.data = touch_s.tfont
-    form.mfont.data = touch_s.mfont
-    form.message.data = touch_s.message
-    if touch_s.bgcolor[:3] == "rgb":
-        form.bcolor.data = touch_s.bgcolor
-        form.background.data = 00
-    else:
-        form.background.data = touch_s.ikey
-    if touch_s.audio == "false":
-        form.naudio.data = 00
-    else:
-        form.naudio.data = touch_s.akey
+    if not form.errors:
+        form.touch.data = touch_s.tmp
+        form.title.data = touch_s.title
+        form.hsize.data = touch_s.hsize
+        form.hcolor.data = touch_s.hcolor
+        form.hbg.data = touch_s.hbg
+        form.mbg.data = touch_s.mbg
+        form.tsize.data = touch_s.tsize
+        form.tcolor.data = touch_s.tcolor
+        form.msize.data = touch_s.msize
+        form.mcolor.data = touch_s.mcolor
+        form.mduration.data = touch_s.mduration
+        form.hfont.data = touch_s.hfont
+        form.tfont.data = touch_s.tfont
+        form.mfont.data = touch_s.mfont
+        form.message.data = touch_s.message
+        if touch_s.bgcolor[:3] == "rgb":
+            form.bcolor.data = touch_s.bgcolor
+            form.background.data = 00
+        else:
+            form.background.data = touch_s.ikey
+        if touch_s.audio == "false":
+            form.naudio.data = 00
+        else:
+            form.naudio.data = touch_s.akey
     return render_template("touch_screen.html",
                            ptitle="Touch Screen customize",
                            navbar="#snb2",
@@ -667,3 +666,34 @@ def touchscreen_c(stab):
                            hash=stab,
                            vtrue=data.Vid.query.first().enable,
                            strue=data.Slides_c.query.first().status)
+
+
+@cust_app.route('/alias', methods=['GET', 'POST'])
+@login_required
+def alias():
+    if current_user.role_id != 1:
+        flash(get_lang(0),
+              "danger")
+        return redirect(url_for('core.root'))
+    form = forms.Alias(session.get('lang'))
+    aliases = data.Aliases.query.first()
+    if form.validate_on_submit():
+        aliases.office = form.office.data
+        aliases.task = form.task.data
+        aliases.ticket = form.ticket.data
+        aliases.name = form.name.data
+        aliases.number = form.number.data
+        db.session.add(aliases)
+        db.session.commit()
+        flash(get_lang(60), 'info')
+        return redirect(url_for('cust_app.alias'))
+    if not form.errors:
+        form.office.data = aliases.office
+        form.task.data = aliases.task
+        form.ticket.data = aliases.ticket
+        form.name.data = aliases.name
+        form.number.data = aliases.number
+    return render_template(
+        'alias.html', ptitle='Aliases',
+        navbar="#snb2", form=form, hash='#da8'
+    )

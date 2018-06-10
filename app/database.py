@@ -12,7 +12,7 @@ from flask_googletrans import translator
     currently needed for sql alchemy, login manager and flask-uploads"""
 
 # current version
-version = "0.3 beta"
+version = "0.4 beta"
 
 
 db = SQLAlchemy()

@@ -391,3 +391,24 @@ class Vid(db.Model):
         self.controls = controls
         self.mute = mute
         self.vkey = vkey
+
+
+class Aliases(db.Model):
+    __tablename__ = "aliases"
+    id = db.Column(db.Integer, primary_key=True)
+    office = db.Column(db.String(100))
+    task = db.Column(db.String(100))
+    ticket = db.Column(db.String(100))
+    name = db.Column(db.String(100))
+    number = db.Column(db.String(100))
+
+    def __init__(self, 
+        office="Office", task="Task", ticket="Ticket",
+        name="name", number="number"):
+        self.id = 0
+        self.office = office
+        self.task = task
+        self.ticket = ticket
+        self.name = name
+        self.number = number
+    

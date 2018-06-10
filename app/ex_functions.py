@@ -7,7 +7,6 @@ import data
 from database import db
 import os
 from httplib import HTTPConnection as htp
-from flask import session
 import languages as LANGUAGES
 from database import gtranslator
 # Extra functions
@@ -18,7 +17,7 @@ def mse():
             data.Touch_store,
             data.Slides_c,
             data.Vid, data.Waiting_c,
-            data.Printer]
+            data.Printer, data.Aliases]
     # -- make sure objects are created,
     # And if not create an auto filled one
     for t in lodb:

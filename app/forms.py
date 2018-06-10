@@ -570,3 +570,26 @@ class Printer_f(FlaskForm):
         else:
             prt.append(('00', gtranslator.translate("No printers were found", 'en', [defLang])))
         self.printers.choices = prt
+
+
+# Aliases form
+
+class Alias(FlaskForm):
+    office = StringField()
+    task = StringField()
+    ticket = StringField()
+    name = StringField()
+    number = StringField()
+
+    def __init__(self, defLang='en', *args, **kwargs):
+        super(Alias, self).__init__(*args, **kwargs)
+        self.office.validators = self.task.validators = self.ticket.validators = self.name.validators = self.number.validators = [
+            InputRequired(
+                gtranslator.translate("Alias must be at least of 2 and at most 10 letters", 'en', [defLang])
+            ), Length(2, 10)
+        ]
+        self.office.label = gtranslator.translate('Enter alias for office : ', 'en', [defLang])
+        self.task.label = gtranslator.translate('Enter alias for task : ', 'en', [defLang])
+        self.ticket.label = gtranslator.translate('Enter alias for ticket : ', 'en', [defLang])
+        self.name.label = gtranslator.translate('Enter alias for name : ', 'en', [defLang])
+        self.number.label = gtranslator.translate('Enter alias for number : ', 'en', [defLang])

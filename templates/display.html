@@ -13,7 +13,7 @@
 	reloadIf()
 	var TTS = {
 		// text-to-speech announcement text
-		'en-us': ' , please proceed to the office number : ',
+		'en-us': ' , please proceed to the ' + '{{ alias.office }}' + ' number : ',
 		'ar': ' : توجه إلى المكتب رقم ',
 		'fr': ", s'il vous plaît procéder au numéro de bureau : ",
 		'es': ' , por favor diríjase al número de la oficina : ',
@@ -113,18 +113,15 @@
 <div class="row mt-1">
     <div class="{% if sli.status == 1 or vid.enable == 1 %} col-xs-4 {% else %} col-xs-12 {% endif %} text-center">
 		<h1 class='offices mb-1'>
-			{% if alias %}
-			{% else %} {{ translate('Office', 'en', [defLang]) }} {% endif %} : 
+			{{ alias.office }} {{ translate('Office', 'en', [defLang]) }} : 
 			<p stream='con' class='effectit ensureit inline'>{{ translate('Empty', 'en', [defLang]) }}</p>
 		</h1>
       	<h1 class='tasks mb-1'>
-			{% if alias %}
-			{% else %} {{ translate('Task', 'en', [defLang]) }} {% endif %} : 
+			{{ alias.task }} {{ translate('Task', 'en', [defLang]) }} : 
 			<p class='effectit ensureit inline' stream='cott'>{{ translate('Empty', 'en', [defLang]) }}</p>
 		</h1>
 	    <h1 class='tasks mb-1'>
-			{% if alias %}
-			{% else %} {{ translate('Ticket', 'en', [defLang]) }} {% endif %} : 
+			{{ alias.ticket }} {{ translate('Ticket', 'en', [defLang]) }} : 
 			<p class='effectdoit ensureit inline' stream='cot'>{{ translate('Empty', 'en', [defLang]) }}</p>
 		</h1>
 	</div>
@@ -239,22 +236,19 @@
 <div class="row text-center mt-1">
     <div class="col-xs-4">
 	    <h1 class='offices'>
-				{% if alias %}
-				{% else %} {{ translate('Office', 'en', [defLang]) }} {% endif %} : 
+				{{ alias.office }} {{ translate('Office', 'en', [defLang]) }} : 
 				<p stream='con' class='effectit ensureit inline'>{{ translate('Empty', 'en', [defLang]) }}</p>
 			</h1>
 		</div>
     <div class="col-xs-4">
       	<h1 class='tasks'>
-			{% if alias %}
-			{% else %} {{ translate('Task', 'en', [defLang]) }} {% endif %} : 
+			{{ alias.task }} {{ translate('Task', 'en', [defLang]) }} : 
 			<p class='effectit ensureit inline' stream='cott'>{{ translate('Empty', 'en', [defLang]) }}</p>
 	  	</h1>
     </div>
     <div class="col-xs-4">
 	    <h1 class='tasks'>
-			{% if alias %}
-			{% else %} {{ translate('Ticket', 'en', [defLang]) }} {% endif %} : 
+			{{ alias.ticket }} {{ translate('Ticket', 'en', [defLang]) }} : 
 			<p class='effectdoit ensureit inline' stream='cot'>{{ translate('Empty', 'en', [defLang]) }}</p>
 		</h1>
     </div>
@@ -311,18 +305,15 @@
     <div class="col-xs-6">
       	<h1 class='title mb-10'> {{ ts.title }} </h1>
 		<h1 class='offices mb-5'>
-			{% if alias %}
-			{% else %} {{ translate('Office', 'en', [defLang]) }} {% endif %} : 
+			{{ alias.office }} {{ translate('Office', 'en', [defLang]) }} : 
 			<p stream='con' class='effectit ensureit inline'>{{ translate('Empty', 'en', [defLang]) }}</p>
 		</h1>
       	<h1 class='tasks mb-5'>
-			{% if alias %}
-			{% else %} {{ translate('Task', 'en', [defLang]) }} {% endif %} : 
+			{{ alias.task }} {{ translate('Task', 'en', [defLang]) }} : 
 			<p class='effectit ensureit inline' stream='cott'>{{ translate('Empty', 'en', [defLang]) }}</p>
 		</h1>
 		<h1 class='tasks'>
-			{% if alias %}
-			{% else %} {{ translate('Ticket', 'en', [defLang]) }} {% endif %} : 
+			{{ alias.ticket }} {{ translate('Ticket', 'en', [defLang]) }} : 
 			<p class='effectdoit ensureit inline' stream='cot'>{{ translate('Empty', 'en', [defLang]) }}</p>
 		</h1>
     </div>

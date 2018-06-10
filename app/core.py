@@ -95,9 +95,10 @@ def serial(t_id):
         return render_template("touch.html", title=ts.title, tnumber=tnumber,
                                ts=ts, done=False, bgcolor=ts.bgcolor,
                                ptitle="Touch Screen - Enter name ",
+                               alias=data.Aliases.query.first(),
                                a=4, dire='multimedia/', form=form)
     nm = form.name.data
-    n = False if data.Touch_store.query.first().n is None else True
+    n = True if data.Touch_store.query.first().n else False
     o_id = data.Task.query.filter_by(id=t_id).first().office_id
     ln = data.Serial.query.filter_by(
         office_id=o_id).order_by(data.Serial
@@ -107,13 +108,8 @@ def serial(t_id):
                                      task_id=t_id).first()
     if sr is None:
         if n: # registered
-            print('#' * 10)
-            print('registered')
-            print(nm)
             db.session.add(data.Serial(ln + 1, o_id, t_id, nm, True))
         else: # printed
-            print('#' * 10)
-            print('printed')
             db.session.add(data.Serial(ln + 1, o_id, t_id, None, False))
             # adding printer support
             q = data.Printer.query.first()
@@ -402,13 +398,6 @@ def feed():
     if session.get('announce'):
         hcounter = session.get('announce')
         session['announce'] = None
-    # if co:
-    #     hcounter = co.ticket
-    # else:
-    #     if hcounter is not None:
-    #         hcounter = hcounter.number
-    #     else:
-    #         hcounter = "Empty"
     # End of fix
     f = data.Display_store.query.filter_by(id=0).first()
     return jsonify(con=con, cot=cot, cott=cott,
@@ -452,6 +441,7 @@ def display():
                            tv=ts.tmp,
                            ptitle="Display Screen",
                            anr=ts.anr,
+                           alias=data.Aliases.query.first(),
                            vid=data.Vid.query.first())
 
 
@@ -475,4 +465,5 @@ def touch(a):
     return render_template("touch.html",
                            ts=ts, tasks=t, tnumber=tnumber,
                            ptitle="Touch Screen",
+                           alias=data.Aliases.query.first(),
                            form=form, a=ts.tmp, d=d)

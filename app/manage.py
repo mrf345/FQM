@@ -78,9 +78,7 @@ def offices(o_id):
         flash(get_lang(17),
               "danger")
         return redirect(url_for('core.root'))
-    form = forms.Offices_a(upd=ofc.prefix)
-    if session.get('lang') == 'AR':
-        form = forms.Offices_a_ar(upd=ofc.prefix)
+    form = forms.Offices_a(upd=ofc.prefix, defLang=session.get('lang'))
     page = request.args.get('page', 1, type=int)
     if page > int(data.Serial.query.filter_by(office_id=o_id).count() / 10) + 1:
         flash(get_lang(4),
@@ -291,9 +289,7 @@ def search():
 @manage_app.route('/task/<int:o_id>', methods=['POST', 'GET'])
 @login_required
 def task(o_id):
-    form = forms.Task_a()
-    if session.get('lang') == 'AR':
-        form = forms.Task_a_ar()
+    form = forms.Task_a(session.get('lang'))
     task = data.Task.query.filter_by(id=o_id).first()
     if task is None:
         flash(get_lang(4),
@@ -332,7 +328,8 @@ def task(o_id):
         flash(get_lang(50),
               "info")
         return redirect(url_for("manage_app.task", o_id=o_id))
-    form.name.data = task.name
+    if not form.errors:
+        form.name.data = task.name
     return render_template('tasks.html',
                            form=form,
                            ptitle="Task : " + task.name,

@@ -13,7 +13,7 @@
 		<!-- Main Menu -->
 		<div class="side-menu-container">
 		    <ul class="nav navbar-nav">
-			<li id="da1" {% if ar %} class="ar1" {% endif %}>
+			<li id="da1" >
 			    <a href="{{ url_for('cust_app.multimedia', aa=1) }}">
 				<span class="fa fa-music"></span>
         {{ translate('Multimedia', 'en', [defLang]) }}
@@ -132,19 +132,25 @@
       </li>
       {% endif %}
       {% if strue == 2 %}
-      <li id="da5" {% if ar %} class="ar1" {% endif %}>
+      <li id="da5" >
           <a href="{{ url_for('cust_app.video') }}">
         <span class="fa fa-video-camera"></span>
         {{ translate('Display video', 'en', [defLang]) }}
           </a>
       </li>
       {% endif %}
-      <li id="da7" {% if ar %} class="ar1" {% endif %}>
+      <li id="da7" >
 			    <a href="{{ url_for('cust_app.ticket') }}">
 				<span class="fa fa-print"></span>
         {{ translate('Tickets', 'en', [defLang]) }}
 			    </a>
-			</li>
+      </li>
+      <li id="da8" >
+          <a href="{{ url_for('cust_app.alias') }}">
+        <span class="fa fa-comments-o"></span>
+        {{ translate('Aliases', 'en', [defLang]) }}
+          </a>
+      </li>
 		</div><!-- /.navbar-collapse -->
 	    </nav>
 
