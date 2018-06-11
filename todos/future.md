@@ -1,9 +1,5 @@
 # FQM Future
 
-#### Documentation:
-
-> - Github wiki docs instead of pdf
-> - Video tutorials
 
 #### Multi screen support:
 
@@ -19,15 +15,6 @@ __With the ability to added same tasks into different screens with a different l
 > - Interactive panel headers to sort items by name, date, ...
 > - Implement hotspot wifi solution __Cross Platform__
 > - Solve MacOS one file package issue
-
-#### Smart Tickets system:
-
-> - Special screen that's a mix of touch and display specialized for each viewer.
-> __Create special feed for each viewer, to feed tickets progress. With number of tickets ahead, current ticket and time estimation__
-> - Create a form of viewers identification based on mac address, date and time of pulling the ticket.__
-> - Add the ability for tickets to be put on hold or removed
-> __By the Admin of the office, or the holder of S-ticket__
-> - Ability to customize S-tickets via layouts.
 
 
 #### System on-hold:
