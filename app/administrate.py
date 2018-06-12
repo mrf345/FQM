@@ -8,11 +8,11 @@ from flask import redirect, Markup, session, send_file, Blueprint
 from flask_login import current_user, login_required
 from flask_login import login_user, logout_user
 from datetime import datetime
-import forms
-import data
-from database import db, login_manager
+import app.data as data
+from app.database import db, login_manager
+import app.forms as forms
 import csv
-from ex_functions import get_lang, r_path
+from app.ex_functions import get_lang, r_path
 
 
 administrate = Blueprint('administrate', __name__)

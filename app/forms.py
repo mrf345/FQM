@@ -3,9 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import data
+import app.data as data
 from flask import session
-from customize import mdal
 from flask_wtf import FlaskForm
 from wtforms import FileField, StringField, DateField, HiddenField
 from wtforms import SubmitField, PasswordField, SelectField
@@ -13,7 +12,12 @@ from wtforms import TextAreaField, IntegerField, BooleanField
 from flask_wtf.file import FileAllowed
 from wtforms.validators import InputRequired, Length, NumberRange, Optional
 from os import name
-from database import gtranslator
+from app.database import gtranslator
+
+
+# Midia files allowed used by forms and customize
+mdal = [['jpg', 'JPG', 'png', 'PNG'], ['wav', 'WAV'], [
+    'mp4', 'MP4', 'AVI', 'avi', 'webm', 'WEBM']]
 
 
 # -- List Tuples of colors, sizes, text background

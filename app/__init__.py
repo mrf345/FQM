@@ -19,26 +19,26 @@ from PySide.QtGui import QDesktopWidget, QPixmap
 from PySide.QtGui import QComboBox, QVBoxLayout, QHBoxLayout, QFontDatabase
 from PySide.QtCore import QCoreApplication, QSize, Qt, QThread, SIGNAL
 from socket import socket, AF_INET, SOCK_STREAM
-from administrate import administrate
-from core import core
-from customize import cust_app, mdal
-from errorsh import errorsh_app
-from manage import manage_app
-from ex_functions import mse, check_ping, r_path, get_lang, solve_path
-from database import db, login_manager, files, version, gtranslator
+from app.administrate import administrate
+from app.core import core
+from app.customize import cust_app, mdal
+from app.errorsh import errorsh_app
+from app.manage import manage_app
+from app.ex_functions import mse, r_path, get_lang, solve_path
+from app.database import db, login_manager, files, version, gtranslator
 from flask_uploads import configure_uploads
 from flask_login import login_required, current_user
 from jinja2 import FileSystemLoader
 from flask_qrcode import QRcode
 from functools import partial
-from printer import listp
+from app.printer import listp
 from flask_datepicker import datepicker
 from flask_colorpicker import colorpicker
 from flask_fontpicker import fontpicker
 from flask_less import lessc
 from flask_minify import minify
 from flask_gtts import gtts
-from languages import GUI as LANGUAGES
+from app.languages import GUI as LANGUAGES
 
 
 def create_app():
@@ -116,8 +116,8 @@ class rwser(QThread):
             self.serv.start()
             self.stopper.wait()
         except:
-            print 'Error STA webserver : please, help us improve by reporting'
-            print "to us on : \n\thttps://fqms.github.io/"
+            print('Error STA webserver : please, help us improve by reporting')
+            print("to us on : \n\thttps://fqms.github.io/")
             sys.exit(0)
 
     def stop(self):
@@ -125,8 +125,8 @@ class rwser(QThread):
             self.stopper.set()
             self.serv.stop()
         except:
-            print 'Error STD webserver : please, help us improve by reporting'
-            print "to us on : \n\thttps://fqms.github.io/"
+            print('Error STD webserver : please, help us improve by reporting')
+            print("to us on : \n\thttps://fqms.github.io/")
             sys.exit(0)
 
 
@@ -199,7 +199,7 @@ class NewWindow(QWidget):
             'es': 'Spanish'
         }
         self.langs_list = QComboBox()
-        self.langs_list.addItems(self.langs.values())
+        self.langs_list.addItems(list(self.langs.values()))
         self.langs_list.setCurrentIndex(1)
         self.langs_list.setToolTip(self.getTrans('1'))
         self.langs_list.currentIndexChanged.connect(self.langChange)
@@ -484,7 +484,7 @@ def run_app():
         adme = False
         if path in adml or path[:7] in adml or path[:5] in adml:
             adme = True
-        return dict(is_connected=check_ping, path=path,
+        return dict(path=path,
                     adme=adme, brp=Markup("<br>"), ar=ar,
                     version=version, str=str, defLang=session.get('lang'))
     QCoreApplication.processEvents()

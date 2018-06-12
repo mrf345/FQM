@@ -3,12 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import data
-from database import db
+import app.data as data
+from app.database import db, gtranslator
 import os
-from httplib import HTTPConnection as htp
-import languages as LANGUAGES
-from database import gtranslator
+import app.languages as LANGUAGES
 # Extra functions
 
 
@@ -59,19 +57,6 @@ def getFolderSize(folder):
         elif os.path.isdir(itempath):
             total_size += getFolderSize(itempath)
     return str(total_size / 1024 / 1024)
-
-
-def check_ping():
-    rl = False
-    try:
-        tt = htp("www.google.com", 80, 1000)
-        tt.request('HEAD', '/')
-        tt.close()
-        rl = True
-    except:
-        pass
-    print rl
-    return rl
 
 
 def r_path(relative_path):

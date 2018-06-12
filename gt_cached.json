@@ -868,6 +868,7 @@
     },
     "Error: you must reset it, before you delete it ": {
         "ar": "خطأ: يجب عليك إعادة تعيينه ، قبل حذفه",
+        "en": "Error: you must reset it, before you delete it",
         "es": "Error: debe restablecerlo, antes de eliminarlo",
         "fr": "Erreur: vous devez le réinitialiser avant de le supprimer",
         "it": "Errore: è necessario ripristinarlo, prima di eliminarlo"

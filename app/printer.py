@@ -13,10 +13,10 @@ import arabic_reshaper
 from bidi.algorithm import get_display
 from PIL import Image, ImageDraw, ImageFont
 from datetime import datetime
-from ex_functions import r_path
+from app.ex_functions import r_path
 from os import remove, getcwd, path, name
-from database import version
-from languages import PRINTER
+from app.database import version
+from app.languages import PRINTER
 
 
 class find_class(object):

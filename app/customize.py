@@ -10,13 +10,13 @@ from werkzeug import secure_filename
 import os
 import imghdr
 import sndhdr
-import ex_functions
-import forms
-import data
-from database import db, files
-from printer import listp
-from ex_functions import r_path
-from ex_functions import get_lang
+import app.ex_functions as ex_functions
+import app.forms as forms
+import app.data as data
+from app.database import db, files
+from app.printer import listp
+from app.ex_functions import r_path
+from app.ex_functions import get_lang
 
 cust_app = Blueprint('cust_app', __name__)
 

@@ -7,10 +7,10 @@ from flask import url_for, flash, request, render_template, redirect
 from flask import Blueprint, Markup, request, session
 from flask_login import current_user, login_required
 from sqlalchemy.sql import and_
-import forms
-import data
-from database import db
-from ex_functions import get_lang
+import app.forms as forms
+import app.data as data
+from app.database import db
+from app.ex_functions import get_lang
 
 manage_app = Blueprint('manage_app', __name__)
 

@@ -8,12 +8,12 @@ from flask import session, jsonify, Blueprint, request
 from flask_login import current_user, login_required, login_user
 import os
 from datetime import datetime
-import forms
-import data
-import printer as ppp
-from database import db
-import ex_functions
-from ex_functions import get_lang
+import app.forms as forms
+import app.data as data
+import app.printer as ppp
+from app.database import db
+import app.ex_functions as ex_functions
+from app.ex_functions import get_lang
 from multiprocessing.pool import ThreadPool
 from sys import platform
 

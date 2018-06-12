@@ -6,7 +6,7 @@
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-from database import db
+from app.database import db
 
 
 class Office(db.Model):
@@ -50,7 +50,7 @@ class Serial(db.Model):
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
 
     def __init__(self, number=100, office_id=1, task_id=1,
-                 name=None, n=False, p=False, pulledBy = 01):
+    name=None, n=False, p=False, pulledBy=0):
         self.number = number
         self.office_id = office_id
         self.task_id = task_id

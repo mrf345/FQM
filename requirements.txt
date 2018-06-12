@@ -12,7 +12,8 @@ click==6.7
 configparser==3.5.0
 decorator==4.1.2
 dominate==2.3.1
-enum==0.4.6
+# adding support to py 3.4 
+# enum==0.4.6
 enum34==1.1.6
 flake8==3.4.1
 Flask==0.12.2
@@ -70,7 +71,7 @@ WTForms-Components==0.10.3
 Flask-Datepicker==0.8
 Flask-Colorpicker==0.9
 Flask-Fontpicker==0.2
-Flask-Less==0.3
+Flask-Less==0.4
 Flask-Minify==0.6
 Flask-gTTs==0.6
 Flask-Googletrans==0.5
