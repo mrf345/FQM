@@ -26,19 +26,21 @@ $(document).ready(function () {
                 storeVal: 'verNotifier',
                 validator: function () {
                     return new Promise(function (resolve, reject) {
-                        $.getScript('https://fqms.github.io/js/releases.js')
-                        .done(function () {
-                            ['Windows', 'Linux', 'Mac'].forEach(function (os) {
-                                if (window.navigator.userAgent.indexOf(os) !== -1) {
-                                    if (releases[os] !== '{{ version }}') resolve(true)
-                                    else reject(false)
-                                }
-                                if (os === 'Mac') reject(false)
+                        fetch('https://fqms.github.io/js/releases.js').then(function () {
+                            $.getScript('https://fqms.github.io/js/releases.js')
+                            .done(function () {
+                                ['Windows', 'Linux', 'Mac'].forEach(function (os) {
+                                    if (window.navigator.userAgent.indexOf(os) !== -1) {
+                                        if (releases[os] !== '{{ version }}') resolve(true)
+                                        else reject(false)
+                                    }
+                                    if (os === 'Mac') reject(false)
+                                })
                             })
-                        })
-                        .fail(function () {
-                            return reject(false)
-                        })
+                            .fail(function () {
+                                return reject(false)
+                            })
+                        }).catch(function () { return reject(false) })
                     })
                 }
             }, function () {
