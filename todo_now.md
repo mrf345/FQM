@@ -41,6 +41,11 @@
 > - [ ] add special args for touch_screen to redirect to registered or printed tickets
 > - [ ] remove old tickets from template and db
 
+- [ ] Printed ticket customization
+> - [ ] to choose width and height of text
+> ***To fix scaling issue***
+> - [ ] to chose which information to be displayed
+
 - [ ] More manage
 > - [ ] add pull from all office
 > - [ ] add general tasks (Require DB resign, Tasks over Offices)

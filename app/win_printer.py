@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from flask import request
 import _winreg
 import win32com.client
 from printer import printit
@@ -65,7 +64,7 @@ def listpp():
     return lps
 
 
-def printwin(pname, a, b, c, d, cit, l):
+def printwin(pname, a, b, c, d, cit, l, ip):
     outp = printit(Dummy(), a, b, c, d, cit, lang=l)
     outp = outp.output
     fname = "dummy.txt"
@@ -73,14 +72,14 @@ def printwin(pname, a, b, c, d, cit, l):
     f = open(ffname, 'w')
     f.write(outp)
     f.close()
-    lh = request.remote_addr
+    lh = ip
     txt = 'print /D:\\\%s\\"%s" "%s"' % (lh, pname, ffname)
     system(txt)
     if path.isfile(ffname):
         remove(ffname)
 
 
-def printwin_ar(pname, ti, ofc, tnu, tas, cticket):
+def printwin_ar(pname, ti, ofc, tnu, tas, cticket, ip):
     def fsizeit(text, t, f):
         ltxt = "A" * len(t)
         return f.getsize(t)
@@ -205,7 +204,7 @@ def printwin_ar(pname, ti, ofc, tnu, tas, cticket):
     f.write(p.output)
     p.close()
     f.close()
-    lh = request.remote_addr
+    lh = ip
     text = 'print /D:\\\%s\\"%s" "%s"' % (lh, pname, sfs[1])
     system(text)
     for f in sffs:

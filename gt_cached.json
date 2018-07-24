@@ -814,6 +814,7 @@
     },
     "Error: there is no unused multimedia file to be removed !": {
         "ar": "خطأ: لا يوجد ملف وسائط متعددة غير مستخدمة لإزالتها!",
+        "en": "Error: there is no unused multimedia file to be removed !",
         "es": "Error: ¡no se debe eliminar ningún archivo multimedia sin usar!",
         "fr": "Erreur: il n'y a pas de fichier multimédia inutilisé à supprimer!",
         "it": "Errore: non ci sono file multimediali inutilizzati da rimuovere!"
@@ -838,6 +839,7 @@
     },
     "Error: wrong user name or password": {
         "ar": "خطأ، اسم المستخدم غير صحيح أو كلمة المرور",
+        "en": "Error: wrong user name or password",
         "es": "Error, nombre de usuario o contraseña incorrecta",
         "fr": "Erreur, mauvais nom d'utilisateur ou mot de passe",
         "it": "Errore: nome utente o password errati"
@@ -862,6 +864,7 @@
     },
     "Error: you must have available printer, to use printed": {
         "ar": "خطأ: يجب أن يكون لديك طابعة متوفرة ، لاستخدام الطباعة",
+        "en": "Error: you must have available printer, to use printed",
         "es": "Error: debe tener una impresora disponible, para usar impresa",
         "fr": "Erreur: vous devez disposer de l'imprimante disponible pour utiliser",
         "it": "Errore: è necessario avere la stampante disponibile, da usare stampata"
@@ -1308,6 +1311,7 @@
     },
     "Notice: Make sure to execute the command `sudo gpasswd -a $(users) lp` and reboot the system": {
         "ar": "إشعار: تأكد من تنفيذ الأمر `sudo gpasswd -a $ (users) lp` وإعادة تشغيل النظام",
+        "en": "Notice: Make sure to execute the command `sudo gpasswd -a $(users) lp` and reboot the system",
         "es": "Aviso: asegúrese de ejecutar el comando `sudo gpasswd -a $ (users) lp` y reinicie el sistema",
         "fr": "Remarque: Assurez-vous d'exécuter la commande `sudo gpasswd -a $ (users) lp` et redémarrez le système",
         "it": "Nota: assicurati di eseguire il comando `sudo gpasswd -a $ (users) lp` e riavvia il sistema"
@@ -1327,6 +1331,7 @@
     },
     "Notice: Sorry, no matching results were found ": {
         "ar": "ملاحظة: عذرًا ، لم يتم العثور على نتائج مطابقة",
+        "en": "Notice: Sorry, no matching results were found",
         "es": "Aviso: Lo sentimos, no se encontraron resultados coincidentes",
         "fr": "Avis: Désolé, aucun résultat correspondant n'a été trouvé",
         "it": "Avviso: scusa, non sono stati trovati risultati corrispondenti"
@@ -1360,6 +1365,7 @@
     },
     "Notice: admin password has been updated.": {
         "ar": "إشعار: تم تحديث كلمة مرور المسؤول.",
+        "en": "Notice: admin password has been updated.",
         "es": "Aviso: la contraseña de administrador se ha actualizado.",
         "fr": "Remarque: le mot de passe de l'administrateur a été mis à jour.",
         "it": "Avviso: la password dell'amministratore è stata aggiornata."
@@ -1396,6 +1402,7 @@
     },
     "Notice: make sure that printer is properly connected": {
         "ar": "إشعار: تأكد من توصيل الطابعة بشكل صحيح",
+        "en": "Notice: make sure that printer is properly connected",
         "es": "Aviso: asegúrese de que la impresora esté conectada correctamente",
         "fr": "Avis: assurez-vous que l'imprimante est correctement connectée",
         "it": "Avviso: assicurarsi che la stampante sia collegata correttamente"
@@ -1506,6 +1513,7 @@
     },
     "Notice: user is deleted .": {
         "ar": "إشعار: يتم حذف المستخدم.",
+        "en": "Notice: user is deleted .",
         "es": "Aviso: el usuario es eliminado.",
         "fr": "Avis: l'utilisateur est supprimé.",
         "it": "Avviso: l'utente è cancellato."

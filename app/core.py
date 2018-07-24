@@ -3,8 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from flask import url_for, flash, render_template, redirect
-from flask import session, jsonify, Blueprint, request
+from flask import (
+    url_for, flash, render_template, redirect,
+    session, jsonify, Blueprint, request, current_app)
 from flask_login import current_user, login_required, login_user
 import os
 from datetime import datetime
@@ -135,14 +136,16 @@ def serial(t_id):
                             oot.prefix + '.' + str(ln + 1),
                             oot.prefix + str(oot.name),
                             tnum, ppt.name,
-                            oot.prefix + '.' + str(cuticket.number))
+                            oot.prefix + '.' + str(cuticket.number),
+                            ip=current_app.config['LOCALADDR'])
                     else:
                         win_printer.printwin(
                             q.product,
                             oot.prefix + '.' + str(ln + 1),
                             oot.prefix + str(oot.name),
                             tnum, ppt.name,
-                            oot.prefix + '.' + str(cuticket.number), l=langu)
+                            oot.prefix + '.' + str(cuticket.number), l=langu,
+                            ip=current_app.config['LOCALADDR'])
                             # FIX Issue printer on windows
                     p = True
                 else:
@@ -395,9 +398,10 @@ def feed():
     hcounter = co.ticket if co else data.Waiting.query.order_by(data.Waiting.id).first()
     hcounter = hcounter.number if not co and hcounter is not None else "Empty"
     # ensure unique val to instigate renouncement, with emptying session
-    if session.get('announce'):
-        hcounter = session.get('announce')
-        session['announce'] = None
+    if 'REANNOUNCE' in current_app.config:
+        if current_app.config['REANNOUNCE'] is not None:
+            hcounter = current_app.config['REANNOUNCE']
+            current_app.config['REANNOUNCE'] = None
     # End of fix
     f = data.Display_store.query.filter_by(id=0).first()
     return jsonify(con=con, cot=cot, cott=cott,
@@ -411,7 +415,7 @@ def feed():
 def rean():
     """ to set receive $.get json and activate re-announcement """
     if current_user.is_authenticated:
-        session['announce'] = datetime.utcnow()
+        current_app.config['REANNOUNCE'] = str(datetime.utcnow())
         return 'success'
     else:
         return 'fail'

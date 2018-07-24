@@ -107,6 +107,7 @@ class rwser(QThread):
     def run(self):
         self.stopper = thevent()
         monkey.patch_all()
+        self.app.config['LOCALADDR'] = str(self.ip)
         self.serv = pywsgi.WSGIServer(
             (str(self.ip),
              int(self.port)),
