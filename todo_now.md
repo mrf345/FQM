@@ -12,9 +12,9 @@
 
 - [ ] rewrite and comment back-end code for better performance and support
 
-- [ ] repeat announcements
-> - [ ] replace session storage with db storage on /feed
-> - [ ] move it from partial front-end to full back-end
+- [x] repeat announcements 23/July
+> - [x] replace session storage with db storage on /feed 23/July
+> - [x] move it from partial front-end to full back-end 23/July
 
 - [ ] Default button to aliases to restore default options
 - [ ] Add flash message to language change
