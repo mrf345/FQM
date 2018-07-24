@@ -397,13 +397,14 @@ def feed():
     # adding intended modification in case of recal 
     hcounter = co.ticket if co else data.Waiting.query.order_by(data.Waiting.id).first()
     hcounter = hcounter.number if not co and hcounter is not None else "Empty"
-    # ensure unique val to instigate renouncement, with emptying session
-    if 'REANNOUNCE' in current_app.config:
-        if current_app.config['REANNOUNCE'] is not None:
-            hcounter = current_app.config['REANNOUNCE']
-            current_app.config['REANNOUNCE'] = None
     # End of fix
-    f = data.Display_store.query.filter_by(id=0).first()
+    # ensure unique val to instigate renouncement, with emptying session
+    toMod = data.Display_store.query.first()
+    if toMod.r_announcement:
+            hcounter = str(datetime.utcnow())
+            toMod.r_announcement = False
+            db.session.add(toMod)
+            db.session.commit()
     return jsonify(con=con, cot=cot, cott=cott,
                    w1=hl[0], w2=hl[1], w3=hl[2],
                    w4=hl[3], w5=hl[4], w6=hl[5],
@@ -415,7 +416,10 @@ def feed():
 def rean():
     """ to set receive $.get json and activate re-announcement """
     if current_user.is_authenticated:
-        current_app.config['REANNOUNCE'] = str(datetime.utcnow())
+        toMod = data.Display_store.query.first()
+        toMod.r_announcement = True
+        db.session.add(toMod)
+        db.session.commit()
         return 'success'
     else:
         return 'fail'

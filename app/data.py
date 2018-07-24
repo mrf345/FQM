@@ -259,6 +259,8 @@ class Display_store(db.Model):
     repeats = db.Column(db.String(100))
     bgcolor = db.Column(db.String(100))
     tmp = db.Column(db.Integer)
+    # adding repeat announcement value
+    r_announcement = db.Column(db.Boolean)
     akey = db.Column(db.Integer, db.ForeignKey("media.id",
                                                ondelete='cascade'),
                      nullable=True)
