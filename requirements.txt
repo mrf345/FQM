@@ -8,14 +8,14 @@ blinker==1.4
 bs4==0.0.1
 certifi==2017.7.27.1
 chardet==3.0.4
-click==6.7
+click==5.1
 configparser==3.5.0
 decorator==4.1.2
 dominate==2.3.1
 # adding support to py 3.4 
 # enum==0.4.6
 enum34==1.1.6
-Flask==0.1.0.2
+Flask==1.0.2
 Flask-Bootstrap==3.3.7.1
 Flask-Login==0.4.0
 Flask-Mail==0.9.1
