@@ -76,12 +76,14 @@ def assign(v, p, in_ep, out_ep):
 
 def listp():
     vl = []
-    for ll in usb.core.find(find_all=True, custom_match=find_class(7)):
-        cfg = ll.get_active_configuration()
-        in_ep = int(cfg[(0, 0)][0].bEndpointAddress)
-        out_ep = int(cfg[(0, 0)][1].bEndpointAddress)
-        vl.append([ll.idVendor, ll.idProduct,
-                   in_ep, out_ep])
+    try:
+        for ll in usb.core.find(find_all=True, custom_match=find_class(7)):
+            cfg = ll.get_active_configuration()
+            in_ep = int(cfg[(0, 0)][0].bEndpointAddress)
+            out_ep = int(cfg[(0, 0)][1].bEndpointAddress)
+            vl.append([ll.idVendor, ll.idProduct, in_ep, out_ep])
+    except Exception:
+        pass
     return vl
 
 
