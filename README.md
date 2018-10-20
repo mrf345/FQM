@@ -12,7 +12,16 @@
 > - Supports text-to-speech announcement. <br />
 
 ## Setup:
+#### - Using installer.sh for Linux, MacOS:
+> - Execute the following commands in a terminal window
+> 1. `chmod +x installer.sh`
+> 2. `./installer.sh --install` # to install the dependencies
+> 3. `./installer.sh --run` # to run FQM
+> - If you want to remove the virtual environment and installed there dependencies
+> 4. `./installer.sh --uninstall`
+
 #### - From the source:
+> - Execute the following commands in a terminal window
 > 1. `git clone https://github.com/mrf345/FQM.git` <br />
 > 2. `cd FQM` <br />
 > - You can choose to use Python 2.7 or 3.4 <br />
