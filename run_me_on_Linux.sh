@@ -9,10 +9,10 @@ pip2_exi=`command -v pip2`
 # checking if python exist
 python2=`command -v python2`
 python=`command -v python`
-# checking if qt4 exists
-qt=`command -v qmake`
-# checking if cmake exists
-cmake=`command -v cmake`
+# # checking if qt4 exists
+# qt=`command -v qmake`
+# # checking if cmake exists
+# cmake=`command -v cmake`
 # checking if virtualenv exists
 virtenv=`command -v virtualenv`
 virtenv2=`command -v virtualenv2`
@@ -24,23 +24,11 @@ then
 fi
 if [ "$pip_exi" == "" ] && [ "$pip2_exi" == "" ]
 then
-  echo "Error: please install python-pip or python2-pip, from your package manager"
-  exit 0
-fi
-if [ "$cmake" == "" ]
-then
-  echo "Error: please install cmake, from your package manager"
-  exit 0
+  sudo python2 -m ensurepip
 fi
 if [ "$virtenv" == "" ] && [ "$virtenv2" == "" ]
 then
-  echo "Error: please install python-virtualenv or python2-virtualenv, from your package manager"
-  exit 0
-fi
-if [ "$qt" == "" ]
-then
-  echo "Error: please install qt4 or qt4-defaults, from your package manager"
-  exit 0
+  sudo pip2 install vertualenv
 fi
 
 
@@ -84,7 +72,7 @@ then
     echo "Error: must --install enviroment first .."
     exit 0
   fi
-  echo "##### Running FQM 0.2.6 #####"
+  echo "##### Running FQM 0.4.3 #####"
   if [ -f run.py ]
   then
     python run.py
