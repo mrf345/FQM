@@ -15,8 +15,8 @@
 #### - Using installer.sh for Linux, MacOS:
 > - Execute the following commands in a terminal window
 > 1. `chmod +x installer.sh`
-> 2. `./installer.sh --install` # to install the dependencies
-> 3. `./installer.sh --run` # to run FQM
+> 2. `./installer.sh --install`
+> 3. `./installer.sh --run`
 > - If you want to remove the virtual environment and installed there dependencies
 > 4. `./installer.sh --uninstall`
 
