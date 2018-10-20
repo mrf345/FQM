@@ -66,7 +66,10 @@ def r_path(relative_path):
         base_path = sys._MEIPASS
     except Exception:
         base_path = os.path.abspath(".")
-
+    # Fixing multimedia folder not found issue
+    if '/' in relative_path or '\\' in relative_path:
+        relative_path = ('\\' if os.name == 'nt' else '/'
+        ).join(relative_path.split('\\' if os.name == 'nt' else '/'))
     return os.path.join(base_path, relative_path)
 
 
