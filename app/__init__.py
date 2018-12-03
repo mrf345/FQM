@@ -76,7 +76,7 @@ def create_app():
         'static/css/webfont.select.css'
     ])
     lessc(app)
-    minify(app, js=True, cache=True, fail_safe=True)
+    # minify(app, js=True, cache=True, fail_safe=True)
     gtts(app=app, route=True)
     gtranslator.init_app(app)
     # Register blueprints

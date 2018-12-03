@@ -70,8 +70,8 @@ WTForms-Components==0.10.3
 Flask-Datepicker==0.8
 Flask-Colorpicker==0.9
 Flask-Fontpicker==0.2
-Flask-Less==0.4
-Flask-Minify==0.9
+Flask-Less==0.5
+Flask-Minify==0.10
 Flask-gTTs==0.6
 Flask-Googletrans==0.5
 # pypiwin32 # in Windows only

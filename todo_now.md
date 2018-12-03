@@ -8,10 +8,10 @@
 > - [ ] remove error handling from all
 > - [ ] create flask_slimit and use with cache
 
-- [ ] flask_less multi files hashing and caching
+- [x] flask_less multi files hashing and caching 3/December
 
 __Important to reduce the insane delay on load__
-- [ ] flask_minify implement exception based cashing
+- [x] flask_minify implement exception based cashing 3/December
 
 - [ ] fix browserNotifier when new release published __chrome bug__
 
