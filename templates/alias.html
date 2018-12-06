@@ -43,6 +43,9 @@
 		    <center>
           <p class="pt-5"></p>
           <button class="btn btn-md btn-danger" type="submit">{{ translate('Apply', 'en', [defLang]) }}</button>
+          <button class="btn btn-md btn-primary ml-2" type="button"
+          onclick="var toReset = ['office', 'task', 'ticket', 'name', 'number'];toReset.forEach(
+            function (i) {$('#' + i).val(i)})">{{ translate('Reset', 'en', [defLang]) }}</button>
           <p class="pb-2"></p>
 		    </center>
 	    </div>
