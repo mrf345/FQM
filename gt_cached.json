@@ -405,6 +405,9 @@
         "fr": "Personnaliser",
         "it": "personalizzare"
     },
+    "Database": {
+        "en": "Database"
+    },
     "Delete": {
         "ar": "حذف",
         "en": "Delete",
@@ -1329,6 +1332,12 @@
         "fr": "Avis: Nouvelle tâche ajoutée.",
         "it": "Avviso: è stata aggiunta una nuova attività."
     },
+    "Notice: Notification got Disabled successfully": {
+        "en": "Notice: Notification got Disabled successfully"
+    },
+    "Notice: Notification got Enabled successfully": {
+        "en": "Notice: Notification got Enabled successfully"
+    },
     "Notice: Sorry, no matching results were found ": {
         "ar": "ملاحظة: عذرًا ، لم يتم العثور على نتائج مطابقة",
         "en": "Notice: Sorry, no matching results were found",
@@ -1533,12 +1542,21 @@
         "fr": "Notification",
         "it": "Notifica"
     },
+    "Notification got Disabled successfully": {
+        "en": "Notification got Disabled successfully"
+    },
+    "Notification got Enabled successfully": {
+        "en": "Notification got Enabled successfully"
+    },
     "Notification sound": {
         "ar": "صوت الإشعار",
         "en": "Notification sound",
         "es": "Sonido de notificación",
         "fr": "Son de notification",
         "it": "Suono di notifica"
+    },
+    "Notifications": {
+        "en": "Notifications"
     },
     "Now": {
         "ar": "الآن",

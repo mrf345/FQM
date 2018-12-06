@@ -30,7 +30,7 @@
         <script src="{{ url_for('static', filename='disciple.js') }}"></script>
         <script src="{{ url_for('static', filename='wallpapers.js') }}"></script>
         <script src="{{ url_for('static', filename='extFunctions.js') }}"></script>
-        {{ beloadingNotifier(version, beload=False, release=translate("You are using an older version of FQM, a newer release is available on fqms.github.io", 'en', [defLang]), firefox=translate("You are not using Firefox browser, which this project is designed and most suited for.", 'en', [defLang])) }}
+        {{ beloadingNotifier(version, beload=False, release=translate("You are using an older version of FQM, a newer release is available on fqms.github.io", 'en', [defLang]), firefox=translate("You are not using Firefox browser, which this project is designed and most suited for.", 'en', [defLang]), notifier=notifications) }}
         <script type="text/javascript">
             window.onload = function () {
                 {% if dropdown %} $("{{ dropdown }}").collapse('show') {% endif %} // sidebar collapse for all
@@ -121,13 +121,22 @@
     				                        {{ translate('Add user', 'en', [defLang]) }}
                                         </a>
     			                    </li>
-                                    <li class="dropdown-header">( Database )</li>
+                                    <li class="dropdown-header">( {{ translate('Database', 'en', [defLang]) }} )</li>
                                     <li>
                                         <a href="{{ url_for('administrate.csvd', t_name=0) }}">
                                             <span class="fa fa-database"></span>
                                             {{ translate('Export ', 'en', [defLang]) }} CSV
                                         </a>
                                     </li>
+                                    {% if current_user.id == 1 %}
+                                    <li class="dropdown-header">( {{ translate('Notifications', 'en', [defLang]) }} )</li>
+                                    <li>
+                                        <a href="{{ url_for('core.notifications', togo=current_path.replace('/', '(')) }}">
+                                            <span class="fa fa-bell"></span>
+                                            {{ translate('Disable' if notifications == True else 'Enable', 'en', [defLang]) }}
+                                        </a>
+                                    </li>
+                                    {% endif %}
                                 </ul>
                             </li>
     		                {% endif %}

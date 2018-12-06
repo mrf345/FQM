@@ -39,6 +39,7 @@ from flask_less import lessc
 from flask_minify import minify
 from flask_gtts import gtts
 from app.languages import GUI as LANGUAGES
+from app.data import Settings
 
 
 def create_app():
@@ -485,8 +486,8 @@ def run_app():
         adme = False
         if path in adml or path[:7] in adml or path[:5] in adml:
             adme = True
-        return dict(path=path,
-                    adme=adme, brp=Markup("<br>"), ar=ar,
+        return dict(path=path, notifications=Settings.query.first().notifications,
+                    adme=adme, brp=Markup("<br>"), ar=ar, current_path=request.path,
                     version=version, str=str, defLang=session.get('lang'))
     QCoreApplication.processEvents()
     appg.exec_()

@@ -13,7 +13,7 @@ import app.languages as LANGUAGES
 def mse():
     lodb = [data.Display_store,
             data.Touch_store,
-            data.Slides_c,
+            data.Slides_c, data.Settings,
             data.Vid, data.Waiting_c,
             data.Printer, data.Aliases]
     # -- make sure objects are created,

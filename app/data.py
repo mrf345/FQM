@@ -413,4 +413,13 @@ class Aliases(db.Model):
         self.ticket = ticket
         self.name = name
         self.number = number
+
+
+class Settings(db.Model):
+    __tablename__ = 'settings'
+    id = db.Column(db.Integer, primary_key=True)
+    notifications = db.Column(db.Boolean)
     
+    def __init__(self, notifications=True):
+        self.id = 0
+        self.notifications = notifications

@@ -26,6 +26,8 @@ __Important to reduce the insane delay on load__
 
 ## To Add :
 
+- [x] Enable and disable browser notifications option
+
 - [ ] Create and use python module based on pos module for cross-platform drawn printing
 
 - [ ] More customization

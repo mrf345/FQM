@@ -475,3 +475,22 @@ def touch(a):
                            ptitle="Touch Screen",
                            alias=data.Aliases.query.first(),
                            form=form, a=ts.tmp, d=d)
+
+
+@core.route('/notifications/<togo>')
+@login_required
+def notifications(togo):
+    """ to toggle the front-end notifications """
+    if current_user.role_id != 1:
+        flash(get_lang(17), "danger")
+    settings = data.Settings.query.filter_by(id=0).first()
+    if settings is not None:
+        settings.notifications = False if settings.notifications else True
+        db.session.add(settings)
+        db.session.commit()
+        flash("Notice: Notification got " + (
+            "Enabled" if settings.notifications else "Disabled"
+        ) + " successfully", "warning")
+    else:
+        flash("Error: Failed to find settings in the database", "danger")
+    return redirect(togo.replace('(', '/'))
