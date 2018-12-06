@@ -253,7 +253,8 @@
 		        {{ render_field(form.background, class="mb-3 form-control") }}
 		        {{ form.bgcolor(class_="sp") }}
 		        <hr>
-		        {{ render_field(form.rrate, class="form-control") }}
+				{{ render_field(form.rrate, class="form-control") }}
+				{{ render_field(form.prefix, class="form-control") }}
                 <p class="pb-3"></p>
 		        {% if form.errors %}
 		        <div class="well">

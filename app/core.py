@@ -329,9 +329,10 @@ def pull(o_id):
     ocs = data.Office.query.filter_by(id=theTask.office_id).first()
     toc = theTask.name
     # adding to current waiting
+    pIt = data.Display_store.query.first().prefix
     cl = data.Waiting_c.query.first()
-    cl.ticket = ocs.prefix + str(cs.number)
-    cl.oname = ocs.prefix + str(ocs.name)
+    cl.ticket = ocs.prefix if pIt else '' + str(cs.number)
+    cl.oname = ocs.prefix if pIt else '' + str(ocs.name)
     cl.tname = toc
     cl.n = cs.n
     cl.name = cs.name
@@ -385,12 +386,16 @@ def feed():
         c += 1
         cs = str(c) + ". "
         prf = data.Office.query.filter_by(id=s.office_id).first().prefix
+        pIt = data.Display_store.query.first().prefix
+        print('#' * 10)
+        print(pIt)
+        print('#' * 10)
         if s.n:
-            bap = (prf).encode('utf-8') + "."
+            bap = ((prf).encode('utf-8') + ".") if pIt else ''
             bap += (s.name).encode('utf-8')
             hl.append(cs.encode('utf-8') + bap)
         else:
-            hl.append(cs + prf + str(s.number))
+            hl.append(cs + (prf if pIt else '') + str(s.number))
     for a in range(len(hl), 8):
         hl.append("Empty")
     # fixing identical changes bug

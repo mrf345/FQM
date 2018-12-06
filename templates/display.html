@@ -32,6 +32,7 @@
 		effect: "{{ ts.effect }}",
 		ensure_value: 'w9',
 		todo: function (data, toPlay=[]) {
+			// Adding prefix hiding from the front end
 			if (aplayer) aplayer.exit(false)
 			Promise.all(langs.map(function (lang, i) {
 				return fetch(window.location.origin + '/gtts/' + lang + '/' + data.cot + TTS[lang] + data.con)

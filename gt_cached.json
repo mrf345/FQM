@@ -252,6 +252,13 @@
         "fr": "Appliquer",
         "it": "Applicare"
     },
+    "Attach prefix office letter: ": {
+        "ar": "إرفاق خطاب مكتب البادئة:",
+        "en": "Attach prefix office letter:",
+        "es": "Adjuntar la letra de la oficina de prefijo:",
+        "fr": "Joindre la lettre du préfixe:",
+        "it": "Allega la lettera dell'ufficio prefisso:"
+    },
     "Auto reload": {
         "ar": "إعادة تحميل تلقائي",
         "en": "Auto reload",
@@ -406,7 +413,11 @@
         "it": "personalizzare"
     },
     "Database": {
-        "en": "Database"
+        "ar": "قاعدة البيانات",
+        "en": "Database",
+        "es": "Base de datos",
+        "fr": "Base de données",
+        "it": "Banca dati"
     },
     "Delete": {
         "ar": "حذف",
@@ -1026,6 +1037,10 @@
         "fr": "Ici, où le type de tickets que le système va générer est défini, deux options sont actuellement possibles: 1.Registered, dans lequel le client insère le nom complet après avoir choisi la tâche spécifique, ainsi le système annoncera le nom inséré à chaque fois qu'il est dû. 2.Imprimé le billet imprimé numéroté par file d'attente typique, qui exige que l'imprimante d'usb soit connectée, avec laquelle il est configuré et placé sur des billets aussi.",
         "it": "Qui, dove è impostato il tipo di ticket che il sistema genererà, sono attualmente possibili due opzioni 1. Registrato, in cui il cliente inserisce il nome completo dopo aver scelto l'attività specifica, quindi il sistema in seguito annuncerà il nome inserito ogni volta che è dovuto. 2. Stampato il tipico biglietto stampato numerato in coda, che richiede la connessione della stampante USB, con la quale è configurato e impostato anche sui biglietti."
     },
+    "Hide prefix office letter: ": {
+        "en": "Hide prefix office letter:",
+        "it": "Nascondi la lettera dell'ufficio prefisso:"
+    },
     "ID . Name": {
         "ar": "هوية شخصية . اسم",
         "en": "ID . Name",
@@ -1333,6 +1348,7 @@
         "it": "Avviso: è stata aggiunta una nuova attività."
     },
     "Notice: Notification got Disabled successfully": {
+        "ar": "إشعار: تم تعطيل الإشعار بنجاح",
         "en": "Notice: Notification got Disabled successfully"
     },
     "Notice: Notification got Enabled successfully": {
@@ -1556,7 +1572,11 @@
         "it": "Suono di notifica"
     },
     "Notifications": {
-        "en": "Notifications"
+        "ar": "إخطارات",
+        "en": "Notifications",
+        "es": "Notificaciones",
+        "fr": "Les notifications",
+        "it": "notifiche"
     },
     "Now": {
         "ar": "الآن",

@@ -26,12 +26,12 @@ __Important to reduce the insane delay on load__
 
 ## To Add :
 
-- [x] Enable and disable browser notifications option
+- [x] Enable and disable browser notifications option 6/December
 
 - [ ] Create and use python module based on pos module for cross-platform drawn printing
 
-- [ ] More customization
-> - [ ] hide prefix from waiting and list of tickets on back-end core, and front-end display template
+- [x] More customization 
+> - [x] hide prefix from waiting and list of tickets on back-end core, and front-end display template 6/December
 
 - [ ] Improve User management:
 > - [ ] add configurable profile for users
