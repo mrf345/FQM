@@ -82,7 +82,7 @@
 		    		<b> {{ offices.filter_by(id=o.office_id).first().prefix }}{{ o.number }}.</b>
 		  		</div>
 		  		<div class="col-xs-12 col-sm-2">
-		    		<u>{{ moment(o.timestamp).format('L') }}</u>
+					  {{ moment(o.timestamp).format('L') }}
 		  		</div>
 		  		<div class="col-xs-12 col-sm-3">
 		    		{% if o.p %} <u>{{ users.filter_by(id=o.pulledBy).first().name }} / {{ moment(o.pdt).fromNow() }}</u>

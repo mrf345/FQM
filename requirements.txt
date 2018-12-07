@@ -19,7 +19,7 @@ Flask==1.0.2
 Flask-Bootstrap==3.3.7.1
 Flask-Login==0.4.0
 Flask-Mail==0.9.1
-Flask-Moment==0.5.1
+Flask-Moment==0.5
 Flask-PageDown==0.2.2
 Flask-QRcode==1.0.1
 Flask-Script==2.0.5
@@ -30,8 +30,6 @@ Flask-WTF==0.14.2
 future==0.16.0
 gevent==1.2.2
 greenlet==0.4.12
-gTTS==1.1.8
-gTTS-token==1.1.2
 html5lib==0.999999999
 idna==2.5
 infinity==1.4

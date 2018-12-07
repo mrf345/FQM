@@ -29,6 +29,17 @@
 					</span>
 			    </a>
 			</li>
+			<li  id="da5" >
+				<a href="{{ url_for('core.pull') }}">
+						<span class="fa fa-minus"></span>
+						{{ translate('Pull a ticket', 'en', [defLang]) }}
+						{% if serial.filter_by(p=False).count() >= 1 %}
+						<span class="badge pull-right">
+							{{ serial.filter_by(p=False).count() }}
+						</span>
+						{% endif %}
+				</a>
+			</li>
 			<li id="da3" >
 			    <a href="{{ url_for('manage_app.office_a') }}">
 				<span class="fa fa-plus"></span>

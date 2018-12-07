@@ -24,7 +24,7 @@ from app.core import core
 from app.customize import cust_app, mdal
 from app.errorsh import errorsh_app
 from app.manage import manage_app
-from app.ex_functions import mse, r_path, get_lang, solve_path
+from app.ex_functions import mse, r_path, solve_path
 from app.database import db, login_manager, files, version, gtranslator
 from flask_uploads import configure_uploads
 from flask_login import login_required, current_user
@@ -458,18 +458,21 @@ def run_app():
         if session.get('lang') not in ['en', 'ar', 'fr', 'it', 'es']:
             session['lang'] = 'en'
 
-
     # Adding error handlers on main app instance
     @app.errorhandler(404)
     @app.errorhandler(500)
     @app.errorhandler(413)
     def page_not_found(error):
         if error == 413:
-            flash(get_lang(55), "danger")
+            flash(
+                "Error: file uploaded is too large ",
+                "danger")
             if current_user.is_authenticated:
                 return redirect(url_for('cust_app.multimedia', nn=1))
             return redirect(url_for('core.root'))
-        flash(get_lang(56), "danger")
+        flash(
+            "Error: something wrong , or the page is non-existing",
+            "danger")
         return redirect(url_for('core.root'))
     # Injecting default variables to all templates
 

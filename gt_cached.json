@@ -722,7 +722,6 @@
     },
     "Error: fault in search parameters": {
         "ar": "خطأ: خطأ في معلمات البحث",
-        "en": "Error: fault in search parameters",
         "es": "Error: error en los parámetros de búsqueda",
         "fr": "Erreur: erreur dans les paramètres de recherche",
         "it": "Errore: errore nei parametri di ricerca"
@@ -735,7 +734,6 @@
     },
     "Error: login is required to access the page": {
         "ar": "خطأ: مطلوب تسجيل الدخول للوصول إلى الصفحة",
-        "en": "Error: login is required to access the page",
         "es": "Error: se requiere iniciar sesión para acceder a la página",
         "fr": "Erreur: la connexion est requise pour accéder à la page",
         "it": "Errore: è necessario il login per accedere alla pagina"
@@ -772,7 +770,6 @@
     },
     "Error: no tickets left to pull from ..": {
         "ar": "خطأ: لا توجد تذاكر متبقية لسحبها من ..",
-        "en": "Error: no tickets left to pull from ..",
         "es": "Error: no quedan tickets para tirar de ..",
         "fr": "Erreur: aucun ticket à retirer de ..",
         "it": "Errore: non è rimasto nessun biglietto da cui prelevare .."
@@ -828,7 +825,6 @@
     },
     "Error: there is no unused multimedia file to be removed !": {
         "ar": "خطأ: لا يوجد ملف وسائط متعددة غير مستخدمة لإزالتها!",
-        "en": "Error: there is no unused multimedia file to be removed !",
         "es": "Error: ¡no se debe eliminar ningún archivo multimedia sin usar!",
         "fr": "Erreur: il n'y a pas de fichier multimédia inutilisé à supprimer!",
         "it": "Errore: non ci sono file multimediali inutilizzati da rimuovere!"
@@ -853,7 +849,6 @@
     },
     "Error: wrong user name or password": {
         "ar": "خطأ، اسم المستخدم غير صحيح أو كلمة المرور",
-        "en": "Error: wrong user name or password",
         "es": "Error, nombre de usuario o contraseña incorrecta",
         "fr": "Erreur, mauvais nom d'utilisateur ou mot de passe",
         "it": "Errore: nome utente o password errati"
@@ -878,14 +873,12 @@
     },
     "Error: you must have available printer, to use printed": {
         "ar": "خطأ: يجب أن يكون لديك طابعة متوفرة ، لاستخدام الطباعة",
-        "en": "Error: you must have available printer, to use printed",
         "es": "Error: debe tener una impresora disponible, para usar impresa",
         "fr": "Erreur: vous devez disposer de l'imprimante disponible pour utiliser",
         "it": "Errore: è necessario avere la stampante disponibile, da usare stampata"
     },
     "Error: you must reset it, before you delete it ": {
         "ar": "خطأ: يجب عليك إعادة تعيينه ، قبل حذفه",
-        "en": "Error: you must reset it, before you delete it",
         "es": "Error: debe restablecerlo, antes de eliminarlo",
         "fr": "Erreur: vous devez le réinitialiser avant de le supprimer",
         "it": "Errore: è necessario ripristinarlo, prima di eliminarlo"
@@ -1322,14 +1315,12 @@
     },
     "Notice: Display customization has been updated. ..": {
         "ar": "إشعار: تم تحديث تخصيص العرض. ..",
-        "en": "Notice: Display customization has been updated. ..",
         "es": "Aviso: la personalización de la pantalla se ha actualizado. ..",
         "fr": "Remarque: la personnalisation de l'affichage a été mise à jour. ..",
         "it": "Avviso: la personalizzazione della visualizzazione è stata aggiornata. .."
     },
     "Notice: Make sure to execute the command `sudo gpasswd -a $(users) lp` and reboot the system": {
         "ar": "إشعار: تأكد من تنفيذ الأمر `sudo gpasswd -a $ (users) lp` وإعادة تشغيل النظام",
-        "en": "Notice: Make sure to execute the command `sudo gpasswd -a $(users) lp` and reboot the system",
         "es": "Aviso: asegúrese de ejecutar el comando `sudo gpasswd -a $ (users) lp` y reinicie el sistema",
         "fr": "Remarque: Assurez-vous d'exécuter la commande `sudo gpasswd -a $ (users) lp` et redémarrez le système",
         "it": "Nota: assicurati di eseguire il comando `sudo gpasswd -a $ (users) lp` e riavvia il sistema"
@@ -1342,7 +1333,6 @@
     },
     "Notice: New task been added.": {
         "ar": "إشعار: تم إضافة مهمة جديدة.",
-        "en": "Notice: New task been added.",
         "es": "Aviso: Se ha agregado una nueva tarea.",
         "fr": "Avis: Nouvelle tâche ajoutée.",
         "it": "Avviso: è stata aggiunta una nuova attività."
@@ -1356,7 +1346,6 @@
     },
     "Notice: Sorry, no matching results were found ": {
         "ar": "ملاحظة: عذرًا ، لم يتم العثور على نتائج مطابقة",
-        "en": "Notice: Sorry, no matching results were found",
         "es": "Aviso: Lo sentimos, no se encontraron resultados coincidentes",
         "fr": "Avis: Désolé, aucun résultat correspondant n'a été trouvé",
         "it": "Avviso: scusa, non sono stati trovati risultati corrispondenti"
@@ -1384,20 +1373,21 @@
     },
     "Notice: Touchscreen customization has been updated. ..": {
         "ar": "إشعار: تم تحديث تخصيص شاشة اللمس. ..",
-        "en": "Notice: Touchscreen customization has been updated. ..",
         "es": "Aviso: la personalización de la pantalla táctil se ha actualizado. ..",
         "fr": "Remarque: la personnalisation de l'écran tactile a été mise à jour. ..",
         "it": "Avviso: la personalizzazione del touchscreen è stata aggiornata. .."
     },
     "Notice: admin password has been updated.": {
         "ar": "إشعار: تم تحديث كلمة مرور المسؤول.",
-        "en": "Notice: admin password has been updated.",
         "es": "Aviso: la contraseña de administrador se ha actualizado.",
         "fr": "Remarque: le mot de passe de l'administrateur a été mis à jour.",
         "it": "Avviso: la password dell'amministratore è stata aggiornata."
     },
     "Notice: aliases got updated successfully.": {
-        "en": "Notice: aliases got updated successfully."
+        "ar": "إشعار: تم تحديث الأسماء المستعارة بنجاح.",
+        "es": "Aviso: los alias se han actualizado con éxito.",
+        "fr": "Remarque: les alias ont été mis à jour avec succès.",
+        "it": "Avviso: gli alias sono stati aggiornati correttamente."
     },
     "Notice: all unassigned users got deleted.": {
         "ar": "ملاحظة: تم حذف جميع المستخدمين غير المعينين.",
@@ -1407,7 +1397,6 @@
     },
     "Notice: if you followed the rules, it should be uploaded ..": {
         "ar": "ملاحظة: إذا اتبعت القواعد ، فيجب تحميلها ..",
-        "en": "Notice: if you followed the rules, it should be uploaded ..",
         "es": "Aviso: si siguió las reglas, debería cargarse.",
         "fr": "Remarque: si vous avez suivi les règles, il doit être téléchargé.",
         "it": "Avviso: se hai seguito le regole, dovrebbe essere caricato .."
@@ -1421,14 +1410,12 @@
     },
     "Notice: logout is done.": {
         "ar": "إشعار: يتم الخروج.",
-        "en": "Notice: logout is done.",
         "es": "Aviso: el cierre de sesión está hecho.",
         "fr": "Remarque: la déconnexion est terminée.",
         "it": "Avviso: il logout è terminato."
     },
     "Notice: make sure that printer is properly connected": {
         "ar": "إشعار: تأكد من توصيل الطابعة بشكل صحيح",
-        "en": "Notice: make sure that printer is properly connected",
         "es": "Aviso: asegúrese de que la impresora esté conectada correctamente",
         "fr": "Avis: assurez-vous que l'imprimante est correctement connectée",
         "it": "Avviso: assicurarsi che la stampante sia collegata correttamente"
@@ -1441,7 +1428,6 @@
     },
     "Notice: new office been added . ": {
         "ar": "إشعار: تمت إضافة مكتب جديد.",
-        "en": "Notice: new office been added .",
         "es": "Aviso: se ha agregado una nueva oficina.",
         "fr": "Avis: nouveau bureau ajouté.",
         "it": "Avviso: è stato aggiunto un nuovo ufficio."
@@ -1460,14 +1446,12 @@
     },
     "Notice: office and its all tasks been deleted ": {
         "ar": "إشعار: تم حذف المكتب وجميع مهامه",
-        "en": "Notice: office and its all tasks been deleted",
         "es": "Aviso: la oficina y todas sus tareas han sido eliminadas",
         "fr": "Avis: office et toutes ses tâches ont été supprimées",
         "it": "Avviso: ufficio e tutte le attività sono state cancellate"
     },
     "Notice: office has been resetted. ..": {
         "ar": "إشعار: تم إعادة تعيين المكتب. ..",
-        "en": "Notice: office has been resetted. ..",
         "es": "Aviso: la oficina se ha restablecido. ..",
         "fr": "Avis: le bureau a été réinstallé. ..",
         "it": "Avviso: l'ufficio è stato reimpostato. .."
@@ -1526,7 +1510,6 @@
     },
     "Notice: ticket has been issued . ..": {
         "ar": "ملاحظة: تم إصدار التذكرة. ..",
-        "en": "Notice: ticket has been issued . ..",
         "es": "Aviso: el boleto ha sido emitido. ..",
         "fr": "Avis: le billet a été émis. ..",
         "it": "Avviso: il biglietto è stato emesso. .."
@@ -1539,14 +1522,12 @@
     },
     "Notice: user is deleted .": {
         "ar": "إشعار: يتم حذف المستخدم.",
-        "en": "Notice: user is deleted .",
         "es": "Aviso: el usuario es eliminado.",
         "fr": "Avis: l'utilisateur est supprimé.",
         "it": "Avviso: l'utente è cancellato."
     },
     "Notice: user is updated . ": {
         "ar": "إشعار: يتم تحديث المستخدم.",
-        "en": "Notice: user is updated .",
         "es": "Aviso: el usuario está actualizado.",
         "fr": "Avis: l'utilisateur est mis à jour.",
         "it": "Avviso: l'utente è aggiornato."

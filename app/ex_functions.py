@@ -73,12 +73,6 @@ def r_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-def get_lang(i_num):
-    """ function to get the set language and return the correct flash
-    messages list """
-    return LANGUAGES.flashMessages[i_num]
-
-
 def transAll():
     """ to translate all flash messages """
     for l in LANGUAGES.flashMessages:

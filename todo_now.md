@@ -15,14 +15,14 @@ __Important to reduce the insane delay on load__
 
 - [ ] fix browserNotifier when new release published __chrome bug__
 
-- [x] rewrite and comment back-end code for better performance and support
+- [x] rewrite and comment back-end code for better performance and support 7/December
 
 - [x] repeat announcements 23/July
 > - [x] replace session storage with db storage on /feed 23/July
 > - [x] move it from partial front-end to full back-end 23/July
 
 - [x] Default button to aliases to restore default options
-- [x] Add flash message to language change
+- [x] Add flash message to language change 7/December
 
 ## To Add :
 
@@ -30,13 +30,10 @@ __Important to reduce the insane delay on load__
 
 - [ ] Create and use python module based on pos module for cross-platform drawn printing
 
+- [ ] Add a print testing utility for windows in Batch
+
 - [x] More customization 
 > - [x] hide prefix from waiting and list of tickets on back-end core, and front-end display template 6/December
-
-- [ ] Improve User management:
-> - [ ] add configurable profile for users
-> - [ ] add activities log to profile
-> - [ ] improve office operators interface
 
 - [ ] Printed ticket customization
 > - [ ] to choose width and height of text
@@ -44,8 +41,8 @@ __Important to reduce the insane delay on load__
 > - [ ] to chose which information to be displayed
 
 - [ ] More manage
-> - [ ] add pull from all office
-> - [ ] add general tasks (Require DB resign, Tasks over Offices, or one-to-many relation)
+> - [x] add pull from all office 7/December
+> - [ ] add general "common" tasks (Require DB resign, Tasks over Offices, or one-to-many relation)
 
 - [ ] Documentation:
 > - [ ] Github wiki docs instead of pdf
