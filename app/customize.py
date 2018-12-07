@@ -16,7 +16,7 @@ import app.data as data
 from app.database import db, files
 from app.printer import listp
 from app.ex_functions import r_path
-from app.ex_functions import get_lang
+
 
 cust_app = Blueprint('cust_app', __name__)
 
@@ -28,9 +28,10 @@ mdal = [['jpg', 'JPG', 'png', 'PNG'], ['wav', 'WAV'], [
 @cust_app.route('/customize')
 @login_required
 def customize():
+    """ view of main customize screen """
     ex_functions.mse()
     if current_user.role_id != 1:
-        flash(get_lang(0),
+        flash('Error: only administrator can access the page',
               "danger")
         return redirect(url_for('core.root'))
     return render_template("customize.html",
@@ -43,6 +44,7 @@ def customize():
 @cust_app.route('/ticket', methods=['GET', 'POST'])
 @login_required
 def ticket():
+    """ view of ticket customization """
     if os.name == 'nt':
         from win_printer import listpp
         lll = listpp()
@@ -50,7 +52,7 @@ def ticket():
         lll = listp()
     ex_functions.mse()
     if current_user.role_id != 1:
-        flash(get_lang(0),
+        flash('Error: only administrator can access the page',
               'danger')
         return redirect(url_for('core.root'))
     form = forms.Printer_f(lll, session.get('lang'))
@@ -65,7 +67,7 @@ def ticket():
             db.session.add(pr)
         else:
             if form.printers.data == "00":
-                flash(get_lang(19),
+                flash('Error: you must have available printer, to use printed',
                       'danger')
                 return redirect(url_for('cust_app.ticket'))
             f = form.printers.data
@@ -83,7 +85,7 @@ def ticket():
             db.session.add(tc)
             db.session.add(pr)
         db.session.commit()
-        flash(get_lang(27),
+        flash('Notice: settings have been updated .',
               'info')
         return redirect(url_for('cust_app.ticket'))
     if not form.errors:
@@ -105,13 +107,14 @@ def ticket():
 @cust_app.route('/video', methods=['GET', 'POST'])
 @login_required
 def video():
+    """ view of video customization for display """
     ex_functions.mse()
     if current_user.role_id != 1:
-        flash(get_lang(0),
+        flash('Error: only administrator can access the page',
               'danger')
         return redirect(url_for('core.root'))
     if data.Slides_c.query.first().status == 1:
-        flash(get_lang(28),
+        flash('Error: must disable slide-show before using video',
               'danger')
         return redirect(url_for('cust_app.slide_c'))
     form = forms.Video(session.get('lang'))
@@ -133,7 +136,7 @@ def video():
         vdb.mute = form.mute.data
         db.session.add(vdb)
         db.session.commit()
-        flash(get_lang(29),
+        flash('Notice: new video has been set.',
               'info')
         return redirect(url_for('cust_app.video'))
     if vdb is not None and not form.errors:
@@ -154,18 +157,19 @@ def video():
 @cust_app.route('/slideshow', methods=['GET', 'POST'])
 @login_required
 def slideshow():
+    """ view of slide-show customization for display """
     ex_functions.mse()
     if current_user.role_id != 1:
-        flash(get_lang(0),
+        flash('Error: only administrator can access the page',
               "danger")
         return redirect(url_for('core.root'))
     if data.Vid.query.first().enable == 1:
-        flash(get_lang(31),
+        flash('Error: must disable video before using slide-show',
               'danger')
         return redirect(url_for('cust_app.video'))
     page = request.args.get('page', 1, type=int)
     if page > int(data.Slides.query.count() / 10) + 1:
-        flash(get_lang(4),
+        flash('Error: wrong entry, something went wrong',
               'danger')
         return redirect(url_for('cust_app.slideshow'))
     pagination = data.Slides.query.paginate(page, per_page=10,
@@ -188,13 +192,14 @@ def slideshow():
 @cust_app.route('/slide_a', methods=['GET', 'POST'])
 @login_required
 def slide_a():
+    """ adding a slide """
     ex_functions.mse()
     if current_user.role_id != 1:
-        flash(get_lang(0),
+        flash('Error: only administrator can access the page',
               "danger")
         return redirect(url_for('core.root'))
     if data.Vid.query.first().enable == 1:
-        flash(get_lang(31),
+        flash('Error: must disable video before using slide-show',
               'danger')
         return redirect(url_for('cust_app.video'))
     form = forms.Slide_a(session.get('lang'))
@@ -204,7 +209,8 @@ def slide_a():
         else:
             bb = data.Media.query.filter_by(id=form.background.data).first()
             if bb is None:
-                flash(get_lang(4), "danger")
+                flash('Error: wrong entry, something went wrong',
+                "danger")
                 return redirect(url_for("cust_app.slide_a"))
             bb = bb.name
         ss = data.Slides()
@@ -222,7 +228,7 @@ def slide_a():
         ss.ikey = form.background.data
         db.session.add(ss)
         db.session.commit()
-        flash(get_lang(32), "info")
+        flash("Notice: templates been updated.", "info")
         return redirect(url_for("cust_app.slideshow"))
     return render_template("slide_add.html",
                            ptitle="Add Slide ",
@@ -236,13 +242,14 @@ def slide_a():
 @cust_app.route('/slide_c', methods=['GET', 'POST'])
 @login_required
 def slide_c():
+    """ updating a slide """
     ex_functions.mse()
     if current_user.role_id != 1:
-        flash(get_lang(0),
+        flash('Error: only administrator can access the page',
               "danger")
         return redirect(url_for('core.root'))
     if data.Vid.query.first().enable == 1:
-        flash(get_lang(31),
+        flash('Error: must disable video before using slide-show',
               'danger')
         return redirect(url_for('cust_app.video'))
     form = forms.Slide_c(session.get('lang'))
@@ -254,7 +261,8 @@ def slide_c():
         sc.status = form.status.data
         db.session.add(sc)
         db.session.commit()
-        flash(get_lang(33), "info")
+        flash("Notice: slide settings is done.",
+        "info")
         return redirect(url_for("cust_app.slide_c"))
     if not form.errors:
         form.rotation.data = sc.rotation
@@ -273,16 +281,18 @@ def slide_c():
 @cust_app.route('/slide_r/<int:f_id>')
 @login_required
 def slide_r(f_id):
+    """ removing a slide """
     ex_functions.mse()
     if current_user.role_id != 1:
-        flash(get_lang(0),
+        flash('Error: only administrator can access the page',
               "danger")
         return redirect(url_for('core.root'))
     if data.Slides.query.count() <= 0:
-        flash(get_lang(34), "danger")
+        flash("Error: there is no slides to be removed ",
+        "danger")
         return redirect(url_for('cust_app.slideshow'))
     if data.Vid.query.first().enable == 1:
-        flash(get_lang(31),
+        flash('Error: must disable video before using slide-show',
               'danger')
         return redirect(url_for('cust_app.video'))
     if f_id == 00:
@@ -290,28 +300,29 @@ def slide_r(f_id):
             if a is not None:
                 db.session.delete(a)
         db.session.commit()
-        flash(get_lang(35), "info")
+        flash("Notice: All slides removed.", "info")
         return redirect(url_for('cust_app.slideshow'))
     mf = data.Slides.query.filter_by(id=f_id).first()
     if mf is not None:
         db.session.delete(mf)
         db.session.commit()
-        flash(get_lang(35), "info")
+        flash("Notice: All slides removed.", "info")
         return redirect(url_for('cust_app.slideshow'))
     else:
-        flash(get_lang(34), "danger")
+        flash("Error: there is no slides to be removed ", "danger")
         return redirect(url_for('core.root'))
 
 
 @cust_app.route('/multimedia/<int:aa>', methods=['POST', 'GET'])
 @login_required
 def multimedia(aa):
+    """ uploading multimedia files """
     # Number of files limit
     nofl = 300
     # size folder limit in MB
     sfl = 2000 # Fix limited upload folder size
     if current_user.role_id != 1:
-        flash(get_lang(0),
+        flash('Error: only administrator can access the page',
               "danger")
         return redirect(url_for('core.root'))
     ex_functions.mse()
@@ -321,20 +332,21 @@ def multimedia(aa):
         pf = pf.name
     if aa == 0:
         if data.Media.query.count() >= nofl:
-            flash(get_lang(37) + str(nofl),
-                  "danger")
+            flash(
+                "Error: you have reached the amount limit of multimedia files " + str(nofl),
+                "danger")
             return redirect(url_for('cust_app.multimedia', aa=1))
         else:
-            flash(get_lang(38),
+            flash("Notice: if you followed the rules, it should be uploaded ..",
                   "success")
     elif aa != 1:
-        flash(get_lang(4),
+        flash('Error: wrong entry, something went wrong',
               "danger")
         return redirect(url_for("core.root"))
     mmm = data.Media.query
     page = request.args.get('page', 1, type=int)
     if page > int(data.Media.query.count() / 10) + 1:
-        flash(get_lang(4),
+        flash('Error: wrong entry, something went wrong',
               'danger')
         return redirect(url_for('cust_app.multimedia', aa=1))
     pagination = data.Media.query.paginate(page, per_page=10,
@@ -388,7 +400,7 @@ def multimedia(aa):
         ff = form.mf.data
         ffn = secure_filename(ff.filename)
         dc = data.Media.query.count()
-        # FIX ISUUE Remove folder size limitation
+        # FIX ISSUE Remove folder size limitation
         # if int(ex_functions.getFolderSize(dire)) >= sfl or dc >= nofl:
         #     return redirect(url_for('cust_app.multimedia', aa=1))
         e = ffn[-3:len(ffn)]
@@ -414,7 +426,7 @@ def multimedia(aa):
             db.session.commit()
             return redirect(url_for("cust_app.multimedia", aa=1))
         else:
-            flash(get_lang(4), "danger")
+            flash('Error: wrong entry, something went wrong', "danger")
             return redirect(url_for("cust_app.multimedia", aa=1))
     return render_template("multimedia.html",
                            ptitle="Multimedia",
@@ -438,13 +450,14 @@ def multimedia(aa):
 @cust_app.route('/multi_del/<int:f_id>')
 @login_required
 def multi_del(f_id):
+    """ to delete multimedia file """
     if current_user.role_id != 1:
-        flash(get_lang(0),
+        flash('Error: only administrator can access the page',
               "danger")
         return redirect(url_for('core.root'))
     dire = r_path('static/multimedia/')
     if data.Media.query.filter_by(used=False).count() <= 0:
-        flash(get_lang(39),
+        flash("Error: there is no unused multimedia file to be removed !",
               "danger")
         return redirect(url_for('cust_app.multimedia', aa=1))
     if f_id == 00:
@@ -454,36 +467,37 @@ def multi_del(f_id):
                     os.remove(dire + a.name)
                 db.session.delete(a)
         db.session.commit()
-        flash(get_lang(40), "info")
+        flash("Notice: multimedia file been removed.", "info")
         return redirect(url_for('cust_app.multimedia', aa=1))
     mf = data.Media.query.filter_by(id=f_id).first()
     if mf is not None:
         if mf.used:
-            flash(get_lang(39),
+            flash("Error: there is no unused multimedia file to be removed !",
                   "danger")
             return redirect(url_for('cust_app.multimedia', aa=1))
         if os.path.exists(dire + mf.name):
             os.remove(dire + mf.name)
         db.session.delete(mf)
         db.session.commit()
-        flash(get_lang(40), "info")
+        flash("Notice: multimedia file been removed.", "info")
         return redirect(url_for('cust_app.multimedia', aa=1))
     else:
-        flash(get_lang(39), "danger")
+        flash("Error: there is no unused multimedia file to be removed !", "danger")
         return redirect(url_for('core.root'))
 
 
 @cust_app.route('/displayscreen_c/<int:stab>', methods=['POST', 'GET'])
 @login_required
 def displayscreen_c(stab):
+    """ view for display screen customization """
     if current_user.role_id != 1:
-        flash(get_lang(0),
+        flash('Error: only administrator can access the page',
               "danger")
         return redirect(url_for('core.root'))
     ex_functions.mse()
     form = forms.Display_c(session.get('lang'))
     if stab not in range(1, 9):
-        flash(get_lang(4), "danger")
+        flash('Error: wrong entry, something went wrong', "danger")
         return redirect(url_for('core.root'))
     touch_s = data.Display_store.query.filter_by(id=0).first()
     if form.validate_on_submit():
@@ -535,7 +549,7 @@ def displayscreen_c(stab):
             touch_s.akey = form.naudio.data
         db.session.add(touch_s)
         db.session.commit()
-        flash(get_lang(41), "info")
+        flash("Notice: Display customization has been updated. ..", "info")
         return redirect(url_for("cust_app.displayscreen_c", stab=1))
     if not form.errors:
         form.display.data = touch_s.tmp
@@ -584,14 +598,15 @@ def displayscreen_c(stab):
 @cust_app.route('/touchscreen_c/<int:stab>', methods=['POST', 'GET'])
 @login_required
 def touchscreen_c(stab):
+    """ view for touch screen customization """
     if current_user.role_id != 1:
-        flash(get_lang(0),
+        flash('Error: only administrator can access the page',
               "danger")
         return redirect(url_for('core.root'))
     form = forms.Touch_c(defLang=session.get('lang'))
     ex_functions.mse()
     if stab not in range(0, 6):
-        flash(get_lang(4), "danger")
+        flash('Error: wrong entry, something went wrong', "danger")
         return redirect(url_for('core.root'))
     touch_s = data.Touch_store.query.first()
     if form.validate_on_submit():
@@ -632,7 +647,7 @@ def touchscreen_c(stab):
             touch_s.akey = form.naudio.data
         db.session.add(touch_s)
         db.session.commit()
-        flash(get_lang(42),
+        flash("Notice: Touchscreen customization has been updated. ..",
               "info")
         return redirect(url_for("cust_app.touchscreen_c", stab=0))
     if not form.errors:
@@ -673,8 +688,9 @@ def touchscreen_c(stab):
 @cust_app.route('/alias', methods=['GET', 'POST'])
 @login_required
 def alias():
+    """ view for aliases customization """
     if current_user.role_id != 1:
-        flash(get_lang(0),
+        flash('Error: only administrator can access the page',
               "danger")
         return redirect(url_for('core.root'))
     form = forms.Alias(session.get('lang'))
@@ -687,7 +703,7 @@ def alias():
         aliases.number = form.number.data
         db.session.add(aliases)
         db.session.commit()
-        flash(get_lang(60), 'info')
+        flash('Notice: aliases got updated successfully.', 'info')
         return redirect(url_for('cust_app.alias'))
     if not form.errors:
         form.office.data = aliases.office

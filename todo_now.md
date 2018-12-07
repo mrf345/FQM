@@ -15,14 +15,14 @@ __Important to reduce the insane delay on load__
 
 - [ ] fix browserNotifier when new release published __chrome bug__
 
-- [ ] rewrite and comment back-end code for better performance and support
+- [x] rewrite and comment back-end code for better performance and support
 
 - [x] repeat announcements 23/July
 > - [x] replace session storage with db storage on /feed 23/July
 > - [x] move it from partial front-end to full back-end 23/July
 
 - [x] Default button to aliases to restore default options
-- [ ] Add flash message to language change
+- [x] Add flash message to language change
 
 ## To Add :
 

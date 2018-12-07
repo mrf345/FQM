@@ -12,7 +12,7 @@ import app.data as data
 from app.database import db, login_manager
 import app.forms as forms
 import csv
-from app.ex_functions import get_lang, r_path
+from app.ex_functions import r_path
 
 
 administrate = Blueprint('administrate', __name__)
@@ -20,11 +20,13 @@ administrate = Blueprint('administrate', __name__)
 
 @login_manager.user_loader
 def load_user(user_id):
+    """ getting the current user """
     return data.User.query.get(int(user_id))
 
 
 @administrate.before_request
 def update_last_seen():
+    """ adding the last time user logged in """
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.add(current_user)
@@ -33,23 +35,31 @@ def update_last_seen():
 
 @login_manager.unauthorized_handler
 def unauthorized_callback():
+    """ if user not logged in """ 
     session['next_url'] = request.path
-    flash(get_lang(59), 'danger')
+    flash(
+        "Error: login is required to access the page",
+        'danger')
     return redirect(url_for("core.root", n='b'))
 
 
 @administrate.route('/admin_u', methods=['GET', 'POST'])
 @login_required
 def admin_u():
+    """ updating admin password """
     if current_user.id != 1:
-        flash(get_lang(1), 'danger')
+        flash(
+            'Error: only main Admin account can access the page',
+            'danger')
         return redirect(url_for('core.root'))
     form = forms.U_admin(session.get('lang'))
     admin = data.User.query.filter_by(id=1).first()
     if form.validate_on_submit():
         admin.password = form.password.data
         db.session.commit()
-        flash(get_lang(2), 'info')
+        flash(
+            'Notice: admin password has been updated.',
+            'info')
         return redirect(url_for('administrate.logout'))
     return render_template('admin_u.html',
                            navbar='#snb3',
@@ -60,9 +70,11 @@ def admin_u():
 @administrate.route('/csvd/<t_name>', methods=['GET', 'POST'])
 @login_required
 def csvd(t_name):
+    """ to export tables to .csvd file """
     if current_user.role_id != 1:
-        flash(get_lang(0),
-              'danger')
+        flash(
+            'Error: only administrator can access the page',
+            'danger')
         return redirect(url_for('core.root'))
     form = forms.CSV(session.get('lang'))
     t_ids = ['User', 'Office', 'Task', 'Serial',
@@ -84,8 +96,9 @@ def csvd(t_name):
         return send_file(ffn, mimetype='csv',
                          as_attachment=True)
     elif t_name != '0':
-        flash(get_lang(4),
-              'danger')
+        flash(
+            'Error: wrong entry, something went wrong',
+            'danger')
         return redirect(url_for('core.root'))
     if form.validate_on_submit():
         return redirect(url_for('administrate.csvd',
@@ -99,13 +112,14 @@ def csvd(t_name):
 @administrate.route('/users', methods=['GET', 'POST'])
 @login_required
 def users():
+    """ to list all users """
     if current_user.role_id != 1:
-        flash(get_lang(0),
+        flash('Error: only administrator can access the page',
               "danger")
         return redirect(url_for('root'))
     page = request.args.get('page', 1, type=int)
     if page > int(data.User.query.count() / 10) + 1:
-        flash(get_lang(4),
+        flash('Error: wrong entry, something went wrong',
               'danger')
         return redirect(url_for('administrate.users'))
     pagination = data.User.query.paginate(page, per_page=10,
@@ -124,18 +138,19 @@ def users():
 @administrate.route('/operators/<int:t_id>', methods=['GET', 'POST'])
 @login_required
 def operators(t_id):
+    """ to list operators of an office """
     office = data.Office.query.filter_by(id=t_id).first()
     if office is None:
-        flash(get_lang(4),
+        flash('Error: wrong entry, something went wrong',
               "danger")
         return redirect(url_for('root'))
     if current_user.role_id == 3 and data.Operators.query.filter_by(id=current_user.id).first() is None :
-        flash(get_lang(0),
+        flash('Error: only administrator can access the page',
               "danger")
         return redirect(url_for('root'))
     page = request.args.get('page', 1, type=int)
     if page > int(data.Operators.query.count() / 10) + 1:
-        flash(get_lang(4),
+        flash('Error: wrong entry, something went wrong',
               'danger')
         return redirect(url_for('manage.office', o_id=t_id))
     pagination = data.Operators.query.filter_by(office_id=t_id).paginate(page, per_page=10,
@@ -158,14 +173,15 @@ def operators(t_id):
 @administrate.route('/user_a', methods=['GET', 'POST'])
 @login_required
 def user_a():
+    """ to add a user """
     if current_user.role_id != 1:
-        flash(get_lang(4),
+        flash('Error: wrong entry, something went wrong',
               "danger")
         return redirect(url_for('core.root'))
     form = forms.User_a(session.get('lang'))
     if form.validate_on_submit():
         if data.User.query.filter_by(name=form.name.data).first() is not None:
-            flash(get_lang(5),
+            flash("Error: user name already exists, choose another name",
                   "danger")
             return redirect(url_for('administrate.user_a'))
         db.session.add(data.User(form.name.data,
@@ -180,7 +196,7 @@ def user_a():
                 form.offices.data
             ))
             db.session.commit()
-        flash(get_lang(6),
+        flash("Notice: user has been added .",
               "info")
         return redirect(url_for('administrate.users'))
     return render_template('user_add.html',
@@ -191,18 +207,20 @@ def user_a():
 @administrate.route('/user_u/<int:u_id>', methods=['GET', 'POST'])
 @login_required
 def user_u(u_id):
+    """ to update user """
     if current_user.role_id != 1:
-        flash(get_lang(0),
+        flash('Error: only administrator can access the page',
               "danger")
         return redirect(url_for('core.root'))
     form = forms.User_a(session.get('lang'))
     u = data.User.query.filter_by(id=u_id).first()
     if u is None:
-        flash(get_lang(7),
-              "danger")
+        flash(
+            "Error: user selected does not exist, something wrong !",
+            "danger")
         return redirect(url_for("core.root"))
     if u.id == 1:
-        flash(get_lang(8),
+        flash("Error: main admin account cannot be updated .",
               "danger")
         return redirect(url_for("administrate.users"))
     if form.validate_on_submit():
@@ -221,7 +239,7 @@ def user_u(u_id):
             if toRemove is not None:
                 db.session.delete(toRemove)
         db.session.commit()
-        flash(get_lang(10),
+        flash("Notice: user is updated . ",
               "info")
         return redirect(url_for('administrate.users'))
     if not form.errors:
@@ -240,17 +258,18 @@ def user_u(u_id):
 @administrate.route('/user_d/<int:u_id>')
 @login_required
 def user_d(u_id):
+    """ to delete user """
     if current_user.role_id != 1:
-        flash(get_lang(0),
+        flash('Error: only administrator can access the page',
               "danger")
         return redirect(url_for('core.root'))
     u = data.User.query.filter_by(id=u_id).first()
     if u is None:
-        flash(get_lang(7),
+        flash("Error: user selected does not exist, something wrong !",
               "danger")
         return redirect(url_for("core.root"))
     if u.id == 1:
-        flash(get_lang(8),
+        flash("Error: main admin account cannot be updated .",
               "danger")
         return redirect(url_for("administrate.users"))
     # delete from operators if user is operator
@@ -258,7 +277,7 @@ def user_d(u_id):
         db.session.delete(data.Operators.query.filter_by(id=u.id).first())
     db.session.delete(u)
     db.session.commit()
-    flash(get_lang(11),
+    flash("Notice: user is deleted .",
           "info")
     return redirect(url_for('administrate.users'))
 
@@ -266,8 +285,9 @@ def user_d(u_id):
 @administrate.route('/user_da')
 @login_required
 def user_da():
+    """ to delete all users """
     if current_user.role_id != 1:
-        flash(get_lang(0),
+        flash('Error: only administrator can access the page',
               "danger")
         return redirect(url_for('core.root'))
     for u in data.User.query:
@@ -280,7 +300,7 @@ def user_da():
         if u.id != 1:
             db.session.delete(u)
     db.session.commit()
-    flash(get_lang(12),
+    flash("Notice: all unassigned users got deleted.",
           "info")
     return redirect(url_for('administrate.users'))
 
@@ -288,9 +308,12 @@ def user_da():
 @administrate.route('/logout')
 @login_required
 def logout():
+    """ to logout the current user """
     if not current_user.is_authenticated:
-        flash(get_lang(13), "danger")
+        flash(
+            "Error: you cannot logout without a login !"
+            , "danger")
         return redirect(url_for("core.root"))
     logout_user()
-    flash(get_lang(14), "info")
+    flash("Notice: logout is done.", "info")
     return redirect(url_for("core.root"))
