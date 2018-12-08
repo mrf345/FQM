@@ -77,7 +77,7 @@ def offices(o_id):
         flash('Error: wrong entry, something went wrong',
               "danger")
         return redirect(url_for("manage_app.all_offices"))
-    if current_user.role_id == 3 and data.Operators.query.filter_by(id=current_user.id).first() is None:
+    if current_user.role_id == 3 and data.Operators.query.filter_by(id=current_user.id, office_id=o_id).first() is None:
         flash("Error: operators are not allowed to access the page ",
               "danger")
         return redirect(url_for('core.root'))

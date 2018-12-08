@@ -15,6 +15,7 @@ class Office(db.Model):
     name = db.Column(db.Integer, unique=True)
     timestamp = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
     prefix = db.Column(db.String(2))
+    operators = db.relationship('Operators', backref='operators')
 
     def __init__(self, name, prefix):
         self.name = name

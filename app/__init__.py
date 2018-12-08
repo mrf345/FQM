@@ -491,6 +491,7 @@ def run_app():
             adme = True
         return dict(path=path, notifications=Settings.query.first().notifications,
                     adme=adme, brp=Markup("<br>"), ar=ar, current_path=request.path,
-                    version=version, str=str, defLang=session.get('lang'))
+                    version=version, str=str, defLang=session.get('lang'),
+                    checkId=lambda id, records: id in [i.id for i in records])
     QCoreApplication.processEvents()
     appg.exec_()

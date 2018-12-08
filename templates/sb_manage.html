@@ -53,9 +53,9 @@
 				</a>
 			</li>
 			{% endif %}
-			<!-- Dropdown-->
+			<!-- Dropdown--> 
 			{% for office in offices %}
-			{% if current_user.role_id != 3 or operators.filter_by(office_id=office.id).first().id == current_user.id %}
+			{% if current_user.role_id != 3 or checkId(current_user.id, office.operators) %}
 			<li class="panel panel-default da{{ office.id+3 }} {% if ar %} ar1 {% endif %}" id="dropdown">
 			    <a data-toggle="collapse" href="#dropdown-lvl{{ office.id }}">
 				<span class="fa fa-desktop"></span>

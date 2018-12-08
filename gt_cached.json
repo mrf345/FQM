@@ -734,6 +734,7 @@
     },
     "Error: login is required to access the page": {
         "ar": "خطأ: مطلوب تسجيل الدخول للوصول إلى الصفحة",
+        "en": "Error: login is required to access the page",
         "es": "Error: se requiere iniciar sesión para acceder a la página",
         "fr": "Erreur: la connexion est requise pour accéder à la page",
         "it": "Errore: è necessario il login per accedere alla pagina"
@@ -770,6 +771,7 @@
     },
     "Error: no tickets left to pull from ..": {
         "ar": "خطأ: لا توجد تذاكر متبقية لسحبها من ..",
+        "en": "Error: no tickets left to pull from ..",
         "es": "Error: no quedan tickets para tirar de ..",
         "fr": "Erreur: aucun ticket à retirer de ..",
         "it": "Errore: non è rimasto nessun biglietto da cui prelevare .."
@@ -794,6 +796,7 @@
     },
     "Error: operators are not allowed to access the page ": {
         "ar": "خطأ: لا يُسمح للمشغلين بالوصول إلى الصفحة",
+        "en": "Error: operators are not allowed to access the page",
         "es": "Error: los operadores no pueden acceder a la página",
         "fr": "Erreur: les opérateurs ne sont pas autorisés à accéder à la page",
         "it": "Errore: gli operatori non sono autorizzati ad accedere alla pagina"
@@ -843,6 +846,7 @@
     },
     "Error: wrong entry, something went wrong": {
         "ar": "خطأ: دخول خاطئ ، حدث خطأ ما",
+        "en": "Error: wrong entry, something went wrong",
         "es": "Error: entrada incorrecta, algo salió mal",
         "fr": "Erreur: mauvaise entrée, quelque chose s'est mal passé",
         "it": "Errore: inserimento errato, qualcosa è andato storto"
@@ -1333,6 +1337,7 @@
     },
     "Notice: New task been added.": {
         "ar": "إشعار: تم إضافة مهمة جديدة.",
+        "en": "Notice: New task been added.",
         "es": "Aviso: Se ha agregado una nueva tarea.",
         "fr": "Avis: Nouvelle tâche ajoutée.",
         "it": "Avviso: è stata aggiunta una nuova attività."
@@ -1410,6 +1415,7 @@
     },
     "Notice: logout is done.": {
         "ar": "إشعار: يتم الخروج.",
+        "en": "Notice: logout is done.",
         "es": "Aviso: el cierre de sesión está hecho.",
         "fr": "Remarque: la déconnexion est terminée.",
         "it": "Avviso: il logout è terminato."
@@ -1428,6 +1434,7 @@
     },
     "Notice: new office been added . ": {
         "ar": "إشعار: تمت إضافة مكتب جديد.",
+        "en": "Notice: new office been added .",
         "es": "Aviso: se ha agregado una nueva oficina.",
         "fr": "Avis: nouveau bureau ajouté.",
         "it": "Avviso: è stato aggiunto un nuovo ufficio."
@@ -1516,6 +1523,7 @@
     },
     "Notice: user has been added .": {
         "ar": "إشعار: تمت إضافة المستخدم.",
+        "en": "Notice: user has been added .",
         "es": "Aviso: el usuario ha sido agregado.",
         "fr": "Avis: l'utilisateur a été ajouté.",
         "it": "Avviso: l'utente è stato aggiunto."
