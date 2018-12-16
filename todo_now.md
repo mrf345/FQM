@@ -40,9 +40,9 @@ __Important to reduce the insane delay on load__
 > ***To fix scaling issue***
 > - [ ] to chose which information to be displayed
 
-- [ ] More manage
+- [x] More manage 17/December
 > - [x] add pull from all office 7/December
-> - [ ] add general "common" tasks (Require DB resign, Tasks over Offices, or one-to-many relation)
+> - [x] add general "common" tasks (Require DB resign, Tasks over Offices, or one-to-many relation) 17/December
 
 - [ ] Documentation:
 > - [ ] Github wiki docs instead of pdf

@@ -8,13 +8,26 @@ try:
 except Exception:
     base_path = path.abspath(".")
 
+class Replace(object):
+    office = "office"
+    ticket = "ticket"
+    task = "task"
 
-Base = automap_base()
-engine = create_engine('sqlite:///' + path.join(base_path, 'data.sqlite'))
-Base.prepare(engine, reflect=True)
-Aliases = Base.classes.aliases
-session = Session(engine)
-alias = session.query(Aliases).first()
+
+try:
+    if path.isfile(path.join(base_path, 'data.sqlite')):
+        Base = automap_base()
+        engine = create_engine('sqlite:///' + path.join(base_path, 'data.sqlite'))
+        Base.prepare(engine, reflect=True)
+        if hasattr(Base.classes, 'aliases'):
+            Aliases = Base.classes.aliases
+            session = Session(engine)
+            alias = session.query(Aliases).first()
+    else:
+        alias = Replace()
+except Exception:
+    alias = Replace()
+    
 
 def getWithAlias():
     """ to solve querying aliases without app_context in languages """

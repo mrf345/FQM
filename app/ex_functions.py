@@ -35,11 +35,12 @@ def mse():
             db.session.add(ra)
     for o in data.Office.query:
         if data.Serial.query.filter_by(office_id=o.id).first() is None:
-            tk = data.Task.query.filter_by(office_id=o.id).first()
-            if tk is not None:
-                dd = data.Serial(100, o.id, tk.id, None, False)
-                dd.p = True
-                db.session.add(dd)
+            tk = o.tasks
+            if len(tk) > 0:
+                for t in tk:
+                    dd = data.Serial(100, o.id, t.id, None, False)
+                    dd.p = True
+                    db.session.add(dd)
             else:
                 dd = data.Serial(100, o.id, 1, None, False)
                 dd.p = True

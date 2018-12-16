@@ -361,13 +361,20 @@ class Offices_a(FlaskForm):
 class Task_a(FlaskForm):
     name = StringField()
     submit = SubmitField("Add")
+    # Stupid workaround to avoid unbound field error 
+    for i in range(0, 1000):
+        locals()['check%i' % i] = BooleanField()
 
-    def __init__(self, defLang='en', *args, **kwargs):
+    def __init__(self, defLang='en', common=False, *args, **kwargs):
         super(Task_a, self).__init__(*args, **kwargs)
         self.name.label = gtranslator.translate("Enter unique title for the task : ", 'en', [defLang])
         self.name.validators = [InputRequired
         (gtranslator.translate("Required not less than 5 nor more than 300 letters", 'en', [defLang])), 
         Length(5, 300)]
+        if common:
+            for office in data.Office.query.all():
+                self['check%i' % office.id].label = '%s %i:' % (
+                    gtranslator.translate("Office", 'en', [defLang]), office.name)
 
 
 # -- Searching serials
@@ -413,7 +420,7 @@ class Login(FlaskForm):
         self.password.validators = [InputRequired(
             gtranslator.translate("Password must be at least of 5 and at most 15 letters", 'en', [defLang])),
         Length(5, 15)]
-        self.rm.label = gtranslator.translate("Remeber me : ", 'en', [defLang])
+        self.rm.label = gtranslator.translate("Remember me : ", 'en', [defLang])
 
 
 class User_a(FlaskForm):

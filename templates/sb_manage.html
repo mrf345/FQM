@@ -46,6 +46,14 @@
 				{{ translate('Add new office', 'en', [defLang]) }}
 			    </a>
 			</li>
+			{% if offices.count() > 1 %}
+			<li id="da6" >
+			    <a href="{{ url_for('manage_app.common_task_a') }}">
+				<span class="fa fa-plus"></span>
+				{{ translate('Add common task', 'en', [defLang]) }}
+			    </a>
+			</li>
+			{% endif %}
 			<li id="da4" >
 				<a onclick="announce()">
 				<span class="glyphicon glyphicon-refresh"></span>
@@ -61,9 +69,16 @@
 				<span class="fa fa-desktop"></span>
 				{{ office.id }}.{{ translate('Office', 'en', [defLang]) }}  {{ office.prefix }}{{ office.name }}
 				<span class="caret"></span>
-				{% if serial.filter_by(p=False, office_id=office.id).count() >= 1 %}
+				<!-- To solve counting all the common and non-common tasks tickets -->
+				{% set counter = namespace(a=0) %}
+				{% for toTask in office.tasks %}
+					{% if checkId(office.id, toTask.offices) %}
+				    {% set counter.a = counter.a + serial.filter_by(p=False, task_id=toTask.id).count() %}
+					{% endif %}
+				{% endfor %}
+				{% if counter.a > 0 %}
 				<span class="badge pull-right">
-				    {{ serial.filter_by(p=False, office_id=office.id).count() }}
+					{{ counter.a }}
 				</span>
 				{% endif %}
 			    </a>
@@ -103,15 +118,15 @@
 					    </a>
 					</li>
 					{% for task in tasks %}
-					{% if task.office_id == office.id %}
-					<li id="tt{{ office.id }}{{ task.id }}" >
-					    <a href="{{ url_for('manage_app.task', o_id=task.id) }}">
+					{% if checkId(office.id, task.offices) %}
+					<li id="tt{{office.id }}{{ task.id }}" >
+					    <a href="{{ url_for('manage_app.task', o_id=task.id, ofc_id=office.id) }}">
 						{{ task.id }}.  {{ task.name }}
 					    </a>
 					</li>
 					<!-- Pull is shifted to here -->
 					<li  id="tf{{ office.id }}" >
-						<a href="{{ url_for('core.pull', o_id=task.id) }}">
+						<a href="{{ url_for('core.pull', o_id=task.id, ofc_id=office.id) }}">
 								<span class="fa fa-minus"></span>
 								{{ translate('Pull a ticket', 'en', [defLang]) }}
 								{% if serial.filter_by(p=False, task_id=task.id).count() >= 1 %}

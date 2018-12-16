@@ -118,7 +118,7 @@
 	     	{% if o.number != 100 %}
 				<div class="row well {% if o.p %} text-primary {% else %} text-danger {% endif %} h4 ar1 text-center">
 		  			<div class="col-xs-12 col-sm-2">
-		    			<b> {{ offices.filter_by(id=o.office_id).first().prefix }}{{ o.number }}.</b>
+		    			<b> {{ ooid.prefix }}{{ o.number }}.</b>
 		  			</div>
 		  			<div class="col-xs-12 col-sm-2">
 		    			<u>{{ moment(o.timestamp).format('L') }}</u>
@@ -141,7 +141,7 @@
 	    </div>
 	    <div class="panel-footer text-center">
 			{{ panelFooter([
-			[[translate('Tasks total', 'en', [defLang]), tasks.filter_by(office_id=o_id).count()], [translate('Tickets total', 'en', [defLang]), serial.filter_by(office_id=o_id).count()]],
+			[[translate('Tasks total', 'en', [defLang]), len(ooid.tasks)], [translate('Tickets total', 'en', [defLang]), serial.filter_by(office_id=o_id).count()]],
 			[[translate('Processed', 'en', [defLang]), serial.filter_by(p=True, office_id=o_id).count()], [translate('Waiting', 'en', [defLang]), serial.filter_by(p=False, office_id=o_id).count()]]
 			], toWarn=translate('Waiting', 'en', [defLang])) }}
 			<div class="row text-center">

@@ -98,6 +98,13 @@
         "fr": "Ajouter une diapositive",
         "it": "Aggiungi una diapositiva"
     },
+    "Add common task": {
+        "ar": "إضافة مهمة مشتركة",
+        "en": "Add common task",
+        "es": "Añadir tarea común",
+        "fr": "Ajouter une tâche commune",
+        "it": "Aggiungi un'attività comune"
+    },
     "Add media": {
         "ar": "أضف الوسائط",
         "en": "Add media",
@@ -765,6 +772,7 @@
     },
     "Error: name is used by another one, choose another name": {
         "ar": "خطأ: يتم استخدام الاسم بواسطة اسم آخر ، اختر اسمًا آخر",
+        "en": "Error: name is used by another one, choose another name",
         "es": "Error: el nombre es usado por otro, elige otro nombre",
         "fr": "Erreur: le nom est utilisé par un autre, choisissez un autre nom",
         "it": "Errore: il nome viene utilizzato da un altro, scegliere un altro nome"
@@ -775,6 +783,16 @@
         "es": "Error: no quedan tickets para tirar de ..",
         "fr": "Erreur: aucun ticket à retirer de ..",
         "it": "Errore: non è rimasto nessun biglietto da cui prelevare .."
+    },
+    "Error: not enough offices exist to add a common task": {
+        "ar": "خطأ: لا توجد مكاتب كافية لإضافة مهمة مشتركة",
+        "en": "Error: not enough offices exist to add a common task",
+        "es": "Error: no existen suficientes oficinas para agregar una tarea común",
+        "fr": "Erreur: il n'y a pas assez de bureaux pour ajouter une tâche commune",
+        "it": "Errore: non esistono abbastanza uffici per aggiungere un'attività comune"
+    },
+    "Error: one office must be selected at least": {
+        "en": "Error: one office must be selected at least"
     },
     "Error: only administrator can access the page": {
         "ar": "خطأ: يمكن للمسؤول فقط الوصول إلى الصفحة",
@@ -810,6 +828,7 @@
     },
     "Error: the office is already resetted": {
         "ar": "خطأ: تم إعادة تعيين المكتب بالفعل",
+        "en": "Error: the office is already resetted",
         "es": "Error: la oficina ya está restablecida",
         "fr": "Erreur: le bureau est déjà réinstallé",
         "it": "Errore: l'ufficio è già resettato"
@@ -853,6 +872,7 @@
     },
     "Error: wrong user name or password": {
         "ar": "خطأ، اسم المستخدم غير صحيح أو كلمة المرور",
+        "en": "Error: wrong user name or password",
         "es": "Error, nombre de usuario o contraseña incorrecta",
         "fr": "Erreur, mauvais nom d'utilisateur ou mot de passe",
         "it": "Errore: nome utente o password errati"
@@ -1319,6 +1339,7 @@
     },
     "Notice: Display customization has been updated. ..": {
         "ar": "إشعار: تم تحديث تخصيص العرض. ..",
+        "en": "Notice: Display customization has been updated. ..",
         "es": "Aviso: la personalización de la pantalla se ha actualizado. ..",
         "fr": "Remarque: la personnalisation de l'affichage a été mise à jour. ..",
         "it": "Avviso: la personalizzazione della visualizzazione è stata aggiornata. .."
@@ -1381,6 +1402,9 @@
         "es": "Aviso: la personalización de la pantalla táctil se ha actualizado. ..",
         "fr": "Remarque: la personnalisation de l'écran tactile a été mise à jour. ..",
         "it": "Avviso: la personalizzazione del touchscreen è stata aggiornata. .."
+    },
+    "Notice: a common task has been added.": {
+        "en": "Notice: a common task has been added."
     },
     "Notice: admin password has been updated.": {
         "ar": "إشعار: تم تحديث كلمة مرور المسؤول.",
@@ -1453,12 +1477,14 @@
     },
     "Notice: office and its all tasks been deleted ": {
         "ar": "إشعار: تم حذف المكتب وجميع مهامه",
+        "en": "Notice: office and its all tasks been deleted",
         "es": "Aviso: la oficina y todas sus tareas han sido eliminadas",
         "fr": "Avis: office et toutes ses tâches ont été supprimées",
         "it": "Avviso: ufficio e tutte le attività sono state cancellate"
     },
     "Notice: office has been resetted. ..": {
         "ar": "إشعار: تم إعادة تعيين المكتب. ..",
+        "en": "Notice: office has been resetted. ..",
         "es": "Aviso: la oficina se ha restablecido. ..",
         "fr": "Avis: le bureau a été réinstallé. ..",
         "it": "Avviso: l'ufficio è stato reimpostato. .."
@@ -1505,6 +1531,7 @@
     },
     "Notice: task has been updated .": {
         "ar": "إشعار: تم تحديث المهمة.",
+        "en": "Notice: task has been updated .",
         "es": "Aviso: la tarea ha sido actualizada.",
         "fr": "Remarque: la tâche a été mise à jour.",
         "it": "Avviso: l'attività è stata aggiornata."
@@ -1856,6 +1883,13 @@
         "fr": "Souviens-toi de moi :",
         "it": "Ricordati di me :"
     },
+    "Remember me : ": {
+        "ar": "تذكرنى :",
+        "en": "Remember me :",
+        "es": "Recuérdame :",
+        "fr": "Souviens-toi de moi :",
+        "it": "Ricordati di me :"
+    },
     "Reminder : aliases are only supported in English.": {
         "ar": "تذكير: يتم دعم الأسماء المستعارة باللغة الإنجليزية فقط.",
         "en": "Reminder : aliases are only supported in English.",
@@ -2192,6 +2226,13 @@
         "es": "Seleccione la tabla para descargar su csv:",
         "fr": "Sélectionnez une table pour télécharger son csv:",
         "it": "Seleziona la tabella per scaricare il suo csv:"
+    },
+    "Select the offices to add the common task to :": {
+        "ar": "حدد المكاتب لإضافة المهمة المشتركة إلى:",
+        "en": "Select the offices to add the common task to :",
+        "es": "Seleccione las oficinas para agregar la tarea común a:",
+        "fr": "Sélectionnez les bureaux auxquels ajouter la tâche commune:",
+        "it": "Seleziona gli uffici per aggiungere l'attività comune a:"
     },
     "Select ticket prefix : ": {
         "ar": "حدد بادئة التذكرة:",

@@ -8,6 +8,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from app.database import db
 
+mtasks = db.Table(
+    'mtasks',
+    db.Column('office_id', db.Integer, db.ForeignKey('offices.id'), primary_key=True),
+    db.Column('task_id', db.Integer, db.ForeignKey('tasks.id'), primary_key=True))
+
 
 class Office(db.Model):
     __tablename__ = "offices"
@@ -16,6 +21,8 @@ class Office(db.Model):
     timestamp = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
     prefix = db.Column(db.String(2))
     operators = db.relationship('Operators', backref='operators')
+    tasks = db.relationship('Task', secondary=mtasks, lazy='subquery',
+        backref=db.backref('offices', lazy=True))
 
     def __init__(self, name, prefix):
         self.name = name
@@ -27,11 +34,11 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(300))
     timestamp = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
-    office_id = db.Column(db.Integer, db.ForeignKey('offices.id'))
+    # office_id = db.Column(db.Integer, db.ForeignKey('offices.id'))
 
-    def __init__(self, name, office_id):
+    def __init__(self, name):
         self.name = name
-        self.office_id = office_id
+        # self.office_id = office_id
 
 
 class Serial(db.Model):
@@ -407,7 +414,7 @@ class Aliases(db.Model):
     number = db.Column(db.String(100))
 
     def __init__(self, 
-        office="Office", task="Task", ticket="Ticket",
+        office="office", task="task", ticket="ticket",
         name="name", number="number"):
         self.id = 0
         self.office = office

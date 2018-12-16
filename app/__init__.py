@@ -86,6 +86,7 @@ def create_app():
     app.register_blueprint(cust_app)
     app.register_blueprint(errorsh_app)
     app.register_blueprint(manage_app)
+    app.jinja_env.add_extension('jinja2.ext.loopcontrols')
     return app
 
 

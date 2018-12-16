@@ -105,7 +105,8 @@ def serial(t_id):
                                a=4, dire='multimedia/', form=form)
     nm = form.name.data
     n = True if data.Touch_store.query.first().n else False
-    o_id = data.Task.query.filter_by(id=t_id).first().office_id
+    # Assigning the first office in the list
+    o_id = data.Task.query.filter_by(id=t_id).first().offices[0].id
     ln = data.Serial.query.filter_by(
         office_id=o_id).order_by(data.Serial
                                  .timestamp.desc(
@@ -301,23 +302,24 @@ def serial_rt(t_id):
     return redirect(url_for("manage_app.task", o_id=t_id))
 
 
-@core.route('/pull', defaults={'o_id': None})
-@core.route('/pull/<int:o_id>')
+@core.route('/pull', defaults={'o_id': None, 'ofc_id': None})
+@core.route('/pull/<int:o_id>/<int:ofc_id>')
 @login_required
-def pull(o_id=None):
+def pull(o_id=None, ofc_id=None):
     """ to change the state of a ticket to be pulled """
     # FIX: pulling tickets by task_id instead of office_id
     # to allow for pulling form specific office
     if o_id is not None:
         if data.Task.query.filter_by(id=o_id).first() is None:
             flash('Error: wrong entry, something went wrong', "danger")
-            return redirect(url_for("manage_app.task", o_id=o_id))
+            return redirect(url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
     if current_user.role_id == 3 and data.Operators.query.filter_by(id=current_user.id).first() is None:
         flash("Error: operators are not allowed to access the page ",
               "danger")
         return redirect(url_for('core.root'))
     if o_id is not None:
-        if current_user.role_id == 3 and data.Task.query.filter_by(id=o_id).first().office_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
+        
+        if current_user.role_id == 3 and data.Operators.query.filter_by(id=current_user.id).first().office_id not in [o.id for o in data.Task.query.filter_by(id=o_id).first().offices]:
             flash("Error: operators are not allowed to access the page ",
               "danger")
             return redirect(url_for('core.root'))
@@ -342,37 +344,53 @@ def pull(o_id=None):
         flash(
             "Error: no tickets left to pull from ..",
             "danger")
-        return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", o_id=o_id))
-    cs = data.Waiting.query.all() if o_id is None else data.Waiting.query.filter_by(task_id=o_id).first()
+        return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
+    # Setting the office in case it's not pull from all
+    # The goal is to specify the exact office responsible for the pull
+    # and update the about to be pulled tickets with responsible office 
+    # FIXME: figure out why pulling from non-common tasks stopped working
+    if ofc_id is not None and o_id is not None:
+        if len(data.Task.query.filter_by(id=o_id).first().offices) > 1:
+            for record in [data.Serial, data.Waiting]:
+                record = record.query.filter_by(task_id=o_id).first()
+                if record is not None:
+                    if data.Office.query.filter_by(id=ofc_id).first() is not None:
+                        record.office_id = ofc_id
+                        db.session.commit()
+                    else:
+                        flash("Error: office used to pull is non existing",
+                        "danger")
+                        return redirect(url_for("core_app.root"))
+    cs = data.Waiting.query.all() if o_id is None else data.Waiting.query.filter_by(task_id=o_id, office_id=ofc_id).first()
     if cs is None:
         flash(
             "Error: no tickets left to pull from ..",
             "danger")
-        return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", o_id=o_id))
+        return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
     # Fix: pulling tickets by task_id instead of office_id
     # have to switch positions
     # --- Reassigning cs seems to fix it
     # Fix: pulling tickets by task_id instead of office_id
     # modifying removing from  waiting with task_id 
-    cs = data.Waiting.query.filter_by(**({'task_id': o_id} if o_id is not None else {})).first()
+    cs = data.Waiting.query.filter_by(**({'task_id': o_id, 'office_id': ofc_id} if o_id is not None else {})).first()
     if cs is None:
         flash("Error: no tickets left to pull from ..", "danger")
-        return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", o_id=o_id))
+        return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
     # adding to current waiting
     pIt = data.Display_store.query.first().prefix
     ocs = data.Office.query.filter_by(id=cs.office_id).first()
     cl = data.Waiting_c.query.first()
-    cl.ticket = ocs.prefix if pIt else '' + str(cs.number)
-    cl.oname = ocs.prefix if pIt else '' + str(ocs.name)
+    cl.ticket = (ocs.prefix if pIt else '') + str(cs.number)
+    cl.oname = (ocs.prefix if pIt else '') + str(ocs.name)
     cl.tname = data.Task.query.filter_by(id=cs.task_id).first().name
     cl.n = cs.n
     cl.name = cs.name
-    data.db.session.add(cl)
+    # data.db.session.add(cl)
     db.session.commit()
-    sr = data.Serial.query.filter_by(office_id=cs.office_id, task_id=cs.task_id, number=cs.number).first()
+    sr = data.Serial.query.filter_by(task_id=cs.task_id, number=cs.number).first()
     if sr is None:
         flash("Error: no tickets left to pull from ..", "danger")
-        return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", o_id=o_id))
+        return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
     sr.p = True
     sr.pdt = datetime.utcnow()
     # Fix: adding pulled by feature to tickets
@@ -381,7 +399,7 @@ def pull(o_id=None):
     db.session.delete(cs)
     db.session.commit()
     flash("Notice: Ticket has been pulled ..", "info")
-    return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", o_id=o_id))
+    return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
 
 
 @core.route('/feed', methods=['GET'])
@@ -408,9 +426,6 @@ def feed():
         cs = str(c) + ". "
         prf = data.Office.query.filter_by(id=s.office_id).first().prefix
         pIt = data.Display_store.query.first().prefix
-        print('#' * 10)
-        print(pIt)
-        print('#' * 10)
         if s.n:
             bap = ((prf).encode('utf-8') + ".") if pIt else ''
             bap += (s.name).encode('utf-8')

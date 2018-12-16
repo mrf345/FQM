@@ -42,7 +42,7 @@ $(document).ready(function () {
 	    	</div>
 	    	<div class="row text-center text-muted h4 ar2">
 				<div class="col-sm-10 col-sm-offset-1 col-lg-offset-2 col-md-4 well">
-					{{ translate('Prefix', 'en', [defLang]) }} : <u>{{ offices.filter_by(id=task.office_id).first().prefix }}</u>
+					{{ translate('Prefix', 'en', [defLang]) }} : <u>{% for o in task.offices %} {{o.prefix}} {% endfor %}</u>
 				</div>
 				<div class="col-sm-10 col-sm-offset-1 col-md-offset-0 col-md-4 well">
 					{{ translate('Created', 'en', [defLang]) }} : <u> {{ moment(task.timestamp).format('L') }}</u>
@@ -89,7 +89,7 @@ $(document).ready(function () {
 	    	{% if o.number != 100 %}
 	    	<div class="row well {% if o.p %} text-primary {% else %} text-danger {% endif %} ar1 h4 text-center">
 	    	  <div class="col-xs-12 col-sm-2">
-				<b> {{ offices.filter_by(id=o.office_id).first().prefix }}{{ o.number }}.</b>
+				<b> {% for oo in o.offices %} {{ oo.prefix }} {% endfor %} {# offices.filter_by(id=o.office_id).first().prefix #}{{ o.number }}.</b>
 	    	  </div>
 	    	  <div class="col-xs-12 col-sm-2">
 				<u>{{ moment(o.timestamp).format('L') }}</u>
@@ -116,7 +116,7 @@ $(document).ready(function () {
 	    <div class="panel-footer text-center">
 			{{ panelFooter([
 				[
-				[translate('Tasks total', 'en', [defLang]), tasks.filter_by(office_id=task.office_id).count()], 
+				[translate('Offices total', 'en', [defLang]), len(task.offices)], 
 				[translate('Tickets total', 'en', [defLang]), serial.filter_by(task_id=o_id).count()]
 				],
 				[
@@ -151,6 +151,14 @@ $(document).ready(function () {
 					<p class="pt-10"></p>
 		    		{{ form.csrf_token }}
 					{{ render_field(form.name, class="form-control") }}
+					{% if common %}
+					<p class="h4 text-center text-muted ar2 pt-2 pb-1">
+						| {{ translate("Select the offices to add the common task to :", 'en', [defLang]) }} |
+					</p>
+					{% for ofc in offices.all() %}
+					{{ render_field(form['check' + str(ofc.id)], class="form-control") }}
+					{% endfor %}
+					{% endif %}
 					<p class="pb-10"></p>
 				</div>
 				<div class="modal-footer">
