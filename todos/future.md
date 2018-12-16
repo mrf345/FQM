@@ -35,3 +35,21 @@ __With the ability to added same tasks into different screens with a different l
 > finish filling functions.
 > add front end javascript repeating scripts.
 > add debugging mode extension to FQM.
+
+
+### 0.5 leftovers
+
+- [ ] Printed ticket customization
+> - [ ] to choose width and height of text
+> ***To fix scaling issue***
+> - [ ] to chose which information to be displayed
+
+- [ ] Create and use python module based on pos module for cross-platform drawn printing
+
+- [ ] fix browserNotifier when new release published __chrome bug__
+
+- [ ] better cross platform JS
+> - [ ] rewrite unbundled audio_sequence with date() for random
+> - [ ] rewrite unbundled redditWallpapers
+> - [ ] remove error handling from all
+> - [ ] create flask_slimit and use with cache
