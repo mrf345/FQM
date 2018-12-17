@@ -20,6 +20,7 @@
 		'it': " , si prega di procedere al numero dell'ufficio : "
 	}
 	var aplayer = undefined
+	var forceRepeat = undefined
 	var langs = "{{ ts.announce }}".split(',')
 	var stream = JsonStream({
 		url: window.location.origin + '/feed',
@@ -33,6 +34,15 @@
 		ensure_value: 'w9',
 		todo: function (data, toPlay=[]) {
 			// Adding prefix hiding from the front end
+			if (!forceRepeat) forceRepeat = setInterval(function () {
+				fetch(window.location.origin + '/feed')
+				.then(function (r) { return r.json() }).then(function (j) {
+					if (j.replay==='yes') {
+						aplayer.replay()
+						fetch(window.location.origin + '/feed/1')
+					}
+				}).catch(function (e) { console.warn(e.message) })
+			}, 500)
 			if (aplayer) aplayer.exit(false)
 			Promise.all(langs.map(function (lang, i) {
 				return fetch(window.location.origin + '/gtts/' + lang + '/' + data.cot + TTS[lang] + data.con)
@@ -42,6 +52,7 @@
 					return obj.mp3
 				})
 			})).then(function (results) {
+				// TODO: Creating a separate interval that awaits the force repeat value to repeat it
 				{% if ts.audio != 'false' %}results.unshift("{{'/static/multimedia/'+ts.audio}}"){% endif %}
 				aplayer = AudioSequence({
 					files: results.map(function (i) { if (i !== "") return i}),

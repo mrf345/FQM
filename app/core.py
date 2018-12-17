@@ -402,9 +402,16 @@ def pull(o_id=None, ofc_id=None):
     return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
 
 
-@core.route('/feed', methods=['GET'])
-def feed():
+@core.route('/feed', methods=['GET'], defaults={'disable': None})
+@core.route('/feed/<int:disable>', methods=['GET'])
+def feed(disable=None):
     """ to send a json stream of the current tickets """
+    toMod = data.Display_store.query.first()
+    if disable:
+        toMod.r_announcement = False
+        db.session.add(toMod)
+        db.session.commit()
+        return 'success'
     hl = []
     co = data.Waiting_c.query.first()
     if co is None:
@@ -439,23 +446,17 @@ def feed():
     hcounter = co.ticket if co else data.Waiting.query.order_by(data.Waiting.id).first()
     hcounter = hcounter.number if not co and hcounter is not None else "Empty"
     # End of fix
-    # ensure unique val to instigate renouncement, with emptying session
-    toMod = data.Display_store.query.first()
-    if toMod.r_announcement:
-            hcounter = str(datetime.utcnow())
-            toMod.r_announcement = False
-            db.session.add(toMod)
-            db.session.commit()
+    # ensure unique val to instigate renouncement, with emptying session 
     return jsonify(con=con, cot=cot, cott=cott,
                    w1=hl[0], w2=hl[1], w3=hl[2],
                    w4=hl[3], w5=hl[4], w6=hl[5],
-                   w7=hl[6], w8=hl[7],
-                   w9=hcounter)
+                   w7=hl[6], w8=hl[7], w9=hcounter,
+                   replay='yes' if toMod.r_announcement else 'no')
 
 
 @core.route('/rean', methods=['POST'])
 def rean():
-    """ to set receive $.get json and activate re-announcement """
+    """ to set receive $.post json and activate re-announcement """
     if current_user.is_authenticated:
         toMod = data.Display_store.query.first()
         toMod.r_announcement = True

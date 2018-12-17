@@ -7,7 +7,7 @@
 __Important to reduce the insane delay on load__
 - [x] flask_minify implement exception based cashing 3/December
 
--[ ] fix announcement repeating, figure out away to force json_stream to repeat
+- [x] fix announcement repeating, figure out away to force json_stream to repeat
 
 - [x] rewrite and comment back-end code for better performance and support 7/December
 
