@@ -22,7 +22,7 @@ __Important to reduce the insane delay on load__
 
 - [x] Enable and disable browser notifications option 6/December
 
-- [ ] Add a print testing utility for windows in Batch
+- [x] Add a print testing utility for windows in Batch
 
 - [x] More customization 
 > - [x] hide prefix from waiting and list of tickets on back-end core, and front-end display template 6/December
