@@ -77,7 +77,7 @@ urwid==2.1.0
 validators==0.12.0
 visitor==0.1.3
 webencodings==0.5.1
-Werkzeug==0.15.3
+Werkzeug==0.16.0
 Whoosh==2.7.4
 WTForms==2.1
 WTForms-Components==0.10.3
