@@ -48,8 +48,10 @@ def mse():
     db.session.commit()
 
 
-def getFolderSize(folder):
+def getFolderSize(folder, safely=False):
     # -- get a folder size
+    if safely and not os.path.isdir(folder):
+        os.makedirs(folder)
     total_size = os.path.getsize(folder)
     for item in os.listdir(folder):
         itempath = os.path.join(folder, item)
@@ -57,7 +59,7 @@ def getFolderSize(folder):
             total_size += os.path.getsize(itempath)
         elif os.path.isdir(itempath):
             total_size += getFolderSize(itempath)
-    return str(total_size / 1024 / 1024)
+    return int(float(total_size / 1024 / 1024))
 
 
 def r_path(relative_path):
