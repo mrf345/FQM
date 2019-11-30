@@ -25,8 +25,8 @@
 > 1. `git clone https://github.com/mrf345/FQM.git` <br />
 > 2. `cd FQM` <br />
 > - You can choose to use Python 2.7 or 3.4 <br />
-> 3. `pip2.7 install -r requirements.txt` <br />
-> 4. `python2.7 run.py` <br />
+> 3. `pip install -r requirements.txt` <br />
+> 4. `python run.py` <br />
 
 #### - With executable:
 > You can get an executable that's suitable to your OS from : <br />
