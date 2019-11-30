@@ -58,7 +58,7 @@ then
   echo "##### Uninstalling #####"
   if [ -d installiation/ ]
   then
-    sudo rm -rf installiation/
+    rm -rf installiation/
     echo "##### All done #####"
   else
     echo "Error: enviroment not installed yet .."
