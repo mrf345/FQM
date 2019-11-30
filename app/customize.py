@@ -441,7 +441,7 @@ def multimedia(aa):
                            tc=data.Touch_store.query,
                            sl=data.Slides.query,
                            dc=data.Display_store.query,
-                           fs=int(ex_functions.getFolderSize(dire)),
+                           fs=int(ex_functions.getFolderSize(dire, True)),
                            nofl=nofl, sfl=sfl,
                            vtrue=data.Vid.query.first().enable,
                            strue=data.Slides_c.query.first().status)
