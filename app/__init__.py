@@ -13,11 +13,13 @@ import sys
 from time import sleep
 from netifaces import interfaces, ifaddresses
 from random import randint
-from PySide.QtGui import QWidget, QApplication, QIcon, QLabel
-from PySide.QtGui import QFont, QToolTip, QPushButton, QMessageBox
-from PySide.QtGui import QDesktopWidget, QPixmap
-from PySide.QtGui import QComboBox, QVBoxLayout, QHBoxLayout, QFontDatabase
-from PySide.QtCore import QCoreApplication, QSize, Qt, QThread, SIGNAL
+from PyQt5 import QtCore, QtGui, QtWidgets, Qt
+from PyQt5.QtCore import (
+    QObject, QThread, pyqtSignal, pyqtSlot, QSize, QCoreApplication)
+from PyQt5.QtWidgets import (
+    QApplication, QPushButton, QTextEdit, QVBoxLayout, QWidget, QToolTip,
+    QDesktopWidget, QMessageBox, QComboBox, QLabel, QHBoxLayout)
+from PyQt5.QtGui import QFont, QIcon, QPixmap
 from socket import socket, AF_INET, SOCK_STREAM
 from app.administrate import administrate
 from app.core import core
@@ -77,7 +79,8 @@ def create_app():
         'static/css/webfont.select.css'
     ])
     lessc(app)
-    minify(app, js=True, cache=True, fail_safe=True, bypass=['/touch/<int:a>', '/serial/<int:t_id>', '/display'])
+    minify(app, js=True, caching_limit=3, fail_safe=True,
+           bypass=['/touch/<int:a>', '/serial/<int:t_id>', '/display'])
     gtts(app=app, route=True)
     gtranslator.init_app(app)
     # Register blueprints
@@ -108,7 +111,7 @@ class rwser(QThread):
 
     def run(self):
         self.stopper = thevent()
-        monkey.patch_all()
+        monkey.patch_socket()
         self.app.config['LOCALADDR'] = str(self.ip)
         self.serv = pywsgi.WSGIServer(
             (str(self.ip),
@@ -142,8 +145,8 @@ class NewWindow(QWidget):
         glo = QVBoxLayout(self)
         icp = r_path(solve_path('static/images/favicon.png'))
         # need to used objective message boxs instead of functions to set font
-        self.Arial = QFont("", 12, QFont.Bold)
-        self.Arials = QFont("", 10, QFont.Bold)
+        self.font = QFont("static/gfonts/Amiri-Regular.ttf", 12, QFont.Bold)
+        self.fonts = QFont("static/gfonts/Amiri-Regular.ttf", 10, QFont.Bold)
         # Language support variable 
         self.Language = 'en'
         self.Runningo = False
@@ -170,20 +173,20 @@ class NewWindow(QWidget):
         self.setMaximumHeight(400)
         # Setting Icon
         self.setWindowIcon(icon)
-        QToolTip.setFont(self.Arials)
+        QToolTip.setFont(self.fonts)
 
     def Flabel(self, glo):
-        fontt = self.Arial
+        fontt = self.font
         self.ic1 = QIcon(r_path(solve_path('static/images/pause.png')))
         self.l = QLabel('Icond', self)
         self.ic1 = self.ic1.pixmap(70, 70, QIcon.Active, QIcon.On)
         self.l.setPixmap(self.ic1)
-        self.l.setAlignment(Qt.AlignCenter | Qt.AlignHCenter)
+        self.l.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignHCenter)
         self.l.setFont(fontt)
         self.t = QLabel('Texted', self)
         self.t.setText(self.getTrans('11'))
         self.t.setOpenExternalLinks(True)
-        self.t.setAlignment(Qt.AlignCenter | Qt.AlignHCenter)
+        self.t.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignHCenter)
         self.t.setFont(fontt)
         self.t.setToolTip(self.getTrans('9'))
         self.l.setToolTip(self.getTrans('9'))
@@ -203,13 +206,13 @@ class NewWindow(QWidget):
         }
         self.langs_list = QComboBox()
         self.langs_list.addItems(list(self.langs.values()))
-        self.langs_list.setCurrentIndex(1)
+        self.langs_list.setCurrentIndex(0)
         self.langs_list.setToolTip(self.getTrans('1'))
         self.langs_list.currentIndexChanged.connect(self.langChange)
         glo.addWidget(self.langs_list)
         
     def langChange (self):
-        self.language = list(self.langs.keys())[self.langs_list.currentIndex()]
+        self.Language = list(self.langs.keys())[self.langs_list.currentIndex()]
         self.langs_list.setToolTip(self.getTrans('1'))
         self.Amsgb = self.getTrans('2')
         self.abutton.setToolTip(
@@ -289,15 +292,15 @@ class NewWindow(QWidget):
         hlayout = QHBoxLayout()
         self.mbutton = QPushButton('Start', self)
         self.mbutton.clicked.connect(self.s_server)
-        self.mbutton.setFont(self.Arials)
-        self.mbutton.setIcon(QPixmap(r_path(solve_path('static/images/play.png'))))
+        self.mbutton.setFont(self.fonts)
+        self.mbutton.setIcon(QIcon(r_path(solve_path('static/images/play.png'))))
         self.mbutton2 = QPushButton('Stop', self)
         self.mbutton2.clicked.connect(self.st_server)
-        self.mbutton2.setIcon(QPixmap(r_path(solve_path('static/images/pause.png'))))
+        self.mbutton2.setIcon(QIcon(r_path(solve_path('static/images/pause.png'))))
         self.mbutton.setToolTip(self.getTrans('4'))
         self.mbutton2.setToolTip(self.getTrans('6'))
         self.mbutton2.setEnabled(False)
-        self.mbutton2.setFont(self.Arials)
+        self.mbutton2.setFont(self.fonts)
         hlayout.addWidget(self.mbutton)
         hlayout.addWidget(self.mbutton2)
         glo.addLayout(hlayout)
@@ -323,7 +326,7 @@ class NewWindow(QWidget):
                 addr += "'> http://" + pp[1].split(',')[1] + ":" + pp[0]
                 addr += "</a>"
                 self.t.setText(addr)
-                self.t.setFont(self.Arial)
+                self.t.setFont(self.font)
                 self.P.start()
                 self.Runningo = True
             except:
@@ -361,12 +364,9 @@ class NewWindow(QWidget):
             Amsg += u"<br> <b><a href='https://fqms.github.io/'>"
             Amsg += u"https://fqms.github.io </a> </b></center>"
             Amsgb = self.getTrans('2')
-            return QMessageBox.about(
-                self,
-                Amsgb,
-                Amsg)
+            return QMessageBox.about(self, Amsgb, Amsg)
         self.abutton = QPushButton('', self)
-        self.abutton.setIcon(QPixmap(icon))
+        self.abutton.setIcon(QIcon(icon))
         self.abutton.setIconSize(QSize(150, 70))
         self.abutton.setToolTip(self.getTrans('2'))
         self.abutton.clicked.connect(partial(show_about, self))

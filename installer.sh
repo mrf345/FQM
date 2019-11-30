@@ -24,11 +24,11 @@ then
 fi
 if [ "$pip_exi" == "" ] && [ "$pip2_exi" == "" ]
 then
-  sudo python2 -m ensurepip
+  sudo python3 -m ensurepip
 fi
 if [ "$virtenv" == "" ] && [ "$virtenv2" == "" ]
 then
-  sudo pip2 install vertualenv
+  sudo pip3 install vertualenv
 fi
 
 
@@ -37,7 +37,7 @@ then
   if [ -f requirements.txt ]
   then
     echo "##### Creating virtual enviroment #####"
-    virtualenv --python=python2.7 installiation/ && source installiation/bin/activate
+    virtualenv --python=python3 installiation/ && source installiation/bin/activate
     echo "##### Installing packages from pip #####"
     pip install -r requirements.txt
     echo "##### Adding user to local printers group #####"
