@@ -3,56 +3,40 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import os
+import sys
+import click
+from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtWidgets import QApplication
+from gevent import monkey, pywsgi
 from flask import Flask, request, Markup, session, redirect, url_for, flash
 from flask_pagedown import PageDown
 from flask_moment import Moment
-import os
-from gevent.event import Event as thevent
-from gevent import monkey, pywsgi
-import sys
-from time import sleep
-from netifaces import interfaces, ifaddresses
-from random import randint
-from PyQt5 import QtCore, QtGui, QtWidgets, Qt
-from PyQt5.QtCore import (
-    QObject, QThread, pyqtSignal, pyqtSlot, QSize, QCoreApplication)
-from PyQt5.QtWidgets import (
-    QApplication, QPushButton, QTextEdit, QVBoxLayout, QWidget, QToolTip,
-    QDesktopWidget, QMessageBox, QComboBox, QLabel, QHBoxLayout)
-from PyQt5.QtGui import QFont, QIcon, QPixmap
-from socket import socket, AF_INET, SOCK_STREAM
-from app.administrate import administrate
-from app.core import core
-from app.customize import cust_app, mdal
-from app.errorsh import errorsh_app
-from app.manage import manage_app
-from app.ex_functions import mse, r_path, solve_path
-from app.database import db, login_manager, files, version, gtranslator
 from flask_uploads import configure_uploads
-from flask_login import login_required, current_user
-from jinja2 import FileSystemLoader
+from flask_login import current_user
 from flask_qrcode import QRcode
-from functools import partial
-from app.printer import listp
 from flask_datepicker import datepicker
 from flask_colorpicker import colorpicker
 from flask_fontpicker import fontpicker
 from flask_less import lessc
 from flask_minify import minify
 from flask_gtts import gtts
-from app.languages import GUI as LANGUAGES
+
+from app.database import db, login_manager, files, version, gtranslator
+from app.printer import listp
+from app.administrate import administrate
+from app.core import core
+from app.customize import cust_app, mdal
+from app.errorsh import errorsh_app
+from app.manage import manage_app
+from app.ex_functions import mse, r_path, get_accessible_ips, get_random_available_port
 from app.data import Settings
+from app.gui import MainWindow
 
 
 def create_app():
-    app = Flask(__name__, static_folder=r_path('static'),
-                template_folder=r_path('templates'))
-    if getattr(sys, 'frozen', False):
-        basedir = os.path.dirname(sys.executable)
-    else:
-        basedir = os.path.abspath(os.path.dirname(__file__))
-    # bootstrap = Bootstrap(app)
-    pagedown = PageDown(app)
+    app = Flask(__name__, static_folder=r_path('static'), template_folder=r_path('templates'))
+    PageDown(app)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + r_path(
         'data.sqlite')
@@ -63,21 +47,16 @@ def create_app():
     app.config['UPLOADED_FILES_DEST'] = r_path('static/multimedia')
     app.config['UPLOADED_FILES_ALLOW'] = mdal
     app.config['SECRET_KEY'] = os.urandom(24)
-    # Intiating extensions before registering blueprints
-    moment = Moment(app)
-    qrc = QRcode(app)
+    # Initiating extensions before registering blueprints
+    Moment(app)
+    QRcode(app)
     configure_uploads(app, files)
     login_manager.init_app(app)
     db.init_app(app)
     datepicker(app, local=['static/css/jquery-ui.min.css', 'static/jquery-ui.min.js'])
     colorpicker(app, local=['static/css/spectrum.css', 'static/spectrum.js'])
-    fontpicker(app, local=[
-        'static/jquery-ui.min.js',
-        'static/css/jquery-ui.min.css',
-        'static/webfont.js',
-        'static/webfont.select.js',
-        'static/css/webfont.select.css'
-    ])
+    fontpicker(app, local=['static/jquery-ui.min.js', 'static/css/jquery-ui.min.css', 'static/webfont.js',
+                           'static/webfont.select.js', 'static/css/webfont.select.css'])
     lessc(app)
     minify(app, js=True, caching_limit=3, fail_safe=True,
            bypass=['/touch/<int:a>', '/serial/<int:t_id>', '/display'])
@@ -101,351 +80,14 @@ def create_db(app):
         mse()
 
 
-class rwser(QThread):
-    """ pyside thread to monitor the web server """
-    def __init__(self, ip="127.0.0.1", port=8000, app=None):
-        QThread.__init__(self)
-        self.ip = ip
-        self.port = port
-        self.app = app
-
-    def run(self):
-        self.stopper = thevent()
-        monkey.patch_socket()
-        self.app.config['LOCALADDR'] = str(self.ip)
-        self.serv = pywsgi.WSGIServer(
-            (str(self.ip),
-             int(self.port)),
-            self.app,
-            log=None)
-        try:  # gevent server known to have isuues on stopping
-            self.serv.start()
-            self.stopper.wait()
-        except:
-            print('Error STA webserver : please, help us improve by reporting')
-            print("to us on : \n\thttps://fqms.github.io/")
-            sys.exit(0)
-
-    def stop(self):
-        try:
-            self.stopper.set()
-            self.serv.stop()
-        except:
-            print('Error STD webserver : please, help us improve by reporting')
-            print("to us on : \n\thttps://fqms.github.io/")
-            sys.exit(0)
-
-
-# Gui Class
-
-class NewWindow(QWidget):
-    def __init__(self, app=None):
-        super(NewWindow, self).__init__()
-        self.app = app
-        glo = QVBoxLayout(self)
-        icp = r_path(solve_path('static/images/favicon.png'))
-        # need to used objective message boxs instead of functions to set font
-        self.font = QFont("static/gfonts/Amiri-Regular.ttf", 12, QFont.Bold)
-        self.fonts = QFont("static/gfonts/Amiri-Regular.ttf", 10, QFont.Bold)
-        # Language support variable 
-        self.Language = 'en'
-        self.Runningo = False
-        icon = QIcon(icp)
-        self.SelfIinit(icon)
-        self.center()
-        self.langsList(glo)
-        self.set_Abutton(icp, glo)
-        self.Lists(glo)
-        self.Flabel(glo)
-        self.set_button(glo)
-        self.setLayout(glo)
-        mip = self.slchange()
-        self.P = rwser(mip[1].split(',')[1], mip[0], self.app)
-        self.activateWindow()
-        self.show()
-
-    def SelfIinit(self, icon):
-        self.setWindowTitle('Free Queue Manager ' + version)
-        self.setGeometry(300, 300, 200, 150)
-        self.setMinimumWidth(500)
-        self.setMaximumWidth(500)
-        self.setMinimumHeight(400)
-        self.setMaximumHeight(400)
-        # Setting Icon
-        self.setWindowIcon(icon)
-        QToolTip.setFont(self.fonts)
-
-    def Flabel(self, glo):
-        fontt = self.font
-        self.ic1 = QIcon(r_path(solve_path('static/images/pause.png')))
-        self.l = QLabel('Icond', self)
-        self.ic1 = self.ic1.pixmap(70, 70, QIcon.Active, QIcon.On)
-        self.l.setPixmap(self.ic1)
-        self.l.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignHCenter)
-        self.l.setFont(fontt)
-        self.t = QLabel('Texted', self)
-        self.t.setText(self.getTrans('11'))
-        self.t.setOpenExternalLinks(True)
-        self.t.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignHCenter)
-        self.t.setFont(fontt)
-        self.t.setToolTip(self.getTrans('9'))
-        self.l.setToolTip(self.getTrans('9'))
-        glo.addStretch()
-        glo.addWidget(self.l)
-        glo.addWidget(self.t)
-        glo.addStretch()
-
-    def langsList(self, glo):
-        self.langs = {
-            # languages to be displayed in select
-            'en': 'English',
-            'ar': 'Arabic',
-            'fr': 'French',
-            'it': 'Italian',
-            'es': 'Spanish'
-        }
-        self.langs_list = QComboBox()
-        self.langs_list.addItems(list(self.langs.values()))
-        self.langs_list.setCurrentIndex(0)
-        self.langs_list.setToolTip(self.getTrans('1'))
-        self.langs_list.currentIndexChanged.connect(self.langChange)
-        glo.addWidget(self.langs_list)
-        
-    def langChange (self):
-        self.Language = list(self.langs.keys())[self.langs_list.currentIndex()]
-        self.langs_list.setToolTip(self.getTrans('1'))
-        self.Amsgb = self.getTrans('2')
-        self.abutton.setToolTip(
-            self.getTrans('2')
-        )
-        self.mbutton.setText(self.getTrans('3'))
-        self.mbutton.setToolTip(self.getTrans('4'))
-        self.mbutton2.setText(self.getTrans('5'))
-        self.mbutton2.setToolTip(self.getTrans('6'))
-        self.sl.setToolTip(
-            self.getTrans('7')
-        )
-        self.sl2.setToolTip(self.getTrans('8'))
-        self.t.setToolTip(self.getTrans('9'))
-        self.l.setToolTip(self.getTrans('9'))
-        if self.Runningo:
-            pp = self.slchange()
-            addr = self.getTrans('10')
-            addr += u"<a href='http://"
-            addr += pp[1].split(',')[1] + u":" + pp[0]
-            addr += u"'> http://" + pp[1].split(',')[1] + u":" + pp[0]
-            addr += u"</a>"
-            self.t.setText(addr)
-        else:
-            self.t.setText(self.getTrans('11'))
-    
-    def getTrans(self, index):
-        lang = list(self.langs.keys())[self.langs_list.currentIndex()]
-        try:
-            return LANGUAGES[lang][index]
-        except Exception:
-            return None
-
-    def Lists(self, glo):
-        ips = self.get_ips()
-        self.sl = QComboBox()
-        self.sl.addItems(ips)
-        self.sl.setToolTip(self.getTrans('7'))
-        self.sl2 = QComboBox()
-        self.get_ports()
-        self.sl2.setToolTip('8')
-        self.sl.currentIndexChanged.connect(self.get_ports)
-        glo.addWidget(self.sl)
-        glo.addWidget(self.sl2)
-
-    def get_ports(self, nauto=True):
-        d_ports = ['5000', '8080', '3000', '80', '9931']
-        m_ports = []
-        while len(m_ports) < 10:
-            mip = self.slchange()
-            for p in d_ports:
-                s = socket(AF_INET, SOCK_STREAM)
-                try:
-                    s.bind((mip[1].split(',')[1], int(p)))
-                    s.close()
-                    m_ports.append(p)
-                except:
-                    s.close()
-                d_ports.remove(p)
-            s = socket(AF_INET, SOCK_STREAM)
-            p = randint(1000, 9999)
-            try:
-                s.bind((mip[1].split(',')[1], p))
-                s.close()
-                m_ports.append(str(p))
-            except:
-                s.close()
-            if len(m_ports) >= 10:
-                break
-        self.sl2.clear()
-        self.sl2.addItems(m_ports)
-
-    def slchange(self):
-        return [self.sl2.currentText(), self.sl.currentText()]
-
-    def set_button(self, glo):
-        hlayout = QHBoxLayout()
-        self.mbutton = QPushButton('Start', self)
-        self.mbutton.clicked.connect(self.s_server)
-        self.mbutton.setFont(self.fonts)
-        self.mbutton.setIcon(QIcon(r_path(solve_path('static/images/play.png'))))
-        self.mbutton2 = QPushButton('Stop', self)
-        self.mbutton2.clicked.connect(self.st_server)
-        self.mbutton2.setIcon(QIcon(r_path(solve_path('static/images/pause.png'))))
-        self.mbutton.setToolTip(self.getTrans('4'))
-        self.mbutton2.setToolTip(self.getTrans('6'))
-        self.mbutton2.setEnabled(False)
-        self.mbutton2.setFont(self.fonts)
-        hlayout.addWidget(self.mbutton)
-        hlayout.addWidget(self.mbutton2)
-        glo.addLayout(hlayout)
-
-    def s_server(self):
-        mip = self.slchange()
-        self.P = rwser(mip[1].split(',')[1], mip[0], self.app)
-        self.P.setTerminationEnabled(True)
-        if not self.P.isRunning():
-            try:
-                self.pport = mip[0]
-                self.mbutton.setEnabled(False)
-                self.mbutton2.setEnabled(True)
-                self.sl.setEnabled(False)
-                self.sl2.setEnabled(False)
-                self.ic1 = QIcon(r_path(solve_path('static/images/play.png')))
-                self.ic1 = self.ic1.pixmap(70, 70, QIcon.Active, QIcon.On)
-                self.l.setPixmap(self.ic1)
-                pp = self.slchange()
-                addr = self.getTrans('10')
-                addr += "<a href='http://"
-                addr += pp[1].split(',')[1] + ":" + pp[0]
-                addr += "'> http://" + pp[1].split(',')[1] + ":" + pp[0]
-                addr += "</a>"
-                self.t.setText(addr)
-                self.t.setFont(self.font)
-                self.P.start()
-                self.Runningo = True
-            except:
-                self.eout()
-        else:
-            self.eout()
-
-    def st_server(self):
-        if self.P.isRunning():
-            try:
-                if self.P.isRunning:
-                    self.P.stop()
-                self.mbutton.setEnabled(True)
-                self.mbutton2.setEnabled(False)
-                self.sl.setEnabled(True)
-                self.sl2.setEnabled(True)
-                self.t.setText(self.getTrans('11'))
-                # removing the last used port to avoid termination error
-                cind = self.sl2.currentIndex()
-                self.sl2.removeItem(cind)
-                self.get_ports()
-                self.Runningo = False
-            except:
-                self.eout()
-        else:
-            self.eout()
-
-    def set_Abutton(self, icon, glo):
-        def show_about(nself):
-            Amsg = u" <center> "
-            Amsg += self.getTrans('12') + version + u" "
-            Amsg += self.getTrans('13')
-            Amsg += self.getTrans('14')
-            Amsg += self.getTrans('15')
-            Amsg += u"<br> <b><a href='https://fqms.github.io/'>"
-            Amsg += u"https://fqms.github.io </a> </b></center>"
-            Amsgb = self.getTrans('2')
-            return QMessageBox.about(self, Amsgb, Amsg)
-        self.abutton = QPushButton('', self)
-        self.abutton.setIcon(QIcon(icon))
-        self.abutton.setIconSize(QSize(150, 70))
-        self.abutton.setToolTip(self.getTrans('2'))
-        self.abutton.clicked.connect(partial(show_about, self))
-        glo.addWidget(self.abutton)
-
-    def closeEvent(self, event=None):
-        if self.Runningo:
-            response = self.msgApp(
-                self.getTrans('16'),
-                self.getTrans('17'))
-            if response == 'y':
-                if event is not None:
-                    event.accept()
-                if self.P.isRunning():
-                    self.P.stop()
-                sys.exit(0)
-            else:
-                if event is not None:
-                    event.ignore()
-        else:
-            if event is not None:
-                event.accept()
-            if self.P.isRunning():
-                self.P.stop()
-            sys.exit(0)
-
-    def msgApp(self, title, msg):
-        uinfo = QMessageBox.question(self, title,
-                                     msg, QMessageBox.Yes | QMessageBox.No)
-        if uinfo == QMessageBox.Yes:
-            return 'y'
-        if uinfo == QMessageBox.No:
-            return 'n'
-
-    def eout(self):
-        if self.P.isRunning():
-            self.P.stop()
-        msgg = u"<center>"
-        msgg += self.getTrans('18')
-        msgg += self.getTrans('19')
-        msgg += u"<br><b><a href='https://fqms.github.io/'> "
-        msgg += u"https://fqms.github.io </a></b> </center>"
-        mm = QMessageBox.critical(
-            self,
-            self.getTrans('20'),
-            msgg,
-            QMessageBox.Ok)
-
-    def center(self):
-        qrect = self.frameGeometry()
-        cp = QDesktopWidget().availableGeometry().center()
-        qrect.moveCenter(cp)
-        self.move(qrect.topLeft())
-
-    def get_ips(self):
-        il = []
-        for i in interfaces():
-            try:
-                if os.name != 'nt':
-                    inf = i + " ,"
-                else:
-                    inf = ' ,'
-                inf += ifaddresses(i)[2][0].get('addr')
-                il.append(inf)
-            except:
-                pass
-        return il
-
-
 def run_app():
     app = create_app()
     create_db(app)
-    appg = QApplication(sys.argv)
     if os.name != 'nt':
         # !!! it did not work creates no back-end available error !!!
         # !!! strange bug , do not remove !!!
         if listp():
             pass
-    window = NewWindow(app)
 
     # switching the language with template folder path
     @app.route('/lang_switch/<lang>')
@@ -454,6 +96,7 @@ def run_app():
         if current_user.is_authenticated:
             return redirect(str(request.referrer))
         return redirect(url_for('core.root'))
+
     @app.before_first_request
     def defLanguage():
         if session.get('lang') not in ['en', 'ar', 'fr', 'it', 'es']:
@@ -465,34 +108,48 @@ def run_app():
     @app.errorhandler(413)
     def page_not_found(error):
         if error == 413:
-            flash(
-                "Error: file uploaded is too large ",
-                "danger")
+            flash('Error: file uploaded is too large ', 'danger')
             if current_user.is_authenticated:
                 return redirect(url_for('cust_app.multimedia', nn=1))
             return redirect(url_for('core.root'))
-        flash(
-            "Error: something wrong , or the page is non-existing",
-            "danger")
+        flash('Error: something wrong , or the page is non-existing', 'danger')
         return redirect(url_for('core.root'))
-    # Injecting default variables to all templates
 
+    # Injecting default variables to all templates
     @app.context_processor
     def inject_vars():
         # adding language support var
-        ar = False
-        if session.get('lang') == 'AR':
-            ar = True
-        # modifing side bar spacing for specific paths
+        ar = session.get('lang') == 'AR'
+        # modifying side bar spacing for specific paths
         path = request.path
-        adml = ['/users', '/user_a', '/admin_u', '/user_u',
-                '/csvd', '/settings']
-        adme = False
-        if path in adml or path[:7] in adml or path[:5] in adml:
-            adme = True
+        admin_routes = ['/users', '/user_a', '/admin_u', '/user_u', '/csvd', '/settings']
+        admin_route = any([path in admin_routes, path[:7] in admin_routes, path[:5] in admin_routes])
+
         return dict(path=path, notifications=Settings.query.first().notifications,
-                    adme=adme, brp=Markup("<br>"), ar=ar, current_path=request.path,
+                    adme=admin_route, brp=Markup('<br>'), ar=ar, current_path=request.path,
                     version=version, str=str, defLang=session.get('lang'),
                     checkId=lambda id, records: id in [i.id for i in records])
-    QCoreApplication.processEvents()
-    appg.exec_()
+
+    @click.command()
+    @click.option('--cli', is_flag=True, default=False, help='To use commandline interface instead of GUI.')
+    @click.option('--quiet', is_flag=True, default=False, help='To silence web server logs.')
+    @click.option('--ip', default=None, help='IP address to stream the service on.')
+    @click.option('--port', default=None, help='Port to stream the service through.')
+    def interface(cli, quiet, ip, port):
+        if cli:
+            ip = ip or get_accessible_ips()[0][1]
+            port = port or get_random_available_port(ip)
+            app.config['LOCALADDR'] = ip
+
+            click.echo(click.style(f'FQM {version} is running on http://{ip}:{port}', bold=True, fg='green'))
+            click.echo('')
+            click.echo(click.style('Press Control-c to stop', blink=True, fg='black', bg='white'))
+            monkey.patch_socket()
+            pywsgi.WSGIServer((str(ip), int(port)), app, log=None if quiet else 'default').serve_forever()
+        else:
+            gui_process = QApplication(sys.argv)
+            window = MainWindow(app)  # NOTE: has to be decleared in a var to work properly
+            QCoreApplication.processEvents()
+            gui_process.exec_()
+
+    interface()
