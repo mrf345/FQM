@@ -82,3 +82,4 @@ Whoosh==2.7.4
 WTForms==2.1
 WTForms-Components==0.10.3
 xxhash==1.4.3
+falke8

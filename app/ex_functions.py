@@ -3,11 +3,15 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import os
+import sys
+from random import randint
+from socket import socket, AF_INET, SOCK_STREAM
+from netifaces import interfaces, ifaddresses
+
+import app.languages as LANGUAGES
 import app.data as data
 from app.database import db, gtranslator
-import os
-import app.languages as LANGUAGES
-# Extra functions
 
 
 def mse():
@@ -86,3 +90,73 @@ def transAll():
 def solve_path(path):
     """ fix path for window os """
     return path.replace('/', '\\') if os.name == 'nt' else path
+
+
+def get_accessible_ips():
+    """ Utility to retrieve accessible ips.
+
+    Returns
+    -------
+        List of accessible ips and the interface name `(interface, ip)`
+    """
+    returned_list = []
+
+    for interface in interfaces():
+        try:
+            returned_list.append((
+                # NOTE: Windows doesn't support interface name
+                '' if os.name == 'nt' else interface,
+                ifaddresses(interface)[2][0].get('addr')
+            ))
+        except Exception:
+            pass
+
+    return returned_list
+
+
+def is_port_available(ip, port):
+    """ Utility to check if port is available on a given local address.
+
+    Parameters
+    ----------
+        ip: str
+            local ip address to try the port on.
+        port: int
+            port to check for its availability.
+
+    Returns
+    -------
+        True if port is available, False if not.
+    """
+    available = True
+    new_socket = socket(AF_INET, SOCK_STREAM)
+
+    try:
+        new_socket.bind((ip, int(port)))
+    except Exception:
+        available = False
+    finally:
+        new_socket.close()
+
+    return available
+
+
+def get_random_available_port(ip):
+    """ Utility to get an available port to listen on.
+
+    Parameters
+    ----------
+        ip: str
+            local ip address to try the port on.
+
+    Returns
+    -------
+        Interger of any available random port.
+    """
+    available_port = None
+
+    while not available_port:
+        random_port = randint(1000, 9999)
+        available_port = is_port_available(ip, random_port) and random_port
+
+    return available_port
