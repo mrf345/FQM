@@ -2,27 +2,21 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-import app.data as data
-from flask import session
+from os import name
+from functools import reduce
 from flask_wtf import FlaskForm
-from wtforms import FileField, StringField, DateField, HiddenField
+from wtforms import FileField, StringField, DateField
 from wtforms import SubmitField, PasswordField, SelectField
 from wtforms import TextAreaField, IntegerField, BooleanField
 from flask_wtf.file import FileAllowed
 from wtforms.validators import InputRequired, Length, NumberRange, Optional
-from os import name
+
+import app.data as data
 from app.database import gtranslator
-
-
-# Midia files allowed used by forms and customize
-mdal = [['jpg', 'JPG', 'png', 'PNG'], ['wav', 'WAV'], [
-    'mp4', 'MP4', 'AVI', 'avi', 'webm', 'WEBM']]
+from app.constants import SUPPORTED_MEDIA_FILES, SUPPORTED_LANGUAGES
 
 
 # -- List Tuples of colors, sizes, text background
-
-
 font_sizes = [("600%", "Very large"), ("500%", "large"), ("400%", "Medium"),
               ("300%", "Small medium"), ("200%", "small"),
               ("150%", "Very small")]
@@ -41,7 +35,7 @@ def announce_tuples():
     languages = [
         {'desc': 'English', 'sc': 'en-us'},
         {'desc': 'Arabic', 'sc': 'ar'},
-        {'desc': 'Italian','sc': 'it'},
+        {'desc': 'Italian', 'sc': 'it'},
         {'desc': 'French', 'sc': 'fr'},
         {'desc': 'Spanish', 'sc': 'es'}
     ]
@@ -361,7 +355,7 @@ class Offices_a(FlaskForm):
 class Task_a(FlaskForm):
     name = StringField()
     submit = SubmitField("Add")
-    # Stupid workaround to avoid unbound field error 
+    # Stupid workaround to avoid unbound field error
     for i in range(0, 1000):
         locals()['check%i' % i] = BooleanField()
 
@@ -457,9 +451,10 @@ class Multimedia(FlaskForm):
     def __init__(self, defLang='en', *args, **kwargs):
         super(Multimedia, self).__init__(*args, **kwargs)
         self.mf.label = gtranslator.translate("Select multimedia file :", 'en', [defLang])
-        self.mf.validators = [
-        FileAllowed(mdal[0] + mdal[1] + mdal[2],
-                    gtranslator.translate('make sure you followed the given conditions !', 'en', [defLang]))]
+        self.mf.validators = [FileAllowed(
+            reduce(lambda sum, group: sum + group, SUPPORTED_MEDIA_FILES),
+            gtranslator.translate('make sure you followed the given conditions !', 'en', [defLang])
+        )]
 
 
 # Add name to ticket form
@@ -549,40 +544,36 @@ class Video(FlaskForm):
 class Printer_f(FlaskForm):
     kind = SelectField(coerce=int)
     value = SelectField(coerce=int)
-    langu = SelectField(choices=[
-                            ('en', 'English'),
-                            ('it', 'Italian'),
-                            ('fr', 'French'),
-                            ('es', 'Spanish'),
-                            ('ar', 'Arabic')
-                            ], coerce=str)
+    langu = SelectField(choices=list(SUPPORTED_LANGUAGES.items()), coerce=str)
     printers = SelectField(coerce=str)
     submit = SubmitField('Set ticket')
 
-    def __init__(self, vv, defLang='en', *args, **kwargs):
+    def __init__(self, inspected_printers_from_view, defLang='en', *args, **kwargs):
         super(Printer_f, self).__init__(*args, **kwargs)
         self.kind.label = gtranslator.translate("Select type of ticket to use : ", 'en', [defLang])
-        self.kind.choices = [(t[0], gtranslator.translate(t[1], 'en', [defLang])) for t in [(1, 'Registered'),
-        (2, 'Printed')]]
+        self.kind.choices = [
+            (t[0], gtranslator.translate(t[1], 'en', [defLang]))
+            for t in [(1, 'Registered'), (2, 'Printed')]]
         self.value.label = gtranslator.translate("Select a value of registering : ", 'en', [defLang])
-        self.value.choices = [(t[0], gtranslator.translate(t[1], 'en', [defLang])) for t in [
-            (1, 'Name'), (2, 'Number')]]
+        self.value.choices = [
+            (t[0], gtranslator.translate(t[1], 'en', [defLang]))
+            for t in [(1, 'Name'), (2, 'Number')]]
         self.langu.label = gtranslator.translate("Select language of printed ticket : ", 'en', [defLang])
-        self.printers.label = gtranslator.translate('Select a usb printer : ', 'en', [defLang])        
-        prt = []
-        listp = vv
-        if len(listp) >= 1:
-            for v in listp:
+        self.printers.label = gtranslator.translate('Select a usb printer : ', 'en', [defLang])
+
+        printers = []
+        inspected_printers = inspected_printers_from_view
+        if len(inspected_printers) >= 1:
+            for printer in inspected_printers:
                 if name == 'nt':
-                    prt.append((str(v), 'Printer Name: ' + str(v)))
+                    printers.append((str(printer), 'Printer Name: ' + str(printer)))
                 else:
-                    ful = str(v[0]) + '_' + str(v[1])
-                    ful += '_' + str(v[2]) + '_' + str(v[3])
-                    prt.append((ful,
-                                'Printer ID : ' + str(v[0]) + '_' + str(v[1])))
+                    ful = str(printer[0]) + '_' + str(printer[1])
+                    ful += '_' + str(printer[2]) + '_' + str(printer[3])
+                    printers.append((ful, 'Printer ID : ' + str(printer[0]) + '_' + str(printer[1])))
         else:
-            prt.append(('00', gtranslator.translate("No printers were found", 'en', [defLang])))
-        self.printers.choices = prt
+            printers.append(('00', gtranslator.translate("No printers were found", 'en', [defLang])))
+        self.printers.choices = printers
 
 
 # Aliases form

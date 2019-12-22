@@ -37,7 +37,7 @@ then
   if [ -f requirements.txt ]
   then
     echo "##### Creating virtual enviroment #####"
-    virtualenv --python=python3 installiation/ && source installiation/bin/activate
+    virtualenv --python=python3 --system-site-packages installiation/ && source installiation/bin/activate
     echo "##### Installing packages from pip #####"
     pip install -r requirements.txt
     echo "##### Adding user to local printers group #####"

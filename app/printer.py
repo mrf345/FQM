@@ -5,18 +5,16 @@
 
 import usb.core
 import usb.util
+import arabic_reshaper
 from escpos import printer as getp
 from datetime import datetime
-import os
-import sys
-import arabic_reshaper
 from bidi.algorithm import get_display
 from PIL import Image, ImageDraw, ImageFont
-from datetime import datetime
-from app.ex_functions import r_path
 from os import remove, getcwd, path, name
-from app.database import version
-from app.languages import PRINTER
+
+from app.ex_functions import r_path
+from app.database import version, gtranslator
+from app.get_with_alias import get_with_alias
 
 
 class find_class(object):
@@ -37,13 +35,20 @@ class find_class(object):
 
         return False
 
+def get_translation(text, language):
+    translated = gtranslator.translate(text, dest=[language])
+
+    if language == 'en':
+        translated = get_with_alias().get(text) or translated
+
+    return translated
 
 def printit(printer, ticket, office, tnumber,
             task, cticket, site='https://fqms.github.io', lang='en'):
     printer.set(align='center', height=4, width=4)
     printer.text("FQM\n")
     printer.set(align='center', height=1, width=1)
-    printer.text(PRINTER[lang][0] + version)
+    printer.text(get_translation('Version ', lang) + version)
     printer.set('center', 'a', 'u', 1, 1)
     printer.text("\n" + site + "\n")
     printer.set(align='center', height=1, width=2)
@@ -53,14 +58,14 @@ def printit(printer, ticket, office, tnumber,
     printer.set(align='center', height=1, width=2)
     printer.text("\n" + '-' * 15 + "\n")
     printer.set(align='left', height=1, width=1)
-    printer.text(PRINTER[lang][1] + str(office).encode('utf-8') + "\n")
-    printer.text(PRINTER[lang][2] + str(cticket).encode('utf-8') + "\n")
-    printer.text(PRINTER[lang][3] + str(tnumber) + "\n")
+    printer.text(get_translation('\nOffice : ', lang) + str(office).encode('utf-8') + "\n")
+    printer.text(get_translation('\nCurrent Ticket : ', lang) + str(cticket).encode('utf-8') + "\n")
+    printer.text(get_translation('\nTickets ahead : ', lang) + str(tnumber) + "\n")
     try:
-        printer.text(PRINTER[lang][4] + str(task) + "\n")
-    except:
+        printer.text(get_translation('\nTask : ', lang) + str(task) + "\n")
+    except Exception:
         pass
-    printer.text(PRINTER[lang][5] + str(datetime.now())[:-7] + "\n")
+    printer.text(get_translation('\nTime : ', lang) + str(datetime.now())[:-7] + "\n")
     printer.cut()
     return printer
 
@@ -70,7 +75,7 @@ def assign(v, p, in_ep, out_ep):
         printer = getp.Usb(v, p, 0, in_ep, out_ep)
         printer.text("\n")
         return printer
-    except:
+    except Exception:
         return None
 
 
@@ -115,7 +120,7 @@ def printit_ar(pname, ti, ofc, tnu, tas, cticket):
     office = get_display(office)
     try:
         taskt = u'المهمة : ' + tas
-    except:
+    except Exception:
         taskt = tas
     task = arabic_reshaper.reshape(taskt)
     task = get_display(task)

@@ -9,9 +9,8 @@ from random import randint
 from socket import socket, AF_INET, SOCK_STREAM
 from netifaces import interfaces, ifaddresses
 
-import app.languages as LANGUAGES
 import app.data as data
-from app.database import db, gtranslator
+from app.database import db
 
 
 def mse():
@@ -75,16 +74,9 @@ def r_path(relative_path):
         base_path = os.path.abspath(".")
     # Fixing multimedia folder not found issue
     if '/' in relative_path or '\\' in relative_path:
-        relative_path = ('\\' if os.name == 'nt' else '/'
-        ).join(relative_path.split('\\' if os.name == 'nt' else '/'))
+        relative_path = ('\\' if os.name == 'nt' else '/').join(
+            relative_path.split('\\' if os.name == 'nt' else '/'))
     return os.path.join(base_path, relative_path)
-
-
-def transAll():
-    """ to translate all flash messages """
-    for l in LANGUAGES.flashMessages:
-        gtranslator.translate(l, 'en', ['ar', 'fr', 'it', 'es'])
-    return True
 
 
 def solve_path(path):
