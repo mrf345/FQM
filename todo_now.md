@@ -6,7 +6,7 @@
 - [x] Customization multimedia page bug `(2019-12-22)`
 - [x] Use latest `flask_minify` to fix high memory consumption `(2019-12-22)`
 - [x] Use latest `audio_sequence` to fix overwriting files `(2019-12-22)`
-- [ ] Use one source of truth for all translations GUI and app `gt_cached.json`
+- [x] Use one source of truth for all translations GUI and app `gt_cached.json` `(2019-12-23)`
 - [ ] Use mixIns to modularize and cleanup backend
 - [ ] Printer failsafe should display error in debug mode
 - [ ] Fix last ticket to pull getting stuck

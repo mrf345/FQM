@@ -3,26 +3,24 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from flask import url_for, flash, request, render_template, redirect, Markup
-from flask import Blueprint, session
-from flask_login import current_user, login_required
-from werkzeug import secure_filename
 import os
 import imghdr
 import sndhdr
+from flask import url_for, flash, request, render_template, redirect
+from flask import Blueprint, session
+from flask_login import current_user, login_required
+from werkzeug import secure_filename
+
 import app.ex_functions as ex_functions
 import app.forms as forms
 import app.data as data
 from app.database import db, files
 from app.printer import listp
 from app.ex_functions import r_path
+from app.constants import SUPPORTED_MEDIA_FILES
 
 
 cust_app = Blueprint('cust_app', __name__)
-
-# Midia files allowed used by forms and customize
-mdal = [['jpg', 'JPG', 'png', 'PNG'], ['wav', 'WAV'], [
-    'mp4', 'MP4', 'AVI', 'avi', 'webm', 'WEBM']]
 
 
 @cust_app.route('/customize')
@@ -404,7 +402,7 @@ def multimedia(aa):
         # if int(ex_functions.getFolderSize(dire)) >= sfl or dc >= nofl:
         #     return redirect(url_for('cust_app.multimedia', aa=1))
         e = ffn[-3:len(ffn)]
-        if e in mdal[0]:
+        if e in SUPPORTED_MEDIA_FILES[0]:
             files.save(request.files['mf'], name=ffn)
             if imghdr.what(dire + ffn) is None:
                 os.remove(dire + ffn)
@@ -412,7 +410,7 @@ def multimedia(aa):
             db.session.add(data.Media(False, False, True, False, ffn))
             db.session.commit()
             return redirect(url_for("cust_app.multimedia", aa=1))
-        elif e in mdal[1]:
+        elif e in SUPPORTED_MEDIA_FILES[1]:
             files.save(request.files['mf'], name=ffn)
             if sndhdr.what(dire + ffn) is None:
                 os.remove(dire + ffn)
@@ -420,7 +418,7 @@ def multimedia(aa):
             db.session.add(data.Media(False, True, False, False, ffn))
             db.session.commit()
             return redirect(url_for("cust_app.multimedia", aa=1))
-        elif e in mdal[2]:
+        elif e in SUPPORTED_MEDIA_FILES[2]:
             files.save(request.files['mf'], name=ffn)
             db.session.add(data.Media(True, False, False, False, ffn))
             db.session.commit()
@@ -435,7 +433,7 @@ def multimedia(aa):
                            hash="#da1",
                            mmm=mmm,
                            len=len,
-                           ml=mdal,
+                           ml=SUPPORTED_MEDIA_FILES,
                            mmmp=pagination.items,
                            pagination=pagination,
                            tc=data.Touch_store.query,

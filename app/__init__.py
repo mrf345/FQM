@@ -6,6 +6,7 @@
 import os
 import sys
 import click
+from functools import reduce
 from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtWidgets import QApplication
 from gevent import monkey, pywsgi
@@ -26,12 +27,13 @@ from app.database import db, login_manager, files, version, gtranslator
 from app.printer import listp
 from app.administrate import administrate
 from app.core import core
-from app.customize import cust_app, mdal
+from app.customize import cust_app
 from app.errorsh import errorsh_app
 from app.manage import manage_app
 from app.ex_functions import mse, r_path, get_accessible_ips, get_random_available_port
 from app.data import Settings
 from app.gui import MainWindow
+from app.constants import SUPPORTED_LANGUAGES, SUPPORTED_MEDIA_FILES
 
 
 def create_app():
@@ -45,7 +47,7 @@ def create_app():
     # flask_upload settings
     # app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024 # Remove Upload limit. FIX ISSUE
     app.config['UPLOADED_FILES_DEST'] = r_path('static/multimedia')
-    app.config['UPLOADED_FILES_ALLOW'] = mdal
+    app.config['UPLOADED_FILES_ALLOW'] = reduce(lambda sum, group: sum + group, SUPPORTED_MEDIA_FILES)
     app.config['SECRET_KEY'] = os.urandom(24)
     # Initiating extensions before registering blueprints
     Moment(app)
@@ -98,8 +100,8 @@ def run_app():
         return redirect(url_for('core.root'))
 
     @app.before_first_request
-    def defLanguage():
-        if session.get('lang') not in ['en', 'ar', 'fr', 'it', 'es']:
+    def default_language():
+        if session.get('lang') not in list(SUPPORTED_LANGUAGES.keys()):
             session['lang'] = 'en'
 
     # Adding error handlers on main app instance

@@ -1,3 +1,4 @@
+import sys
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
@@ -27,15 +28,15 @@ try:
         alias = Replace()
 except Exception:
     alias = Replace()
-    
 
-def getWithAlias():
+
+def get_with_alias():
     """ to solve querying aliases without app_context in languages """
-    return [
-        "Version ",
-        "\n" + alias.office + " : ",
-        "\nCurrent " + alias.ticket + " : ",
-        "\n" + alias.ticket + "s ahead : ",
-        "\n" + alias.task + " : ",
-        "\nTime : "
-    ]
+    return {
+        "Version ": "Version ",
+        "\nOffice : ": "\n" + alias.office + " : ",
+        "\nCurrent ticket : ": "\nCurrent " + alias.ticket + " : ",
+        "\nTickets ahead : ": "\n" + alias.ticket + "s ahead : ",
+        "\nTask : ": "\n" + alias.task + " : ",
+        "\nTime : ": "\nTime : "
+    }
