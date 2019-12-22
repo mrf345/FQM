@@ -16,26 +16,11 @@ __With the ability to added same tasks into different screens with a different l
 > - Implement hotspot wifi solution __Cross Platform__
 > - Solve MacOS one file package issue
 
-
-#### System on-hold:
-
-> - Put whole system on-hold, with customized message output.
-> - Put a screen on-hold, with customized message output.
-> - Auto hold system, whenever numbers of tickets past certain number.
-
-
 ####  Printers support:
 
 > - Bluetooth printers support.
 > - Network printers support, Ethernet and Wireless.
 > - Customize printed tickets.
-
-#### Testing suite:
-
-> finish filling functions.
-> add front end javascript repeating scripts.
-> add debugging mode extension to FQM.
-
 
 ### 0.5 leftovers
 
@@ -46,10 +31,5 @@ __With the ability to added same tasks into different screens with a different l
 
 - [ ] Create and use python module based on pos module for cross-platform drawn printing
 
-- [ ] fix browserNotifier when new release published __chrome bug__
-
-- [ ] better cross platform JS
-> - [ ] rewrite unbundled audio_sequence with date() for random
-> - [ ] rewrite unbundled redditWallpapers
-> - [ ] remove error handling from all
-> - [ ] create flask_slimit and use with cache
+> - [ ] **Documentation** Github wiki docs instead of pdf
+> - [ ] **Documentation** Video tutorials: demo, setup, configuration cross-platform
