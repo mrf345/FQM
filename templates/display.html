@@ -2,7 +2,7 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/.  -->
 {% extends "base_s.html" %}
-{% block title %} FQM - {{ ptitle }} {% endblock %}
+{% block title %} FQM - {{ page_title }} {% endblock %}
 
 
 {% block page_content %}
@@ -38,13 +38,14 @@
 				fetch(window.location.origin + '/feed')
 				.then(function (r) { return r.json() }).then(function (j) {
 					if (j.replay==='yes') {
-						aplayer.replay()
+						if (aplayer) aplayer.replay()
 						fetch(window.location.origin + '/feed/1')
 					}
 				}).catch(function (e) { console.warn(e.message) })
 			}, 500)
 			if (aplayer) aplayer.exit(false)
 			Promise.all(langs.map(function (lang, i) {
+				console.log(data.con)
 				return fetch(window.location.origin + '/gtts/' + lang + '/' + data.cot + TTS[lang] + data.con)
 				.then(function (resp) {
 					return resp.json()

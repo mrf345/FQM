@@ -5,9 +5,12 @@
 - [x] Migrate code from Python 2 and PySide to Python 3 and PyQT5 `(2019-12-22)`
 - [x] Customization multimedia page bug `(2019-12-22)`
 - [x] Use latest `flask_minify` to fix high memory consumption `(2019-12-22)`
-- [x] Use latest `audio_sequence` to fix overwriting files `(2019-12-22)`
+- [ ] Use latest `audio_sequence` to fix overwriting files. And replace `fetch` with `ajax` for IE
 - [x] Use one source of truth for all translations GUI and app `gt_cached.json` `(2019-12-23)`
-- [ ] Use mixIns to modularize and cleanup backend
+- [x] Use mixIns to modularize and cleanup backend `(2019-12-24)`
+- [x] Fix `/feed` and announcements after migration to py3 `(2019-12-24)`
+- [x] Fix reset office from within itself `(2019-12-24)`
+- [x] Fix search SQLAlchemy safe parameters, after migration to Python 3 bug `(2019-12-24)`
 - [ ] Printer failsafe should display error in debug mode
 - [ ] Fix last ticket to pull getting stuck
 - [ ] Refactor `reddit-wallpapers` for cross-browse compatibility
@@ -37,4 +40,4 @@
 - [ ] Initial integration test suite:
 > - [ ] Add testing db switch
 > - [ ] Use `Flask-Testing`
-> - [ ] Cover all Administrate endpoints
+> - [ ] Cover and refactor all Administrate endpoints

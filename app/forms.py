@@ -165,7 +165,7 @@ class Display_c(FlaskForm):
         self.display.label = gtranslator.translate('Select a template for Display screen : ', 'en', [defLang])
         self.display.choices = [(t[0], gtranslator.translate(t[1], 'en', [defLang])) for t in tms]
         self.title.label = gtranslator.translate('Enter a title : ', 'en', [defLang])
-        self.title.validators = [ 
+        self.title.validators = [
             InputRequired(gtranslator.translate("Title should be maximum of 300 letters", 'en', [defLang])),
             Length(0, 300)
         ]
@@ -427,17 +427,15 @@ class User_a(FlaskForm):
     def __init__(self, defLang='en', *args, **kwargs):
         super(User_a, self).__init__(*args, **kwargs)
         self.name.label = gtranslator.translate("Enter a unique user name : ", 'en', [defLang])
-        self.name.validators = [InputRequired
-        (gtranslator.translate("Required not less than 5 nor more than 200 letters", 'en', [defLang])),
-        Length(5, 200)]
+        self.name.validators = [InputRequired(gtranslator.translate(
+            "Required not less than 5 nor more than 200 letters", 'en', [defLang])), Length(5, 200)]
         self.password.label = gtranslator.translate("Enter password : ", 'en', [defLang])
-        self.password.validators = [InputRequired(
-            gtranslator.translate("Password must be at least of 5 and at most 15 letters", 'en', [defLang])),
-        Length(5, 15)]
+        self.password.validators = [InputRequired(gtranslator.translate(
+            "Password must be at least of 5 and at most 15 letters", 'en', [defLang])), Length(5, 15)]
         self.role.label = gtranslator.translate("Select a role for the user : ", 'en', [defLang])
-        self.role.validators = [InputRequired
-        (gtranslator.translate("You must select a role to add user in", 'en', [defLang]))]
+        self.role.validators = [InputRequired(gtranslator.translate("You must select a role to add user in", 'en', [defLang]))]
         self.offices.label = gtranslator.translate("Select office to assing the operator to : ", 'en', [defLang])
+        self.offices.validators = [Optional()]
         self.role.choices = [(v.id, v.name) for v in data.Roles.query]
         self.offices.choices = [(o.id, 'Office : ' + str(o.name) + o.prefix) for o in data.Office.query]
 
