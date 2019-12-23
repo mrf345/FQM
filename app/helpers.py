@@ -1,0 +1,122 @@
+from functools import wraps
+from flask import current_app, flash, redirect, url_for
+from flask_login import current_user
+
+import app.data as data
+
+
+def is_god():
+    ''' Check if the current user is God! '''
+    with current_app.app_context():
+        return current_user.id == 1
+
+
+def is_admin():
+    ''' Check if the current user is of the Administrator role. '''
+    with current_app.app_context():
+        return current_user.role_id == 1
+
+
+def is_operator():
+    ''' Check if the current user is of the Operator role. '''
+    with current_app.app_context():
+        return current_user.role_id == 3
+
+
+def has_offices():
+    ''' Check if there's any offices created yet. '''
+    with current_app.app_context():
+        return data.Office.query.first() is not None
+
+
+def reject_not_god(function):
+    ''' Decorator to flash and redirect to `core.root` if current user is not God.
+
+    Parameters
+    ----------
+        function: callable
+            the endpoint we want to reject unGodly users to access.
+
+    Returns
+    -------
+        Decorator for the passed `function`.
+    '''
+    @wraps(function)
+    def decorated(*args, **kwargs):
+        if is_god():
+            return function(*args, **kwargs)
+        with current_app.app_context():
+            flash('Error: only main Admin account can access the page', 'danger')
+            return redirect(url_for('core.root'))
+
+    return decorated
+
+
+def reject_not_admin(function):
+    ''' Decorator to flash and redirect to `core.root` if current user is not administrator.
+
+    Parameters
+    ----------
+        function: callable
+            the endpoint we want to reject unGodly users to access.
+
+    Returns
+    -------
+        Decorator for the passed `function`.
+    '''
+    @wraps(function)
+    def decorated(*args, **kwargs):
+        if is_admin():
+            return function(*args, **kwargs)
+        with current_app.app_context():
+            flash('Error: only administrator can access the page', 'danger')
+            return redirect(url_for('core.root'))
+
+    return decorated
+
+
+def reject_operator(function):
+    ''' Decorator to flash and redirect to `core.root` if current user is operator.
+
+    Parameters
+    ----------
+        function: callable
+            the endpoint we want to reject unGodly users to access.
+
+    Returns
+    -------
+        Decorator for the passed `function`.
+    '''
+    @wraps(function)
+    def decorated(*args, **kwargs):
+        if is_operator():
+            with current_app.app_context():
+                flash('Error: operators are not allowed to access the page ', 'danger')
+                return redirect(url_for('core.root'))
+        return function(*args, **kwargs)
+
+    return decorated
+
+
+def reject_no_offices(function):
+    ''' Decorator to flash and redirect to `manage_app.all_offices`
+        if there's not any offices created yet.
+
+    Parameters
+    ----------
+        function: callable
+            the endpoint we want to reject unGodly users to access.
+
+    Returns
+    -------
+        Decorator for the passed `function`.
+    '''
+    @wraps(function)
+    def decorated(*args, **kwargs):
+        if has_offices():
+            return function(*args, **kwargs)
+        with current_app.app_context():
+            flash('Error: No offices exist to delete', 'danger')
+            return redirect(url_for('manage_app.all_offices'))
+
+    return decorated

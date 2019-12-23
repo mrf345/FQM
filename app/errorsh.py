@@ -3,9 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from flask import url_for, flash, redirect, render_template, Blueprint
-from flask import request, Markup, session
-from flask_login import current_user
+from flask import url_for, redirect, render_template, Blueprint
+from flask import session
 
 errorsh_app = Blueprint('errorsh_app', __name__)
 
@@ -18,4 +17,4 @@ def nojs(ino):
             return redirect(s)
         return redirect(url_for('core.root'))
     return render_template('nojs.html',
-                           ptitle='Javascript is disabled')
+                           page_title='Javascript is disabled')

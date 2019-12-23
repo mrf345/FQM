@@ -3,18 +3,19 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from flask import (
-    url_for, flash, render_template, redirect,
-    session, jsonify, Blueprint, request, current_app)
-from flask_login import current_user, login_required, login_user
 import os
+from sys import platform
 from datetime import datetime
+from flask import url_for, flash, render_template, redirect, session, jsonify, Blueprint, current_app
+from flask_login import current_user, login_required, login_user
+
 import app.forms as forms
 import app.data as data
 import app.printer as ppp
 from app.database import db
 import app.ex_functions as ex_functions
-from sys import platform
+from app.helpers import reject_no_offices, reject_operator, is_operator, reject_not_admin
+
 
 core = Blueprint('core', __name__)
 
@@ -33,11 +34,11 @@ def root(n=None):
         n = False
     else:
         flash('Error: wrong entry, something went wrong',
-              "danger")
+              'danger')
         return redirect(url_for('core.root'))
     if data.User.query.first() is None:
         flash('Error: wrong entry, something went wrong',
-              "danger")
+              'danger')
         return redirect(url_for('core.root'))
     # Check if default password and account
     dpass = False
@@ -46,7 +47,7 @@ def root(n=None):
     if form.validate_on_submit():
         if current_user.is_authenticated:
             flash('Error: wrong entry, something went wrong',
-                  "danger")
+                  'danger')
             return redirect(url_for('core.root'))
         user = data.User.query.filter_by(name=form.name.data).first()
         if user is not None:
@@ -55,13 +56,13 @@ def root(n=None):
                     login_user(user, remember=True)
                 else:
                     login_user(user)
-                flash("Notice: logged-in and all good", "info")
+                flash("Notice: logged-in and all good", 'info')
                 if b:
                     s = str(session.get('next_url', '/'))
                     session['next_url'] = None
                     return redirect(s)
                 else:
-                    if current_user.role_id == 3:
+                    if is_operator():
                         return redirect(
                             url_for(
                                 'manage_app.offices',
@@ -71,14 +72,14 @@ def root(n=None):
                         return redirect(url_for('manage_app.manage'))
             flash(
                 "Error: wrong user name or password",
-                "danger")
+                'danger')
             return redirect(url_for("core.root", n='a'))
         flash(
             "Error: wrong user name or password",
-            "danger")
+            'danger')
         return redirect(url_for("core.root", n='a'))
     return render_template("index.html", operators=data.Operators.query,
-                           ptitle="Free Queue Manager",
+                           page_title="Free Queue Manager",
                            form=form, n=n, dpass=dpass)
 
 
@@ -90,7 +91,7 @@ def serial(t_id):
     tsk = data.Task.query.filter_by(id=t_id).first()
     if tsk is None:
         flash('Error: wrong entry, something went wrong',
-              "danger")
+              'danger')
         return redirect(url_for("core.root"))
     # if it is registered ticket, will display the form and valuate it
     if not form.validate_on_submit() and data.Touch_store.query.first().n:
@@ -100,7 +101,7 @@ def serial(t_id):
             tnumber = True
         return render_template("touch.html", title=ts.title, tnumber=tnumber,
                                ts=ts, done=False, bgcolor=ts.bgcolor,
-                               ptitle="Touch Screen - Enter name ",
+                               page_title="Touch Screen - Enter name ",
                                alias=data.Aliases.query.first(),
                                a=4, dire='multimedia/', form=form)
     nm = form.name.data
@@ -167,15 +168,15 @@ def serial(t_id):
                 flash('Error: you must have available printer, to use printed',
                       'danger')
                 flash("Notice: make sure that printer is properly connected",
-                      "info")
+                      'info')
                 if os.name == 'nt':
                     flash(
                         "Notice: Make sure to make the printer shared on the local network",
-                        "info")
+                        'info')
                 elif platform == "linux" or platform == "linux2":
                     flash(
                         "Notice: Make sure to execute the command `sudo gpasswd -a $(users) lp` and reboot the system",
-                        "info")
+                        'info')
                 return redirect(url_for('cust_app.ticket'))
             if os.name != 'nt':
                 if langu == 'ar':
@@ -214,49 +215,41 @@ def serial(t_id):
 def serial_r(o_id):
     """ to reset an office by removing its tickets """
     if data.Office.query.filter_by(id=o_id).first() is None:
-        flash('Error: wrong entry, something went wrong', "danger")
+        flash('Error: wrong entry, something went wrong', 'danger')
         return redirect(url_for("manage_app.all_offices"))
-    sr = data.Serial.query.filter_by(office_id=o_id)
-    if current_user.role_id == 3 and data.Operators.query.filter_by(id=current_user.id).first() is None:
+    if is_operator() and data.Operators.query.filter_by(id=current_user.id).first() is None:
         flash("Error: operators are not allowed to access the page ",
-              "danger")
+              'danger')
         return redirect(url_for('core.root'))
-    if current_user.role_id == 3 and o_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
+    if is_operator() and o_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
         flash("Error: operators are not allowed to access the page ",
-              "danger")
+              'danger')
         return redirect(url_for('core.root'))
-    if sr.first() is None:
+    if data.Serial.query.filter_by(office_id=o_id).first() is None:
         flash("Error: the office is already resetted",
-              "danger")
+              'danger')
         return redirect(url_for("manage_app.offices", o_id=o_id))
-    for f in sr:
-        w = data.Waiting.query.filter_by(office_id=f.office_id,
-                                         number=f.number).first()
-        db.session.delete(f)
-        if w is not None:
-            db.session.delete(w)
+    for f in data.Serial.query.filter_by(office_id=o_id):
+        data.Waiting.query.filter_by(office_id=f.office_id, number=f.number).delete()
+
+    # NOTE: Queries has to be written fully everytime to avoid sqlalchemy racing condition
+    data.Serial.query.filter_by(office_id=o_id).delete()
     db.session.commit()
     flash("Notice: office has been resetted. ..",
-          "info")
+          'info')
     return redirect(url_for("manage_app.offices", o_id=o_id))
 
 
 @core.route('/serial_ra')
 @login_required
+@reject_operator
+@reject_no_offices
 def serial_ra():
     """ to reset all offices by removing all tickets """
-    if data.Office.query.first() is None:
-        flash(
-            "Error: No tasks exist to be resetted",
-            "danger")
-        return redirect(url_for("manage_app.all_offices"))
-    if current_user.role_id == 3:
-        flash("Error: operators are not allowed to access the page ", "danger")
-        return redirect(url_for('core.root'))
     sr = data.Serial.query
     if sr.first() is None:
         flash("Error: the office is already resetted",
-              "danger")
+              'danger')
         return redirect(url_for("manage_app.all_offices"))
     for f in sr:
         w = data.Waiting.query.filter_by(office_id=f.office_id,
@@ -266,7 +259,7 @@ def serial_ra():
             db.session.delete(w)
     db.session.commit()
     flash("Notice: office has been resetted. ..",
-          "info")
+          'info')
     return redirect(url_for("manage_app.all_offices"))
 
 
@@ -275,20 +268,20 @@ def serial_ra():
 def serial_rt(t_id):
     """ to reset a task by removing its tickets """
     if data.Task.query.filter_by(id=t_id).first() is None:
-        flash("Error: No tasks exist to be resetted", "danger")
+        flash("Error: No tasks exist to be resetted", 'danger')
         return redirect(url_for("manage_app.all_offices"))
     sr = data.Serial.query.filter_by(task_id=t_id)
-    if current_user.role_id == 3 and data.Operators.query.filter_by(id=current_user.id).first() is None:
+    if is_operator() and data.Operators.query.filter_by(id=current_user.id).first() is None:
         flash("Error: operators are not allowed to access the page ",
-              "danger")
+              'danger')
         return redirect(url_for('core.root'))
-    if current_user.role_id == 3 and t_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
+    if is_operator() and t_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
         flash("Error: operators are not allowed to access the page ",
-              "danger")
+              'danger')
         return redirect(url_for('core.root'))
     if sr.first() is None:
         flash("Error: the task is already resetted",
-              "danger")
+              'danger')
         return redirect(url_for("manage_app.task", o_id=t_id))
     for f in sr:
         w = data.Waiting.query.filter_by(office_id=f.office_id,
@@ -298,7 +291,7 @@ def serial_rt(t_id):
             db.session.delete(w)
     db.session.commit()
     flash("Error: the task is already resetted",
-          "info")
+          'info')
     return redirect(url_for("manage_app.task", o_id=t_id))
 
 
@@ -311,22 +304,20 @@ def pull(o_id=None, ofc_id=None):
     # to allow for pulling form specific office
     if o_id is not None:
         if data.Task.query.filter_by(id=o_id).first() is None:
-            flash('Error: wrong entry, something went wrong', "danger")
+            flash('Error: wrong entry, something went wrong', 'danger')
             return redirect(url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
-    if current_user.role_id == 3 and data.Operators.query.filter_by(id=current_user.id).first() is None:
+    if is_operator() and data.Operators.query.filter_by(id=current_user.id).first() is None:
         flash("Error: operators are not allowed to access the page ",
-              "danger")
+              'danger')
         return redirect(url_for('core.root'))
     if o_id is not None:
-        
-        if current_user.role_id == 3 and data.Operators.query.filter_by(id=current_user.id).first().office_id not in [o.id for o in data.Task.query.filter_by(id=o_id).first().offices]:
-            flash("Error: operators are not allowed to access the page ",
-              "danger")
+        if is_operator() and data.Operators.query.filter_by(id=current_user.id).first().office_id not in\
+                [o.id for o in data.Task.query.filter_by(id=o_id).first().offices]:
+            flash("Error: operators are not allowed to access the page ", 'danger')
             return redirect(url_for('core.root'))
     else:
-        if current_user.role_id == 3:
-            flash("Error: operators are not allowed to access the page ",
-              "danger")
+        if is_operator():
+            flash("Error: operators are not allowed to access the page ", 'danger')
             return redirect(url_for('core.root'))
     # Loading up the 10 waiting list
     if data.Serial.query.filter_by(p=False).count() >= 0:
@@ -343,7 +334,7 @@ def pull(o_id=None, ofc_id=None):
     else:
         flash(
             "Error: no tickets left to pull from ..",
-            "danger")
+            'danger')
         return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
     # Setting the office in case it's not pull from all
     # The goal is to specify the exact office responsible for the pull
@@ -359,13 +350,13 @@ def pull(o_id=None, ofc_id=None):
                         db.session.commit()
                     else:
                         flash("Error: office used to pull is non existing",
-                        "danger")
+                        'danger')
                         return redirect(url_for("core_app.root"))
     cs = data.Waiting.query.all() if o_id is None else data.Waiting.query.filter_by(task_id=o_id, office_id=ofc_id).first()
     if cs is None:
         flash(
             "Error: no tickets left to pull from ..",
-            "danger")
+            'danger')
         return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
     # Fix: pulling tickets by task_id instead of office_id
     # have to switch positions
@@ -374,7 +365,7 @@ def pull(o_id=None, ofc_id=None):
     # modifying removing from  waiting with task_id 
     cs = data.Waiting.query.filter_by(**({'task_id': o_id, 'office_id': ofc_id} if o_id is not None else {})).first()
     if cs is None:
-        flash("Error: no tickets left to pull from ..", "danger")
+        flash("Error: no tickets left to pull from ..", 'danger')
         return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
     # adding to current waiting
     pIt = data.Display_store.query.first().prefix
@@ -389,7 +380,7 @@ def pull(o_id=None, ofc_id=None):
     db.session.commit()
     sr = data.Serial.query.filter_by(task_id=cs.task_id, number=cs.number).first()
     if sr is None:
-        flash("Error: no tickets left to pull from ..", "danger")
+        flash("Error: no tickets left to pull from ..", 'danger')
         return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
     sr.p = True
     sr.pdt = datetime.utcnow()
@@ -398,7 +389,7 @@ def pull(o_id=None, ofc_id=None):
     db.session.add(sr)
     db.session.delete(cs)
     db.session.commit()
-    flash("Notice: Ticket has been pulled ..", "info")
+    flash("Notice: Ticket has been pulled ..", 'info')
     return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
 
 
@@ -434,11 +425,9 @@ def feed(disable=None):
         prf = data.Office.query.filter_by(id=s.office_id).first().prefix
         pIt = data.Display_store.query.first().prefix
         if s.n:
-            bap = ((prf).encode('utf-8') + ".") if pIt else ''
-            bap += (s.name).encode('utf-8')
-            hl.append(cs.encode('utf-8') + bap)
+            hl.append(f'{cs}{(prf + ".") if pIt else ""}{s.name}')
         else:
-            hl.append(cs + (prf if pIt else '') + str(s.number))
+            hl.append(f'{cs}{(prf if pIt else "")}{s.number}')
     for a in range(len(hl), 8):
         hl.append("Empty")
     # fixing identical changes bug
@@ -465,7 +454,7 @@ def rean():
         return 'success'
     else:
         return 'fail'
-    
+
 
 @core.route('/display')
 def display():
@@ -490,7 +479,7 @@ def display():
                            audio_2=audio_2, ts=ts,
                            slides=data.Slides.query,
                            tv=ts.tmp,
-                           ptitle="Display Screen",
+                           page_title="Display Screen",
                            anr=ts.anr,
                            alias=data.Aliases.query.first(),
                            vid=data.Vid.query.first())
@@ -516,19 +505,16 @@ def touch(a):
         tnumber = True
     return render_template("touch.html",
                            ts=ts, tasks=t, tnumber=tnumber,
-                           ptitle="Touch Screen",
+                           page_title="Touch Screen",
                            alias=data.Aliases.query.first(),
                            form=form, a=ts.tmp, d=d)
 
 
 @core.route('/notifications/<togo>')
 @login_required
+@reject_not_admin
 def notifications(togo):
     """ to toggle the front-end notifications """
-    if current_user.role_id != 1:
-        flash(
-            'Error: only administrator can access the page',
-            "danger")
     settings = data.Settings.query.filter_by(id=0).first()
     if settings is not None:
         settings.notifications = False if settings.notifications else True
@@ -536,7 +522,7 @@ def notifications(togo):
         db.session.commit()
         flash("Notice: Notification got " + (
             "Enabled" if settings.notifications else "Disabled"
-        ) + " successfully", "info")
+        ) + " successfully", 'info')
     else:
-        flash("Error: Failed to find settings in the database", "danger")
+        flash("Error: Failed to find settings in the database", 'danger')
     return redirect(togo.replace('(', '/'))

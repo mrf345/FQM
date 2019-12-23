@@ -19,7 +19,7 @@ Flask-Colorpicker==0.9
 Flask-Datepicker==0.8
 Flask-Fontpicker==0.2
 Flask-Googletrans==0.9
-Flask-gTTS==0.6
+Flask-gTTS==0.12
 Flask-Less==0.5
 Flask-Login==0.4.0
 Flask-Mail==0.9.1

@@ -822,6 +822,7 @@
     },
     "Error: fault in search parameters": {
         "ar": "\u062e\u0637\u0623: \u062e\u0637\u0623 \u0641\u064a \u0645\u0639\u0644\u0645\u0627\u062a \u0627\u0644\u0628\u062d\u062b",
+        "en": "Error: fault in search parameters",
         "es": "Error: error en los par\u00e1metros de b\u00fasqueda",
         "fr": "Erreur: erreur dans les param\u00e8tres de recherche",
         "it": "Errore: errore nei parametri di ricerca"
@@ -889,12 +890,14 @@
     },
     "Error: only administrator can access the page": {
         "ar": "\u062e\u0637\u0623: \u064a\u0645\u0643\u0646 \u0644\u0644\u0645\u0633\u0624\u0648\u0644 \u0641\u0642\u0637 \u0627\u0644\u0648\u0635\u0648\u0644 \u0625\u0644\u0649 \u0627\u0644\u0635\u0641\u062d\u0629",
+        "en": "Error: only administrator can access the page",
         "es": "Error: solo el administrador puede acceder a la p\u00e1gina",
         "fr": "Erreur: seul l'administrateur peut acc\u00e9der \u00e0 la page",
         "it": "Errore: solo l'amministratore pu\u00f2 accedere alla pagina"
     },
     "Error: only main Admin account can access the page": {
         "ar": "\u062e\u0637\u0623: \u064a\u0645\u0643\u0646 \u0641\u0642\u0637 \u0644\u062d\u0633\u0627\u0628 \u0627\u0644\u0645\u0634\u0631\u0641 \u0627\u0644\u0631\u0626\u064a\u0633\u064a \u0627\u0644\u0648\u0635\u0648\u0644 \u0625\u0644\u0649 \u0627\u0644\u0635\u0641\u062d\u0629",
+        "en": "Error: only main Admin account can access the page",
         "es": "Error: solo la cuenta de administrador principal puede acceder a la p\u00e1gina",
         "fr": "Erreur: seul le compte administrateur principal peut acc\u00e9der \u00e0 la page",
         "it": "Errore: solo l'account amministratore principale pu\u00f2 accedere alla pagina"
@@ -996,6 +999,7 @@
     },
     "Error: you must reset it, before you delete it ": {
         "ar": "\u062e\u0637\u0623: \u064a\u062c\u0628 \u0639\u0644\u064a\u0643 \u0625\u0639\u0627\u062f\u0629 \u062a\u0639\u064a\u064a\u0646\u0647 \u060c \u0642\u0628\u0644 \u062d\u0630\u0641\u0647",
+        "en": "Error: you must reset it, before you delete it",
         "es": "Error: debe restablecerlo, antes de eliminarlo",
         "fr": "Erreur: vous devez le r\u00e9initialiser avant de le supprimer",
         "it": "Errore: \u00e8 necessario ripristinarlo, prima di eliminarlo"
@@ -1472,6 +1476,7 @@
     },
     "Notice: Sorry, no matching results were found ": {
         "ar": "\u0645\u0644\u0627\u062d\u0638\u0629: \u0639\u0630\u0631\u064b\u0627 \u060c \u0644\u0645 \u064a\u062a\u0645 \u0627\u0644\u0639\u062b\u0648\u0631 \u0639\u0644\u0649 \u0646\u062a\u0627\u0626\u062c \u0645\u0637\u0627\u0628\u0642\u0629",
+        "en": "Notice: Sorry, no matching results were found",
         "es": "Aviso: Lo sentimos, no se encontraron resultados coincidentes",
         "fr": "Avis: D\u00e9sol\u00e9, aucun r\u00e9sultat correspondant n'a \u00e9t\u00e9 trouv\u00e9",
         "it": "Avviso: scusa, non sono stati trovati risultati corrispondenti"
@@ -1499,6 +1504,7 @@
     },
     "Notice: Touchscreen customization has been updated. ..": {
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u062a\u0645 \u062a\u062d\u062f\u064a\u062b \u062a\u062e\u0635\u064a\u0635 \u0634\u0627\u0634\u0629 \u0627\u0644\u0644\u0645\u0633. ..",
+        "en": "Notice: Touchscreen customization has been updated. ..",
         "es": "Aviso: la personalizaci\u00f3n de la pantalla t\u00e1ctil se ha actualizado. ..",
         "fr": "Remarque: la personnalisation de l'\u00e9cran tactile a \u00e9t\u00e9 mise \u00e0 jour. ..",
         "it": "Avviso: la personalizzazione del touchscreen \u00e8 stata aggiornata. .."
@@ -1508,6 +1514,7 @@
     },
     "Notice: admin password has been updated.": {
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u062a\u0645 \u062a\u062d\u062f\u064a\u062b \u0643\u0644\u0645\u0629 \u0645\u0631\u0648\u0631 \u0627\u0644\u0645\u0633\u0624\u0648\u0644.",
+        "en": "Notice: admin password has been updated.",
         "es": "Aviso: la contrase\u00f1a de administrador se ha actualizado.",
         "fr": "Remarque: le mot de passe de l'administrateur a \u00e9t\u00e9 mis \u00e0 jour.",
         "it": "Avviso: la password dell'amministratore \u00e8 stata aggiornata."
@@ -1520,6 +1527,7 @@
     },
     "Notice: all unassigned users got deleted.": {
         "ar": "\u0645\u0644\u0627\u062d\u0638\u0629: \u062a\u0645 \u062d\u0630\u0641 \u062c\u0645\u064a\u0639 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u064a\u0646 \u063a\u064a\u0631 \u0627\u0644\u0645\u0639\u064a\u0646\u064a\u0646.",
+        "en": "Notice: all unassigned users got deleted.",
         "es": "Aviso: todos los usuarios no asignados fueron eliminados.",
         "fr": "Remarque: tous les utilisateurs non affect\u00e9s ont \u00e9t\u00e9 supprim\u00e9s.",
         "it": "Avviso: tutti gli utenti non assegnati sono stati eliminati."
@@ -1657,6 +1665,7 @@
     },
     "Notice: user is deleted .": {
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u064a\u062a\u0645 \u062d\u0630\u0641 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645.",
+        "en": "Notice: user is deleted .",
         "es": "Aviso: el usuario es eliminado.",
         "fr": "Avis: l'utilisateur est supprim\u00e9.",
         "it": "Avviso: l'utente \u00e8 cancellato."
