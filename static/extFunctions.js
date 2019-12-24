@@ -1,6 +1,7 @@
 /* global $ */
 
 var watchIt = function watchIt (id, imgId, links, callback) {
+    callback = callback || Function
     // To control change of select field and update image src whenever
     var toDo = function () {
         var idIndex = $(id + ' option:selected').val()
@@ -13,7 +14,10 @@ var watchIt = function watchIt (id, imgId, links, callback) {
     toDo()
 }
 
-var reloadIf = function (toGo=window.location.href, duration=1000) {
+var reloadIf = function (toGo, duration) {
+    toGo = toGo || window.location.href
+    duration = duration || 1000
+
     // To auto-reload the page if its served content has changed
     var storePage
     var location = window.location.href

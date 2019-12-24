@@ -12,7 +12,7 @@ import app.data as data
 from app.database import db, login_manager
 import app.forms as forms
 from app.ex_functions import r_path
-from app.helpers import reject_not_god, reject_not_admin
+from app.helpers import reject_not_god, reject_not_admin, reject_god
 
 
 administrate = Blueprint('administrate', __name__)
@@ -177,6 +177,7 @@ def user_a():
 @administrate.route('/user_u/<int:u_id>', methods=['GET', 'POST'])
 @login_required
 @reject_not_admin
+@reject_god
 def user_u(u_id):
     ''' to update user '''
     form = forms.User_a(session.get('lang'))
@@ -184,9 +185,6 @@ def user_u(u_id):
     if u is None:
         flash('Error: user selected does not exist, something wrong !', 'danger')
         return redirect(url_for('core.root'))
-    if u.id == 1:
-        flash('Error: main admin account cannot be updated .', 'danger')
-        return redirect(url_for('administrate.users'))
     if form.validate_on_submit():
         u.name = form.name.data
         u.password = form.password.data
@@ -221,6 +219,7 @@ def user_u(u_id):
 @administrate.route('/user_d/<int:u_id>')
 @login_required
 @reject_not_admin
+@reject_god
 def user_d(u_id):
     ''' to delete user '''
     u = data.User.query.filter_by(id=u_id).first()
@@ -228,10 +227,6 @@ def user_d(u_id):
         flash('Error: user selected does not exist, something wrong !',
               'danger')
         return redirect(url_for('core.root'))
-    if u.id == 1:
-        flash('Error: main admin account cannot be updated .',
-              'danger')
-        return redirect(url_for('administrate.users'))
     # delete from operators if user is operator
     if u.role_id == 3:
         db.session.delete(data.Operators.query.filter_by(id=u.id).first())

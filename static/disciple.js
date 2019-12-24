@@ -8,7 +8,9 @@
 
  // TODO: add option to disable if went to another website reminder
 
-var disciple = function (options = {}) {    
+var disciple = function (options) {    
+    options = options || {}
+
     var checkType = function checkType (type, args) {
        // checking the type of each variable in the passed array
       for (var a in args) {
@@ -167,7 +169,9 @@ var disciple = function (options = {}) {
       }
     }
   
-    var messenger = function messenger (clearing = false) {
+    var messenger = function messenger (clearing) {
+      clearing = clearing || false
+
       // display confirm message, with options and click events
       $('body').append(
         $('<div>').attr('id', 'messenger').css(defaultsDis.transparent
@@ -237,7 +241,8 @@ var disciple = function (options = {}) {
       localStorage.togo = false
     }
   
-    var postpone = function postpone (clearing = false) {
+    var postpone = function postpone (clearing) {
+      clearing = clearing || false
       // to store for later. Just by removing the confirm message
       // and upon loading the stored later page automatically will be restored
       localStorage.disciple = 'no'
@@ -249,7 +254,8 @@ var disciple = function (options = {}) {
       }, 1200)
     }
   
-    var forgive = function forgive (clearing = false) {
+    var forgive = function forgive (clearing) {
+      clearing = clearing || false
       // to don't store with localStorage cleanup
       localStorage.removeItem(localStorage.togo) // removing the stored form with its href
       localStorage.disciple = 'no'

@@ -5,7 +5,7 @@
 - [x] Migrate code from Python 2 and PySide to Python 3 and PyQT5 `(2019-12-22)`
 - [x] Customization multimedia page bug `(2019-12-22)`
 - [x] Use latest `flask_minify` to fix high memory consumption `(2019-12-22)`
-- [ ] Use latest `audio_sequence` to fix overwriting files. And replace `fetch` with `ajax` for IE
+- [x] Use latest `audio_sequence` to fix overwriting files. And replace `fetch` with `ajax` for IE `(2019-12-25)`
 - [x] Use one source of truth for all translations GUI and app `gt_cached.json` `(2019-12-23)`
 - [x] Use mixIns to modularize and cleanup backend `(2019-12-24)`
 - [x] Fix `/feed` and announcements after migration to py3 `(2019-12-24)`
@@ -13,11 +13,13 @@
 - [x] Fix search SQLAlchemy safe parameters, after migration to Python 3 bug `(2019-12-24)`
 - [ ] Printer failsafe should display error in debug mode
 - [ ] Fix last ticket to pull getting stuck
-- [ ] Refactor `reddit-wallpapers` for cross-browse compatibility
-- [ ] Fix JS scripts IE11 compatibility
-- [ ] Remove Firefox notifier and ensure cross-browser compatibility
-- [ ] Remove new release notifier. Make it show up only on index page
-- [ ] fix browserNotifier when new release published __chrome bug__
+- [x] Refactor `reddit-wallpapers` and `json_stream` for cross-browse compatibility `(2019-12-25)`
+- [x] Fix JS scripts IE11 compatibility `(2019-12-25)`
+- [x] Remove Firefox notifier and ensure cross-browser compatibility `(2019-12-25)`
+- [x] Remove new release notifier. Make it show up only on index page `(2019-12-25)`
+- [x] fix browserNotifier when new release published __chrome bug__ `(2019-12-25)`
+
+**Finally `IE 11` is fully supported 🚀**
 
 ### To Add :
 

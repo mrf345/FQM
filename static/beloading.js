@@ -6,7 +6,8 @@
  */
 
 
-var beloading = function beload (options,callback=function () {}) {
+var beloading = function beload (options, callback) {
+  callback = callback || Function
   var checkType = function checkType (type, args) {
     // checking the type of each variable in the passed array
     for (var a in args) {

@@ -54,10 +54,14 @@ $(document).ready(function () {
       text: ' ',
       icon: ' '
     }, callback=function () {
-       {% if notififer %}setTimeout(toLoadNotify, 1500){% else %}$('.navbar-inverse').removeClass('hide'){% endif %}
+        $('.navbar-inverse').removeClass('hide')
+        // NOTE: Disabling browserNotifier for Firefox
+        // {% if notififer %}setTimeout(toLoadNotify, 1500){% else %}$('.navbar-inverse').removeClass('hide'){% endif %}
     })
     {% else %}
-    if (window.location.href.split('/').slice(-1)[0] !== 'manage' && window.location.href.split('/').slice(-1)[0] !== 'customize') {% if notifier %}toLoadNotify(){% endif %}
+    $('.navbar-inverse').removeClass('hide')
+    // NOTE: Disabling browserNotifier for Firefox
+    // if (window.location.href.split('/').slice(-1)[0] !== 'manage' && window.location.href.split('/').slice(-1)[0] !== 'customize') {% if notifier %}toLoadNotify(){% endif %}
     {% endif %}
 })
 </script>

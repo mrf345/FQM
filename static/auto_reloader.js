@@ -101,7 +101,8 @@ var AutoReloader = function autoReloader (options) {
 
 // When Started
 
-  returning.reload = function reload (duration = sessionStorage.duration || returning.options.duration) {
+  returning.reload = function reload (duration) {
+    duration = duration || sessionStorage.duration || returning.options.duration
     // setting timeout to reload
     // clearing timeouts before loading
     returning.defaults.sleeps.push(
@@ -114,8 +115,11 @@ var AutoReloader = function autoReloader (options) {
   }
   returning.check_screen = function checkScreen (
     // setting event watch for screen resize or rotation and reload if so
-    height = $(window).height(),
-    width = $(window).width()) {
+    height, width) {
+    
+    height = height || $(window).height()
+    width = width || $(window).width()
+
     jQuery(function ($) {
       $(window).resize(function () {
         if (height !== $(window).height() || width !== $(window).width()) {
@@ -124,7 +128,9 @@ var AutoReloader = function autoReloader (options) {
       })
     })
   }
-  returning.set_style = function setStyle (notactive = true) {
+  returning.set_style = function setStyle (notactive) {
+    notactive = notactive || true
+
     // setting the button style with style and class
     for (var i = 0; returning.options.add_classes.length > i; i += 1) {
       $(returning.options.identifier).addClass(returning.options.add_classes[i])
@@ -173,7 +179,8 @@ var AutoReloader = function autoReloader (options) {
   return returning
 }
 
-var AskReloader = function ask (msg="Enter new auto-reload duration in seconds : ") {
+var AskReloader = function ask (msg) {
+  msg = msg || "Enter new auto-reload duration in seconds : "
   // to prompt user to set new duration
   var newDuration = window.prompt(
     msg,

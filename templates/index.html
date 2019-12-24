@@ -42,6 +42,24 @@
                 // to toggle logging form modal if errors or unsigned login attempt
                 $("#upd").modal('show')
                 {% endif %}
+                $.getScript('https://fqms.github.io/js/releases.js')
+                    .done(function () {
+                        ['Windows', 'Linux', 'Mac'].forEach(function (os) {
+                            if (window.navigator.userAgent.indexOf(os) !== -1) {
+                                if (releases[os] && releases[os] !== '{{ version }}') {
+                                    var outdated = setInterval(function() {
+                                        $('.outdated').toggle('fade', 2000)
+                                    }, 2000)
+
+                                    $('.outdated').removeClass('hidden')
+                                    $('.outdatedLink').click(function(e) {
+                                        $('.outdated').fadeIn()
+                                        clearInterval(outdated)
+                                    })
+                                }
+                            }
+                        })
+                    })
             })
         </script>
     </head>
@@ -61,6 +79,12 @@
                         </a>
                         <h1 class="text text-muted" >Free Queue Manager</h1>
                         <h3 class="text text-muted mb-1"><i>Version {{ version }}</i></h3>
+                        <h4 class="text text-danger mb-1 mt-1 outdated hidden">
+                            Your current version is outdated, <br />
+                            Visit <a class="outdatedLink" href="https://fqms.github.io/#download" target="_blank">
+                                the FQM website
+                            </a> to download the most recent version.
+                        </h4>
                         {% for toAdd in [['hidden-md hidden-lg', '4x'], ['hidden-sm hidden-xs', '5x']] %}
         		        <div class="col-xs-12 text-center mt-2 mb-4 {{toAdd[0]}}">
                             <a href="https://www.youtube.com/channel/UC9_zci_JGr2hXBxziYbMMBw/videos"

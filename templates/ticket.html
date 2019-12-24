@@ -14,7 +14,9 @@
 {{ super() }}
 <script>
 $(document).ready(function () {
-  var toRemove = function (theList=[], toAdd=false) {
+  var toRemove = function (theList, toAdd) {
+    theList = theList || []
+    toAdd = toAdd || false
     theList.forEach(function (item) {
       toAdd ? $(item).addClass('hide') : $(item).removeClass('hide')
     })
