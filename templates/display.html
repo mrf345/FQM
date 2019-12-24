@@ -8,10 +8,14 @@
 {% block page_content %}
 <script type="text/javascript" src="{{ url_for('static', filename='jsonstream.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='audiosequence.js') }}"></script>
+<!-- <script src="https://mrf345.github.io/audio_sequence/bin/AudioSequence.min.js"></script> -->
 <script src="{{ url_for('static', filename='extFunctions.js') }}" type='text/javascript'></script>
 <script type='text/javascript'>
 	reloadIf()
-	var TTS = {
+	var player = undefined
+	var forceRepeat = undefined
+	var languages = "{{ ts.announce }}".split(',')
+	var announcement_texts = {
 		// text-to-speech announcement text
 		'en-us': ' , please proceed to the ' + '{{ alias.office }}' + ' number : ',
 		'ar': ' : توجه إلى المكتب رقم ',
@@ -19,9 +23,7 @@
 		'es': ' , por favor diríjase al número de la oficina : ',
 		'it': " , si prega di procedere al numero dell'ufficio : "
 	}
-	var aplayer = undefined
-	var forceRepeat = undefined
-	var langs = "{{ ts.announce }}".split(',')
+
 	var stream = JsonStream({
 		url: window.location.origin + '/feed',
 		duration: parseInt("{{ ts.rrate }}") / 1000,
@@ -32,36 +34,37 @@
 		use_effect_do: 'true',
 		effect: "{{ ts.effect }}",
 		ensure_value: 'w9',
-		todo: function (data, toPlay=[]) {
+		todo: function (data, toPlay) {
+			toPlay = toPlay || []
+
 			// Adding prefix hiding from the front end
 			if (!forceRepeat) forceRepeat = setInterval(function () {
-				fetch(window.location.origin + '/feed')
-				.then(function (r) { return r.json() }).then(function (j) {
-					if (j.replay==='yes') {
-						if (aplayer) aplayer.replay()
-						fetch(window.location.origin + '/feed/1')
-					}
-				}).catch(function (e) { console.warn(e.message) })
+				$.get('/feed')
+					.then(function (j) {
+						if (j.replay === 'yes') {
+							if (player) player.replay()
+							$.get('/feed/1')
+						}
+					}).fail(function (e) { console.log(e) })
 			}, 500)
-			if (aplayer) aplayer.exit(false)
-			Promise.all(langs.map(function (lang, i) {
-				console.log(data.con)
-				return fetch(window.location.origin + '/gtts/' + lang + '/' + data.cot + TTS[lang] + data.con)
-				.then(function (resp) {
-					return resp.json()
-				}).then(function (obj) {
-					return obj.mp3
-				})
-			})).then(function (results) {
-				// TODO: Creating a separate interval that awaits the force repeat value to repeat it
+			if (player) player.exit(false)
+
+			$.when.apply($, languages.map(function(language, index) {
+				var link = '/gtts/' + language + '/' + data.cot + announcement_texts[language] + data.con
+
+				return $.get(link)
+					.then(function(json) { return json.mp3 })
+			}))
+			.then(function() {
+				var results = $.makeArray(arguments).sort()
+
 				{% if ts.audio != 'false' %}results.unshift("{{'/static/multimedia/'+ts.audio}}"){% endif %}
-				aplayer = AudioSequence({
+				player = new AudioSequence({
 					files: results.map(function (i) { if (i !== "") return i}),
 					repeats: parseInt("{{ ts.anr }}"),
 					{% if ts.anrt == 'whole' %}repeat_whole{% else %}repeat_each{% endif %}: 'true'
 				})
-			})
-			
+			}).fail(function (e) { console.log(e) })
 		}
 	})
 </script>

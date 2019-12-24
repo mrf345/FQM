@@ -1,6 +1,10 @@
 // Dependencies: jQuery, jQuery-ui, FontAwesome
 
-var browserNotifier = function (options={}, callback=function () {}, uniVal='v' + Math.floor(Math.random() * 1000000)) {
+var browserNotifier = function (options, callback, uniVal) {
+    options = options || {}
+    callback = callback || Function
+    uniVal = uniVal || 'v' + Math.floor(Math.random() * 1000000)
+
     var returnBN = {}; returnBN[uniVal] = {} // unique object name to return
 
     returnBN[uniVal].options = {

@@ -52,6 +52,29 @@ def reject_not_god(function):
     return decorated
 
 
+def reject_god(function):
+    ''' Decorator to flash and redirect to `core.root` if current user is God.
+
+    Parameters
+    ----------
+        function: callable
+            the endpoint we want to reject unGodly users to access.
+
+    Returns
+    -------
+        Decorator for the passed `function`.
+    '''
+    @wraps(function)
+    def decorated(*args, **kwargs):
+        if not is_god():
+            return function(*args, **kwargs)
+        with current_app.app_context():
+            flash('Error: main admin account cannot be updated .', 'danger')
+            return redirect(url_for('core.root'))
+
+    return decorated
+
+
 def reject_not_admin(function):
     ''' Decorator to flash and redirect to `core.root` if current user is not administrator.
 

@@ -6,7 +6,8 @@
 
 */
 
-var uniqueness = function Unique (options, callback=function (data) {}) {
+var uniqueness = function Unique (options, callback) {
+  callback = callback || Function
   var checkType = function checkType (type, args) {
     // checking the type of each variable in the passed array
     for (var a in args) {
@@ -18,7 +19,7 @@ var uniqueness = function Unique (options, callback=function (data) {}) {
   // to generate a random int of certain range, it takes the length of
   // the randint as an argument
     if (!checkType('number')) throw new TypeError('randint() requires numbers')
-    return Math.floor(Math.random() * (10 ** digits))
+    return Math.floor(Math.random() * Math.pow(10, digits))
   }
   var choice = function choice (list) {
   // to chose randomly from an Array
@@ -87,7 +88,8 @@ var uniqueness = function Unique (options, callback=function (data) {}) {
     return true
   }
 
-  uniquenessReturn.effect = function effect (effect, duration, index, doe = true) {
+  uniquenessReturn.effect = function effect (effect, duration, index, doe) {
+    doe = doe || true
     // to apply the effect and toggle the element
     if (effects.indexOf(effect) === -1) {
       throw new Error('effect(effect) takes a valid jquery ui effect')
