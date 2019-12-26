@@ -1,12 +1,12 @@
-from database import db
-from data import Task, Office, Serial, Waiting, User
+from random import choice
+from app.database import db
+from app.data import Task, Office, Serial, Waiting, User
 from random import choice, randint
-from __init__ import create_app
+from app.__init__ import create_app
 
 # To use any of the following functions, example :
 # with create_app().app_context():
 #      fill_tickets()
-
 # Random names to use in filling
 names = ('Aaron Enlightened', 'Abbott Father', 'Abel Breath', 'Abner Father',
          'Abraham Exalted', 'Adam Man', 'Addison Son', 'Adler Eagle',
@@ -33,7 +33,7 @@ def fill_tickets(entery_number=10, s_task=None):
             num = num.number if num is not None else None
             name = choice(names)
             t_id = task.id
-            f_id = task.office_id
+            f_id = choice(task.offices).id
             # if i >= 11: WTF ?!
             db.session.add(Serial(number=num + 1,
                                     office_id=f_id,

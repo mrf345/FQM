@@ -10,6 +10,6 @@ SUPPORTED_LANGUAGES = {
 SUPPORTED_MEDIA_FILES = [
     # NOTE: The officially supported media files.
     ['jpg', 'JPG', 'png', 'PNG'],
-    ['wav', 'WAV'],
+    ['wav', 'WAV', 'mp3', 'MP3'],
     ['mp4', 'MP4', 'AVI', 'avi', 'webm', 'WEBM']
 ]

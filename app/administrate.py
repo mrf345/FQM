@@ -99,10 +99,6 @@ def csvd(t_name):
 def users():
     ''' to list all users '''
     page = request.args.get('page', 1, type=int)
-    if page > int(data.User.query.count() / 10) + 1:
-        flash('Error: wrong entry, something went wrong',
-              'danger')
-        return redirect(url_for('administrate.users'))
     pagination = data.User.query.paginate(page, per_page=10,
                                           error_out=False)
     return render_template('users.html',
@@ -129,9 +125,6 @@ def operators(t_id):
         flash('Error: only administrator can access the page', 'danger')
         return redirect(url_for('root'))
     page = request.args.get('page', 1, type=int)
-    if page > int(data.Operators.query.count() / 10) + 1:
-        flash('Error: wrong entry, something went wrong', 'danger')
-        return redirect(url_for('manage.office', o_id=t_id))
     pagination = data.Operators.query.filter_by(office_id=t_id).paginate(page, per_page=10, error_out=False)
     return render_template('operators.html',
                            page_title=str(office.name) + ' operators',

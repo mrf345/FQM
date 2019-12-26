@@ -41,16 +41,20 @@ $(document).ready(function () {
 				</div>
 	    	</div>
 	    	<div class="row text-center text-muted h4 ar2">
-				<div class="col-sm-10 col-sm-offset-1 col-lg-offset-2 col-md-4 well">
+				<div class="col-sm-10 col-sm-offset-1 col-lg-offset-1 col-md-3 well">
 					{{ translate('Prefix', 'en', [defLang]) }} : <u>{% for o in task.offices %} {{o.prefix}} {% endfor %}</u>
 				</div>
 				<div class="col-sm-10 col-sm-offset-1 col-md-offset-0 col-md-4 well">
 					{{ translate('Created', 'en', [defLang]) }} : <u> {{ moment(task.timestamp).format('L') }}</u>
 				</div>
+				<div class="col-sm-10 col-sm-offset-1 col-md-offset-0 col-md-3 well">
+					{{ translate('Last ticket pulled', 'en', [defLang]) }} : <u> {{ last_ticket_pulled.number or 'None' }}</u>
+				</div>
 	    	</div>
 	    	<div class="row">
 				<div class="col-xs-12 text-center">
 		    		<div class="btn-group-justified">
+						{% if edit_task %}
 						<a class="btn btn-info updb" data-toggle="modal" data-target="#upd">
 			    			<span class="fa fa-pencil hidden-xs"></span>
 			    			<strong>{{ translate('Update', 'en', [defLang]) }}</strong>
@@ -63,6 +67,7 @@ $(document).ready(function () {
 			    			<span class="fa fa-trash hidden-xs"></span>
 			    			<strong>{{ translate('Delete', 'en', [defLang]) }}</strong>
 						</a>
+						{% endif %}
 		    		</div>
 				</div>
 	    	</div>
@@ -86,7 +91,7 @@ $(document).ready(function () {
 				</div>
 	    	</div>
 	    	{% for o in tasksp %}
-	    	{% if o.number != 100 %}
+	    	
 	    	<div class="row well {% if o.p %} text-primary {% else %} text-danger {% endif %} ar1 h4 text-center">
 	    	  <div class="col-xs-12 col-sm-2">
 				<b> {% for oo in o.offices %} {{ oo.prefix }} {% endfor %} {# offices.filter_by(id=o.office_id).first().prefix #}{{ o.number }}.</b>
@@ -109,9 +114,9 @@ $(document).ready(function () {
 				<u> {% if o.n %} {{ translate('Registered', 'en', [defLang]) }} {% else %} {{ translate('Printed', 'en', [defLang]) }} {% endif %} </u>
 	    	  </div>
 	    	</div>
-	    	{% endif %}
+	    	
 			{% endfor %}
-			{{ spacer([translate('No tickets exist to be displayed', 'en', [defLang]), len(tasksp) - serial.filter_by(task_id=o_id, number=100).count()]) }}
+			{{ spacer([translate('No tickets exist to be displayed', 'en', [defLang]), len(tasksp)]) }}
 	    </div>
 	    <div class="panel-footer text-center">
 			{{ panelFooter([
@@ -135,8 +140,8 @@ $(document).ready(function () {
 
 {{ confirmModal(
 	[
-	['rall', translate('Warning : Rest task', 'en', [defLang]), translate("You are attempting to reset a task to zero, with its all tickets been deleted and will not be retrievable , Are you sure of that ?", 'en', [defLang]), url_for('core.serial_rt', t_id=o_id)],
-	['dall', translate('Warning : Delete task', 'en', [defLang]), translate("You are attempting to delete a task whit its all tickets which will not be retrievable , Are you sure of that ?", 'en', [defLang]), url_for('manage_app.task_d', t_id=o_id)]
+	['rall', translate('Warning : Rest task', 'en', [defLang]), translate("You are attempting to reset a task to zero, with its all tickets been deleted and will not be retrievable , Are you sure of that ?", 'en', [defLang]), url_for('core.serial_rt', t_id=o_id, ofc_id=ofc_id)],
+	['dall', translate('Warning : Delete task', 'en', [defLang]), translate("You are attempting to delete a task whit its all tickets which will not be retrievable , Are you sure of that ?", 'en', [defLang]), url_for('manage_app.task_d', t_id=o_id, ofc_id=ofc_id)]
 	], yes=translate('Yes', 'en', [defLang]), no=translate('No', 'en', [defLang])
 ) }}
 <div class="modal fade" id="upd">

@@ -4,6 +4,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import os
+from random import choice
 from sys import platform
 from datetime import datetime
 from flask import url_for, flash, render_template, redirect, session, jsonify, Blueprint, current_app
@@ -13,7 +14,6 @@ import app.forms as forms
 import app.data as data
 import app.printer as ppp
 from app.database import db
-import app.ex_functions as ex_functions
 from app.helpers import reject_no_offices, reject_operator, is_operator, reject_not_admin
 
 
@@ -86,7 +86,6 @@ def root(n=None):
 @core.route('/serial/<int:t_id>', methods=['POST', 'GET'])
 def serial(t_id):
     """ to generate a new ticket and print it """
-    ex_functions.mse()
     form = forms.Touch_name(session.get('lang'))
     tsk = data.Task.query.filter_by(id=t_id).first()
     if tsk is None:
@@ -106,19 +105,26 @@ def serial(t_id):
                                a=4, dire='multimedia/', form=form)
     nm = form.name.data
     n = True if data.Touch_store.query.first().n else False
+
+    # FIX: limit the tickets to the range of waitting tickets, prevent overflow.
     # Assigning the first office in the list
-    o_id = data.Task.query.filter_by(id=t_id).first().offices[0].id
-    ln = data.Serial.query.filter_by(
-        office_id=o_id).order_by(data.Serial
-                                 .timestamp.desc(
-                                 )).first().number
-    sr = data.Serial.query.filter_by(number=ln + 1, office_id=o_id,
-                                     task_id=t_id).first()
-    if sr is None:
-        if n: # registered
-            db.session.add(data.Serial(ln + 1, o_id, t_id, nm, True))
-        else: # printed
-            db.session.add(data.Serial(ln + 1, o_id, t_id, None, False))
+    offices_ids = [o.id for o in data.Task.query.filter_by(id=t_id).first().offices]
+
+    # FIX: to manage racing condition in generating a new number, when overloaded.
+    def current_ticket():
+        return data.Serial.query.filter(data.Serial.office_id.in_(offices_ids))\
+                                .order_by(data.Serial.timestamp.desc())\
+                                .first()
+
+    o_id = choice(offices_ids) if len(offices_ids) > 1 else current_ticket().office_id
+
+    if data.Serial.query.filter_by(number=current_ticket().number + 1, office_id=o_id).first() is None:
+        if n:  # registered
+            db.session.add(data.Serial(current_ticket().number + 1, o_id, t_id, nm, True))
+            db.session.commit()
+        else:  # printed
+            db.session.add(data.Serial(current_ticket().number + 1, o_id, t_id, None, False))
+            db.session.commit()
             # adding printer support
             q = data.Printer.query.first()
             ppt = data.Task.query.filter_by(id=t_id).first()
@@ -140,7 +146,7 @@ def serial(t_id):
                     if langu == 'ar':
                         win_printer.printwin_ar(
                             q.product,
-                            oot.prefix + '.' + str(ln + 1),
+                            oot.prefix + '.' + str(current_ticket().number + 1),
                             oot.prefix + str(oot.name),
                             tnum, ppt.name,
                             oot.prefix + '.' + str(cuticket.number),
@@ -148,7 +154,7 @@ def serial(t_id):
                     else:
                         win_printer.printwin(
                             q.product,
-                            oot.prefix + '.' + str(ln + 1),
+                            oot.prefix + '.' + str(current_ticket().number + 1),
                             oot.prefix + str(oot.name),
                             tnum, ppt.name,
                             oot.prefix + '.' + str(cuticket.number), l=langu,
@@ -182,31 +188,34 @@ def serial(t_id):
                 if langu == 'ar':
                     ppp.printit_ar(
                         p,
-                        oot.prefix + '.' + str(ln + 1),
+                        oot.prefix + '.' + str(current_ticket().number + 1),
                         oot.prefix + str(oot.name),
                         tnum, u'' + ppt.name,
                         oot.prefix + '.' + str(cuticket.number))
                 else:
                     ppp.printit(
                         p,
-                        oot.prefix + '.' + str(ln + 1),
+                        oot.prefix + '.' + str(current_ticket().number + 1),
                         oot.prefix + str(oot.name),
                         tnum, u'' + ppt.name,
                         oot.prefix + '.' + str(cuticket.number), lang=langu)
-        db.session.commit()
     else:
         flash('Error: wrong entry, something went wrong',
               'danger')
         return redirect(url_for('core.root'))
+
+    # FIX: limit the tickets to the range of waitting tickets, prevent overflow.
+    limited_tickets = data.Serial.query.filter_by(p=False)\
+                                       .order_by(data.Serial.timestamp)\
+                                       .limit(11)
+
     for a in range(data.Waiting.query.count(), 11):
-        for b in data.Serial.query.filter_by(
-                p=False).order_by(data.Serial.timestamp):
+        for b in limited_tickets.all():
             if data.Waiting.query.filter_by(office_id=b.office_id,
                                             number=b.number, task_id=b.task_id
                                             ).first() is None:
-                db.session.add(data.Waiting(b.number, b.office_id,
-                                            b.task_id, nm, n))
-        db.session.commit()
+                db.session.add(data.Waiting(b.number, b.office_id, b.task_id, nm, n))
+    db.session.commit()
     return redirect(url_for("core.touch", a=1))
 
 
@@ -214,14 +223,16 @@ def serial(t_id):
 @login_required
 def serial_r(o_id):
     """ to reset an office by removing its tickets """
+    operator = is_operator()
+
     if data.Office.query.filter_by(id=o_id).first() is None:
         flash('Error: wrong entry, something went wrong', 'danger')
         return redirect(url_for("manage_app.all_offices"))
-    if is_operator() and data.Operators.query.filter_by(id=current_user.id).first() is None:
+    if operator and data.Operators.query.filter_by(id=current_user.id).first() is None:
         flash("Error: operators are not allowed to access the page ",
               'danger')
         return redirect(url_for('core.root'))
-    if is_operator() and o_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
+    if operator and o_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
         flash("Error: operators are not allowed to access the page ",
               'danger')
         return redirect(url_for('core.root'))
@@ -229,11 +240,22 @@ def serial_r(o_id):
         flash("Error: the office is already resetted",
               'danger')
         return redirect(url_for("manage_app.offices", o_id=o_id))
-    for f in data.Serial.query.filter_by(office_id=o_id):
+    for f in data.Serial.query.filter(data.Serial.office_id == o_id, data.Serial.number != 100):
         data.Waiting.query.filter_by(office_id=f.office_id, number=f.number).delete()
 
     # NOTE: Queries has to be written fully everytime to avoid sqlalchemy racing condition
-    data.Serial.query.filter_by(office_id=o_id).delete()
+    if operator:
+        # Prevent operators from deleteing common tasks tickets
+        for ticket in data.Serial.query.filter_by(office_id=o_id):
+            task = data.Task.query.filter_by(id=ticket.task_id).first()
+            query = data.Serial.query.filter(data.Serial.office_id == o_id)
+
+            if len(task.offices) > 1:
+                query = query.filter(data.Serial.task_id != task.id)
+
+            query.delete()
+    else:
+        data.Serial.query.filter_by(office_id=o_id).delete()
     db.session.commit()
     flash("Notice: office has been resetted. ..",
           'info')
@@ -246,7 +268,7 @@ def serial_r(o_id):
 @reject_no_offices
 def serial_ra():
     """ to reset all offices by removing all tickets """
-    sr = data.Serial.query
+    sr = data.Serial.query.filter(data.Serial.number != 100)
     if sr.first() is None:
         flash("Error: the office is already resetted",
               'danger')
@@ -263,27 +285,35 @@ def serial_ra():
     return redirect(url_for("manage_app.all_offices"))
 
 
-@core.route('/serial_rt/<int:t_id>')
+@core.route('/serial_rt/<int:t_id>', defaults={'ofc_id': None})
+@core.route('/serial_rt/<int:t_id>/<int:ofc_id>')
 @login_required
-def serial_rt(t_id):
+def serial_rt(t_id, ofc_id=None):
     """ to reset a task by removing its tickets """
-    if data.Task.query.filter_by(id=t_id).first() is None:
+    task = data.Task.query.filter_by(id=t_id).first()
+
+    if task is None:
         flash("Error: No tasks exist to be resetted", 'danger')
         return redirect(url_for("manage_app.all_offices"))
-    sr = data.Serial.query.filter_by(task_id=t_id)
     if is_operator() and data.Operators.query.filter_by(id=current_user.id).first() is None:
         flash("Error: operators are not allowed to access the page ",
               'danger')
         return redirect(url_for('core.root'))
-    if is_operator() and t_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
+
+    office_ids = [o.id for o in data.Task.query.filter_by(id=t_id).first().offices]
+    if is_operator() and any([
+        len(office_ids) > 1,
+        ofc_id not in office_ids,
+        data.Operators.query.filter_by(id=current_user.id).first().office_id != ofc_id
+    ]):
         flash("Error: operators are not allowed to access the page ",
               'danger')
         return redirect(url_for('core.root'))
-    if sr.first() is None:
+    if data.Serial.query.filter(data.Serial.task_id == t_id, data.Serial.number != 100).first() is None:
         flash("Error: the task is already resetted",
               'danger')
         return redirect(url_for("manage_app.task", o_id=t_id))
-    for f in sr:
+    for f in data.Serial.query.filter(data.Serial.task_id == t_id, data.Serial.number != 100):
         w = data.Waiting.query.filter_by(office_id=f.office_id,
                                          number=f.number).first()
         db.session.delete(f)
@@ -292,7 +322,7 @@ def serial_rt(t_id):
     db.session.commit()
     flash("Error: the task is already resetted",
           'info')
-    return redirect(url_for("manage_app.task", o_id=t_id))
+    return redirect(url_for("manage_app.task", o_id=t_id, ofc_id=ofc_id))
 
 
 @core.route('/pull', defaults={'o_id': None, 'ofc_id': None})
@@ -320,10 +350,13 @@ def pull(o_id=None, ofc_id=None):
             flash("Error: operators are not allowed to access the page ", 'danger')
             return redirect(url_for('core.root'))
     # Loading up the 10 waiting list
+    # FIX: limit the tickets to the range of waitting tickets, prevent overflow.
+    limited_tickets = data.Serial.query.filter_by(p=False)\
+                                       .order_by(data.Serial.timestamp)\
+                                       .limit(11)
     if data.Serial.query.filter_by(p=False).count() >= 0:
         for a in range(data.Waiting.query.count(), 11):
-            for b in data.Serial.query.filter_by(p=False).order_by(
-                    data.Serial.timestamp):
+            for b in limited_tickets.all():
                 if data.Waiting.query.filter_by(office_id=b.office_id,
                                                 number=b.number,
                                                 task_id=b.task_id
@@ -338,8 +371,7 @@ def pull(o_id=None, ofc_id=None):
         return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
     # Setting the office in case it's not pull from all
     # The goal is to specify the exact office responsible for the pull
-    # and update the about to be pulled tickets with responsible office 
-    # FIXME: figure out why pulling from non-common tasks stopped working
+    # and update the about to be pulled tickets with responsible office
     if ofc_id is not None and o_id is not None:
         if len(data.Task.query.filter_by(id=o_id).first().offices) > 1:
             for record in [data.Serial, data.Waiting]:
@@ -349,8 +381,7 @@ def pull(o_id=None, ofc_id=None):
                         record.office_id = ofc_id
                         db.session.commit()
                     else:
-                        flash("Error: office used to pull is non existing",
-                        'danger')
+                        flash("Error: office used to pull is non existing", 'danger')
                         return redirect(url_for("core_app.root"))
     cs = data.Waiting.query.all() if o_id is None else data.Waiting.query.filter_by(task_id=o_id, office_id=ofc_id).first()
     if cs is None:
@@ -376,17 +407,29 @@ def pull(o_id=None, ofc_id=None):
     cl.tname = data.Task.query.filter_by(id=cs.task_id).first().name
     cl.n = cs.n
     cl.name = cs.name
-    # data.db.session.add(cl)
     db.session.commit()
-    sr = data.Serial.query.filter_by(task_id=cs.task_id, number=cs.number).first()
-    if sr is None:
+
+    next_ticket = data.Serial.query.order_by(data.Serial.timestamp)\
+                                   .filter(data.Serial.number != 100,
+                                           data.Serial.p != True)
+
+    if o_id:
+        next_ticket = next_ticket.filter(data.Serial.task_id == cs.task_id)
+
+    if ofc_id:
+        next_ticket = next_ticket.filter(data.Serial.office_id == cs.office_id)
+
+    next_ticket = next_ticket.first()
+
+    if not next_ticket:
         flash("Error: no tickets left to pull from ..", 'danger')
         return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
-    sr.p = True
-    sr.pdt = datetime.utcnow()
-    # Fix: adding pulled by feature to tickets
-    sr.pulledBy = current_user.id
-    db.session.add(sr)
+
+    next_ticket.p = True
+    next_ticket.pdt = datetime.utcnow()
+    next_ticket.pulledBy = getattr(current_user, 'id', None)
+
+    db.session.add(next_ticket)
     db.session.delete(cs)
     db.session.commit()
     flash("Notice: Ticket has been pulled ..", 'info')
@@ -419,7 +462,9 @@ def feed(disable=None):
     if data.Serial.query.count() <= 1:
         return redirect(url_for("core.touch", a=1))
     c = 0
-    for s in data.Waiting.query.order_by(data.Waiting.id):
+    # FIX: after overlading with 1500+ tickets querying without limit,
+    # will overflow the server causing it to crash miserably 🤦‍♂️
+    for s in data.Waiting.query.order_by(data.Waiting.id).limit(11):
         c += 1
         cs = str(c) + ". "
         prf = data.Office.query.filter_by(id=s.office_id).first().prefix
@@ -461,7 +506,6 @@ def display():
     """ the display screen view """
     ts = data.Display_store.query.first()
     sli = data.Slides_c.query.first()
-    ex_functions.mse()
     if data.Slides.query.count() > 0:
         ss = data.Slides.query.order_by(data.Slides.id.desc())
     else:
@@ -494,7 +538,6 @@ def touch(a):
     form = forms.Touch_name()
     if session.get('lang') == "AR":
         form = forms.Touch_name_ar()
-    ex_functions.mse()
     ts = data.Touch_store.query.filter_by(id=0).first()
     if data.Task.query.count() > 0:
         t = data.Task.query.order_by(data.Task.timestamp)
