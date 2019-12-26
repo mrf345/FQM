@@ -34,7 +34,7 @@ def manage():
                            page_title="Management",
                            navbar="#snb1",
                            ooid=ofc,
-                           serial=data.Serial.query,
+                           serial=data.Serial.query.filter(data.Serial.number != 100),
                            offices=data.Office.query,
                            operators=data.Operators.query,
                            tasks=data.Task.query)
@@ -46,25 +46,27 @@ def manage():
 def all_offices():
     """ lists all offices """
     page = request.args.get('page', 1, type=int)
-    if page > int(data.Serial.query.count() / 10) + 1:
-        flash('Error: wrong entry, something went wrong',
-              'danger')
-        return redirect(url_for('manage_app.all_offices'))
-    pagination = data.Serial.query.order_by(
-        data.Serial.p, data.Serial.timestamp.desc
-        ()).paginate(page, per_page=10, error_out=False)
+    tickets = data.Serial.query.filter(data.Serial.number != 100)\
+                               .order_by(data.Serial.p, data.Serial.timestamp.desc())
+    pagination = tickets.paginate(page, per_page=10, error_out=False)
+    last_ticket_pulled = tickets.filter_by(p=True).first()
+    last_ticket_office = last_ticket_pulled and data.Office.query\
+                                                    .filter_by(id=last_ticket_pulled.office_id)\
+                                                    .first()
     return render_template('all_offices.html',
                            officesp=pagination.items,
                            pagination=pagination,
                            len=len,
                            page_title="All Offices",
-                           serial=data.Serial.query,
+                           serial=data.Serial.query.filter(data.Serial.number != 100),
                            offices=data.Office.query,
                            tasks=data.Task.query,
                            users=data.User.query,
                            operators=data.Operators.query,
                            navbar="#snb1",
-                           hash="#da2")
+                           hash="#da2",
+                           last_ticket_pulled=last_ticket_pulled,
+                           last_ticket_office=last_ticket_office)
 
 
 @manage_app.route('/offices/<int:o_id>', methods=['GET', 'POST'])
@@ -82,10 +84,6 @@ def offices(o_id):
         return redirect(url_for('core.root'))
     form = forms.Offices_a(upd=ofc.prefix, defLang=session.get('lang'))
     page = request.args.get('page', 1, type=int)
-    if page > int(data.Serial.query.filter_by(office_id=o_id).count() / 10) + 1:
-        flash('Error: wrong entry, something went wrong',
-              'danger')
-        return redirect(url_for('manage_app.offices', o_id=o_id))
     toGetFrom = data.Serial.query.filter_by(office_id=o_id)
     # To solve tickets from common tasks that are assigned to some other office
     for task in ofc.tasks:
@@ -95,11 +93,11 @@ def offices(o_id):
                 data.Serial.office_id != o_id))
         if tickets.count() > 0:
             toGetFrom = toGetFrom.union(tickets)
-    pagination = toGetFrom.order_by(data.
-                                 Serial.p).order_by(data.Serial
-                                                    .number.desc()).paginate(
-                                                        page, per_page=10,
-                                                        error_out=False)
+    tickets = toGetFrom.filter(data.Serial.number != 100)\
+                       .order_by(data.Serial.p)\
+                       .order_by(data.Serial.number.desc())
+    last_ticket_pulled = tickets.filter_by(p=True).first()
+    pagination = tickets.paginate(page, per_page=10, error_out=False)
     if form.validate_on_submit():
         mka = data.Office.query.filter_by(name=form.name.data)
         for f in mka:
@@ -123,14 +121,15 @@ def offices(o_id):
                            o_id=o_id,
                            ooid=ofc,
                            len=len,
-                           serial=data.Serial.query,
+                           serial=data.Serial.query.filter(data.Serial.number != 100),
                            offices=data.Office.query,
                            tasks=data.Task.query,
                            users=data.User.query,
                            operators=data.Operators.query,
                            navbar="#snb1",
                            dropdown="#dropdown-lvl" + str(o_id),
-                           hash="#t1" + str(o_id))
+                           hash="#t1" + str(o_id),
+                           last_ticket_pulled=last_ticket_pulled)
 
 
 @manage_app.route('/office_a', methods=['GET', 'POST'])
@@ -159,7 +158,7 @@ def office_a():
                            operators=data.Operators.query,
                            navbar="#snb1",
                            hash="#da3",
-                           serial=data.Serial.query)
+                           serial=data.Serial.query.filter(data.Serial.number != 100))
 
 
 @manage_app.route('/office_d/<int:o_id>')
@@ -193,7 +192,7 @@ def office_d(o_id):
 @reject_no_offices
 def office_da():
     """ to delete all offices """
-    if data.Serial.query.count() > data.Office.query.count():
+    if data.Serial.query.filter(data.Serial.number != 100).count():
         flash("Error: you must reset it, before you delete it ",
               'danger')
         return redirect(url_for("manage_app.all_offices"))
@@ -253,17 +252,9 @@ def search():
                 'info')
             return redirect(url_for("manage_app.search"))
         page = request.args.get('page', 1, type=int)
-        if page > int(data.Serial.query.filter(and_(*terms)).count() / 10) + 1:
-            flash('Error: wrong entry, something went wrong',
-                  'danger')
-            return redirect(url_for('manage_app.search'))
-        pagination = data.Serial.query.filter(
-            and_(*terms)).order_by(data.Serial
-                                   .timestamp
-                                   .desc()).paginate(
-                                       page,
-                                       per_page=10,
-                                       error_out=False)
+        pagination = data.Serial.query.filter(and_(*terms), data.Serial.number != 100)\
+                                      .order_by(data.Serial.timestamp.desc())\
+                                      .paginate(page, per_page=10, error_out=False)
         return render_template("search_r.html",
                                serials=serials,
                                page_title="Tickets search",
@@ -276,7 +267,7 @@ def search():
                                len=len,
                                navbar="#snb1",
                                hash="#da1",
-                               serial=data.Serial.query)
+                               serial=data.Serial.query.filter(data.Serial.number != 100))
     return render_template("search.html",
                            form=form,
                            page_title="Tickets search",
@@ -285,42 +276,41 @@ def search():
                            operators=data.Operators.query,
                            navbar="#snb1",
                            hash="#da1",
-                           serial=data.Serial.query)
+                           serial=data.Serial.query.filter(data.Serial.number != 100))
 
 
 @manage_app.route('/task/<int:o_id>', methods=['POST', 'GET'], defaults={'ofc_id': None})
 @manage_app.route('/task/<int:o_id>/<int:ofc_id>', methods=['POST', 'GET'])
 @login_required
 def task(o_id, ofc_id=None):
-    """ view for specific task 
+    """ view for specific task
         now office_id is only optional to /pull and sb_manage, otherwise it will pick the first
-        in the task.offices list 
+        in the task.offices list
     """
     task = data.Task.query.filter_by(id=o_id).first()
     if task is None:
         flash('Error: wrong entry, something went wrong',
               'danger')
         return redirect(url_for("core.root"))
-    form = forms.Task_a(session.get('lang'), True if len(task.offices) > 1 else False) 
+    form = forms.Task_a(session.get('lang'), True if len(task.offices) > 1 else False)
     if is_operator() and data.Operators.query.filter_by(id=current_user.id).first() is None:
         flash("Error: operators are not allowed to access the page ",
               'danger')
         return redirect(url_for('core.root'))
-    if is_operator() and data.Operators.query.filter_by(id=current_user.id).first().office_id not in [o.id for o in task.offices]:
+    office_ids = [o.id for o in task.offices]
+    if request.method == 'POST' and is_operator() and any([
+        len(office_ids) > 1,
+        ofc_id not in office_ids,
+        data.Operators.query.filter_by(id=current_user.id).first().office_id != ofc_id
+    ]):
         flash("Error: operators are not allowed to access the page ",
               'danger')
         return redirect(url_for('core.root'))
     page = request.args.get('page', 1, type=int)
-    if page > int(data.Serial.query.filter_by(task_id=o_id).count() / 10) + 1:
-        flash('Error: wrong entry, something went wrong',
-              'danger')
-        return redirect(url_for('manage_app.task', o_id=o_id))
-    pagination = data.Serial.query.filter_by(
-        task_id=o_id).order_by(data.Serial
-                               .timestamp
-                               .desc()).paginate(
-                                   page, per_page=10,
-                                   error_out=False)
+    tickets = data.Serial.query.filter(data.Serial.task_id == o_id, data.Serial.number != 100)\
+                               .order_by(data.Serial.timestamp.desc())
+    last_ticket_pulled = tickets.filter_by(p=True).first()
+    pagination = tickets.paginate(page, per_page=10, error_out=False)
     if form.validate_on_submit():
         mka = data.Task.query.filter_by(name=form.name.data)
         for f in mka:
@@ -368,8 +358,9 @@ def task(o_id, ofc_id=None):
                            page_title="Task : " + task.name,
                            tasksp=pagination.items,
                            pagination=pagination,
-                           serial=data.Serial.query,
+                           serial=data.Serial.query.filter(data.Serial.number != 100),
                            o_id=o_id,
+                           ofc_id=ofc_id,
                            common=True if len(task.offices) > 1 else False,
                            len=len,
                            offices=data.Office.query,
@@ -379,28 +370,37 @@ def task(o_id, ofc_id=None):
                            task=task,
                            navbar="#snb1",
                            dropdown="#dropdown-lvl%i" % ofc_id, # dropdown a list of offices
-                           hash="#tt%i%i" % (ofc_id, o_id))
+                           hash="#tt%i%i" % (ofc_id, o_id),
+                           last_ticket_pulled=last_ticket_pulled,
+                           edit_task=len(task.offices) == 1 or not is_operator())
 
 
-@manage_app.route('/task_d/<int:t_id>')
+@manage_app.route('/task_d/<int:t_id>', defaults={'ofc_id': None})
+@manage_app.route('/task_d/<int:t_id>/<int:ofc_id>')
 @login_required
-def task_d(t_id):
+def task_d(t_id, ofc_id=None):
     """ to delete a task """
     task = data.Task.query.filter_by(id=t_id).first()
+
     if task is None:
         flash('Error: wrong entry, something went wrong',
               'danger')
         return redirect(url_for("core.root"))
-    if is_operator() and data.Operators.query.filter_by(id=current_user.id).first().office_id not in [o.id for o in task.offices]:
-        flash("Error: operators are not allowed to access the page ",
-              'danger')
+
+    office_ids = [o.id for o in task.offices]
+    if is_operator() and any([
+        len(office_ids) > 1,
+        ofc_id not in office_ids,
+        data.Operators.query.filter_by(id=current_user.id).first().office_id != ofc_id
+    ]):
+        flash("Error: operators are not allowed to access the page ", 'danger')
         return redirect(url_for('core.root'))
     if data.Serial.query.filter(and_(data.Serial.task_id == t_id,
                                      data.Serial.number != 100)).count() > 0:
         flash("Error: you must reset it, before you delete it ",
               'danger')
         return redirect(url_for("manage_app.task", o_id=t_id))
-    togo = [t.id for t in task.offices]
+
     evil = data.Serial.query.filter_by(task_id=t_id, number=100).first()
     if evil is not None:
         db.session.delete(evil)
@@ -408,7 +408,7 @@ def task_d(t_id):
     db.session.commit()
     flash("Notice: task has been deleted .",
           'info')
-    return redirect(url_for("manage_app.offices", o_id=togo[0]) if len(togo) > 0 else url_for("manage_app.all_offices"))
+    return redirect(url_for("manage_app.offices", o_id=ofc_id) if ofc_id else url_for("manage_app.all_offices"))
 
 
 @manage_app.route('/common_task_a', methods=['GET', 'POST'])
@@ -442,7 +442,7 @@ def common_task_a():
         return redirect(url_for("manage_app.all_offices"))
     return render_template("task_add.html", form=form,
                            offices=data.Office.query,
-                           serial=data.Serial.query,
+                           serial=data.Serial.query.filter(data.Serial.number != 100),
                            tasks=data.Task.query,
                            operators=data.Operators.query,
                            navbar="#snb1", common=True,
@@ -481,7 +481,7 @@ def task_a(o_id):
         return redirect(url_for("manage_app.offices", o_id=o_id))
     return render_template("task_add.html", form=form,
                            offices=data.Office.query,
-                           serial=data.Serial.query,
+                           serial=data.Serial.query.filter(data.Serial.number != 100),
                            tasks=data.Task.query,
                            operators=data.Operators.query,
                            navbar="#snb1", common=False,

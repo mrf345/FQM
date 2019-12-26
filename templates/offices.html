@@ -66,11 +66,14 @@
 				</div>
 	    	</div>
 	    	<div class="row text-center text-muted h4 ar2">
-				<div class="col-sm-10 col-sm-offset-1 col-lg-offset-2 col-md-4 well">
+				<div class="col-sm-10 col-sm-offset-1 col-lg-offset-1 col-md-3 well">
 					{{ translate('Prefix', 'en', [defLang]) }} : <u>{{ offices.filter_by(id=o_id).first().prefix }}</u>
 				</div>
 				<div class="col-sm-10 col-sm-offset-1 col-md-offset-0 col-md-4 well">
 					{{ translate('Created', 'en', [defLang]) }} : <u> {{ moment(offices.filter_by(id=o_id).first().timestamp).format('L') }}</u>
+				</div>
+				<div class="col-sm-10 col-sm-offset-1 col-md-offset-0 col-md-3 well">
+					{{ translate('Last ticket pulled', 'en', [defLang]) }} : <u> {{ last_ticket_pulled.number or 'None' }}</u>
 				</div>
 	    	</div>
 	    	<div class="row">
@@ -115,7 +118,7 @@
 				</div>
 	    	</div>
 	    	{% for o in officesp %}
-	     	{% if o.number != 100 %}
+	     	
 				<div class="row well {% if o.p %} text-primary {% else %} text-danger {% endif %} h4 ar1 text-center">
 		  			<div class="col-xs-12 col-sm-2">
 		    			<b> {{ ooid.prefix }}{{ o.number }}.</b>
@@ -135,9 +138,9 @@
 		  		    	<u> {% if o.n %} {{ translate('Registered', 'en', [defLang]) }} {% else %} {{ translate('Printed', 'en', [defLang]) }} {% endif %} </u>
 		  			</div>
 				</div>
-	      	{% endif %}
+	      	
 			{% endfor %}
-			{{ spacer([translate('No tickets been issued yet to display', 'en', [defLang]), len(officesp) - serial.filter_by(office_id=o_id, number=100).count()]) }}
+			{{ spacer([translate('No tickets been issued yet to display', 'en', [defLang]), len(officesp)]) }}
 	    </div>
 	    <div class="panel-footer text-center">
 			{{ panelFooter([

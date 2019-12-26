@@ -46,10 +46,10 @@
 							$.get('/feed/1')
 						}
 					}).fail(function (e) { console.log(e) })
-			}, 500)
+			}, 200)
 			if (player) player.exit(false)
 
-			$.when.apply($, languages.map(function(language, index) {
+			if ('{{ ts.announce }}' !== 'false') $.when.apply($, languages.map(function(language, index) {
 				var link = '/gtts/' + language + '/' + data.cot + announcement_texts[language] + data.con
 
 				return $.get(link)

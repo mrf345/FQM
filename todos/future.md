@@ -1,5 +1,7 @@
 # FQM Future
 
+# Fixes:
+- [ ] Pre-load waiting tickets from `/feed` to reduce text-to-speech generation latency. 
 
 #### Multi screen support:
 

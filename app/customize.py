@@ -151,10 +151,6 @@ def slideshow():
               'danger')
         return redirect(url_for('cust_app.video'))
     page = request.args.get('page', 1, type=int)
-    if page > int(data.Slides.query.count() / 10) + 1:
-        flash('Error: wrong entry, something went wrong',
-              'danger')
-        return redirect(url_for('cust_app.slideshow'))
     pagination = data.Slides.query.paginate(page, per_page=10,
                                             error_out=False)
     return render_template("slideshow.html",
@@ -312,10 +308,6 @@ def multimedia(aa):
         return redirect(url_for("core.root"))
     mmm = data.Media.query
     page = request.args.get('page', 1, type=int)
-    if page > int(data.Media.query.count() / 10) + 1:
-        flash('Error: wrong entry, something went wrong',
-              'danger')
-        return redirect(url_for('cust_app.multimedia', aa=1))
     pagination = data.Media.query.paginate(page, per_page=10,
                                            error_out=False)
     form = forms.Multimedia(session.get('lang'))
@@ -366,11 +358,11 @@ def multimedia(aa):
     if form.validate_on_submit():
         ff = form.mf.data
         ffn = secure_filename(ff.filename)
-        dc = data.Media.query.count()
+        # dc = data.Media.query.count()
         # FIX ISSUE Remove folder size limitation
         # if int(ex_functions.getFolderSize(dire)) >= sfl or dc >= nofl:
         #     return redirect(url_for('cust_app.multimedia', aa=1))
-        e = ffn[-3:len(ffn)]
+        e = ffn[-3:]
         if e in SUPPORTED_MEDIA_FILES[0]:
             files.save(request.files['mf'], name=ffn)
             if imghdr.what(dire + ffn) is None:
@@ -381,13 +373,14 @@ def multimedia(aa):
             return redirect(url_for("cust_app.multimedia", aa=1))
         elif e in SUPPORTED_MEDIA_FILES[1]:
             files.save(request.files['mf'], name=ffn)
-            if sndhdr.what(dire + ffn) is None:
-                os.remove(dire + ffn)
-                return redirect(url_for("cust_app.multimedia", aa=1))
+            # FIXME: Find an alternative to sndhdr for audio file detection
+            # if sndhdr.what(dire + ffn) is None:
+            #     os.remove(dire + ffn)
+            #     return redirect(url_for("cust_app.multimedia", aa=1))
             db.session.add(data.Media(False, True, False, False, ffn))
             db.session.commit()
             return redirect(url_for("cust_app.multimedia", aa=1))
-        elif e in SUPPORTED_MEDIA_FILES[2]:
+        elif e in SUPPORTED_MEDIA_FILES[2] or ffn[-4:] in SUPPORTED_MEDIA_FILES[2]:
             files.save(request.files['mf'], name=ffn)
             db.session.add(data.Media(True, False, False, False, ffn))
             db.session.commit()
@@ -560,7 +553,6 @@ def displayscreen_c(stab):
 def touchscreen_c(stab):
     """ view for touch screen customization """
     form = forms.Touch_c(defLang=session.get('lang'))
-    ex_functions.mse()
     if stab not in range(0, 6):
         flash('Error: wrong entry, something went wrong', 'danger')
         return redirect(url_for('core.root'))

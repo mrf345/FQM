@@ -8,19 +8,19 @@ import app.data as data
 def is_god():
     ''' Check if the current user is God! '''
     with current_app.app_context():
-        return current_user.id == 1
+        return getattr(current_user, 'role_id', None) == 1
 
 
 def is_admin():
     ''' Check if the current user is of the Administrator role. '''
     with current_app.app_context():
-        return current_user.role_id == 1
+        return getattr(current_user, 'role_id', None) == 1
 
 
 def is_operator():
     ''' Check if the current user is of the Operator role. '''
     with current_app.app_context():
-        return current_user.role_id == 3
+        return getattr(current_user, 'role_id', None) == 3
 
 
 def has_offices():
