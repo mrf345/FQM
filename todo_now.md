@@ -11,7 +11,7 @@
 - [x] Fix `/feed` and announcements after migration to py3 `(2019-12-24)`
 - [x] Fix reset office from within itself `(2019-12-24)`
 - [x] Fix search SQLAlchemy safe parameters, after migration to Python 3 bug `(2019-12-24)`
-- [ ] Printer failsafe should display error in debug mode
+- [x] Printer failsafe should display error in debug mode `(2019-12-28)`
 - [x] Fix last ticket to pull getting stuck `(2019-12-26)`
 - [x] Fix operators common task permissions: `(2019-12-26)`
 > - [x] Operator shouldn't be able to `update`, `reset`, `delete` common tasks
@@ -23,15 +23,17 @@
 - [x] fix browserNotifier when new release published __chrome bug__ `(2019-12-25)`
 - [x] fix audio multimedia upload false detection `(2019-12-25)`
 - [x] fix multimedia `webm` format upload, add `mp3` to supported files. `(2019-12-25)`
+- [x] fix windows printing to rely fully on `wmic` command for shared printers detection. `(2019-12-28)`
 
-**Finally `IE 11` is fully supported 🚀**
-**Backend refactoring improved performance by 62% under heavy overload 🚀**
+- **Finally `IE 11` is fully supported 🚀**
+
+- **Backend refactoring improved performance by 62% under heavy overload 🚀**
  
 ### To Add :
 
 - [x] Display last pulled ticket in `tasks`, `offices` and `all_offices` `(2019-12-26)`
 - [x] Decouple GUI and add command-line interface `(2019-12-22)`
-- [ ] Add debug mode to GUI
+- [x] ~~Add debug mode to GUI~~ `(2019-12-28)`
 
 - [x] Database improvements and migration: `(2019-12-26)`
 > - [x] ~~Add migrations scripts and setup~~

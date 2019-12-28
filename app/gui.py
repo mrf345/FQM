@@ -7,9 +7,9 @@ from PyQt5.QtGui import QFont, QIcon
 from gevent import monkey, pywsgi
 from gevent.event import Event as thevent
 
-from app.ex_functions import r_path, solve_path, get_accessible_ips, get_random_available_port, is_port_available
-from app.database import version, gtranslator
-from app.constants import SUPPORTED_LANGUAGES
+from app.utils import r_path, solve_path, get_accessible_ips, get_random_available_port, is_port_available
+from app.middleware import gtranslator
+from app.constants import SUPPORTED_LANGUAGES, VERSION
 
 
 class RunnerThread(QThread):
@@ -70,7 +70,7 @@ class MainWindow(QWidget):
         self.show()
 
     def initiate(self, icon):
-        self.setWindowTitle('Free Queue Manager ' + version)
+        self.setWindowTitle('Free Queue Manager ' + VERSION)
         self.setGeometry(300, 300, 200, 150)
         self.setMinimumWidth(500)
         self.setMaximumWidth(500)
@@ -240,7 +240,7 @@ class MainWindow(QWidget):
     def set_about(self, icon, global_layout):
         def show_about():
             message = u" <center> "
-            message += self.get_translation('All credit reserved to the author of FQM version ') + version + u" "
+            message += self.get_translation('All credit reserved to the author of FQM version ') + VERSION + u" "
             message += self.get_translation(', This work is a free, open-source project licensed ')
             message += self.get_translation(' under Mozilla Public License version 2.0 . <br><br>')
             message += self.get_translation(' visit us for more infos and how-tos :<br> ')

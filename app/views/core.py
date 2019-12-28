@@ -11,9 +11,11 @@ from flask import url_for, flash, render_template, redirect, session, jsonify, B
 from flask_login import current_user, login_required, login_user
 
 import app.forms as forms
-import app.data as data
-import app.printer as ppp
-from app.database import db
+import app.database as data
+from app.printer import (
+    assign, printit, printit_ar, print_ticket_windows, print_ticket_windows_ar,
+    get_windows_printers)
+from app.middleware import db
 from app.helpers import reject_no_offices, reject_operator, is_operator, reject_not_admin
 
 
@@ -130,21 +132,14 @@ def serial(t_id):
             ppt = data.Task.query.filter_by(id=t_id).first()
             oot = data.Office.query.filter_by(id=o_id).first()
             tnum = data.Serial.query.filter_by(office_id=o_id, p=False).count()
-            cuticket = data.Serial.query.filter_by(
-                office_id=o_id, p=False).first()
+            cuticket = data.Serial.query.filter_by(office_id=o_id, p=False).first()
             tnum -= 1
             langu = data.Printer.query.first().langu
             # to solve Linux printer permissions
             if os.name == 'nt':
-                # to solve windows shared printers
-                import win_printer
-                from pythoncom import CoInitialize as coli
-                coli()
-                chk = win_printer.check_win_p()
-                chl = len(win_printer.listpp())
-                if chl >= 1 and chk is True:
+                if get_windows_printers():
                     if langu == 'ar':
-                        win_printer.printwin_ar(
+                        print_ticket_windows_ar(
                             q.product,
                             oot.prefix + '.' + str(current_ticket().number + 1),
                             oot.prefix + str(oot.name),
@@ -152,22 +147,21 @@ def serial(t_id):
                             oot.prefix + '.' + str(cuticket.number),
                             ip=current_app.config['LOCALADDR'])
                     else:
-                        win_printer.printwin(
+                        print_ticket_windows(
                             q.product,
                             oot.prefix + '.' + str(current_ticket().number + 1),
                             oot.prefix + str(oot.name),
                             tnum, ppt.name,
                             oot.prefix + '.' + str(cuticket.number), l=langu,
                             ip=current_app.config['LOCALADDR'])
-                            # FIX Issue printer on windows
                     p = True
                 else:
                     p = None
             else:
                 # To Fix 1: Fail safe drivers. [FIXED]
                 try:
-                    p = ppp.assign(int(q.vendor), int(q.product),
-                                   int(q.in_ep), int(q.out_ep))
+                    p = assign(int(q.vendor), int(q.product),
+                               int(q.in_ep), int(q.out_ep))
                 except Exception:
                     p = None
             if p is None:
@@ -186,14 +180,14 @@ def serial(t_id):
                 return redirect(url_for('cust_app.ticket'))
             if os.name != 'nt':
                 if langu == 'ar':
-                    ppp.printit_ar(
+                    printit_ar(
                         p,
                         oot.prefix + '.' + str(current_ticket().number + 1),
                         oot.prefix + str(oot.name),
                         tnum, u'' + ppt.name,
                         oot.prefix + '.' + str(cuticket.number))
                 else:
-                    ppp.printit(
+                    printit(
                         p,
                         oot.prefix + '.' + str(current_ticket().number + 1),
                         oot.prefix + str(oot.name),

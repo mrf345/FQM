@@ -69,7 +69,7 @@
         {% from "_helpers.html" import render_field %}
         <noscript>
             <style>html{display:none;}</style>
-            <meta http-equiv="refresh" content="0.0;url=/nojs/3">
+            <meta http-equiv="refresh" content="0.0;url=/nojs/0">
         </noscript>
         <div class="cover wallpapers vertical-center">
             <div class="container">
@@ -139,7 +139,7 @@
                     	{% else %}
                         <h3 class='text text-muted i mt-3 mb-4'>
                             {% for curLang in [['en', 'English'], ['it', 'Italian'], ['es', 'Spanish'], ['ar', 'Arabic'], ['fr', 'French']] %}
-                            {% if defLang != curLang[0] %}|| <a href="{{ url_for('lang_switch', lang=curLang[0]) }}">{{curLang[1]}}</a> ||{% endif %}
+                            {% if defLang != curLang[0] %}|| <a href="{{ url_for('language_switch', language=curLang[0]) }}">{{curLang[1]}}</a> ||{% endif %}
                             {% endfor %}
                         </h3>
                     	<a class="btn btn-lg btn-primary" data-target="#upd" data-toggle="modal">

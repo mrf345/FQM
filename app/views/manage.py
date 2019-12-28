@@ -9,8 +9,8 @@ from flask_login import current_user, login_required
 from sqlalchemy.sql import and_
 
 import app.forms as forms
-import app.data as data
-from app.database import db
+import app.database as data
+from app.middleware import db
 from app.helpers import reject_operator, reject_no_offices, is_operator
 
 

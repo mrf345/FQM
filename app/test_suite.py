@@ -1,6 +1,6 @@
 from random import choice
-from app.database import db
-from app.data import Task, Office, Serial, Waiting, User
+from app.middleware import db
+from app.database import Task, Office, Serial, Waiting, User
 from random import choice, randint
 from app.__init__ import create_app
 

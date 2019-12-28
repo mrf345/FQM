@@ -8,10 +8,10 @@ from flask import url_for, flash, request, render_template, redirect, session, s
 from flask_login import current_user, login_required, logout_user
 from datetime import datetime
 
-import app.data as data
-from app.database import db, login_manager
+import app.database as data
+from app.middleware import db, login_manager
 import app.forms as forms
-from app.ex_functions import r_path
+from app.utils import r_path
 from app.helpers import reject_not_god, reject_not_admin, reject_god
 
 
@@ -164,13 +164,16 @@ def user_a():
             db.session.commit()
         flash('Notice: user has been added .', 'info')
         return redirect(url_for('administrate.users'))
-    return render_template('user_add.html', form=form, navbar='#snb3', page_title='Add user')
+    return render_template('user_add.html',
+                           form=form,
+                           navbar='#snb3',
+                           page_title='Add user',
+                           offices_count=data.Office.query.count())
 
 
 @administrate.route('/user_u/<int:u_id>', methods=['GET', 'POST'])
 @login_required
 @reject_not_admin
-@reject_god
 def user_u(u_id):
     ''' to update user '''
     form = forms.User_a(session.get('lang'))
@@ -178,12 +181,17 @@ def user_u(u_id):
     if u is None:
         flash('Error: user selected does not exist, something wrong !', 'danger')
         return redirect(url_for('core.root'))
+    if u.id == 1:
+        return reject_god(lambda: None)()
     if form.validate_on_submit():
         u.name = form.name.data
         u.password = form.password.data
         u.role_id = form.role.data
         # Remove operator if role has changed
         if form.role.data == 3:
+            if data.Office.query.filter_by(id=form.offices.data).first() is None:
+                flash('Error: Office selected does not exist!', 'danger')
+                return redirect(url_for('core.root'))
             if data.Operators.query.filter_by(id=u.id).first() is None:
                 db.session.add(data.Operators(
                     u.id,
@@ -206,13 +214,13 @@ def user_u(u_id):
     return render_template('user_add.html',
                            form=form, navbar='#snb3',
                            page_title='Update user : ' + u.name,
-                           u=u, update=True)
+                           u=u, update=True,
+                           offices_count=data.Office.query.count())
 
 
 @administrate.route('/user_d/<int:u_id>')
 @login_required
 @reject_not_admin
-@reject_god
 def user_d(u_id):
     ''' to delete user '''
     u = data.User.query.filter_by(id=u_id).first()
@@ -220,6 +228,8 @@ def user_d(u_id):
         flash('Error: user selected does not exist, something wrong !',
               'danger')
         return redirect(url_for('core.root'))
+    if u.id == 1:
+        return reject_god(lambda: None)()
     # delete from operators if user is operator
     if u.role_id == 3:
         db.session.delete(data.Operators.query.filter_by(id=u.id).first())

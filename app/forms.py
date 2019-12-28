@@ -11,8 +11,8 @@ from wtforms import TextAreaField, IntegerField, BooleanField
 from flask_wtf.file import FileAllowed
 from wtforms.validators import InputRequired, Length, NumberRange, Optional
 
-import app.data as data
-from app.database import gtranslator
+import app.database as data
+from app.middleware import gtranslator
 from app.constants import SUPPORTED_MEDIA_FILES, SUPPORTED_LANGUAGES
 
 
@@ -436,8 +436,12 @@ class User_a(FlaskForm):
         self.role.validators = [InputRequired(gtranslator.translate("You must select a role to add user in", 'en', [defLang]))]
         self.offices.label = gtranslator.translate("Select office to assing the operator to : ", 'en', [defLang])
         self.offices.validators = [Optional()]
-        self.role.choices = [(v.id, v.name) for v in data.Roles.query]
+        self.role.choices = [(v.id, v.name) for v in data.Roles.query if v.id != 3]
         self.offices.choices = [(o.id, 'Office : ' + str(o.name) + o.prefix) for o in data.Office.query]
+
+        # Hide operators role, if no offices created yet
+        if data.Office.query.count() > 0:
+            self.role.choices += [(3, data.Roles.query.filter_by(id=3).first().name)]
 
 
 # Multimedia upload form
