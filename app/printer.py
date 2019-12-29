@@ -88,7 +88,7 @@ def printit(printer, ticket, office, tnumber,
         printer.text(f'\n{get_translation("Task : ", lang)}{task}\n')
     except Exception:
         pass
-    printer.text(f'{get_translation("Time : ", lang)}{datetime.now()[:-7]}\n')
+    printer.text(f'{get_translation("Time : ", lang)}{datetime.now().__str__()[:-7]}\n')
     printer.cut()
     return printer
 
