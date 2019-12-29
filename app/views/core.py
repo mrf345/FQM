@@ -319,7 +319,7 @@ def serial_rt(t_id, ofc_id=None):
 
 @core.route('/pull', defaults={'o_id': None, 'ofc_id': None})
 @core.route('/pull/<int:o_id>/<int:ofc_id>')
-# @login_required
+@login_required
 def pull(o_id=None, ofc_id=None):
     """ to change the state of a ticket to be pulled """
     # FIX: pulling tickets by task_id instead of office_id
@@ -421,8 +421,6 @@ def pull(o_id=None, ofc_id=None):
     processed_ticket.pdt = datetime.utcnow()
     processed_ticket.pulledBy = getattr(current_user, 'id', None)
 
-    print('#' * 10)
-    print(processed_ticket.number)
     db.session.add(processed_ticket)
     db.session.delete(cs)
     db.session.commit()
