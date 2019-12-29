@@ -12,8 +12,8 @@ $(document).ready(function () {
 	// adding hidden user roles reminders instead
 	var toShuffle = ['.admin', '.monitor', '.operator']
 	$(toShuffle[($('#role').val() - 1)]).removeClass('hide')
-	// to hide and display offices list when operator is selected
-	if ($('#role').val() == 3) $('.offices').removeClass('hide')
+	// to hide and display offices list when operator is selected and more than one office exist
+	if (parseInt('{{ offices_count }}') && $('#role').val() == 3) $('.offices').removeClass('hide')
 	$('#role').change(function () {
 		if ($('#role').val() == 3) $('.offices').removeClass('hide')
 		else $('.offices').addClass('hide')
@@ -43,6 +43,11 @@ $(document).ready(function () {
 				{{ form.csrf_token }}
 				{{ render_field(form.name, class="form-control") }}
 				{{ render_field(form.password, class="form-control") }}
+				{% if offices_count == 0 %}
+				<p class="h4 ar2 mt-2 mb-2 text-center text-warning">
+					| Monitor: {{ translate('the role is not enabled, it will be enabled once you add a new office', 'en', [defLang]) }}. |
+				</p>
+				{% endif %}
 				{{ render_field(form.role, class="form-control") }}
 		  		<p class="h3 ar2 mt-2 mb-2 text-center text-muted admin hide">
 		      		|  Admin : {{ translate('has the permissions to access and monitor everything', 'en', [defLang]) }} |

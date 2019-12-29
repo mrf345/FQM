@@ -23,7 +23,7 @@ Flask-gTTS==0.12
 Flask-Less==0.5
 Flask-Login==0.4.0
 Flask-Mail==0.9.1
-Flask-Minify==0.11
+Flask-Minify==0.15
 Flask-Moment==0.9.0
 Flask-PageDown==0.2.2
 Flask-QRcode==1.0.1
@@ -82,4 +82,4 @@ Whoosh==2.7.4
 WTForms==2.1
 WTForms-Components==0.10.3
 xxhash==1.4.3
-falke8
+flake8

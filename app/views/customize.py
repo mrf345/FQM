@@ -5,18 +5,16 @@
 
 import os
 import imghdr
-import sndhdr
 from flask import url_for, flash, request, render_template, redirect
 from flask import Blueprint, session
-from flask_login import current_user, login_required
+from flask_login import login_required
 from werkzeug import secure_filename
 
-import app.ex_functions as ex_functions
 import app.forms as forms
-import app.data as data
-from app.database import db, files
-from app.printer import listp
-from app.ex_functions import r_path
+import app.database as data
+from app.middleware import db, files
+from app.printer import listp, get_windows_printers
+from app.utils import r_path, getFolderSize
 from app.constants import SUPPORTED_MEDIA_FILES
 from app.helpers import reject_not_admin
 
@@ -41,14 +39,11 @@ def customize():
 @reject_not_admin
 def ticket():
     """ view of ticket customization """
-    if os.name == 'nt':
-        from win_printer import listpp
-        lll = listpp()
-    else:
-        lll = listp()
-    form = forms.Printer_f(lll, session.get('lang'))
+    printers = get_windows_printers() if os.name == 'nt' else listp()
+    form = forms.Printer_f(printers, session.get('lang'))
     tc = data.Touch_store.query.first()
     pr = data.Printer.query.first()
+
     if form.validate_on_submit():
         if form.kind.data == 1:
             tc.n = True
@@ -360,7 +355,7 @@ def multimedia(aa):
         ffn = secure_filename(ff.filename)
         # dc = data.Media.query.count()
         # FIX ISSUE Remove folder size limitation
-        # if int(ex_functions.getFolderSize(dire)) >= sfl or dc >= nofl:
+        # if int(utils.getFolderSize(dire)) >= sfl or dc >= nofl:
         #     return redirect(url_for('cust_app.multimedia', aa=1))
         e = ffn[-3:]
         if e in SUPPORTED_MEDIA_FILES[0]:
@@ -401,7 +396,7 @@ def multimedia(aa):
                            tc=data.Touch_store.query,
                            sl=data.Slides.query,
                            dc=data.Display_store.query,
-                           fs=int(ex_functions.getFolderSize(dire, True)),
+                           fs=int(getFolderSize(dire, True)),
                            nofl=nofl, sfl=sfl,
                            vtrue=data.Vid.query.first().enable,
                            strue=data.Slides_c.query.first().status)

@@ -11,9 +11,11 @@ from flask import url_for, flash, render_template, redirect, session, jsonify, B
 from flask_login import current_user, login_required, login_user
 
 import app.forms as forms
-import app.data as data
-import app.printer as ppp
-from app.database import db
+import app.database as data
+from app.printer import (
+    assign, printit, printit_ar, print_ticket_windows, print_ticket_windows_ar,
+    get_windows_printers)
+from app.middleware import db
 from app.helpers import reject_no_offices, reject_operator, is_operator, reject_not_admin
 
 
@@ -87,8 +89,8 @@ def root(n=None):
 def serial(t_id):
     """ to generate a new ticket and print it """
     form = forms.Touch_name(session.get('lang'))
-    tsk = data.Task.query.filter_by(id=t_id).first()
-    if tsk is None:
+    task = data.Task.query.filter_by(id=t_id).first()
+    if task is None:
         flash('Error: wrong entry, something went wrong',
               'danger')
         return redirect(url_for("core.root"))
@@ -108,66 +110,53 @@ def serial(t_id):
 
     # FIX: limit the tickets to the range of waitting tickets, prevent overflow.
     # Assigning the first office in the list
-    offices_ids = [o.id for o in data.Task.query.filter_by(id=t_id).first().offices]
+    o_id = task.least_tickets_office().id
+    next_number = data.Serial.query.filter_by(office_id=o_id)\
+                             .order_by(data.Serial.number.desc())\
+                             .first().number + 1
 
-    # FIX: to manage racing condition in generating a new number, when overloaded.
-    def current_ticket():
-        return data.Serial.query.filter(data.Serial.office_id.in_(offices_ids))\
-                                .order_by(data.Serial.timestamp.desc())\
-                                .first()
-
-    o_id = choice(offices_ids) if len(offices_ids) > 1 else current_ticket().office_id
-
-    if data.Serial.query.filter_by(number=current_ticket().number + 1, office_id=o_id).first() is None:
+    if data.Serial.query.filter_by(number=next_number, office_id=o_id).first() is None:
         if n:  # registered
-            db.session.add(data.Serial(current_ticket().number + 1, o_id, t_id, nm, True))
+            db.session.add(data.Serial(next_number, o_id, t_id, nm, True))
             db.session.commit()
         else:  # printed
-            db.session.add(data.Serial(current_ticket().number + 1, o_id, t_id, None, False))
+            db.session.add(data.Serial(next_number, o_id, t_id, None, False))
             db.session.commit()
             # adding printer support
             q = data.Printer.query.first()
             ppt = data.Task.query.filter_by(id=t_id).first()
             oot = data.Office.query.filter_by(id=o_id).first()
             tnum = data.Serial.query.filter_by(office_id=o_id, p=False).count()
-            cuticket = data.Serial.query.filter_by(
-                office_id=o_id, p=False).first()
+            cuticket = data.Serial.query.filter_by(office_id=o_id, p=False).first()
             tnum -= 1
             langu = data.Printer.query.first().langu
             # to solve Linux printer permissions
             if os.name == 'nt':
-                # to solve windows shared printers
-                import win_printer
-                from pythoncom import CoInitialize as coli
-                coli()
-                chk = win_printer.check_win_p()
-                chl = len(win_printer.listpp())
-                if chl >= 1 and chk is True:
+                if get_windows_printers():
                     if langu == 'ar':
-                        win_printer.printwin_ar(
+                        print_ticket_windows_ar(
                             q.product,
-                            oot.prefix + '.' + str(current_ticket().number + 1),
+                            oot.prefix + '.' + str(next_number),
                             oot.prefix + str(oot.name),
                             tnum, ppt.name,
                             oot.prefix + '.' + str(cuticket.number),
                             ip=current_app.config['LOCALADDR'])
                     else:
-                        win_printer.printwin(
+                        print_ticket_windows(
                             q.product,
-                            oot.prefix + '.' + str(current_ticket().number + 1),
+                            oot.prefix + '.' + str(next_number),
                             oot.prefix + str(oot.name),
                             tnum, ppt.name,
                             oot.prefix + '.' + str(cuticket.number), l=langu,
                             ip=current_app.config['LOCALADDR'])
-                            # FIX Issue printer on windows
                     p = True
                 else:
                     p = None
             else:
                 # To Fix 1: Fail safe drivers. [FIXED]
                 try:
-                    p = ppp.assign(int(q.vendor), int(q.product),
-                                   int(q.in_ep), int(q.out_ep))
+                    p = assign(int(q.vendor), int(q.product),
+                               int(q.in_ep), int(q.out_ep))
                 except Exception:
                     p = None
             if p is None:
@@ -186,16 +175,16 @@ def serial(t_id):
                 return redirect(url_for('cust_app.ticket'))
             if os.name != 'nt':
                 if langu == 'ar':
-                    ppp.printit_ar(
+                    printit_ar(
                         p,
-                        oot.prefix + '.' + str(current_ticket().number + 1),
+                        oot.prefix + '.' + str(next_number),
                         oot.prefix + str(oot.name),
                         tnum, u'' + ppt.name,
                         oot.prefix + '.' + str(cuticket.number))
                 else:
-                    ppp.printit(
+                    printit(
                         p,
-                        oot.prefix + '.' + str(current_ticket().number + 1),
+                        oot.prefix + '.' + str(next_number),
                         oot.prefix + str(oot.name),
                         tnum, u'' + ppt.name,
                         oot.prefix + '.' + str(cuticket.number), lang=langu)
@@ -244,21 +233,24 @@ def serial_r(o_id):
         data.Waiting.query.filter_by(office_id=f.office_id, number=f.number).delete()
 
     # NOTE: Queries has to be written fully everytime to avoid sqlalchemy racing condition
+    tickets_to_delete = data.Serial.query.filter_by(
+        data.Serial.office_id == o_id,
+        data.Serial.number != 100
+    )
+
     if operator:
         # Prevent operators from deleteing common tasks tickets
-        for ticket in data.Serial.query.filter_by(office_id=o_id):
+        for ticket in tickets_to_delete:
             task = data.Task.query.filter_by(id=ticket.task_id).first()
-            query = data.Serial.query.filter(data.Serial.office_id == o_id)
 
             if len(task.offices) > 1:
-                query = query.filter(data.Serial.task_id != task.id)
+                ticket = query.filter(data.Serial.task_id != task.id)
 
-            query.delete()
+            ticket.delete()
     else:
-        data.Serial.query.filter_by(office_id=o_id).delete()
+        ticket.delete()
     db.session.commit()
-    flash("Notice: office has been resetted. ..",
-          'info')
+    flash("Notice: office has been resetted. ..", 'info')
     return redirect(url_for("manage_app.offices", o_id=o_id))
 
 
@@ -394,7 +386,23 @@ def pull(o_id=None, ofc_id=None):
     # --- Reassigning cs seems to fix it
     # Fix: pulling tickets by task_id instead of office_id
     # modifying removing from  waiting with task_id 
-    cs = data.Waiting.query.filter_by(**({'task_id': o_id, 'office_id': ofc_id} if o_id is not None else {})).first()
+    processed_ticket = data.Serial.query.order_by(data.Serial.timestamp)\
+                                        .filter(data.Serial.number != 100,
+                                                data.Serial.p != True)
+
+    if o_id:
+        processed_ticket = processed_ticket.filter(data.Serial.task_id == cs.task_id)
+
+    if ofc_id:
+        processed_ticket = processed_ticket.filter(data.Serial.office_id == cs.office_id)
+
+    processed_ticket = processed_ticket.first()
+
+    if not processed_ticket:
+        flash("Error: no tickets left to pull from ..", 'danger')
+        return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
+
+    cs = data.Waiting.query.filter_by(**({'task_id': o_id, 'office_id': ofc_id, 'number': processed_ticket.number} if o_id is not None else {'number': processed_ticket.number})).first()
     if cs is None:
         flash("Error: no tickets left to pull from ..", 'danger')
         return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
@@ -409,27 +417,11 @@ def pull(o_id=None, ofc_id=None):
     cl.name = cs.name
     db.session.commit()
 
-    next_ticket = data.Serial.query.order_by(data.Serial.timestamp)\
-                                   .filter(data.Serial.number != 100,
-                                           data.Serial.p != True)
+    processed_ticket.p = True
+    processed_ticket.pdt = datetime.utcnow()
+    processed_ticket.pulledBy = getattr(current_user, 'id', None)
 
-    if o_id:
-        next_ticket = next_ticket.filter(data.Serial.task_id == cs.task_id)
-
-    if ofc_id:
-        next_ticket = next_ticket.filter(data.Serial.office_id == cs.office_id)
-
-    next_ticket = next_ticket.first()
-
-    if not next_ticket:
-        flash("Error: no tickets left to pull from ..", 'danger')
-        return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
-
-    next_ticket.p = True
-    next_ticket.pdt = datetime.utcnow()
-    next_ticket.pulledBy = getattr(current_user, 'id', None)
-
-    db.session.add(next_ticket)
+    db.session.add(processed_ticket)
     db.session.delete(cs)
     db.session.commit()
     flash("Notice: Ticket has been pulled ..", 'info')

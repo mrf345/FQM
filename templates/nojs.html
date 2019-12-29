@@ -42,11 +42,11 @@
                   <img src="{{ url_for('static', filename='images/nojs.png') }}" class="image-responsive mt-3" id="blogo" width="35%">
                   <h1 class="text text-danger mb-2" >Javascript {{ translate('is disabled', 'en', [defLang]) }}</h1>
                   <h3 class='text text-muted i mb-2'>
-                      <a href="{{ url_for('lang_switch', lang='en') }}">English</a> | 
-                      <a href="{{ url_for('lang_switch', lang='it') }}">Italian</a> | 
-                      <a href="{{ url_for('lang_switch', lang='es') }}">Spanish</a> | 
-                      <a href="{{ url_for('lang_switch', lang='fr') }}">French</a> | 
-                      <a href="{{ url_for('lang_switch', lang='ar') }}">Arabic</a>
+                      <a href="{{ url_for('language_switch', language='en') }}">English</a> | 
+                      <a href="{{ url_for('language_switch', language='it') }}">Italian</a> | 
+                      <a href="{{ url_for('language_switch', language='es') }}">Spanish</a> | 
+                      <a href="{{ url_for('language_switch', language='fr') }}">French</a> | 
+                      <a href="{{ url_for('language_switch', language='ar') }}">Arabic</a>
                   </h3>
 		           <h3 class="text text-warning mt-2 mb-2">
                         {{ translate("This application relays heavily on Javascript, it seems you have it disabled, for some reason : you might be using an old out-dated browser or might be using a browser that intentionally does not support Javascript. Browsing this application without Javascript enabled will result in unintentional dysfunctions.", 'en', [defLang]) }}
@@ -56,7 +56,7 @@
                             {{ translate("So we recommend you to enable Javascript or to use an equipped with Javascript browser like Firefox.", 'en', [defLang]) }}
                         </u>
 	             	</h3>
-	             	<a class="btn btn-lg btn-warning ar2 mb-4" href="{{ url_for('errorsh_app.nojs', ino=1) }}">
+	             	<a class="btn btn-lg btn-warning ar2 mb-4" href="{{ url_for('nojs', enabled_js=1) }}">
 	             	    <strong>{{ translate('Sure, I enabled Javascript', 'en', [defLang]) }}</strong>
 	             	</a>
             </div>

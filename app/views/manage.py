@@ -9,8 +9,8 @@ from flask_login import current_user, login_required
 from sqlalchemy.sql import and_
 
 import app.forms as forms
-import app.data as data
-from app.database import db
+import app.database as data
+from app.middleware import db
 from app.helpers import reject_operator, reject_no_offices, is_operator
 
 
@@ -165,24 +165,25 @@ def office_a():
 @login_required
 @reject_operator
 def office_d(o_id):
-    """ to delete an office """
+    ''' to delete office and its belongings. '''
     office = data.Office.query.filter_by(id=o_id).first()
+
     if office is None:
-        flash('Error: wrong entry, something went wrong',
-              'danger')
+        flash('Error: wrong entry, something went wrong', 'danger')
         return redirect(url_for("manage_app.offices", o_id=o_id))
-    if data.Serial.query.filter(and_(data.Serial.office_id == o_id,
-                                        data.Serial.number != 100)
-                                   ).count() > 0:
-        flash("Error: you must reset it, before you delete it ",
-              'danger')
+
+    tickets_to_delete = data.Serial.query.filter(data.Serial.office_id == o_id)
+
+    if tickets_to_delete.filter(data.Serial.number != 100).count() > 0:
+        flash('Error: you must reset it, before you delete it ', 'danger')
         return redirect(url_for("manage_app.offices", o_id=o_id))
-    for t in office.tasks:
-        db.session.delete(t)
+
+    tickets_to_delete.delete()
+    for task in office.tasks:
+        db.session.delete(task)
     db.session.delete(office)
     db.session.commit()
-    flash("Notice: office and its all tasks been deleted ",
-          'info')
+    flash('Notice: office and its all tasks been deleted ', 'info')
     return redirect(url_for("manage_app.all_offices"))
 
 
@@ -196,15 +197,12 @@ def office_da():
         flash("Error: you must reset it, before you delete it ",
               'danger')
         return redirect(url_for("manage_app.all_offices"))
-    for s in data.Serial.query:
-        db.session.delete(s)
-    for f in data.Office.query:
-        for t in f.tasks:
-            db.session.delete(t)
-        db.session.delete(f)
+
+    data.Serial.query.delete()
+    data.Task.query.delete()
+    data.Office.query.delete()
     db.session.commit()
-    flash("Notice: office and its all tasks been deleted ",
-          'info')
+    flash("Notice: office and its all tasks been deleted ", 'info')
     return redirect(url_for("manage_app.all_offices"))
 
 
@@ -383,31 +381,29 @@ def task_d(t_id, ofc_id=None):
     task = data.Task.query.filter_by(id=t_id).first()
 
     if task is None:
-        flash('Error: wrong entry, something went wrong',
-              'danger')
+        flash('Error: wrong entry, something went wrong', 'danger')
         return redirect(url_for("core.root"))
 
     office_ids = [o.id for o in task.offices]
+
     if is_operator() and any([
         len(office_ids) > 1,
         ofc_id not in office_ids,
         data.Operators.query.filter_by(id=current_user.id).first().office_id != ofc_id
     ]):
-        flash("Error: operators are not allowed to access the page ", 'danger')
+        flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
-    if data.Serial.query.filter(and_(data.Serial.task_id == t_id,
-                                     data.Serial.number != 100)).count() > 0:
-        flash("Error: you must reset it, before you delete it ",
-              'danger')
+
+    tickets = data.Serial.query.filter(data.Serial.task_id == t_id)
+
+    if tickets.filter(data.Serial.number != 100).count() > 0:
+        flash('Error: you must reset it, before you delete it ', 'danger')
         return redirect(url_for("manage_app.task", o_id=t_id))
 
-    evil = data.Serial.query.filter_by(task_id=t_id, number=100).first()
-    if evil is not None:
-        db.session.delete(evil)
-    db.session.delete(data.Task.query.filter_by(id=t_id).first())
+    tickets.delete()
+    db.session.delete(task)
     db.session.commit()
-    flash("Notice: task has been deleted .",
-          'info')
+    flash('Notice: task has been deleted .', 'info')
     return redirect(url_for("manage_app.offices", o_id=ofc_id) if ofc_id else url_for("manage_app.all_offices"))
 
 
@@ -417,26 +413,44 @@ def task_d(t_id, ofc_id=None):
 def common_task_a():
     """ to add a common task """
     if data.Office.query.count() <= 1:
-        flash("Error: not enough offices exist to add a common task",
-        'danger')
+        flash("Error: not enough offices exist to add a common task", 'danger')
         return redirect(url_for("manage_app.all_offices"))
+
     form = forms.Task_a(session.get('lang'), True)
+
     if form.validate_on_submit():
         task = data.Task(form.name.data)
+
         if data.Task.query.filter_by(name=form.name.data).first() is not None:
-            flash("Error: name is used by another one, choose another name",
-                  'danger')
+            flash("Error: name is used by another one, choose another name", 'danger')
             return redirect(url_for("manage_app.common_task_a"))
+
+        db.session.add(task)
+        db.session.commit()
+
         toValidate = []
         for office in data.Office.query.all():
             if form['check%i' % office.id].data and office not in task.offices:
                 task.offices.append(office)
             toValidate.append(form['check%i' % office.id].data)
-        if len(toValidate) > 0 and True not in toValidate:
-            flash("Error: one office must be selected at least",
-            'danger')
+
+        if len(toValidate) > 0 and not all(toValidate):
+            flash("Error: one office must be selected at least", 'danger')
             return redirect(url_for("manage_app.common_task_a"))
-        db.session.add(task)
+
+        initial_ticket = data.Serial.query.filter(
+            data.Serial.office_id.in_(o.id for o in task.offices),
+            data.Serial.number == 100
+        ).first()
+
+        if not initial_ticket:
+            for office in task.offices:
+                db.session.add(data.Serial(
+                    office_id=office.id,
+                    task_id=task.id,
+                    p=True
+                ))
+
         db.session.commit()
         flash("Notice: a common task has been added.", 'info')
         return redirect(url_for("manage_app.all_offices"))
@@ -468,15 +482,31 @@ def task_a(o_id):
         flash("Error: operators are not allowed to access the page ",
               'danger')
         return redirect(url_for('core.root'))
+
     if form.validate_on_submit():
         if data.Task.query.filter_by(name=form.name.data).first() is not None:
             flash("Error: name is used by another one, choose another name",
                   'danger')
             return redirect(url_for("manage_app.task_a", o_id=o_id))
+
         task = data.Task(form.name.data)
         task.offices.append(office)
         db.session.add(task)
         db.session.commit()
+
+        initial_ticket = data.Serial.query.filter(
+            data.Serial.office_id.in_(o.id for o in task.offices),
+            data.Serial.number == 100
+        ).first()
+
+        if not initial_ticket:
+            db.session.add(data.Serial(
+                office_id=task.offices[0].id,
+                task_id=task.id,
+                p=True
+            ))
+            db.session.commit()
+
         flash("Notice: New task been added.", 'info')
         return redirect(url_for("manage_app.offices", o_id=o_id))
     return render_template("task_add.html", form=form,
