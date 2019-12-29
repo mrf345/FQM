@@ -40,6 +40,11 @@ class Task(db.Model):
         self.name = name
         # self.office_id = office_id
 
+    @property
+    def least_tickets_office(self):
+        self.offices.sort(key=lambda o: Serial.query.filter_by(office_id=o.id).count())
+        return self.offices[0]
+
 
 class Serial(db.Model):
     __tablename__ = "serials"

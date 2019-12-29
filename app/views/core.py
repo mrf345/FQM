@@ -89,8 +89,8 @@ def root(n=None):
 def serial(t_id):
     """ to generate a new ticket and print it """
     form = forms.Touch_name(session.get('lang'))
-    tsk = data.Task.query.filter_by(id=t_id).first()
-    if tsk is None:
+    task = data.Task.query.filter_by(id=t_id).first()
+    if task is None:
         flash('Error: wrong entry, something went wrong',
               'danger')
         return redirect(url_for("core.root"))
@@ -110,22 +110,17 @@ def serial(t_id):
 
     # FIX: limit the tickets to the range of waitting tickets, prevent overflow.
     # Assigning the first office in the list
-    offices_ids = [o.id for o in data.Task.query.filter_by(id=t_id).first().offices]
+    o_id = task.least_tickets_office.id
+    next_number = data.Serial.query.filter_by(office_id=o_id)\
+                           .order_by(data.Serial.number.desc())\
+                           .first().number + 1
 
-    # FIX: to manage racing condition in generating a new number, when overloaded.
-    def current_ticket():
-        return data.Serial.query.filter(data.Serial.office_id.in_(offices_ids))\
-                                .order_by(data.Serial.timestamp.desc())\
-                                .first()
-
-    o_id = choice(offices_ids) if len(offices_ids) > 1 else current_ticket().office_id
-
-    if data.Serial.query.filter_by(number=current_ticket().number + 1, office_id=o_id).first() is None:
+    if data.Serial.query.filter_by(number=next_number, office_id=o_id).first() is None:
         if n:  # registered
-            db.session.add(data.Serial(current_ticket().number + 1, o_id, t_id, nm, True))
+            db.session.add(data.Serial(next_number, o_id, t_id, nm, True))
             db.session.commit()
         else:  # printed
-            db.session.add(data.Serial(current_ticket().number + 1, o_id, t_id, None, False))
+            db.session.add(data.Serial(next_number, o_id, t_id, None, False))
             db.session.commit()
             # adding printer support
             q = data.Printer.query.first()
@@ -141,7 +136,7 @@ def serial(t_id):
                     if langu == 'ar':
                         print_ticket_windows_ar(
                             q.product,
-                            oot.prefix + '.' + str(current_ticket().number + 1),
+                            oot.prefix + '.' + str(next_number),
                             oot.prefix + str(oot.name),
                             tnum, ppt.name,
                             oot.prefix + '.' + str(cuticket.number),
@@ -149,7 +144,7 @@ def serial(t_id):
                     else:
                         print_ticket_windows(
                             q.product,
-                            oot.prefix + '.' + str(current_ticket().number + 1),
+                            oot.prefix + '.' + str(next_number),
                             oot.prefix + str(oot.name),
                             tnum, ppt.name,
                             oot.prefix + '.' + str(cuticket.number), l=langu,
@@ -182,14 +177,14 @@ def serial(t_id):
                 if langu == 'ar':
                     printit_ar(
                         p,
-                        oot.prefix + '.' + str(current_ticket().number + 1),
+                        oot.prefix + '.' + str(next_number),
                         oot.prefix + str(oot.name),
                         tnum, u'' + ppt.name,
                         oot.prefix + '.' + str(cuticket.number))
                 else:
                     printit(
                         p,
-                        oot.prefix + '.' + str(current_ticket().number + 1),
+                        oot.prefix + '.' + str(next_number),
                         oot.prefix + str(oot.name),
                         tnum, u'' + ppt.name,
                         oot.prefix + '.' + str(cuticket.number), lang=langu)
@@ -321,7 +316,7 @@ def serial_rt(t_id, ofc_id=None):
 
 @core.route('/pull', defaults={'o_id': None, 'ofc_id': None})
 @core.route('/pull/<int:o_id>/<int:ofc_id>')
-@login_required
+# @login_required
 def pull(o_id=None, ofc_id=None):
     """ to change the state of a ticket to be pulled """
     # FIX: pulling tickets by task_id instead of office_id
@@ -388,7 +383,23 @@ def pull(o_id=None, ofc_id=None):
     # --- Reassigning cs seems to fix it
     # Fix: pulling tickets by task_id instead of office_id
     # modifying removing from  waiting with task_id 
-    cs = data.Waiting.query.filter_by(**({'task_id': o_id, 'office_id': ofc_id} if o_id is not None else {})).first()
+    processed_ticket = data.Serial.query.order_by(data.Serial.timestamp)\
+                                        .filter(data.Serial.number != 100,
+                                                data.Serial.p != True)
+
+    if o_id:
+        processed_ticket = processed_ticket.filter(data.Serial.task_id == cs.task_id)
+
+    if ofc_id:
+        processed_ticket = processed_ticket.filter(data.Serial.office_id == cs.office_id)
+
+    processed_ticket = processed_ticket.first()
+
+    if not processed_ticket:
+        flash("Error: no tickets left to pull from ..", 'danger')
+        return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
+
+    cs = data.Waiting.query.filter_by(**({'task_id': o_id, 'office_id': ofc_id, 'number': processed_ticket.number} if o_id is not None else {'number': processed_ticket.number})).first()
     if cs is None:
         flash("Error: no tickets left to pull from ..", 'danger')
         return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
@@ -403,27 +414,13 @@ def pull(o_id=None, ofc_id=None):
     cl.name = cs.name
     db.session.commit()
 
-    next_ticket = data.Serial.query.order_by(data.Serial.timestamp)\
-                                   .filter(data.Serial.number != 100,
-                                           data.Serial.p != True)
+    processed_ticket.p = True
+    processed_ticket.pdt = datetime.utcnow()
+    processed_ticket.pulledBy = getattr(current_user, 'id', None)
 
-    if o_id:
-        next_ticket = next_ticket.filter(data.Serial.task_id == cs.task_id)
-
-    if ofc_id:
-        next_ticket = next_ticket.filter(data.Serial.office_id == cs.office_id)
-
-    next_ticket = next_ticket.first()
-
-    if not next_ticket:
-        flash("Error: no tickets left to pull from ..", 'danger')
-        return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
-
-    next_ticket.p = True
-    next_ticket.pdt = datetime.utcnow()
-    next_ticket.pulledBy = getattr(current_user, 'id', None)
-
-    db.session.add(next_ticket)
+    print('#' * 10)
+    print(processed_ticket.number)
+    db.session.add(processed_ticket)
     db.session.delete(cs)
     db.session.commit()
     flash("Notice: Ticket has been pulled ..", 'info')

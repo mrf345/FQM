@@ -81,14 +81,14 @@ def printit(printer, ticket, office, tnumber,
     printer.set(align='center', height=1, width=2)
     printer.text("\n" + '-' * 15 + "\n")
     printer.set(align='left', height=1, width=1)
-    printer.text(get_translation('\nOffice : ', lang) + str(office).encode('utf-8') + "\n")
-    printer.text(get_translation('\nCurrent Ticket : ', lang) + str(cticket).encode('utf-8') + "\n")
-    printer.text(get_translation('\nTickets ahead : ', lang) + str(tnumber) + "\n")
+    printer.text(f'\n{get_translation("Office : ", lang)}{office}\n')
+    printer.text(f'\n{get_translation("Current ticket : ", lang)}{cticket}\n')
+    printer.text(f'\n{get_translation("Tickets ahead : ", lang)}{tnumber}\n')
     try:
-        printer.text(get_translation('\nTask : ', lang) + str(task) + "\n")
+        printer.text(f'\n{get_translation("Task : ", lang)}{task}\n')
     except Exception:
         pass
-    printer.text(get_translation('\nTime : ', lang) + str(datetime.now())[:-7] + "\n")
+    printer.text(f'{get_translation("Time : ", lang)}{datetime.now()[:-7]}\n')
     printer.cut()
     return printer
 
@@ -98,7 +98,7 @@ def print_ticket_windows(pname, a, b, c, d, cit, l, ip):
     file_path = path.join(getcwd(),
                           f'{uuid.uuid4()}'.replace('-', '') + '.txt')
 
-    with open(file_path, 'w') as file:
+    with open(file_path, 'wb+') as file:
         file.write(content)
 
     system(f'print /D:\\\localhost\\"{pname}" "{file_path}"')
@@ -375,7 +375,7 @@ def print_ticket_windows_ar(pname, ti, ofc, tnu, tas, cticket, ip):
     p = Dummy()
     p.image(sfs[0], fragment_height=tt, high_density_vertical=True)
     p.cut()
-    f = open(sfs[1], 'w')
+    f = open(sfs[1], 'wb+')
     f.write(p.output)
     p.close()
     f.close()

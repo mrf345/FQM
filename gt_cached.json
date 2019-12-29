@@ -1,35 +1,5 @@
 {
     "": {},
-    "\nCurrent ticket : ": {
-        "en": "\nCurrent ticket : ",
-        "es": "\nBillete actual : ",
-        "fr": "\nBillet actuel : ",
-        "it": "\nBiglietto corrente: "
-    },
-    "\nOffice : ": {
-        "en": "\nOffice : ",
-        "es": "\nOficina : ",
-        "fr": "\nBureau : ",
-        "it": "\nUfficio : "
-    },
-    "\nTask : ": {
-        "en": "\nTask : ",
-        "es": "\nTarea : ",
-        "fr": "\nTache : ",
-        "it": "\nCompito : "
-    },
-    "\nTickets ahead : ": {
-        "en": "\nTickets ahead : ",
-        "es": "\nBilletes antes : ",
-        "fr": "\nBillets devant : ",
-        "it": "\nbiglietti in anticipo : "
-    },
-    "\nTime : ": {
-        "en": "\nTime : ",
-        "es": "\nHora : ",
-        "fr": "\nTemps : ",
-        "it": "\nTempo : "
-    },
     " Opps, a critical error has occurred, we will be ": {
         "ar": "\u062d\u062f\u062b \u062e\u0637\u0623 \u0641\u0627\u062f\u062d \u0641\u064a \u062a\u0634\u063a\u064a\u0644 \u0627\u0644\u0646\u0638\u0627\u0645 , \u0633\u0646\u0643\u0648\u0646 \u0634\u0627\u0643\u0631\u064a\u0646 \u0644\u0643 \u0625\u0646 ",
         "en": " Opps, a critical error has occurred, we will be ",
@@ -498,6 +468,12 @@
         "es": "Boleto actual",
         "fr": "Billet actuel",
         "it": "Biglietto corrente"
+    },
+    "Current ticket : ": {
+        "en": "Current ticket : ",
+        "es": "Billete actual : ",
+        "fr": "Billet actuel : ",
+        "it": "Biglietto corrente: "
     },
     "Current ticket meant to display the lastly pulled ticket by an office and it displays the ticket , its holder specified details": {
         "ar": "\u0627\u0644\u062a\u0630\u0643\u0631\u0629 \u0627\u0644\u062d\u0627\u0644\u064a\u0629 \u062a\u0639\u0646\u064a \u0639\u0631\u0636 \u0627\u0644\u062a\u0630\u0643\u0631\u0629 \u0627\u0644\u062a\u064a \u0633\u062d\u0628\u062a \u0623\u062e\u064a\u0631\u064b\u0627 \u0645\u0646 \u0623\u062d\u062f \u0627\u0644\u0645\u0643\u0627\u062a\u0628 \u0648\u062a\u0639\u0631\u0636 \u0627\u0644\u062a\u0630\u0643\u0631\u0629 \u060c \u0648\u062d\u062f\u062f \u0635\u0627\u062d\u0628\u0647\u0627 \u0627\u0644\u062a\u0641\u0627\u0635\u064a\u0644",
@@ -1793,6 +1769,12 @@
         "fr": "Bureau",
         "it": "Ufficio"
     },
+    "Office : ": {
+        "en": "Office : ",
+        "es": "Oficina : ",
+        "fr": "Bureau : ",
+        "it": "Ufficio : "
+    },
     "Office : the virtual representation of an office on-which tickets are pulled and managed": {
         "ar": "\u0627\u0644\u0645\u0643\u062a\u0628: \u0627\u0644\u062a\u0645\u062b\u064a\u0644 \u0627\u0644\u0627\u0641\u062a\u0631\u0627\u0636\u064a \u0644\u0644\u0645\u0643\u062a\u0628 \u0627\u0644\u0630\u064a \u064a\u062a\u0645 \u0633\u062d\u0628 \u0627\u0644\u062a\u0630\u0627\u0643\u0631 \u0648\u0625\u062f\u0627\u0631\u062a\u0647\u0627",
         "en": "Office : the virtual representation of an office on-which tickets are pulled and managed",
@@ -2648,6 +2630,12 @@
         "fr": "T\u00e2che",
         "it": "Compito"
     },
+    "Task : ": {
+        "en": "Task : ",
+        "es": "Tarea : ",
+        "fr": "Tache : ",
+        "it": "Compito : "
+    },
     "Task : the option that its title appears to the user on the Touch screen to choose from and dispatch a ticket for it": {
         "ar": "\u0627\u0644\u0645\u0647\u0645\u0629: \u0627\u0644\u062e\u064a\u0627\u0631 \u0627\u0644\u0630\u064a \u064a\u0638\u0647\u0631 \u0639\u0646\u0648\u0627\u0646\u0647 \u0644\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0639\u0644\u0649 \u0634\u0627\u0634\u0629 \u0627\u0644\u0644\u0645\u0633 \u0644\u0644\u0627\u062e\u062a\u064a\u0627\u0631 \u0645\u0646 \u0628\u064a\u0646\u0647\u0627 \u0648\u0625\u0631\u0633\u0627\u0644 \u062a\u0630\u0643\u0631\u0629 \u0644\u0647",
         "en": "Task : the option that its title appears to the user on the Touch screen to choose from and dispatch a ticket for it",
@@ -2788,6 +2776,12 @@
         "fr": "Des billets",
         "it": "Biglietti"
     },
+    "Tickets ahead : ": {
+        "en": "Tickets ahead : ",
+        "es": "Billetes antes : ",
+        "fr": "Billets devant : ",
+        "it": "biglietti in anticipo : "
+    },
     "Tickets pulled": {
         "ar": "\u0633\u062d\u0628\u062a \u062a\u0630\u0627\u0643\u0631",
         "en": "Tickets pulled",
@@ -2808,6 +2802,12 @@
         "es": "Entradas totales",
         "fr": "Total des tickets",
         "it": "I biglietti sono in totale"
+    },
+    "Time : ": {
+        "en": "Time : ",
+        "es": "Hora : ",
+        "fr": "Temps : ",
+        "it": "Tempo : "
     },
     "Title": {
         "ar": "\u0639\u0646\u0648\u0627\u0646",

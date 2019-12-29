@@ -2,7 +2,7 @@ from random import choice
 from app.middleware import db
 from app.database import Task, Office, Serial, Waiting, User
 from random import choice, randint
-from app.__init__ import create_app
+from app.main import create_app
 
 # To use any of the following functions, example :
 # with create_app().app_context():
