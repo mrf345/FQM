@@ -110,10 +110,10 @@ def serial(t_id):
 
     # FIX: limit the tickets to the range of waitting tickets, prevent overflow.
     # Assigning the first office in the list
-    o_id = task.least_tickets_office.id
+    o_id = task.least_tickets_office().id
     next_number = data.Serial.query.filter_by(office_id=o_id)\
-                           .order_by(data.Serial.number.desc())\
-                           .first().number + 1
+                             .order_by(data.Serial.number.desc())\
+                             .first().number + 1
 
     if data.Serial.query.filter_by(number=next_number, office_id=o_id).first() is None:
         if n:  # registered
@@ -233,21 +233,24 @@ def serial_r(o_id):
         data.Waiting.query.filter_by(office_id=f.office_id, number=f.number).delete()
 
     # NOTE: Queries has to be written fully everytime to avoid sqlalchemy racing condition
+    tickets_to_delete = data.Serial.query.filter_by(
+        data.Serial.office_id == o_id,
+        data.Serial.number != 100
+    )
+
     if operator:
         # Prevent operators from deleteing common tasks tickets
-        for ticket in data.Serial.query.filter_by(office_id=o_id):
+        for ticket in tickets_to_delete:
             task = data.Task.query.filter_by(id=ticket.task_id).first()
-            query = data.Serial.query.filter(data.Serial.office_id == o_id)
 
             if len(task.offices) > 1:
-                query = query.filter(data.Serial.task_id != task.id)
+                ticket = query.filter(data.Serial.task_id != task.id)
 
-            query.delete()
+            ticket.delete()
     else:
-        data.Serial.query.filter_by(office_id=o_id).delete()
+        ticket.delete()
     db.session.commit()
-    flash("Notice: office has been resetted. ..",
-          'info')
+    flash("Notice: office has been resetted. ..", 'info')
     return redirect(url_for("manage_app.offices", o_id=o_id))
 
 

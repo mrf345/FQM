@@ -40,7 +40,6 @@ class Task(db.Model):
         self.name = name
         # self.office_id = office_id
 
-    @property
     def least_tickets_office(self):
         self.offices.sort(key=lambda o: Serial.query.filter_by(office_id=o.id).count())
         return self.offices[0]
@@ -72,6 +71,14 @@ class Serial(db.Model):
         # fixing mass use tickets multi operators conflict
         self.p = p
         self.pulledBy = pulledBy
+
+    @property
+    def task(self):
+        return Task.query.filter_by(id=self.task_id).first()
+
+    @property
+    def office(self):
+        return Office.query.filter_by(id=self.office_id).first()
 
 class Waiting(db.Model):
     __tablename__ = "waitings"

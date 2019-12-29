@@ -164,18 +164,6 @@ def mse():
             else:
                 ra.name = 'Operator'
             db.session.add(ra)
-    for o in data.Office.query:
-        if data.Serial.query.filter_by(office_id=o.id).first() is None:
-            tk = o.tasks
-            if len(tk) > 0:
-                for t in tk:
-                    dd = data.Serial(100, o.id, t.id, None, False)
-                    dd.p = True
-                    db.session.add(dd)
-            else:
-                dd = data.Serial(100, o.id, 1, None, False)
-                dd.p = True
-                db.session.add(dd)
     db.session.commit()
 
 
