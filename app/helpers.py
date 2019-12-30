@@ -48,7 +48,7 @@ def reject_not_god(function):
     '''
     @wraps(function)
     def decorated(*args, **kwargs):
-        if is_god():
+        if is_god() or current_app.config.get('LOGIN_DISABLED'):
             return function(*args, **kwargs)
         with current_app.app_context():
             flash('Error: only main Admin account can access the page', 'danger')
@@ -94,7 +94,7 @@ def reject_not_admin(function):
     '''
     @wraps(function)
     def decorated(*args, **kwargs):
-        if is_admin():
+        if is_admin() or current_app.config.get('LOGIN_DISABLED'):
             return function(*args, **kwargs)
         with current_app.app_context():
             flash('Error: only administrator can access the page', 'danger')

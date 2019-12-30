@@ -36,7 +36,7 @@
                 {% if dropdown %} $("{{ dropdown }}").collapse('show') {% endif %} // sidebar collapse for all
                 {% if hash %} $("{{ hash }}").addClass('active') {% endif %} // activating item regardless of uniqueness activation
                 {% if navbar %} $("{{ navbar }}").addClass("active") {% endif %} // activating navbar category
-                {% if current_user.role_id == 3 %}
+                {% if getattr(current_user, 'role', None) == 3 %}
                     $('#cls').collapse('show')
                     $('#dropdown-lvl{{ ooid }}').collapse('show')
                 {% endif %}
@@ -100,7 +100,7 @@
     	            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     		            <ul class="nav navbar-nav navbar-left">
                             <li id="snb1"><a href="{{ url_for('manage_app.manage') }}">{{ translate('Management', 'en', [defLang]) }}</a></li>
-                            {% if current_user.role_id == 1 %}
+                            {% if getattr(current_user, 'role', None) == 1 %}
     		                    <li id="snb2"><a href="{{ url_for('cust_app.customize') }}">{{ translate('Customization', 'en', [defLang]) }}</a></li>
                             <li class="dropdown" id='snb3'>
     			                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -183,11 +183,11 @@
                                 </a>
     			                <ul class="dropdown-menu" role="menu">
     				                <li class="dropdown-header">
-    				                    ( {% if current_user.role_id == 1 %} Administrator
-    				                    {% elif current_user.role_id == 2 %} Monitor
+    				                    ( {% if getattr(current_user, 'role', None) == 1 %} Administrator
+    				                    {% elif getattr(current_user, 'role', None) == 2 %} Monitor
     				                    {% else %} Operator {% endif %} )
     				                </li>
-    				                {% if current_user.id != 1 and current_user.role_id == 1 %}
+    				                {% if current_user.id != 1 and getattr(current_user, 'role', None) == 1 %}
     				                    <li class="">
                                             <a href="{{ url_for('administrate.user_u', u_id=current_user.id) }}">
     				                            <span class="fa fa-pencil"></span>

@@ -13,7 +13,7 @@
 		<!-- Main Menu -->
 		<div class="side-menu-container">
 		    <ul class="nav navbar-nav">
-			{% if current_user.role_id != 3 %}
+			{% if getattr(current_user, 'role', None) != 3 %}
 			<li id="da1" >
 			    <a href="{{ url_for('manage_app.search') }}">
 				<span class="fa fa-search"></span>
@@ -63,7 +63,7 @@
 			{% endif %}
 			<!-- Dropdown--> 
 			{% for office in offices %}
-			{% if current_user.role_id != 3 or checkId(current_user.id, office.operators) %}
+			{% if getattr(current_user, 'role', None) != 3 or checkId(current_user.id, office.operators) %}
 			<li class="panel panel-default da{{ office.id+3 }} {% if ar %} ar1 {% endif %}" id="dropdown">
 			    <a data-toggle="collapse" href="#dropdown-lvl{{ office.id }}">
 				<span class="fa fa-desktop"></span>
@@ -92,7 +92,7 @@
 						{{ translate('All tickets', 'en', [defLang]) }}
 					    </a>
 					</li>
-					{% if current_user.role_id == 3 %}
+					{% if getattr(current_user, 'role', None) == 3 %}
 					<li id="tr{{ office.id }}" >
 						<a onclick="announce()">
 						<span class="glyphicon glyphicon-refresh"></span>

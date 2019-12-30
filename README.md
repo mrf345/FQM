@@ -24,9 +24,26 @@
 > - Execute the following commands in a terminal window
 > 1. `git clone https://github.com/mrf345/FQM.git` <br />
 > 2. `cd FQM` <br />
-> - You can choose to use Python 2.7 or 3.4 <br />
-> 3. `pip2.7 install -r requirements.txt` <br />
-> 4. `python2.7 run.py` <br />
+> - You can choose to use Python 3.7 or Python 3.8 <br />
+> 3. `pip install -r requirements/dev.txt` <br />
+> 4. `python run.py` <br />
+
+> - To checkout the supported command-line options:
+> 1. `python run.py --help` <br />
+
+```bash
+Usage: run.py [OPTIONS]
+
+If no `ip` is passed it will default to `127.0.0.1`
+If no `port` is passed it will default to a random port.
+
+Options:
+  --cli        To use command-line interface instead of GUI.
+  --quiet      To silence web server logs.
+  --ip TEXT    IP address to stream the service on.
+  --port TEXT  Port to stream the service through.
+  --help       Show this message and exit.
+```
 
 #### - With executable:
 > You can get an executable that's suitable to your OS from : <br />

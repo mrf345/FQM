@@ -1,32 +1,23 @@
 #!/bin/bash
-# Read me : this script will install FQM requirements and your user into the
+# NOTE: this script will install FQM requirements and add your user into the
 # printing group. this script purpose is to ease the process of installing, uninstalling
-# and running FQM on linux
+# FQM on Linux and MacOS. 
 
-# checking if pip exist
+version="0.5"
 pip_exi=`command -v pip`
-pip2_exi=`command -v pip2`
-# checking if python exist
-python2=`command -v python2`
 python=`command -v python`
-# # checking if qt4 exists
-# qt=`command -v qmake`
-# # checking if cmake exists
-# cmake=`command -v cmake`
-# checking if virtualenv exists
 virtenv=`command -v virtualenv`
-virtenv2=`command -v virtualenv2`
 
-if [ "$python" == "" ] && [ "$python2" == "" ]
+if [ "$python" == "" ]
 then
-  echo "Error: please install python or python2, from your package manager"
+  echo "Error: please install python, from your package manager"
   exit 0
 fi
-if [ "$pip_exi" == "" ] && [ "$pip2_exi" == "" ]
+if [ "$pip_exi" == "" ]
 then
   sudo python3 -m ensurepip
 fi
-if [ "$virtenv" == "" ] && [ "$virtenv2" == "" ]
+if [ "$virtenv" == "" ]
 then
   sudo pip3 install vertualenv
 fi
@@ -34,12 +25,12 @@ fi
 
 if [ "$1" == "--install" ]
 then
-  if [ -f requirements.txt ]
+  if [ -f requirements/dev.txt ]
   then
     echo "##### Creating virtual enviroment #####"
     virtualenv --python=python3 --system-site-packages installiation/ && source installiation/bin/activate
     echo "##### Installing packages from pip #####"
-    pip install -r requirements.txt
+    pip install -r requirements/dev.txt
     echo "##### Adding user to local printers group #####"
     if [ "`groups | grep lp`" == "" ]
     then
@@ -72,7 +63,7 @@ then
     echo "Error: must --install enviroment first .."
     exit 0
   fi
-  echo "##### Running FQM 0.4.3 #####"
+  echo "##### Running FQM $version #####"
   if [ -f run.py ]
   then
     python run.py

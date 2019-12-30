@@ -1,0 +1,5 @@
+-r main.txt
+-r test.txt
+flake8==3.7.9
+pudb==2019.2
+pytest-pudb==0.7.0

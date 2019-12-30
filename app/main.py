@@ -29,7 +29,7 @@ from app.database import Settings
 from app.constants import SUPPORTED_LANGUAGES, SUPPORTED_MEDIA_FILES, VERSION
 
 
-def create_app():
+def create_app(config={}):
     ''' Create the flask app and setup extensions and blueprints.
 
     Returns
@@ -38,7 +38,6 @@ def create_app():
             app with settings and blueprints loadeds.
     '''
     app = Flask(__name__, static_folder=r_path('static'), template_folder=r_path('templates'))
-    PageDown(app)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + r_path('data.sqlite')
     # Autoreload if templates change
@@ -48,7 +47,11 @@ def create_app():
     app.config['UPLOADED_FILES_DEST'] = r_path('static/multimedia')
     app.config['UPLOADED_FILES_ALLOW'] = reduce(lambda sum, group: sum + group, SUPPORTED_MEDIA_FILES)
     app.config['SECRET_KEY'] = os.urandom(24)
+    app.config.update(config)
+
+
     # Initiating extensions before registering blueprints
+    PageDown(app)
     Moment(app)
     QRcode(app)
     configure_uploads(app, files)
@@ -63,6 +66,7 @@ def create_app():
            bypass=['/touch/<int:a>', '/serial/<int:t_id>', '/display'])
     gtts(app=app, route=True)
     gtranslator.init_app(app)
+
     # Register blueprints
     app.register_blueprint(administrate)
     app.register_blueprint(core)
@@ -87,9 +91,9 @@ def create_db(app):
         mse()
 
 
-def bundle_app():
+def bundle_app(config={}):
     ''' Create a Flask app, set settings, load extensions, blueprints and create database. '''
-    app = create_app()
+    app = create_app(config)
     create_db(app)
 
     if os.name != 'nt':
@@ -159,7 +163,7 @@ def bundle_app():
 
         return dict(path=path, notifications=Settings.query.first().notifications,
                     adme=admin_route, brp=Markup('<br>'), ar=ar, current_path=request.path,
-                    version=VERSION, str=str, defLang=session.get('lang'),
+                    version=VERSION, str=str, defLang=session.get('lang'), getattr=getattr,
                     checkId=lambda id, records: id in [i.id for i in records])
 
     return app
