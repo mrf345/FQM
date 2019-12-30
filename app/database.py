@@ -14,7 +14,12 @@ mtasks = db.Table(
     db.Column('task_id', db.Integer, db.ForeignKey('tasks.id'), primary_key=True))
 
 
-class Office(db.Model):
+class Mixin:
+    @classmethod
+    def get(cls, id):
+        return cls.query.filter_by(id=id).first()
+
+class Office(db.Model, Mixin):
     __tablename__ = "offices"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Integer, unique=True)
@@ -116,7 +121,7 @@ class Waiting_c(db.Model):
         self.name = name
 
 
-class Operators(db.Model):
+class Operators(db.Model, Mixin):
     __tablename__ = "operators"
     crap = db.Column(db.Integer, primary_key=True)
     id = db.Column(db.Integer)
@@ -127,7 +132,7 @@ class Operators(db.Model):
         self.office_id = office_id
 
 
-class User(UserMixin, db.Model):
+class User(UserMixin, db.Model, Mixin):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), unique=True)

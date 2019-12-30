@@ -121,14 +121,14 @@
                     	<h2 class="text text-warning u"> ( {{ current_user.name }} )</h2>
                     	<h3 class="text text-muted u mb-2">
                             | 
-                            {% if current_user.role_id == 1 %} Administrator 
-                            {% elif current_user.role_id == 2 %} Monitor 
+                            {% if getattr(current_user, 'role', None) == 1 %} Administrator 
+                            {% elif getattr(current_user, 'role', None) == 2 %} Monitor 
                             {% else %} Operator 
                             {% endif %} 
                             |
                         </h3>
                         <!-- If operator redirect to specific office instead of manage -->
-                        {% if current_user.role_id == 3 %}
+                        {% if getattr(current_user, 'role', None) == 3 %}
                             <a 
                                 class="btn btn-lg btn-primary" 
                                 href="{{ url_for('manage_app.offices', o_id=operators.filter_by(id=current_user.id).first().office_id) }}"

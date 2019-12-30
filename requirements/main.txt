@@ -12,7 +12,6 @@ click==5.1
 configparser==3.5.0
 decorator==4.1.2
 dominate==2.3.1
-# enum34==1.1.6
 Flask==1.0.2
 Flask-Bootstrap==3.3.7.1
 Flask-Colorpicker==0.9
@@ -82,4 +81,3 @@ Whoosh==2.7.4
 WTForms==2.1
 WTForms-Components==0.10.3
 xxhash==1.4.3
-flake8

@@ -37,6 +37,7 @@ def update_last_seen():
 def unauthorized_callback():
     ''' if user not logged in '''
     session['next_url'] = request.path
+
     flash('Error: login is required to access the page', 'danger')
     return redirect(url_for('core.root', n='b'))
 
@@ -47,12 +48,15 @@ def unauthorized_callback():
 def admin_u():
     ''' updating main admin account password '''
     form = forms.U_admin(session.get('lang'))
-    admin = data.User.query.filter_by(id=1).first()
+    admin = data.User.get(1)
+
     if form.validate_on_submit():
         admin.password = form.password.data
+
         db.session.commit()
         flash('Notice: admin password has been updated.', 'info')
         return redirect(url_for('administrate.logout'))
+
     return render_template('admin_u.html',
                            navbar='#snb3',
                            page_title='Updating Admin Password',
@@ -101,6 +105,7 @@ def users():
     page = request.args.get('page', 1, type=int)
     pagination = data.User.query.paginate(page, per_page=10,
                                           error_out=False)
+
     return render_template('users.html',
                            page_title='All users',
                            navbar='#snb3',
@@ -117,15 +122,19 @@ def users():
 def operators(t_id):
     ''' to list operators of an office '''
     office = data.Office.query.filter_by(id=t_id).first()
+
     if office is None:
         flash('Error: wrong entry, something went wrong', 'danger')
         return redirect(url_for('root'))
-    if current_user.role_id == 3 and\
+
+    if getattr(current_user, 'role', None) == 3 and\
        data.Operators.query.filter_by(id=current_user.id).first() is None:
         flash('Error: only administrator can access the page', 'danger')
         return redirect(url_for('root'))
+
     page = request.args.get('page', 1, type=int)
     pagination = data.Operators.query.filter_by(office_id=t_id).paginate(page, per_page=10, error_out=False)
+
     return render_template('operators.html',
                            page_title=str(office.name) + ' operators',
                            len=len,
@@ -147,13 +156,16 @@ def operators(t_id):
 def user_a():
     ''' to add a user '''
     form = forms.User_a(session.get('lang'))
+
     if form.validate_on_submit():
         if data.User.query.filter_by(name=form.name.data).first() is not None:
             flash('Error: user name already exists, choose another name',
                   'danger')
             return redirect(url_for('administrate.user_a'))
+
         db.session.add(data.User(form.name.data, form.password.data, form.role.data))
         db.session.commit()
+
         # Fix: multiple operators for office
         # adding user to Operators list
         if form.role.data == 3:
@@ -162,8 +174,10 @@ def user_a():
                 form.offices.data
             ))
             db.session.commit()
+
         flash('Notice: user has been added .', 'info')
         return redirect(url_for('administrate.users'))
+
     return render_template('user_add.html',
                            form=form,
                            navbar='#snb3',
@@ -177,43 +191,50 @@ def user_a():
 def user_u(u_id):
     ''' to update user '''
     form = forms.User_a(session.get('lang'))
-    u = data.User.query.filter_by(id=u_id).first()
-    if u is None:
+    user = data.User.query.filter_by(id=u_id).first()
+
+    if user is None:
         flash('Error: user selected does not exist, something wrong !', 'danger')
         return redirect(url_for('core.root'))
-    if u.id == 1:
+
+    if user.id == 1:
         return reject_god(lambda: None)()
+
     if form.validate_on_submit():
-        u.name = form.name.data
-        u.password = form.password.data
-        u.role_id = form.role.data
+        user.name = form.name.data
+        user.password = form.password.data
+        user.role_id = form.role.data
+
         # Remove operator if role has changed
         if form.role.data == 3:
             if data.Office.query.filter_by(id=form.offices.data).first() is None:
                 flash('Error: Office selected does not exist!', 'danger')
                 return redirect(url_for('core.root'))
-            if data.Operators.query.filter_by(id=u.id).first() is None:
+
+            if data.Operators.query.filter_by(id=user.id).first() is None:
                 db.session.add(data.Operators(
-                    u.id,
+                    user.id,
                     form.offices.data
                 ))
         else:
-            toRemove = data.Operators.query.filter_by(id=u.id).first()
-            if toRemove is not None:
-                db.session.delete(toRemove)
+            to_delete = data.Operators.query.filter_by(id=user.id).first()
+            if to_delete is not None:
+                db.session.delete(to_delete)
+
         db.session.commit()
         flash('Notice: user is updated . ', 'info')
         return redirect(url_for('administrate.users'))
+
     if not form.errors:
-        form.name.data = u.name
-        form.role.data = u.role_id
-        # Fix: multiple operators for office
-        # fetch office id if operator
-        if u.role_id == 3:
-            form.offices.data = data.Operators.query.filter_by(id=u.id).first().office_id
+        form.name.data = user.name
+        form.role.data = user.role_id
+
+        if user.role_id == 3:
+            form.offices.data = data.Operators.get(user.id).office_id
+
     return render_template('user_add.html',
                            form=form, navbar='#snb3',
-                           page_title='Update user : ' + u.name,
+                           page_title='Update user : ' + user.name,
                            u=u, update=True,
                            offices_count=data.Office.query.count())
 
@@ -223,20 +244,22 @@ def user_u(u_id):
 @reject_not_admin
 def user_d(u_id):
     ''' to delete user '''
-    u = data.User.query.filter_by(id=u_id).first()
-    if u is None:
-        flash('Error: user selected does not exist, something wrong !',
-              'danger')
+    user = data.User.query.filter_by(id=u_id).first()
+
+    if user is None:
+        flash('Error: user selected does not exist, something wrong !', 'danger')
         return redirect(url_for('core.root'))
-    if u.id == 1:
+
+    if user.id == 1:
         return reject_god(lambda: None)()
-    # delete from operators if user is operator
-    if u.role_id == 3:
-        db.session.delete(data.Operators.query.filter_by(id=u.id).first())
-    db.session.delete(u)
+
+    if user.role_id == 3:
+        db.session.delete(data.Operators.get(user.id))
+        db.session.commit()
+
+    db.session.delete(user)
     db.session.commit()
-    flash('Notice: user is deleted .',
-          'info')
+    flash('Notice: user is deleted .', 'info')
     return redirect(url_for('administrate.users'))
 
 
@@ -245,15 +268,14 @@ def user_d(u_id):
 @reject_not_admin
 def user_da():
     ''' to delete all users '''
-    for u in data.User.query:
-        # Fix: multiple operators for office
-        # ofc = data.Office.query.filter_by(operator_id=u.id).first()
-        if u.role_id == 3:
-            opt = data.Operators.query.filter_by(id=u.id).first()
-            if opt:
-                db.session.delete(opt)
-        if u.id != 1:
-            db.session.delete(u)
+    for user in data.User.query:
+        if user.role_id == 3:
+            operator = data.Operators.get(id=user.id)
+            operator and db.session.delete(operator)
+
+        if user.id != 1:
+            db.session.delete(user)
+
     db.session.commit()
     flash('Notice: all unassigned users got deleted.', 'info')
     return redirect(url_for('administrate.users'))
@@ -266,6 +288,7 @@ def logout():
     if not current_user.is_authenticated:
         flash('Error: you cannot logout without a login !', 'danger')
         return redirect(url_for('core.root'))
+
     logout_user()
     flash('Notice: logout is done.', 'info')
     return redirect(url_for('core.root'))

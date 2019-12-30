@@ -3,6 +3,7 @@
 # Fixes:
 - [ ] Pre-load waiting tickets from `/feed` to reduce text-to-speech generation latency. 
 
+
 #### Multi screen support:
 
 > - Partial Touch screen on-which you can specify a chosen offices to display their tasks.
@@ -25,6 +26,11 @@ __With the ability to added same tasks into different screens with a different l
 > - Customize printed tickets.
 
 ### 0.5 leftovers
+
+- [ ] System on-hold:
+> - [ ] Put whole system on-hold, with customized message output.
+> - [ ] Put a screen on-hold, with customized message output.
+> - [ ] Auto hold system, whenever numbers of tickets past certain number.
 
 - [ ] Printed ticket customization
 > - [ ] to choose width and height of text

@@ -43,12 +43,8 @@
 > - [ ] Add json format to export `json`
 > - [ ] Improve current `.csv` exporter
 
-- [ ] System on-hold:
-> - [ ] Put whole system on-hold, with customized message output.
-> - [ ] Put a screen on-hold, with customized message output.
-> - [ ] Auto hold system, whenever numbers of tickets past certain number.
 
-- [ ] Initial integration test suite:
-> - [ ] Add testing db switch
-> - [ ] Use `Flask-Testing`
-> - [ ] Cover and refactor all Administrate endpoints
+- [x] Initial integration test suite: `(2019-12-30)`
+> - [x] Add testing db switch
+> - [x] ~~Use `Flask-Testing`~~
+> - [x] Cover and refactor all Administrate endpoints
