@@ -35,7 +35,7 @@
 > - Execute the following commands in a terminal window
 > 1. `git clone https://github.com/mrf345/FQM.git` <br />
 > 2. `cd FQM` <br />
-> - You can choose to use Python 3.7 or Python 3.8 <br />
+> - You can choose to use Python 3.7 <br />
 > 3. `pip install -r requirements/dev.txt` <br />
 > 4. `python run.py` <br />
 
