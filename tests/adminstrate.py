@@ -69,11 +69,8 @@ def test_update_user(client):
         'name': new_name, 'password': new_password, 'role': user.role_id
     })
 
-    with client.application.app_context():
-        updated_user = User.query.filter_by(name=new_name).first()
-
     assert response.status == '302 FOUND'
-    assert updated_user is not None
+    assert User.get(user.id).name == new_name
 
 
 def test_delete_user(client):
