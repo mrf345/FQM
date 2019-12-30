@@ -3,8 +3,8 @@
 </p>
 
 <p align='center'>
-<a href='https://travis-ci.com/mrf345/FQM'>
-  <img src='https://travis-ci.com/mrf345/FQM.svg?branch=master'>
+<a href='https://travis-ci.org/mrf345/FQM'>
+  <img src='https://travis-ci.org/mrf345/FQM.svg?branch=master'>
 </a>
 <a href='https://coveralls.io/github/mrf345/FQM?branch=master'>
   <img src='https://coveralls.io/repos/github/mrf345/FQM/badge.svg?branch=master' alt='Coverage Status' />
