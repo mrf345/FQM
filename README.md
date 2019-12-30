@@ -6,6 +6,12 @@
 <a href='https://travis-ci.org/mrf345/FQM'>
   <img src='https://travis-ci.org/mrf345/FQM.svg?branch=master'>
 </a>
+<a href='https://github.com/mrf345/FQM/releases'>
+  <img src='https://img.shields.io/github/v/release/mrf345/FQM.svg' alt='release'>
+</a>
+</p>
+
+<p align='center'>
 <a href='https://coveralls.io/github/mrf345/FQM?branch=master'>
   <img src='https://coveralls.io/repos/github/mrf345/FQM/badge.svg?branch=master' alt='Coverage Status' />
 </a>
