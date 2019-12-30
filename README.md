@@ -9,8 +9,12 @@
 <a href='https://coveralls.io/github/mrf345/FQM?branch=master'>
   <img src='https://coveralls.io/repos/github/mrf345/FQM/badge.svg?branch=master' alt='Coverage Status' />
 </a>
-<img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed/mrf345/FQM">
-<img alt="GitHub" src="https://img.shields.io/github/license/mrf345/FQM">
+<a href='https://github.com/mrf345/FQM/issues?q=is%3Aissue+is%3Aclosed'>
+  <img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed/mrf345/FQM">
+</a>
+<a href='https://github.com/mrf345/FQM/blob/master/LICENSE'>
+  <img alt="GitHub" src="https://img.shields.io/github/license/mrf345/FQM">
+</a>
 </p>
 
 <h3 align='center'> Free Queue Manager (beta). A web based queue management system built with Python Flask as back-end, and Bootstrap, jQuery as front-end. </h3>
