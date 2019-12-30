@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from app.database import User, Office, Operators
 from .common import client
 
@@ -60,13 +62,18 @@ def test_add_operator(client):
 
 
 def test_update_user(client):
-    with client.application.app_context():
-        user = User.query.filter(User.id != 1).first()
+    name = f'{uuid4()}'.replace('-', '')
+    password = 'password'
+    new_name = f'{uuid4()}'.replace('-', '')
+    role = 1
 
-    new_name = 'test_updating_user'
-    new_password = 'password'
+    client.post('/user_a', data={
+        'name': name, 'password': password, 'role': role
+    })
+
+    user = User.query.filter_by(name=name).first() 
     response = client.post(f'/user_u/{user.id}', data={
-        'name': new_name, 'password': new_password, 'role': user.role_id
+        'name': new_name, 'password': password, 'role': role
     })
 
     assert response.status == '302 FOUND'
