@@ -36,7 +36,7 @@
                 {% if dropdown %} $("{{ dropdown }}").collapse('show') {% endif %} // sidebar collapse for all
                 {% if hash %} $("{{ hash }}").addClass('active') {% endif %} // activating item regardless of uniqueness activation
                 {% if navbar %} $("{{ navbar }}").addClass("active") {% endif %} // activating navbar category
-                {% if getattr(current_user, 'role', None) == 3 %}
+                {% if getattr(current_user, 'role_id', None) == 3 %}
                     $('#cls').collapse('show')
                     $('#dropdown-lvl{{ ooid }}').collapse('show')
                 {% endif %}
@@ -100,7 +100,7 @@
     	            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     		            <ul class="nav navbar-nav navbar-left">
                             <li id="snb1"><a href="{{ url_for('manage_app.manage') }}">{{ translate('Management', 'en', [defLang]) }}</a></li>
-                            {% if getattr(current_user, 'role', None) == 1 %}
+                            {% if getattr(current_user, 'role_id', None) == 1 %}
     		                    <li id="snb2"><a href="{{ url_for('cust_app.customize') }}">{{ translate('Customization', 'en', [defLang]) }}</a></li>
                             <li class="dropdown" id='snb3'>
     			                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -123,7 +123,7 @@
     			                    </li>
                                     <li class="dropdown-header">( {{ translate('Database', 'en', [defLang]) }} )</li>
                                     <li>
-                                        <a href="{{ url_for('administrate.csvd', t_name=0) }}">
+                                        <a href="{{ url_for('administrate.csv') }}">
                                             <span class="fa fa-database"></span>
                                             {{ translate('Export ', 'en', [defLang]) }} CSV
                                         </a>
@@ -183,11 +183,11 @@
                                 </a>
     			                <ul class="dropdown-menu" role="menu">
     				                <li class="dropdown-header">
-    				                    ( {% if getattr(current_user, 'role', None) == 1 %} Administrator
-    				                    {% elif getattr(current_user, 'role', None) == 2 %} Monitor
+    				                    ( {% if getattr(current_user, 'role_id', None) == 1 %} Administrator
+    				                    {% elif getattr(current_user, 'role_id', None) == 2 %} Monitor
     				                    {% else %} Operator {% endif %} )
     				                </li>
-    				                {% if current_user.id != 1 and getattr(current_user, 'role', None) == 1 %}
+    				                {% if current_user.id != 1 and getattr(current_user, 'role_id', None) == 1 %}
     				                    <li class="">
                                             <a href="{{ url_for('administrate.user_u', u_id=current_user.id) }}">
     				                            <span class="fa fa-pencil"></span>

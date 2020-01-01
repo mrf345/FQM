@@ -27,6 +27,22 @@ durations = [("500", "Half a second"), ("1000", "One second"),
              ("2000", "Two seconds"), ("3000", "Three seconds"),
              ("4000", "Four seconds"), ("5000", "Five seconds"),
              ("8000", "Eight seconds"), ("10000", "Ten seconds")]
+export_tabels = [
+    ("User", "Users"),
+    ("Roles", "Roles of usesrs"),
+    ("Office", "Offices"),
+    ("Task", "Tasks"),
+    ("Serial", "Tickets"),
+    ("Waiting", "Waiting tickets")
+]
+export_delimiters = [',', '\t', '\n', '*', '#']
+export_options = {
+    0: 'Comma',
+    1: 'Tab',
+    2: 'New line',
+    3: 'Star',
+    4: 'Hashtag'
+}
 tms = [(0, "First Template"), (1, "Second Template"), (2, "Third Template")]
 
 
@@ -475,19 +491,21 @@ class Touch_name(FlaskForm):
 # Download CSV form ------
 
 class CSV(FlaskForm):
+    headers = SelectField(coerce=int)
+    delimiter = SelectField(coerce=int)
     table = SelectField(coerce=str)
-    submit = SubmitField("Extract table")
+    submit = SubmitField('Extract table')
 
     def __init__(self, defLang='en', *args, **kwargs):
         super(CSV, self).__init__(*args, **kwargs)
-        self.table.label = gtranslator.translate("Select table to download its csv :", 'en', [defLang])
-        self.table.choices = [(t[0], gtranslator.translate(t[1], 'en', [defLang])) for t in [("User", "Users"),
-        ("Roles", "Roles of usesrs"),
-        ("Office", "Offices"),
-        ("Task", "Tasks"),
-        ("Serial", "Tickets"),
-        ("Waiting", "Waiting tickets")]]
-
+        self.headers.label = gtranslator.translate('Show headers in the CSV file :', 'en', [defLang])
+        self.headers.choices = [
+            (t[0], gtranslator.translate(t[1], 'en', [defLang]))
+            for t in [(1, 'Enable'), (0, 'Disable')]]
+        self.delimiter.label = gtranslator.translate('Character to separate the CSV fields with :', 'en', [defLang])
+        self.delimiter.choices = list(export_options.items())
+        self.table.label = gtranslator.translate('Select table to download its csv :', 'en', [defLang])
+        self.table.choices = [(e[0], gtranslator.translate(e[1], 'en', [defLang])) for e in export_tabels]
 
 # Updating admin form
 

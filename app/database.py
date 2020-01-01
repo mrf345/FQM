@@ -27,7 +27,7 @@ class Office(db.Model, Mixin):
     prefix = db.Column(db.String(2))
     operators = db.relationship('Operators', backref='operators')
     tasks = db.relationship('Task', secondary=mtasks, lazy='subquery',
-        backref=db.backref('offices', lazy=True))
+                            backref=db.backref('offices', lazy=True))
 
     def __init__(self, name, prefix):
         self.name = name
@@ -39,16 +39,27 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(300))
     timestamp = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
-    # office_id = db.Column(db.Integer, db.ForeignKey('offices.id'))
 
     def __init__(self, name):
         self.name = name
-        # self.office_id = office_id
+
+    @property
+    def common(self):
+        return len(self.offices) > 1
 
     def least_tickets_office(self):
         self.offices.sort(key=lambda o: Serial.query.filter_by(office_id=o.id).count())
         return self.offices[0]
 
+    def migrate_tickets(self, from_office, to_office):
+        params = dict(office_id=from_office.id, task_id=self.id)
+        tickets = Serial.query.filter_by(**params).all()
+        tickets += Waiting.query.filter_by(**params).all()
+
+        for ticket in tickets:
+            ticket.office_id = to_office.id
+
+        db.session.commit()
 
 class Serial(db.Model):
     __tablename__ = "serials"
@@ -445,7 +456,7 @@ class Settings(db.Model):
     __tablename__ = 'settings'
     id = db.Column(db.Integer, primary_key=True)
     notifications = db.Column(db.Boolean)
-    
+
     def __init__(self, notifications=True):
         self.id = 0
         self.notifications = notifications

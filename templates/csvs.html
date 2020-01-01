@@ -22,10 +22,12 @@
 		    {{ form.csrf_token }}
         <h3 class="text text-center text-muted ar2 mt-4 mb-7">
           | {{ translate("CSV is a basic text files that is used to export database columns and rows into a simple text format, in-which each value is separated by a comma", 'en', [defLang])}}  |
-        </h3>
-		    {{ render_field(form.table, class="form-control mb-4") }}
-		    <center>
-					<button type="submit" class="btn btn-md btn-danger mt-3 mb-5">{{ translate('Extract table', 'en', [defLang]) }}</button>
+		</h3>
+			{{ render_field(form.headers, class='form-control mb-2') }}
+			{{ render_field(form.delimiter, class='form-control mb-2') }}
+		    {{ render_field(form.table, class='form-control mb-4') }}
+		    <center class='mt-3 mb-5'>
+				<button class="btn btn-md btn-danger">{{ translate('Extract table', 'en', [defLang]) }}</button>
 		    </center>
 	    </div>
 	  </div>

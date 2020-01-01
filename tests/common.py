@@ -3,11 +3,10 @@ import tempfile
 import pytest
 from random import choice, randint
 from atexit import register
-from string import ascii_uppercase
 
 from app.main import create_db, bundle_app
 from app.middleware import db
-from app.database import User, Operators, Office
+from app.database import User, Operators, Office, Task
 from app.utils import r_path
 
 
@@ -43,6 +42,7 @@ def client():
             create_db(app)
             teardown()
             fill_offices()
+            fill_tasks()
             fill_users()
         yield client
 
@@ -51,7 +51,7 @@ def client():
     os.unlink(app.config['DATABASE'])
 
 
-def teardown(modules=[User, Operators, Office]):
+def teardown(modules=[User, Operators, Task, Office]):
     if modules:
         for record in modules.pop().query.all():
             db.session.delete(record)
@@ -95,6 +95,26 @@ def fill_offices(entry_number=10):
         ))
 
     db.session.commit()
+
+
+def fill_tasks(entry_number=10):
+    for _ in range(entry_number):
+        name = f'TEST{randint(10000, 99999999)}'
+        offices = []
+        # First task will be uncommon task
+        number_of_offices = 1 if _ == 0 else choice(range(1, 5))
+
+        while number_of_offices > len(offices):
+            office = choice(Office.query.all())
+
+            if office not in offices:
+                offices.append(office)
+        
+        task = Task(name)
+        db.session.add(task)
+        db.session.commit()
+        task.offices = offices
+        db.session.commit()
 
 
 # TODO: get refactor the helper to fit the testing process
