@@ -7,7 +7,7 @@ from PyQt5.QtGui import QFont, QIcon
 from gevent import monkey, pywsgi
 from gevent.event import Event as thevent
 
-from app.utils import r_path, solve_path, get_accessible_ips, get_random_available_port, is_port_available
+from app.utils import absolute_path, solve_path, get_accessible_ips, get_random_available_port, is_port_available
 from app.middleware import gtranslator
 from app.constants import SUPPORTED_LANGUAGES, VERSION
 
@@ -48,7 +48,7 @@ class MainWindow(QWidget):
         super(MainWindow, self).__init__()
         self.app = app
         global_layout = QVBoxLayout(self)
-        icon_path = r_path(solve_path('static/images/favicon.png'))
+        icon_path = absolute_path(solve_path('static/images/favicon.png'))
         # NOTE: need to use objective message boxes instead of functions to set font
         self.font = QFont("static/gfonts/Amiri-Regular.ttf", 12, QFont.Bold)
         self.fonts = QFont("static/gfonts/Amiri-Regular.ttf", 10, QFont.Bold)
@@ -82,7 +82,7 @@ class MainWindow(QWidget):
 
     def set_status(self, global_layout):
         font = self.font
-        self.status_icon = QIcon(r_path(solve_path('static/images/pause.png')))
+        self.status_icon = QIcon(absolute_path(solve_path('static/images/pause.png')))
         self.status_icon_container = QLabel('Icond', self)
         self.status_icon = self.status_icon.pixmap(70, 70, QIcon.Active, QIcon.On)
         self.status_icon_container.setPixmap(self.status_icon)
@@ -176,10 +176,10 @@ class MainWindow(QWidget):
         self.start_button = QPushButton('Start', self)
         self.start_button.clicked.connect(self.start_server)
         self.start_button.setFont(self.fonts)
-        self.start_button.setIcon(QIcon(r_path(solve_path('static/images/play.png'))))
+        self.start_button.setIcon(QIcon(absolute_path(solve_path('static/images/play.png'))))
         self.stop_button = QPushButton('Stop', self)
         self.stop_button.clicked.connect(self.stop_server)
-        self.stop_button.setIcon(QIcon(r_path(solve_path('static/images/pause.png'))))
+        self.stop_button.setIcon(QIcon(absolute_path(solve_path('static/images/pause.png'))))
         self.start_button.setToolTip(self.get_translation('Start the server'))
         self.stop_button.setToolTip(self.get_translation('Stop the server'))
         self.stop_button.setEnabled(False)
@@ -199,7 +199,7 @@ class MainWindow(QWidget):
                 self.stop_button.setEnabled(True)
                 self.select_ip.setEnabled(False)
                 self.select_port.setEnabled(False)
-                self.status_icon = QIcon(r_path(solve_path('static/images/play.png')))
+                self.status_icon = QIcon(absolute_path(solve_path('static/images/play.png')))
                 self.status_icon = self.status_icon.pixmap(70, 70, QIcon.Active, QIcon.On)
                 self.status_icon_container.setPixmap(self.status_icon)
                 current = self.select_ips_ports_change()

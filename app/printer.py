@@ -14,7 +14,7 @@ from bidi.algorithm import get_display
 from PIL import Image, ImageDraw, ImageFont
 from os import remove, getcwd, path, name, popen, system
 
-from app.utils import r_path, get_with_alias
+from app.utils import absolute_path, get_with_alias
 from app.constants import VERSION
 from app.middleware import gtranslator
 
@@ -136,9 +136,9 @@ def printit_ar(pname, ti, ofc, tnu, tas, cticket):
         fs1, fs2 = fsizeit(text, t, f)
         return ((text.size[0] - fs1) / 2, (text.size[1] - fs2) / 2)
     if name == 'nt':
-        fpath = r_path('static\\gfonts\\arial.ttf')
+        fpath = absolute_path('static\\gfonts\\arial.ttf')
     else:
-        fpath = r_path('static/gfonts/arial.ttf')
+        fpath = absolute_path('static/gfonts/arial.ttf')
     fonts = [ImageFont.truetype(fpath, 50),
              ImageFont.truetype(fpath, 30),
              ImageFont.truetype(fpath, 25)]
@@ -259,9 +259,9 @@ def print_ticket_windows_ar(pname, ti, ofc, tnu, tas, cticket, ip):
         return ((text.size[0] - fs1) / 2, (text.size[1] - fs2) / 2)
 
     if name == 'nt':
-        fpath = r_path('static\\gfonts\\arial.ttf')
+        fpath = absolute_path('static\\gfonts\\arial.ttf')
     else:
-        fpath = r_path('static/gfonts/arial.ttf')
+        fpath = absolute_path('static/gfonts/arial.ttf')
     fonts = [ImageFont.truetype(fpath, 50),
              ImageFont.truetype(fpath, 30),
              ImageFont.truetype(fpath, 25)]

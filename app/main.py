@@ -24,7 +24,7 @@ from app.views.administrate import administrate
 from app.views.core import core
 from app.views.customize import cust_app
 from app.views.manage import manage_app
-from app.utils import mse, r_path, log_error
+from app.utils import mse, absolute_path, log_error
 from app.database import Settings
 from app.constants import SUPPORTED_LANGUAGES, SUPPORTED_MEDIA_FILES, VERSION
 
@@ -37,14 +37,14 @@ def create_app(config={}):
         app: Flask app
             app with settings and blueprints loadeds.
     '''
-    app = Flask(__name__, static_folder=r_path('static'), template_folder=r_path('templates'))
+    app = Flask(__name__, static_folder=absolute_path('static'), template_folder=absolute_path('templates'))
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + r_path('data.sqlite')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + absolute_path('data.sqlite')
     # Autoreload if templates change
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     # flask_upload settings
     # app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024 # Remove Upload limit. FIX ISSUE
-    app.config['UPLOADED_FILES_DEST'] = r_path('static/multimedia')
+    app.config['UPLOADED_FILES_DEST'] = absolute_path('static/multimedia')
     app.config['UPLOADED_FILES_ALLOW'] = reduce(lambda sum, group: sum + group, SUPPORTED_MEDIA_FILES)
     app.config['SECRET_KEY'] = os.urandom(24)
     app.config.update(config)
