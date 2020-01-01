@@ -1,5 +1,6 @@
 import os
 import tempfile
+import copy
 import pytest
 from random import choice, randint
 from atexit import register
@@ -24,40 +25,40 @@ NAMES = ('Aaron Enlightened', 'Abbott Father', 'Abel Breath', 'Abner Father',
          'Axel Peace', 'Baird Bard', 'Baldwin Friend', 'Barnaby Prophet',
          'Baron Nobleman', 'Barrett Bear-Like', 'Barry Marksman',
          'Bartholomew Warlike', 'Basil King-like')
-
 PREFIXES = list(map(lambda i: chr(i).upper(), range(97,123)))
+
+MODULES = [User, Operators, Task, Office]
+DB_PATH = r_path('testing.sqlite')
 
 
 @pytest.fixture
 def client():
     app = bundle_app({'LOGIN_DISABLED': True, 'WTF_CSRF_ENABLED': False})
     db_fd, app.config['DATABASE'] = tempfile.mkstemp()
-    db_path = r_path('testing.sqlite')
-    print(db_path)
     app.config['TESTING'] = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_PATH}'
 
     with app.test_client() as client:
         with app.app_context():
             create_db(app)
-            teardown()
+            teardown_tables(copy.copy(MODULES))
             fill_offices()
             fill_tasks()
             fill_users()
         yield client
 
-    register(lambda: os.path.isfile(db_path) and os.remove(db_path))
+    register(lambda: os.path.isfile(DB_PATH) and os.remove(DB_PATH))
     os.close(db_fd)
     os.unlink(app.config['DATABASE'])
 
 
-def teardown(modules=[User, Operators, Task, Office]):
+def teardown_tables(modules):
     if modules:
         for record in modules.pop().query.all():
             db.session.delete(record)
     
         db.session.commit()
-        return teardown(modules)
+        return teardown_tables(modules)
 
 
 def fill_users(entry_number=10, role=None):
