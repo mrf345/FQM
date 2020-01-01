@@ -7,6 +7,7 @@ version="0.5"
 pip_exi=`command -v pip`
 python=`command -v python`
 virtenv=`command -v virtualenv`
+error1="Error: must --install enviroment first .."
 
 if [ "$python" == "" ]
 then
@@ -60,7 +61,7 @@ then
   then
     source installiation/bin/activate
   else
-    echo "Error: must --install enviroment first .."
+    echo $error1
     exit 0
   fi
   echo "##### Running FQM $version #####"
@@ -70,11 +71,20 @@ then
   else
     echo "Error: can not find FQM run.py"
   fi
+elif [ "$1" == "--test" ]
+then
+  if [ -d installiation/ ]
+  then
+    pytest --count=2 -W ignore -vv tests/* --cov=./app
+  else
+    echo $error1
+  fi
 else
   echo -e "\t --help : Usage \n"
   echo -e "\t\t $0 --install \t to install packages required"
   echo -e "\t\t $0 --uninstall \t to remove packages installed"
   echo -e "\t\t $0 --run \t to run FQM with the right settings"
+  echo -e "\t\t $0 --test \t to run FQM tests"
   echo -e "\t\t $0 --help \t to print out this message"
 fi
 

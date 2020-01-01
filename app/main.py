@@ -158,7 +158,7 @@ def bundle_app(config={}):
 
         # modifying side bar spacing for specific paths
         path = request.path
-        admin_routes = ['/users', '/user_a', '/admin_u', '/user_u', '/csvd', '/settings']
+        admin_routes = ['/users', '/user_a', '/admin_u', '/user_u', '/csv', '/settings']
         admin_route = any([path in admin_routes, path[:7] in admin_routes, path[:5] in admin_routes])
 
         return dict(path=path, notifications=Settings.query.first().notifications,

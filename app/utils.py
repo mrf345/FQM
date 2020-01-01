@@ -13,9 +13,79 @@ from netifaces import interfaces, ifaddresses
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
+from flask import current_app
 
 import app.database as data
 from app.middleware import db
+
+
+def ids (list_of_modules):
+    ''' Helper to retrieve list of ids from a list of modules.
+
+    Parameter
+    ---------
+        list_of_modules: list
+            list of SQLAlchemy modules.
+
+    Returns
+    -------
+        List of ids.
+    '''
+    return [getattr(m, 'id', None) for m in list_of_modules if getattr(m, 'id', None)]
+
+
+def get_module_columns(module):
+    ''' Utility to retrieve SQLAlchemy module columns names.
+
+    Parameters
+    ----------
+        module: SQLAlchemy module instance
+            module to retrieve its columns names.
+
+    Returns
+    -------
+        List of module columns names.
+    '''
+    with current_app.app_context():
+        return [
+            getattr(column, 'name', None)
+            for column in getattr(getattr(module, '__mapper__', None), 'columns', [])
+            if getattr(column, 'name', None) != 'password_hash'
+        ]
+
+
+def get_module_values(module, stringify=True):
+    ''' Utility to retrieve SQLAlchemy module columns values.
+
+    Parameters
+    ----------
+        module: SQLAlchemy module instance
+            module to retrieve its columns values.
+        stringify: boolean
+            convert all values to string type.
+
+    Returns
+    -------
+        List of module columns values.
+    '''
+    group_of_values = []
+
+    with current_app.app_context():
+        query = getattr(module, 'query', [])
+
+        if query and module.__tablename__ == 'serials':
+            query = query.filter(module.number != 100)
+
+        for record in query:
+            values = [
+                getattr(record, getattr(column, 'name', None), None)
+                for column in getattr(getattr(module, '__mapper__', None), 'columns', [])
+                if getattr(column, 'name', None) != 'password_hash'
+            ]
+
+            group_of_values.append(list(map(str, values)) if stringify else values)
+
+    return group_of_values
 
 
 def log_error(error):

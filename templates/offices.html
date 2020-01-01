@@ -79,7 +79,7 @@
 	    	<div class="row">
 				<div class="col-xs-12 text-center">
 		    		<div class="btn-group-justified">
-						{% if getattr(current_user, 'role', None) != 3 %}
+						{% if getattr(current_user, 'role_id', None) != 3 %}
 						<a class="btn btn-info updb" data-toggle="modal" data-target="#upd">
 			    			<span class="fa fa-pencil hidden-xs"></span>
 			    			<strong>{{ translate('Update', 'en', [defLang]) }}</strong>
@@ -89,7 +89,7 @@
 			    			<span class="fa fa-reply hidden-xs"></span>
           					<strong>{{ translate('Reset', 'en', [defLang]) }}</strong>
 						</a>
-						{% if getattr(current_user, 'role', None) != 3 %}
+						{% if getattr(current_user, 'role_id', None) != 3 %}
 						<a class="btn btn-danger" data-toggle="modal" data-target="#dall">
 			    			<span class="fa fa-trash hidden-xs"></span>
 			    			<strong>{{ translate('Delete', 'en', [defLang]) }}</strong>

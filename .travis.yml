@@ -5,6 +5,6 @@ python:
 install:
   - pip install -r requirements/test.txt
 # command to run tests
-script: py.test -v --count=2 -W ignore --cov=./app tests/*
+script: py.test -vv -W ignore --cov=./app tests/*
 after_success:
   - coveralls

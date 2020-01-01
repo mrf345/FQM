@@ -24,6 +24,7 @@
 - [x] fix audio multimedia upload false detection `(2019-12-25)`
 - [x] fix multimedia `webm` format upload, add `mp3` to supported files. `(2019-12-25)`
 - [x] fix windows printing to rely fully on `wmic` command for shared printers detection. `(2019-12-28)`
+- [x] fix task update bug, introduced after migrating to Py3 `(2020-01-01)`
 
 - **Finally `IE 11` is fully supported 🚀**
 
@@ -39,9 +40,9 @@
 > - [x] ~~Add migrations scripts and setup~~
 > - [x] Refactor structure for many-to-many relations in tasks to offices
 
-- [ ] Export improvements and options:
-> - [ ] Add json format to export `json`
-> - [ ] Improve current `.csv` exporter
+- [x] Export improvements and options: `(2020-01-01)`
+> - [x] Add json format to export `json`
+> - [x] Improve current `.csv` exporter
 
 
 - [x] Initial integration test suite: `(2019-12-30)`

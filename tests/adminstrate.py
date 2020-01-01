@@ -1,16 +1,18 @@
 from uuid import uuid4
 
 from app.database import User, Office, Operators
+from app.utils import get_module_columns, get_module_values
 from .common import client
 
 def test_update_admin_password(client):
-    new_password = 'testing_password'
+    new_password = 'password'
     response = client.post(
         '/admin_u',
         data=dict(password=new_password),
         follow_redirects=True)
 
     assert response.status == '200 OK'
+    assert User.get(1).verify_password(new_password)
 
 
 def test_list_users(client):
@@ -103,6 +105,43 @@ def test_delete_all_users_and_operators(client):
 
     assert response.status == '302 FOUND'
     assert users_length_before != users_length_after
-    assert operators_length_before != operators_length_after
+    if operators_length_before != 0:  # NOTE: Once in a while flakiness
+        assert operators_length_before != operators_length_after
     assert users_length_after == 1  # NOTE: God account won't be deleted
     assert operators_length_after == 0
+
+
+def test_csv_export(client):
+    with client.application.app_context():
+        header = get_module_columns(User)
+        rows = get_module_values(User)
+
+    response = client.post('/csv', data={
+        'table': 'User', 'headers': 1, 'delimiter': 0
+    }, follow_redirects=True)
+    content = response.data.decode('utf-8').split('\r\n')
+
+    assert response.status == '200 OK'
+    assert len(content) > (len(rows) + 1)
+    assert ','.join(header) == content.pop(0)
+
+    for row in map(','.join, rows):
+        assert row == content.pop(0)
+
+
+def test_csv_export_headers_disabled_and_tabs(client):
+    with client.application.app_context():
+        header = get_module_columns(User)
+        rows = get_module_values(User)
+
+    response = client.post('/csv', data={
+        'table': 'User', 'headers': 0, 'delimiter': 1
+    }, follow_redirects=True)
+    content = response.data.decode('utf-8').split('\r\n')
+
+    assert response.status == '200 OK'
+    assert len(content) > len(rows)
+    assert '\t'.join(header) not in content
+
+    for row in map('\t'.join, rows):
+        assert row == content.pop(0)

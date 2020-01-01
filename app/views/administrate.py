@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import csv
+from csv import DictWriter
 from flask import url_for, flash, request, render_template, redirect, session, send_file, Blueprint
 from flask_login import current_user, login_required, logout_user
 from datetime import datetime
@@ -11,7 +11,7 @@ from datetime import datetime
 import app.database as data
 from app.middleware import db, login_manager
 import app.forms as forms
-from app.utils import r_path
+from app.utils import r_path, get_module_columns, get_module_values
 from app.helpers import reject_not_god, reject_not_admin, reject_god
 
 
@@ -63,38 +63,41 @@ def admin_u():
                            form=form)
 
 
-@administrate.route('/csvd/<t_name>', methods=['GET', 'POST'])
+@administrate.route('/csv', methods=['GET', 'POST'])
 @login_required
 @reject_not_admin
-def csvd(t_name):
-    ''' to export tables to .csvd file '''
+def csv():
+    ''' to export tables to `.csv` file '''
     form = forms.CSV(session.get('lang'))
-    t_ids = ['User', 'Office', 'Task', 'Serial', 'Waiting', 'Roles']
-    if t_name in t_ids:
-        t_name = eval('data.' + t_name)
-        fn = 'csvd.csv'
-        ffn = r_path(fn)
-        of = open(ffn, 'w+')
-        outcsv = csv.writer(of)
-        outcsv.writerow([column.name
-                         for column in t_name.__mapper__.columns
-                         if column.name != 'password_hash'])
-        [outcsv.writerow([getattr(curr, column.name)
-                          for column in t_name.__mapper__.columns
-                          if column.name != 'password_hash'])
-         for curr in t_name.query.all()]
-        of.close()
-        return send_file(ffn, mimetype='csv',
-                         as_attachment=True)
-    elif t_name != '0':
-        flash(
-            'Error: wrong entry, something went wrong',
-            'danger')
-        return redirect(url_for('core.root'))
+
     if form.validate_on_submit():
-        return redirect(url_for('administrate.csvd',
-                                t_name=form.table.data))
-    return render_template('csvs.html', navbar='#snb3', page_title='Export CSV', form=form)
+        tabels = [t[0] for t in forms.export_tabels]
+
+        if form.table.data not in tabels:
+            flash('Error: wrong entry, something went wrong', 'danger')
+            return redirect(url_for('core.root'))
+
+        module = getattr(data, form.table.data, None)
+        csv_path = r_path(f'csv_{form.table.data}.csv')
+        delimiter = forms.export_delimiters[form.delimiter.data]
+
+        with open(csv_path, 'w+') as csv_file:
+            fields = get_module_columns(module)
+            csv_buffer = DictWriter(csv_file, delimiter=delimiter, fieldnames=fields)
+            rows = [
+                {fields[i]: value for i, value in enumerate(values)}
+                for values in get_module_values(module)
+            ]
+
+            form.headers.data and csv_buffer.writeheader()
+            csv_buffer.writerows(rows)
+
+        return send_file(csv_path, mimetype='csv', as_attachment=True)
+
+    return render_template('csvs.html',
+                           navbar='#snb3',
+                           page_title='Export CSV',
+                           form=form)
 
 
 @administrate.route('/users', methods=['GET', 'POST'])
@@ -103,8 +106,7 @@ def csvd(t_name):
 def users():
     ''' to list all users '''
     page = request.args.get('page', 1, type=int)
-    pagination = data.User.query.paginate(page, per_page=10,
-                                          error_out=False)
+    pagination = data.User.query.paginate(page, per_page=10, error_out=False)
 
     return render_template('users.html',
                            page_title='All users',
@@ -127,13 +129,14 @@ def operators(t_id):
         flash('Error: wrong entry, something went wrong', 'danger')
         return redirect(url_for('root'))
 
-    if getattr(current_user, 'role', None) == 3 and\
+    if getattr(current_user, 'role_id', None) == 3 and\
        data.Operators.query.filter_by(id=current_user.id).first() is None:
         flash('Error: only administrator can access the page', 'danger')
         return redirect(url_for('root'))
 
     page = request.args.get('page', 1, type=int)
-    pagination = data.Operators.query.filter_by(office_id=t_id).paginate(page, per_page=10, error_out=False)
+    pagination = data.Operators.query.filter_by(office_id=t_id)\
+                                     .paginate(page, per_page=10, error_out=False)
 
     return render_template('operators.html',
                            page_title=str(office.name) + ' operators',
@@ -235,7 +238,7 @@ def user_u(u_id):
     return render_template('user_add.html',
                            form=form, navbar='#snb3',
                            page_title='Update user : ' + user.name,
-                           u=u, update=True,
+                           u=user, update=True,
                            offices_count=data.Office.query.count())
 
 

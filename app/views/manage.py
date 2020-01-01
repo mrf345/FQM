@@ -11,6 +11,7 @@ from sqlalchemy.sql import and_
 import app.forms as forms
 import app.database as data
 from app.middleware import db
+from app.utils import ids
 from app.helpers import reject_operator, reject_no_offices, is_operator
 
 
@@ -281,76 +282,74 @@ def search():
 @manage_app.route('/task/<int:o_id>/<int:ofc_id>', methods=['POST', 'GET'])
 @login_required
 def task(o_id, ofc_id=None):
-    """ view for specific task
-        now office_id is only optional to /pull and sb_manage, otherwise it will pick the first
-        in the task.offices list
-    """
+    """ view for specific task """
     task = data.Task.query.filter_by(id=o_id).first()
+
     if task is None:
-        flash('Error: wrong entry, something went wrong',
-              'danger')
-        return redirect(url_for("core.root"))
-    form = forms.Task_a(session.get('lang'), True if len(task.offices) > 1 else False)
-    if is_operator() and data.Operators.query.filter_by(id=current_user.id).first() is None:
-        flash("Error: operators are not allowed to access the page ",
-              'danger')
+        flash('Error: wrong entry, something went wrong', 'danger')
         return redirect(url_for('core.root'))
+
+    form = forms.Task_a(session.get('lang'), True if len(task.offices) > 1 else False)
+
+    if is_operator() and data.Operators.query.filter_by(id=current_user.id).first() is None:
+        flash('Error: operators are not allowed to access the page ', 'danger')
+        return redirect(url_for('core.root'))
+
     office_ids = [o.id for o in task.offices]
     if request.method == 'POST' and is_operator() and any([
         len(office_ids) > 1,
         ofc_id not in office_ids,
         data.Operators.query.filter_by(id=current_user.id).first().office_id != ofc_id
     ]):
-        flash("Error: operators are not allowed to access the page ",
-              'danger')
+        flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
+
     page = request.args.get('page', 1, type=int)
-    tickets = data.Serial.query.filter(data.Serial.task_id == o_id, data.Serial.number != 100)\
+    tickets = data.Serial.query.filter(data.Serial.task_id == o_id,
+                                       data.Serial.number != 100)\
                                .order_by(data.Serial.timestamp.desc())
     last_ticket_pulled = tickets.filter_by(p=True).first()
     pagination = tickets.paginate(page, per_page=10, error_out=False)
+
     if form.validate_on_submit():
-        mka = data.Task.query.filter_by(name=form.name.data)
-        for f in mka:
-            if f.id != o_id:
-                flash("Error: name is used by another one, choose another name",
-                      'danger')
-                return redirect(url_for("manage_app.task", o_id=o_id))
+        if data.Task.query.filter_by(name=form.name.data).count() > 1:
+            flash('Error: name is used by another one, choose another name', 'danger')
+            return redirect(url_for("manage_app.task", o_id=o_id))
+
+        task = data.Task.query.filter_by(id=o_id).first()
         task.name = form.name.data
+
         if len(task.offices) > 1:
-            toValidate = []
-            for office in data.Office.query.all():
-                if form['check%i' % office.id].data:
-                    if office not in task.offices:
-                        task.offices.append(office)
-                elif form['check%i' % office.id].data is False:
-                    if office in task.offices:
-                        # Attaching dependent tickets to another common office
-                        for ticket in data.Serial.query.filter_by(
-                            office_id=office.id).all():
-                            ticket.office_id = task.offices[0].id
-                        for waiting in data.Waiting.query.filter_by(
-                            office_id=office.id).all():
-                            waiting.office_id = task.offices[0].id
-                        db.session.commit()
-                        task.offices.remove(office)
-                toValidate.append(form['check%i' % office.id].data)
-            if len(toValidate) > 0 and True not in toValidate:
-                flash("Error: one office must be selected at least",
-                'danger')
-                return redirect(url_for("manage_app.common_task_a"))
-        db.session.add(task)
+            checked_offices = [o for o in data.Office.query.all() if form[f'check{o.id}'].data]
+            removed_offices = [o for o in task.offices if o.id not in ids(checked_offices)]
+            to_add_offices = [o for o in checked_offices if o.id not in ids(task.offices)]
+
+            if not checked_offices:
+                flash('Error: one office must be selected at least', 'danger')
+                return redirect(url_for('manage_app.common_task_a'))
+
+            for office in removed_offices:
+                task.migrate_tickets(office, checked_offices[0])
+                task.offices.remove(office)
+                db.session.commit()
+
+            for office in to_add_offices:
+                task.offices.append(office)
+
         db.session.commit()
-        flash("Notice: task has been updated .",
-              'info')
-        return redirect(url_for("manage_app.task", o_id=o_id))
+        flash('Notice: task has been updated .', 'info')
+        return redirect(url_for("manage_app.task", o_id=o_id, ofc_id=ofc_id))
+
     if not form.errors:
         form.name.data = task.name
+
         for office in task.offices:
-            form['check%i' % office.id].data = True
+            form[f'check{office.id}'].data = True
+
     if not ofc_id:
-        # to workaround indexing sidebar without rewriting the whole thing
+        # FIXME: to workaround indexing sidebar without rewriting the whole thing
         ofc_id = task.offices[0].id
+
     return render_template('tasks.html',
                            form=form,
                            page_title="Task : " + task.name,
@@ -367,7 +366,7 @@ def task(o_id, ofc_id=None):
                            operators=data.Operators.query,
                            task=task,
                            navbar="#snb1",
-                           dropdown="#dropdown-lvl%i" % ofc_id, # dropdown a list of offices
+                           dropdown="#dropdown-lvl%i" % ofc_id,  # dropdown a list of offices
                            hash="#tt%i%i" % (ofc_id, o_id),
                            last_ticket_pulled=last_ticket_pulled,
                            edit_task=len(task.offices) == 1 or not is_operator())
@@ -425,26 +424,24 @@ def common_task_a():
             flash("Error: name is used by another one, choose another name", 'danger')
             return redirect(url_for("manage_app.common_task_a"))
 
+        offices_validation = [form[f'check{o.id}'].data for o in data.Office.query.all()]
+        if len(offices_validation) > 0 and not any(offices_validation):
+            flash('Error: one office must be selected at least', 'danger')
+            return redirect(url_for('manage_app.common_task_a'))
+
         db.session.add(task)
         db.session.commit()
 
-        toValidate = []
         for office in data.Office.query.all():
             if form['check%i' % office.id].data and office not in task.offices:
                 task.offices.append(office)
-            toValidate.append(form['check%i' % office.id].data)
 
-        if len(toValidate) > 0 and not all(toValidate):
-            flash("Error: one office must be selected at least", 'danger')
-            return redirect(url_for("manage_app.common_task_a"))
+        for office in task.offices:
+            initial_ticket = data.Serial.query\
+                                 .filter_by(office_id=office.id, number=100)\
+                                 .first()
 
-        initial_ticket = data.Serial.query.filter(
-            data.Serial.office_id.in_(o.id for o in task.offices),
-            data.Serial.number == 100
-        ).first()
-
-        if not initial_ticket:
-            for office in task.offices:
+            if not initial_ticket:
                 db.session.add(data.Serial(
                     office_id=office.id,
                     task_id=task.id,
@@ -490,14 +487,16 @@ def task_a(o_id):
             return redirect(url_for("manage_app.task_a", o_id=o_id))
 
         task = data.Task(form.name.data)
-        task.offices.append(office)
         db.session.add(task)
         db.session.commit()
 
-        initial_ticket = data.Serial.query.filter(
-            data.Serial.office_id.in_(o.id for o in task.offices),
-            data.Serial.number == 100
-        ).first()
+        if office.id not in ids(task.offices):
+            task.offices.append(office)
+            db.session.commit()
+
+        initial_ticket = data.Serial.query\
+                                    .filter_by(task_id=task.id, office_id=o_id, number=100)\
+                                    .first()
 
         if not initial_ticket:
             db.session.add(data.Serial(
