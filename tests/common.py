@@ -8,7 +8,7 @@ from atexit import register
 from app.main import create_db, bundle_app
 from app.middleware import db
 from app.database import User, Operators, Office, Task
-from app.utils import r_path
+from app.utils import absolute_path
 
 
 NAMES = ('Aaron Enlightened', 'Abbott Father', 'Abel Breath', 'Abner Father',
@@ -28,7 +28,7 @@ NAMES = ('Aaron Enlightened', 'Abbott Father', 'Abel Breath', 'Abner Father',
 PREFIXES = list(map(lambda i: chr(i).upper(), range(97,123)))
 
 MODULES = [User, Operators, Task, Office]
-DB_PATH = r_path('testing.sqlite')
+DB_PATH = absolute_path('testing.sqlite')
 
 
 @pytest.fixture

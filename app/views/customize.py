@@ -14,7 +14,7 @@ import app.forms as forms
 import app.database as data
 from app.middleware import db, files
 from app.printer import listp, get_windows_printers
-from app.utils import r_path, getFolderSize
+from app.utils import absolute_path, getFolderSize
 from app.constants import SUPPORTED_MEDIA_FILES
 from app.helpers import reject_not_admin
 
@@ -284,7 +284,7 @@ def multimedia(aa):
     nofl = 300
     # size folder limit in MB
     sfl = 2000 # Fix limited upload folder size
-    dire = r_path('static/multimedia/')
+    dire = absolute_path('static/multimedia/')
     pf = data.Media.query.order_by(data.Media.id.desc()).first()
     if pf is not None:
         pf = pf.name
@@ -407,7 +407,7 @@ def multimedia(aa):
 @reject_not_admin
 def multi_del(f_id):
     """ to delete multimedia file """
-    dire = r_path('static/multimedia/')
+    dire = absolute_path('static/multimedia/')
     if data.Media.query.filter_by(used=False).count() <= 0:
         flash("Error: there is no unused multimedia file to be removed !",
               'danger')

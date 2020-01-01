@@ -4,10 +4,14 @@ block_cipher = None
 
 
 a = Analysis(['run.py'],
-             pathex=['C:\\Documents and Settings\\testor\\Desktop\\FQM'],
+             pathex=['C:\\Users\\tester\\Desktop\\fqm'],
              binaries=[],
              datas=[('arabic_reshaper\*', 'arabic_reshaper')],
-             hiddenimports=["'email.mime.multipart'", "'win32com.client'", "'pythoncom'", "'email.mime.message'", "'email.mime.text'", "'email.mime.image'", "'email.mime.audio'", "'sqlalchemy.sql.default_comparator'", "'jinja2'"],
+             hiddenimports=[
+                'email.mime.multipart', 'win32com.client', 'pythoncom', 'email.mime.message',
+                'email.mime.text', 'email.mime.image', 'email.mime.audio',
+                'sqlalchemy.sql.default_comparator', 'jinja2'
+            ],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
@@ -25,4 +29,5 @@ exe = EXE(pyz,
           debug=False,
           strip=False,
           upx=True,
-          console=False , icon='favicon.ico')
+          console=False ,
+          icon='C:\\Users\\tester\\Desktop\\fqm\\static\\images\\favicon.ico')

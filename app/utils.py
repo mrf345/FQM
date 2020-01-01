@@ -4,7 +4,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import os
-import sys
 from traceback import TracebackException
 from datetime import datetime
 from random import randint
@@ -17,6 +16,28 @@ from flask import current_app
 
 import app.database as data
 from app.middleware import db
+
+
+def absolute_path(relative_path):
+    ''' Get an absolute path from a relative one.
+
+    Parameters
+    ----------
+        relative_path: str
+            relative path to make absolute.
+
+    Returns
+    -------
+        Absolute path from `relative_path`
+    '''
+    delimiter = '\\' if os.name == 'nt' else '/'
+    base_path = os.path.abspath('.')
+    clean_path = relative_path
+
+    if clean_path.startswith(delimiter):
+        clean_path = clean_path[len(delimiter):]
+
+    return os.path.join(base_path, clean_path)
 
 
 def ids (list_of_modules):
@@ -96,7 +117,7 @@ def log_error(error):
         error: Error instance
             error that we want to log.
     '''
-    log_file = r_path('errors.log')
+    log_file = absolute_path('errors.log')
 
     not os.path.isfile(log_file) and os.system(f'touch {log_file}')
     with open(log_file, 'a') as file:
@@ -175,7 +196,14 @@ def get_random_available_port(ip):
 
 
 def get_with_alias():
-    ''' to solve querying aliases without app_context in languages. '''
+    ''' Resolve querying aliases without app_context in languages.
+
+    Returns
+    -------
+        Dict of texts with aliases embodied.
+
+    TODO: Cleanup this, there must be a better way to resolve it.
+    '''
     class Aliases(object):
         office = 'office'
         ticket = 'ticket'
@@ -183,11 +211,6 @@ def get_with_alias():
 
     alias = Aliases()
     base_path = os.path.abspath('.')
-
-    try:
-        base_path = sys._MEIPASS
-    except Exception:
-        pass
 
     try:
         if os.path.isfile(os.path.join(base_path, 'data.sqlite')):
@@ -249,20 +272,6 @@ def getFolderSize(folder, safely=False):
         elif os.path.isdir(itempath):
             total_size += getFolderSize(itempath)
     return int(float(total_size / 1024 / 1024))
-
-
-def r_path(relative_path):
-    ''' Get absolute path to resource, works for dev and for PyInstaller '''
-    try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath('.')
-    # Fixing multimedia folder not found issue
-    if '/' in relative_path or '\\' in relative_path:
-        relative_path = ('\\' if os.name == 'nt' else '/').join(
-            relative_path.split('\\' if os.name == 'nt' else '/'))
-    return os.path.join(base_path, relative_path)
 
 
 def solve_path(path):

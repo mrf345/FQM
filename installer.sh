@@ -3,7 +3,7 @@
 # printing group. this script purpose is to ease the process of installing, uninstalling
 # FQM on Linux and MacOS. 
 
-version="0.5"
+version="0.6"
 pip_exi=`command -v pip`
 python=`command -v python`
 virtenv=`command -v virtualenv`

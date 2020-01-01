@@ -11,7 +11,7 @@ from datetime import datetime
 import app.database as data
 from app.middleware import db, login_manager
 import app.forms as forms
-from app.utils import r_path, get_module_columns, get_module_values
+from app.utils import absolute_path, get_module_columns, get_module_values
 from app.helpers import reject_not_god, reject_not_admin, reject_god
 
 
@@ -78,7 +78,7 @@ def csv():
             return redirect(url_for('core.root'))
 
         module = getattr(data, form.table.data, None)
-        csv_path = r_path(f'csv_{form.table.data}.csv')
+        csv_path = absolute_path(f'csv_{form.table.data}.csv')
         delimiter = forms.export_delimiters[form.delimiter.data]
 
         with open(csv_path, 'w+') as csv_file:
