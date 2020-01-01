@@ -316,7 +316,7 @@ def task(o_id, ofc_id=None):
             flash('Error: name is used by another one, choose another name', 'danger')
             return redirect(url_for("manage_app.task", o_id=o_id))
 
-        task = data.Task.query.filter_by(id=o_id).first()
+        task = data.Task.get(o_id)
         task.name = form.name.data
 
         if len(task.offices) > 1:
@@ -331,7 +331,6 @@ def task(o_id, ofc_id=None):
             for office in removed_offices:
                 task.migrate_tickets(office, checked_offices[0])
                 task.offices.remove(office)
-                db.session.commit()
 
             for office in to_add_offices:
                 task.offices.append(office)
@@ -377,7 +376,7 @@ def task(o_id, ofc_id=None):
 @login_required
 def task_d(t_id, ofc_id=None):
     """ to delete a task """
-    task = data.Task.query.filter_by(id=t_id).first()
+    task = data.Task.get(t_id)
 
     if task is None:
         flash('Error: wrong entry, something went wrong', 'danger')
@@ -466,24 +465,23 @@ def common_task_a():
 def task_a(o_id):
     """ to add a task """
     form = forms.Task_a(session.get('lang'))
-    office = data.Office.query.filter_by(id=o_id).first()
+    office = data.Office.get(o_id)
+
     if office is None:
-        flash('Error: wrong entry, something went wrong',
-              'danger')
+        flash('Error: wrong entry, something went wrong', 'danger')
         return redirect(url_for("core.root"))
-    if is_operator() and data.Operators.query.filter_by(id=current_user.id).first() is None:
-        flash("Error: operators are not allowed to access the page ",
-              'danger')
+
+    if is_operator() and data.Operators.get(current_user.id) is None:
+        flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
-    if is_operator() and o_id != data.Operators.query.filter_by(id=current_user.id).first().office_id:
-        flash("Error: operators are not allowed to access the page ",
-              'danger')
+
+    if is_operator() and o_id != data.Operators.get(current_user.id).office_id:
+        flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
 
     if form.validate_on_submit():
         if data.Task.query.filter_by(name=form.name.data).first() is not None:
-            flash("Error: name is used by another one, choose another name",
-                  'danger')
+            flash('Error: name is used by another one, choose another name', 'danger')
             return redirect(url_for("manage_app.task_a", o_id=o_id))
 
         task = data.Task(form.name.data)
@@ -494,9 +492,10 @@ def task_a(o_id):
             task.offices.append(office)
             db.session.commit()
 
-        initial_ticket = data.Serial.query\
-                                    .filter_by(task_id=task.id, office_id=o_id, number=100)\
-                                    .first()
+        initial_ticket = data.Serial.query.filter_by(task_id=task.id,
+                                                     office_id=o_id,
+                                                     number=100)\
+                                          .first()
 
         if not initial_ticket:
             db.session.add(data.Serial(

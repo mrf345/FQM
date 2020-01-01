@@ -7,6 +7,36 @@ from app.middleware import db
 from app.utils import ids
 
 
+def test_add_task(client):
+    with client.application.app_context():
+        office = Office.query.first()
+
+    name = f'{uuid4()}'.replace('-', '')
+    response = client.post(f'/task_a/{office.id}',
+                           data={'name': name},
+                           follow_redirects=True)
+    added_task = Task.query.filter_by(name=name).first()
+
+    assert added_task is not None
+    assert office.id in ids(added_task.offices)
+
+
+def test_add_common_task(client):
+    with client.application.app_context():
+        offices = Office.query.limit(5).all()
+
+    name = f'{uuid4()}'.replace('-', '')
+    response = client.post(f'/common_task_a', data={
+        'name': name, **{
+            f'check{o.id}': True for o in offices
+        }
+    }, follow_redirects=True)
+    added_task = Task.query.filter_by(name=name).first()
+
+    assert added_task is not None
+    assert sorted(ids(added_task.offices)) == sorted(ids(offices))
+
+
 def test_update_task(client):
     with client.application.app_context():
         task = Task.query.filter(func.length(Task.offices) == 1).first()
@@ -49,4 +79,3 @@ def test_update_common_task_offices(client):
     assert len(task.offices) > len(updated_task.offices)
     assert checked_office.id in ids(updated_task.offices)
     assert unchecked_office.id not in ids(updated_task.offices)
-

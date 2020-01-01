@@ -34,7 +34,7 @@ class Office(db.Model, Mixin):
         self.prefix = prefix
 
 
-class Task(db.Model):
+class Task(db.Model, Mixin):
     __tablename__ = "tasks"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(300))
