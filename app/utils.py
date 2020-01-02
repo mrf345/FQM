@@ -19,9 +19,10 @@ import app.database as data
 from app.middleware import db
 
 
-def execute(command, parser=None):
-    ''' Utility to execute a system command and get its output without
-        breaking any ongoing execution loops.
+def execute(command, parser=None, encoding='utf-8'):
+    '''
+    Utility to execute a system command and get its output without
+    breaking any ongoing execution loops.
 
     Parameter
     ---------
@@ -29,6 +30,8 @@ def execute(command, parser=None):
             system command to execute.
         parser: str
             factor to parse the output and clean it with.
+        encoding: str
+            encoding to read the command output with.
 
     Returns
     -------
@@ -39,7 +42,7 @@ def execute(command, parser=None):
     parsed = []
 
     os.system(f'{command} > "{temp_file}"')
-    with open(temp_file, 'r') as file:
+    with open(temp_file, 'r', encoding=encoding) as file:
         output += file.read()
     os.remove(temp_file)
 
