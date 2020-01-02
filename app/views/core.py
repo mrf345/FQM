@@ -131,7 +131,7 @@ def serial(t_id):
             # to solve Linux printer permissions
             if os.name == 'nt':
                 # NOTE: To list all windows printers
-                if execute('wmic printer get sharename', parser='\n\n')[1:]:
+                if execute('wmic printer get sharename', parser='\n', encoding='utf-16')[1:]:
                     if langu == 'ar':
                         print_ticket_windows_ar(
                             q.product,

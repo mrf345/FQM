@@ -40,7 +40,8 @@ def customize():
 def ticket():
     """ view of ticket customization """
     printers = execute('wmic printer get sharename',
-                       parser='\n\n')[1:] if os.name == 'nt' else listp()
+                       parser='\n',
+                       encoding='utf-16')[1:] if os.name == 'nt' else listp()
     form = forms.Printer_f(printers, session.get('lang'))
     tc = data.Touch_store.query.first()
     pr = data.Printer.query.first()
