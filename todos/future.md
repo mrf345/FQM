@@ -1,9 +1,5 @@
 # FQM Future
 
-# Fixes:
-- [ ] Pre-load waiting tickets from `/feed` to reduce text-to-speech generation latency. 
-
-
 #### Multi screen support:
 
 > - Partial Touch screen on-which you can specify a chosen offices to display their tasks.
