@@ -13,8 +13,8 @@ from werkzeug import secure_filename
 import app.forms as forms
 import app.database as data
 from app.middleware import db, files
-from app.printer import listp, get_windows_printers
-from app.utils import absolute_path, getFolderSize
+from app.printer import listp
+from app.utils import absolute_path, getFolderSize, execute
 from app.constants import SUPPORTED_MEDIA_FILES
 from app.helpers import reject_not_admin
 
@@ -39,7 +39,8 @@ def customize():
 @reject_not_admin
 def ticket():
     """ view of ticket customization """
-    printers = get_windows_printers() if os.name == 'nt' else listp()
+    printers = execute('wmic printer get sharename',
+                       parser='\n\n')[1:] if os.name == 'nt' else listp()
     form = forms.Printer_f(printers, session.get('lang'))
     tc = data.Touch_store.query.first()
     pr = data.Printer.query.first()

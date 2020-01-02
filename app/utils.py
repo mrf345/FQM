@@ -4,6 +4,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import os
+from uuid import uuid4
 from traceback import TracebackException
 from datetime import datetime
 from random import randint
@@ -16,6 +17,36 @@ from flask import current_app
 
 import app.database as data
 from app.middleware import db
+
+
+def execute(command, parser=None):
+    ''' Utility to execute a system command and get its output without
+        breaking any ongoing execution loops.
+
+    Parameter
+    ---------
+        command: str
+            system command to execute.
+        parser: str
+            factor to parse the output and clean it with.
+
+    Returns
+    -------
+        System command output as a string or a list if parsed.
+    '''
+    temp_file = f'{uuid4()}'.replace('-', '')
+    output = ''
+    parsed = []
+
+    os.system(f'{command} > "{temp_file}"')
+    with open(temp_file, 'r') as file:
+        output += file.read()
+    os.remove(temp_file)
+
+    if parser:
+        parsed += [o.strip() for o in output.split(parser) if o.strip()]
+
+    return parsed if parser else output
 
 
 def absolute_path(relative_path):

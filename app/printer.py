@@ -12,30 +12,11 @@ from escpos.printer import Dummy
 from datetime import datetime
 from bidi.algorithm import get_display
 from PIL import Image, ImageDraw, ImageFont
-from os import remove, getcwd, path, name, popen, system
+from os import remove, getcwd, path, name, system
 
 from app.utils import absolute_path, get_with_alias
 from app.constants import VERSION
 from app.middleware import gtranslator
-
-
-def get_windows_printers():
-    ''' List Windows available printers using `wmic` system command.
-
-    Returns
-    -------
-        List of available printers on Windows.
-    '''
-    printers = []
-
-    with popen('wmic printer get sharename') as output:
-        printers += [
-            p.strip()
-            for p in output.read().split('\n\n')[1:]
-            if p.strip()
-        ]
-
-    return printers
 
 
 class find_class(object):
