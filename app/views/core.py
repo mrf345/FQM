@@ -4,7 +4,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import os
-from random import choice
 from sys import platform
 from datetime import datetime
 from flask import url_for, flash, render_template, redirect, session, jsonify, Blueprint, current_app
@@ -12,11 +11,10 @@ from flask_login import current_user, login_required, login_user
 
 import app.forms as forms
 import app.database as data
-from app.printer import (
-    assign, printit, printit_ar, print_ticket_windows, print_ticket_windows_ar,
-    get_windows_printers)
+from app.printer import assign, printit, printit_ar, print_ticket_windows, print_ticket_windows_ar
 from app.middleware import db
 from app.helpers import reject_no_offices, reject_operator, is_operator, reject_not_admin
+from app.utils import execute
 
 
 core = Blueprint('core', __name__)
@@ -132,7 +130,8 @@ def serial(t_id):
             langu = data.Printer.query.first().langu
             # to solve Linux printer permissions
             if os.name == 'nt':
-                if get_windows_printers():
+                # NOTE: To list all windows printers
+                if execute('wmic printer get sharename', parser='\n\n')[1:]:
                     if langu == 'ar':
                         print_ticket_windows_ar(
                             q.product,
