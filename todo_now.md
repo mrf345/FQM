@@ -12,7 +12,9 @@
 
 - [ ] Pre-load waiting tickets from `/feed` to reduce text-to-speech generation latency.
 - [ ] Add option to disable all the transition effects and reddit-wallpapers
-
+- [ ] Pull random ticket from `tasks` or `offices`
+- [ ] Option to display ticket number beside name on `display` screen
+- [ ] Put random ticket on-hold
 
 - [ ] Multiple Display screen support **based on offices**
 > - [ ] Add multiple display screen routing
