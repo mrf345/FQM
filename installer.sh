@@ -20,7 +20,7 @@ then
 fi
 if [ "$virtenv" == "" ]
 then
-  sudo pip3 install vertualenv
+  sudo pip3 install virtualenv
 fi
 
 
