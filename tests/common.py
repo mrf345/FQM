@@ -7,7 +7,7 @@ from atexit import register
 
 from app.main import create_db, bundle_app
 from app.middleware import db
-from app.database import User, Operators, Office, Task
+from app.database import User, Operators, Office, Task, Serial, Waiting
 from app.utils import absolute_path
 
 
@@ -27,7 +27,7 @@ NAMES = ('Aaron Enlightened', 'Abbott Father', 'Abel Breath', 'Abner Father',
          'Bartholomew Warlike', 'Basil King-like')
 PREFIXES = list(map(lambda i: chr(i).upper(), range(97,123)))
 
-MODULES = [User, Operators, Task, Office]
+MODULES = [Waiting, Serial, User, Operators, Task, Office]
 DB_PATH = absolute_path('testing.sqlite')
 
 
@@ -45,6 +45,7 @@ def client():
             fill_offices()
             fill_tasks()
             fill_users()
+            fill_tickets()
         yield client
 
     register(lambda: os.path.isfile(DB_PATH) and os.remove(DB_PATH))
@@ -118,26 +119,24 @@ def fill_tasks(entry_number=10):
         db.session.commit()
 
 
-# TODO: get refactor the helper to fit the testing process
-# def fill_tickets(entery_number=10, s_task=None):
-#     for i in range(entery_number):
-#         forin = Task.query if s_task is None else Task.query.filter_by(
-#             id=s_task)
-#         for task in forin:
-#             num = Serial.query.order_by(Serial.timestamp.desc()).first()
-#             num = num.number if num is not None else None
-#             name = choice(names)
-#             t_id = task.id
-#             f_id = choice(task.offices).id
-#             # if i >= 11: WTF ?!
-#             db.session.add(Serial(number=num + 1,
-#                                     office_id=f_id,
-#                                     task_id=t_id, name=name, n=True))
-#     for a in range(Waiting.query.count(), 11):
-#         for b in Serial.query.filter_by(p=False).order_by(Serial.timestamp):
-#             if Waiting.query.filter_by(office_id=b.office_id,
-#                                        number=b.number,
-#                                        task_id=b.task_id).first() is None:
-#                 db.session.add(Waiting(b.number, b.office_id,
-#                                        b.task_id, b.name, b.n))
-#     db.session.commit()
+def fill_tickets(entry_number=100):
+    for _ in range(entry_number):
+        last_ticket = Serial.query.order_by(Serial.number.desc()).first()
+        number = (last_ticket.number if last_ticket else 100) + 1
+        name = choice(NAMES)
+        task = choice(Task.query.all())
+        office = choice(task.offices)
+
+        db.session.add(Serial(number=number, office_id=office.id,
+                              task_id=task.id, name=name, n=True))
+    db.session.commit()
+
+    # Filling the waiting tickets stack
+    tickets_to_fill = Serial.query.filter_by(p=False)\
+                                  .order_by(Serial.number)\
+                                  .limit(11 - Waiting.query.count())
+
+    for ticket in tickets_to_fill:
+        db.session.add(Waiting(number=ticket.number, office_id=ticket.office_id,
+                               task_id=ticket.task_id, name=ticket.name, n=ticket.n))
+    db.session.commit()

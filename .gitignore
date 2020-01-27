@@ -102,3 +102,6 @@ ENV/
 
 # venv
 installiation/
+
+# editor
+.vscode/
