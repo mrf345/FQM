@@ -232,22 +232,24 @@ def serial_r(o_id):
         data.Waiting.query.filter_by(office_id=f.office_id, number=f.number).delete()
 
     # NOTE: Queries has to be written fully everytime to avoid sqlalchemy racing condition
-    tickets_to_delete = data.Serial.query.filter_by(
+    tickets_to_delete = data.Serial.query.filter(
         data.Serial.office_id == o_id,
         data.Serial.number != 100
     )
 
     if operator:
-        # Prevent operators from deleteing common tasks tickets
+        # Prevent operators from deleteing common tasks tickets, that belongs to different tasks
         for ticket in tickets_to_delete:
             task = data.Task.query.filter_by(id=ticket.task_id).first()
 
-            if len(task.offices) > 1:
-                ticket = query.filter(data.Serial.task_id != task.id)
-
-            ticket.delete()
+            if task.common:
+                if ticket.task_id == task.id:
+                    db.session.delete(ticket)
+            else:
+                db.session.delete(ticket)
     else:
-        ticket.delete()
+        tickets_to_delete.delete()
+
     db.session.commit()
     flash("Notice: office has been resetted. ..", 'info')
     return redirect(url_for("manage_app.offices", o_id=o_id))
