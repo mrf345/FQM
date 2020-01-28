@@ -111,11 +111,13 @@ def fill_tasks(entry_number=10):
 
             if office not in offices:
                 offices.append(office)
-        
+
         task = Task(name)
         db.session.add(task)
         db.session.commit()
         task.offices = offices
+        # Add tasks initial tickets
+        db.session.add(Serial(number=100, office_id=office.id, task_id=task.id))
         db.session.commit()
 
 
