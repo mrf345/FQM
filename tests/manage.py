@@ -53,16 +53,7 @@ def test_update_task(client):
 
 def test_update_common_task_offices(client):
     with client.application.app_context():
-        # find a common task
-        common_task = None
-        tasks = Task.query.all()
-
-        while not common_task:
-            task = tasks.pop()
-
-            if len(task.offices) > 1:
-                common_task = task
-
+        task = Task.get_first_common()
         unchecked_office = task.offices[0]
         checked_office = task.offices[1]
         unchecked_office_tickets_numbers = [
