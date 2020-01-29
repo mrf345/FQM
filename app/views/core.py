@@ -109,12 +109,12 @@ def serial(t_id):
     # FIX: limit the tickets to the range of waitting tickets, prevent overflow.
     # Assigning the first office in the list
     o_id = task.least_tickets_office().id
-    next_number = data.Serial.query.filter_by(office_id=o_id)\
-                             .order_by(data.Serial.number.desc())\
-                             .first().number + 1
+    next_number = data.Serial.query.order_by(data.Serial.number.desc())\
+                                   .first().number + 1
 
     if data.Serial.query.filter_by(number=next_number, office_id=o_id).first() is None:
         if n:  # registered
+            data.Serial()
             db.session.add(data.Serial(next_number, o_id, t_id, nm, True))
             db.session.commit()
         else:  # printed
@@ -325,6 +325,7 @@ def pull(o_id=None, ofc_id=None):
     """ to change the state of a ticket to be pulled """
     # FIX: pulling tickets by task_id instead of office_id
     # to allow for pulling form specific office
+    # import pudb; pudb.set_trace()
     if o_id is not None:
         if data.Task.query.filter_by(id=o_id).first() is None:
             flash('Error: wrong entry, something went wrong', 'danger')
@@ -345,6 +346,7 @@ def pull(o_id=None, ofc_id=None):
     # Loading up the 10 waiting list
     # FIX: limit the tickets to the range of waitting tickets, prevent overflow.
     limited_tickets = data.Serial.query.filter_by(p=False)\
+                                       .filter(data.Serial.number != 100)\
                                        .order_by(data.Serial.timestamp)\
                                        .limit(11)
     if data.Serial.query.filter_by(p=False).count() >= 0:
@@ -366,7 +368,7 @@ def pull(o_id=None, ofc_id=None):
     # The goal is to specify the exact office responsible for the pull
     # and update the about to be pulled tickets with responsible office
     if ofc_id is not None and o_id is not None:
-        if len(data.Task.query.filter_by(id=o_id).first().offices) > 1:
+        if data.Task.query.filter_by(id=o_id).first().common:
             for record in [data.Serial, data.Waiting]:
                 record = record.query.filter_by(task_id=o_id).first()
                 if record is not None:
@@ -387,14 +389,15 @@ def pull(o_id=None, ofc_id=None):
     # --- Reassigning cs seems to fix it
     # Fix: pulling tickets by task_id instead of office_id
     # modifying removing from  waiting with task_id 
-    processed_ticket = data.Serial.query.order_by(data.Serial.timestamp)\
+    processed_ticket = data.Serial.query.order_by(data.Serial.number)\
                                         .filter(data.Serial.number != 100,
                                                 data.Serial.p != True)
 
     if o_id:
         processed_ticket = processed_ticket.filter(data.Serial.task_id == cs.task_id)
 
-    if ofc_id:
+    if ofc_id and not data.Task.query.filter_by(id=o_id).first().common:
+        # NOTE: skip filtering by office for common tasks
         processed_ticket = processed_ticket.filter(data.Serial.office_id == cs.office_id)
 
     processed_ticket = processed_ticket.first()
@@ -403,19 +406,20 @@ def pull(o_id=None, ofc_id=None):
         flash("Error: no tickets left to pull from ..", 'danger')
         return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
 
-    cs = data.Waiting.query.filter_by(**({'task_id': o_id, 'office_id': ofc_id, 'number': processed_ticket.number} if o_id is not None else {'number': processed_ticket.number})).first()
-    if cs is None:
-        flash("Error: no tickets left to pull from ..", 'danger')
-        return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
+    cs = data.Waiting.query.filter_by(**({'task_id': o_id, 'office_id': processed_ticket.office_id, 'number': processed_ticket.number} if o_id is not None else {'number': processed_ticket.number})).first()
+    # NOTE: Fallback to ticket record if ticket is not pushed yet to waiting
+    # if cs is None:
+    #     flash("Error: no tickets left to pull from ..", 'danger')
+    #     return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
     # adding to current waiting
     pIt = data.Display_store.query.first().prefix
-    ocs = data.Office.query.filter_by(id=cs.office_id).first()
+    ocs = data.Office.query.filter_by(id=(cs or processed_ticket).office_id).first()
     cl = data.Waiting_c.query.first()
-    cl.ticket = (ocs.prefix if pIt else '') + str(cs.number)
+    cl.ticket = (ocs.prefix if pIt else '') + str((cs or processed_ticket).number)
     cl.oname = (ocs.prefix if pIt else '') + str(ocs.name)
-    cl.tname = data.Task.query.filter_by(id=cs.task_id).first().name
-    cl.n = cs.n
-    cl.name = cs.name
+    cl.tname = data.Task.query.filter_by(id=(cs or processed_ticket).task_id).first().name
+    cl.n = (cs or processed_ticket).n
+    cl.name = (cs or processed_ticket).name
     db.session.commit()
 
     processed_ticket.p = True
@@ -423,7 +427,8 @@ def pull(o_id=None, ofc_id=None):
     processed_ticket.pulledBy = getattr(current_user, 'id', None)
 
     db.session.add(processed_ticket)
-    db.session.delete(cs)
+    if cs:
+        db.session.delete(cs)
     db.session.commit()
     flash("Notice: Ticket has been pulled ..", 'info')
     return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))

@@ -29,6 +29,7 @@ PREFIXES = list(map(lambda i: chr(i).upper(), range(97,123)))
 
 MODULES = [Waiting, Serial, User, Operators, Task, Office]
 DB_PATH = absolute_path('testing.sqlite')
+TEST_REPEATS = 11
 
 
 @pytest.fixture
