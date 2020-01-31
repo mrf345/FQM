@@ -76,9 +76,9 @@ def test_update_user(client):
     user = User.query.filter_by(name=name).first() 
     response = client.post(f'/user_u/{user.id}', data={
         'name': new_name, 'password': password, 'role': role
-    })
+    }, follow_redirects=True)
 
-    assert response.status == '302 FOUND'
+    assert response.status == '200 OK'
     assert User.get(user.id).name == new_name
 
 
@@ -86,9 +86,9 @@ def test_delete_user(client):
     with client.application.app_context():
         user = User.query.filter(User.id != 1).first()
 
-    response = client.get(f'/user_d/{user.id}')
+    response = client.get(f'/user_d/{user.id}', follow_redirects=True)
 
-    assert response.status == '302 FOUND'
+    assert response.status == '200 OK'
     assert User.get(user.id) is None
 
 
@@ -97,13 +97,13 @@ def test_delete_all_users_and_operators(client):
         users_length_before = User.query.count()
         operators_length_before = Operators.query.count()
 
-    response = client.get(f'/user_da')
+    response = client.get(f'/user_da', follow_redirects=True)
 
     with client.application.app_context():
         users_length_after = User.query.count()
         operators_length_after = Operators.query.count()
 
-    assert response.status == '302 FOUND'
+    assert response.status == '200 OK'
     assert users_length_before != users_length_after
     if operators_length_before != 0:  # NOTE: Once in a while flakiness
         assert operators_length_before != operators_length_after

@@ -18,7 +18,7 @@ def test_reset_office(client):
     assert response.status == '200 OK'
     assert Serial.query.filter_by(office_id=office.id).count() != len(tickets)
     assert Serial.query.filter(Serial.office_id == office.id, Serial.number != 100)\
-                        .count() == 0
+                       .count() == 0
 
 
 def test_reset_task(client):

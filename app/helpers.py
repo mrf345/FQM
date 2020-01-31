@@ -34,6 +34,23 @@ def has_offices():
         return data.Office.query.first() is not None
 
 
+def is_office_operator(office_id):
+    ''' Check if the current user's an office operator.
+
+    Parameters
+    ----------
+        office_id: int
+            id of the office to check for its operators.
+
+    Returns
+    -------
+        True if operator False if not
+    '''
+    operator = data.Operators.get(current_user.id)
+
+    return bool(operator and operator.office_id == office_id)
+
+
 def reject_not_god(function):
     ''' Decorator to flash and redirect to `core.root` if current user is not God.
 

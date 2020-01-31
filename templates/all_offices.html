@@ -87,13 +87,13 @@
 	      	
 			<div class="row well {% if o.p %} text-primary {% else %} text-danger {% endif %} h4  text-center">
 		  		<div class="col-xs-12 col-sm-2">
-		    		<b> {{ offices.filter_by(id=o.office_id).first().prefix }}{{ o.number }}.</b>
+		    		<b> {{ o.office.prefix }}{{ o.number }}.</b>
 		  		</div>
 		  		<div class="col-xs-12 col-sm-2">
 					  {{ moment(o.timestamp).format('L') }}
 		  		</div>
 		  		<div class="col-xs-12 col-sm-3">
-		    		{% if o.p %} <u>{{ users.filter_by(id=o.pulledBy).first().name }} / {{ moment(o.pdt).fromNow() }}</u>
+		    		{% if o.p %} <u>{{ o.puller_name }} / {{ moment(o.pdt).fromNow() }}</u>
 		    		{% else %} <u>{{ translate('Waiting', 'en', [defLang]) }}</u> {% endif %}
 		  		</div>
 		  		<div class="col-xs-12 col-sm-3">

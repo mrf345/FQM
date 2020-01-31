@@ -2,7 +2,8 @@
 
 ### To Fix :
 
-- [ ] Fix common task tickets bread crumbs counter
+- [x] ~~Fix common task tickets bread crumbs counter~~ (2020-01-31)
+> Default tickets incrementing behavior was altered which resolved the issue
 - [ ] Refactor `manage` and `core` endpoints
 - [ ] Always hit tasks with office id to fix possible random redirection
 - [ ] Arabic GUI fonts on Windows

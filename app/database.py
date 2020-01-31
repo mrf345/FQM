@@ -4,6 +4,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from flask_login import UserMixin
+from sqlalchemy.sql import and_
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from app.middleware import db
@@ -32,6 +33,19 @@ class Office(db.Model, Mixin):
     def __init__(self, name, prefix):
         self.name = name
         self.prefix = prefix
+
+    @classmethod
+    def get_first_available_prefix(cls):
+        letters = list(map(lambda i: chr(i), range(97, 123)))
+        prefix = None
+
+        while letters and not prefix:
+            match_letter = letters.pop()
+
+            if not cls.query.filter_by(prefix=match_letter).first():
+                prefix = match_letter
+
+        return prefix.upper()
 
 
 class Task(db.Model, Mixin):
@@ -101,6 +115,38 @@ class Serial(db.Model):
     @property
     def office(self):
         return Office.query.filter_by(id=self.office_id).first()
+
+    @property
+    def puller_name(self):
+        return User.get(self.pulledBy).name
+
+    @classmethod
+    def all_office_tickets(cls, office_id):
+        ''' To get tickets of the common task from other offices.
+
+        Parameters
+        ----------
+            office_id: int
+                id of the office to retreive tickets for.
+
+        Returns
+        -------
+            Query of office tickets unionned with other offices tickets.
+        '''
+        office = Office.get(office_id)
+        all_tickets = cls.query.filter(cls.office_id == office_id)
+
+        for task in office.tasks:
+            other_office_tickets = cls.query.filter(and_(
+                cls.task_id == task.id,
+                cls.office_id != office_id
+            ))
+
+            if other_office_tickets.count():
+                all_tickets.union(other_office_tickets)
+
+        return all_tickets
+
 
 class Waiting(db.Model):
     __tablename__ = "waitings"
