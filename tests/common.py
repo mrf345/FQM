@@ -25,7 +25,8 @@ NAMES = ('Aaron Enlightened', 'Abbott Father', 'Abel Breath', 'Abner Father',
          'Axel Peace', 'Baird Bard', 'Baldwin Friend', 'Barnaby Prophet',
          'Baron Nobleman', 'Barrett Bear-Like', 'Barry Marksman',
          'Bartholomew Warlike', 'Basil King-like')
-PREFIXES = list(map(lambda i: chr(i).upper(), range(97,123)))
+TEST_PREFIX = 'Z'
+PREFIXES = [p for p in list(map(lambda i: chr(i).upper(), range(97,123))) if p != TEST_PREFIX]
 
 MODULES = [Waiting, Serial, User, Operators, Task, Office]
 DB_PATH = absolute_path('testing.sqlite')

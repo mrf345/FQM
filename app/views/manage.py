@@ -1,18 +1,16 @@
-# -*- coding: utf-8 -*-
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+''' This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/. '''
 
 from flask import url_for, flash, request, render_template, redirect
 from flask import Blueprint, session
 from flask_login import current_user, login_required
-from sqlalchemy.sql import and_
 
 import app.forms as forms
 import app.database as data
 from app.middleware import db
 from app.utils import ids
-from app.helpers import reject_operator, reject_no_offices, is_operator
+from app.helpers import reject_operator, reject_no_offices, is_operator, is_office_operator
 
 
 manage_app = Blueprint('manage_app', __name__)
@@ -21,20 +19,17 @@ manage_app = Blueprint('manage_app', __name__)
 @manage_app.route('/manage')
 @login_required
 def manage():
-    """ view for main manage screen """
-    ofc = data.Operators.query.filter_by(id=current_user.id).first()
-    if is_operator() and ofc is None:
-        flash("Error: operators are not allowed to access the page ",
-              'danger')
-        return redirect(url_for('core.root'))
-    if ofc is None:
-        ofc = 0
-    else:
-        ofc = ofc.id
+    ''' management welcome screen. '''
+    if is_operator():
+        operator = data.Operators.get(current_user.id)
+
+        flash('Error: operators are not allowed to access the page ', 'danger')
+        return redirect(url_for('manage_app.offices', o_id=operator.office_id))
+
     return render_template("manage.html",
                            page_title="Management",
                            navbar="#snb1",
-                           ooid=ofc,
+                           ooid=0,  # NOTE: filler to collapse specific office
                            serial=data.Serial.query.filter(data.Serial.number != 100),
                            offices=data.Office.query,
                            operators=data.Operators.query,
@@ -45,15 +40,16 @@ def manage():
 @login_required
 @reject_operator
 def all_offices():
-    """ lists all offices """
+    ''' lists all offices. '''
     page = request.args.get('page', 1, type=int)
     tickets = data.Serial.query.filter(data.Serial.number != 100)\
-                               .order_by(data.Serial.p, data.Serial.timestamp.desc())
+                               .order_by(data.Serial.p, data.Serial.number.desc())
     pagination = tickets.paginate(page, per_page=10, error_out=False)
     last_ticket_pulled = tickets.filter_by(p=True).first()
     last_ticket_office = last_ticket_pulled and data.Office.query\
                                                     .filter_by(id=last_ticket_pulled.office_id)\
                                                     .first()
+
     return render_template('all_offices.html',
                            officesp=pagination.items,
                            pagination=pagination,
@@ -73,54 +69,48 @@ def all_offices():
 @manage_app.route('/offices/<int:o_id>', methods=['GET', 'POST'])
 @login_required
 def offices(o_id):
-    """ view specific office """
-    ofc = data.Office.query.filter_by(id=o_id).first()
-    if ofc is None:
-        flash('Error: wrong entry, something went wrong',
-              'danger')
-        return redirect(url_for("manage_app.all_offices"))
-    if is_operator() and data.Operators.query.filter_by(id=current_user.id, office_id=o_id).first() is None:
-        flash("Error: operators are not allowed to access the page ",
-              'danger')
+    ''' view and update an office. '''
+    office = data.Office.get(o_id)
+
+    if office is None:
+        flash('Error: wrong entry, something went wrong', 'danger')
         return redirect(url_for('core.root'))
-    form = forms.Offices_a(upd=ofc.prefix, defLang=session.get('lang'))
+
+    if is_operator() and not is_office_operator(o_id):
+        flash('Error: operators are not allowed to access the page ', 'danger')
+        return redirect(url_for('core.root'))
+
+    form = forms.Offices_a(upd=office.prefix, defLang=session.get('lang'))
     page = request.args.get('page', 1, type=int)
-    toGetFrom = data.Serial.query.filter_by(office_id=o_id)
-    # To solve tickets from common tasks that are assigned to some other office
-    for task in ofc.tasks:
-        tickets = data.Serial.query.filter(
-            and_(
-                data.Serial.task_id == task.id,
-                data.Serial.office_id != o_id))
-        if tickets.count() > 0:
-            toGetFrom = toGetFrom.union(tickets)
-    tickets = toGetFrom.filter(data.Serial.number != 100)\
-                       .order_by(data.Serial.p)\
-                       .order_by(data.Serial.number.desc())
+    tickets = data.Serial.all_office_tickets(o_id)\
+                         .filter(data.Serial.number != 100)\
+                         .order_by(data.Serial.p, data.Serial.number.desc())
     last_ticket_pulled = tickets.filter_by(p=True).first()
     pagination = tickets.paginate(page, per_page=10, error_out=False)
+
     if form.validate_on_submit():
-        mka = data.Office.query.filter_by(name=form.name.data)
-        for f in mka:
-            if f.id != o_id:
-                flash("Error: name is used by another one, choose another name",
-                      'danger')
+        # NOTE: Check if the office's name is already used
+        for matching_office in data.Office.query.filter_by(name=form.name.data):
+            if matching_office.id != o_id:
+                flash('Error: name is used by another one, choose another name', 'danger')
                 return redirect(url_for("manage_app.offices", o_id=o_id))
-        ofc.name = form.name.data
-        ofc.prefix = form.prefix.data.upper()
+
+        office.name = form.name.data
+        office.prefix = form.prefix.data.upper()
         db.session.commit()
-        flash("Notice: office has been updated. ",
-              'info')
+        flash('Notice: office has been updated. ', 'info')
         return redirect(url_for('manage_app.offices', o_id=o_id))
-    form.name.data = ofc.name
-    form.prefix.data = ofc.prefix.upper()
+
+    form.name.data = office.name
+    form.prefix.data = office.prefix.upper()
+
     return render_template('offices.html',
                            form=form,
                            officesp=pagination.items,
                            pagination=pagination,
-                           page_title="Office : " + ofc.prefix + str(ofc.name),
+                           page_title="Office : " + office.prefix + str(office.name),
                            o_id=o_id,
-                           ooid=ofc,
+                           ooid=office,
                            len=len,
                            serial=data.Serial.query.filter(data.Serial.number != 100),
                            offices=data.Office.query,
@@ -137,28 +127,28 @@ def offices(o_id):
 @login_required
 @reject_operator
 def office_a():
-    """ to add an office """
+    ''' add an office. '''
     form = forms.Offices_a(defLang=session.get('lang'))
+    # import pudb; pudb.set_trace()
+
     if form.validate_on_submit():
-        if data.Office.query.filter_by(name=form.name.
-                                       data).first() is not None:
-            flash("Error: name is used by another one, choose another name",
-                  'danger')
-            return redirect(url_for("manage_app.all_offices"))
-        db.session.add(data.Office(form.name.data,
-                                   form.prefix.data.upper()))
+        if data.Office.query.filter_by(name=form.name.data).first():
+            flash('Error: name is used by another one, choose another name', 'danger')
+            return redirect(url_for('manage_app.all_offices'))
+
+        db.session.add(data.Office(form.name.data, form.prefix.data.upper()))
         db.session.commit()
-        flash("Notice: new office been added . ",
-              'info')
-        return redirect(url_for("manage_app.all_offices"))
-    return render_template("office_add.html",
+        flash('Notice: new office been added . ', 'info')
+        return redirect(url_for('manage_app.all_offices'))
+
+    return render_template('office_add.html',
                            form=form,
-                           page_title="Adding new office",
+                           page_title='Adding new office',
                            offices=data.Office.query,
                            tasks=data.Task.query,
                            operators=data.Operators.query,
-                           navbar="#snb1",
-                           hash="#da3",
+                           navbar='#snb1',
+                           hash='#da3',
                            serial=data.Serial.query.filter(data.Serial.number != 100))
 
 
@@ -193,7 +183,7 @@ def office_d(o_id):
 @reject_operator
 @reject_no_offices
 def office_da():
-    """ to delete all offices """
+    ''' to delete all offices '''
     if data.Serial.query.filter(data.Serial.number != 100).count():
         flash("Error: you must reset it, before you delete it ",
               'danger')
@@ -214,7 +204,7 @@ pll = []
 @login_required
 @reject_operator
 def search():
-    """ to search for tickets """
+    ''' to search for tickets '''
     form = forms.Search_s(session.get('lang'))
     if form.validate_on_submit() or request.args.get("page"):
         from sqlalchemy import text
@@ -282,7 +272,7 @@ def search():
 @manage_app.route('/task/<int:o_id>/<int:ofc_id>', methods=['POST', 'GET'])
 @login_required
 def task(o_id, ofc_id=None):
-    """ view for specific task """
+    ''' view for specific task '''
     task = data.Task.query.filter_by(id=o_id).first()
 
     if task is None:
@@ -375,7 +365,7 @@ def task(o_id, ofc_id=None):
 @manage_app.route('/task_d/<int:t_id>/<int:ofc_id>')
 @login_required
 def task_d(t_id, ofc_id=None):
-    """ to delete a task """
+    ''' to delete a task '''
     task = data.Task.get(t_id)
 
     if task is None:
@@ -409,7 +399,7 @@ def task_d(t_id, ofc_id=None):
 @login_required
 @reject_operator
 def common_task_a():
-    """ to add a common task """
+    ''' to add a common task '''
     if data.Office.query.count() <= 1:
         flash("Error: not enough offices exist to add a common task", 'danger')
         return redirect(url_for("manage_app.all_offices"))
@@ -463,7 +453,7 @@ def common_task_a():
 @manage_app.route('/task_a/<int:o_id>', methods=['GET', 'POST'])
 @login_required
 def task_a(o_id):
-    """ to add a task """
+    ''' to add a task '''
     form = forms.Task_a(session.get('lang'))
     office = data.Office.get(o_id)
 
