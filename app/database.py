@@ -45,7 +45,7 @@ class Office(db.Model, Mixin):
             if not cls.query.filter_by(prefix=match_letter).first():
                 prefix = match_letter
 
-        return prefix.upper()
+        return prefix and prefix.upper()
 
 
 class Task(db.Model, Mixin):
@@ -143,7 +143,7 @@ class Serial(db.Model):
             ))
 
             if other_office_tickets.count():
-                all_tickets.union(other_office_tickets)
+                all_tickets = all_tickets.union(other_office_tickets)
 
         return all_tickets
 

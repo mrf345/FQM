@@ -1,8 +1,9 @@
+from datetime import datetime
 from random import choice, randint
 from sqlalchemy.sql.expression import func
 from uuid import uuid4
 
-from .common import client, TEST_PREFIX
+from .common import client, TEST_PREFIX, get_first_office_with_tickets
 from app.database import Task, Office, Serial
 from app.middleware import db
 from app.utils import ids
@@ -45,7 +46,85 @@ def test_list_office(client):
     assert response.status == '200 OK'
 
     for ticket in tickets:
-        assert f'<b> {ticket.office.prefix}{ ticket.number }.</b>' in page_content
+        assert f'<b> {office.prefix}{ticket.number}.</b>' in page_content
+
+
+def test_list_office_with_common_task(client):
+    with client.application.app_context():
+        task = Task.get_first_common()
+        office = choice(task.offices)
+        tickets = Serial.all_office_tickets(office.id)\
+                        .filter(Serial.number != 100)\
+                        .order_by(Serial.p, Serial.timestamp.desc())\
+                        .limit(10)
+
+    response = client.get(f'/offices/{office.id}', follow_redirects=True)
+    page_content = response.data.decode('utf-8')
+
+    assert response.status == '200 OK'
+
+    for ticket in tickets:
+        assert f'<b> {office.prefix}{ticket.number}.</b>' in page_content
+
+
+def test_delete_office_before_reset(client):
+    office = get_first_office_with_tickets(client)
+    response = client.get(f'/office_d/{office.id}', follow_redirects=True)
+
+    assert response.status == '200 OK'
+    assert Office.get(office.id) is not None
+
+
+def test_delete_office_after_reset(client):
+    with client.application.app_context():
+        office = choice(Office.query.all())
+        migrated_common_tasks = [t for t in office.tasks if t.common]
+
+
+    client.get(f'/serial_r/{office.id}')  # NOTE: reseting office before deleting it
+    response = client.get(f'/office_d/{office.id}', follow_redirects=True)
+
+    assert response.status == '200 OK'
+    assert Office.query.filter_by(name=office.name).first() is None
+
+    for task in migrated_common_tasks:
+        assert Task.get(task.id) is not None
+
+
+def test_delete_all_offices(client):
+    with client.application.app_context():
+        offices_length = Office.query.count()
+        tasks_length = Task.query.count()
+        tickets_length = Serial.query.count()
+
+    client.get(f'/serial_ra', follow_redirects=True)  # NOTE: reseting office before deleting it
+    response = client.get(f'/office_da', follow_redirects=True)
+
+    assert response.status == '200 OK'
+    assert offices_length != 0
+    assert Office.query.count() == 0
+    assert tasks_length != 0
+    assert Task.query.count() == 0
+    assert tickets_length != 0
+    assert Serial.query.count() == 0
+
+
+def test_search(client):
+    with client.application.app_context():
+        date = datetime.now().strftime('%Y-%m-%d')
+        office = get_first_office_with_tickets(client)
+        ticket = Serial.query.filter(Serial.office_id == office.id,
+                                      Serial.number != 100)\
+                             .first()
+
+    response = client.post('/search', data={
+        'date': date, 'number': ticket.number, f'tl': office.id
+    }, follow_redirects=True)
+    page_content = response.data.decode('utf-8')
+
+    assert response.status == '200 OK'
+    assert ticket is not None
+    assert f'<b> {Office.get(ticket.office_id).prefix}{ticket.number}.</b>' in page_content
 
 
 def test_update_office(client):
