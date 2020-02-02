@@ -305,7 +305,7 @@ def serial_rt(t_id, ofc_id=None):
     if data.Serial.query.filter(data.Serial.task_id == t_id, data.Serial.number != 100).first() is None:
         flash("Error: the task is already resetted",
               'danger')
-        return redirect(url_for("manage_app.task", o_id=t_id))
+        return redirect(url_for("manage_app.task", o_id=t_id, ofc_id=ofc_id))
     for f in data.Serial.query.filter(data.Serial.task_id == t_id, data.Serial.number != 100):
         w = data.Waiting.query.filter_by(office_id=f.office_id,
                                          number=f.number).first()
@@ -325,7 +325,6 @@ def pull(o_id=None, ofc_id=None):
     """ to change the state of a ticket to be pulled """
     # FIX: pulling tickets by task_id instead of office_id
     # to allow for pulling form specific office
-    # import pudb; pudb.set_trace()
     if o_id is not None:
         if data.Task.query.filter_by(id=o_id).first() is None:
             flash('Error: wrong entry, something went wrong', 'danger')

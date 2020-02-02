@@ -30,7 +30,7 @@ PREFIXES = [p for p in list(map(lambda i: chr(i).upper(), range(97,123))) if p !
 
 MODULES = [Waiting, Serial, User, Operators, Task, Office]
 DB_PATH = absolute_path('testing.sqlite')
-TEST_REPEATS = 11
+TEST_REPEATS = 3
 
 
 @pytest.fixture
@@ -144,3 +144,16 @@ def fill_tickets(entry_number=100):
         db.session.add(Waiting(number=ticket.number, office_id=ticket.office_id,
                                task_id=ticket.task_id, name=ticket.name, n=ticket.n))
     db.session.commit()
+
+
+def get_first_office_with_tickets(client):
+    with client.application.app_context():
+        offices = Office.query.all()
+
+        while offices:
+            office = offices.pop()
+
+            if Serial.query.filter(Serial.number != 100,
+                                   Serial.office_id == office.id)\
+                           .first():
+                return office
