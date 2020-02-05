@@ -214,11 +214,15 @@ def user_u(u_id):
                 flash('Error: Office selected does not exist!', 'danger')
                 return redirect(url_for('core.root'))
 
-            if data.Operators.query.filter_by(id=user.id).first() is None:
+            operator = data.Operators.get(user.id)
+
+            if not operator:
                 db.session.add(data.Operators(
                     user.id,
                     form.offices.data
                 ))
+            else:
+                operator.office_id = form.offices.data
         else:
             to_delete = data.Operators.query.filter_by(id=user.id).first()
             if to_delete is not None:
