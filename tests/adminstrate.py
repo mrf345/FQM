@@ -1,4 +1,5 @@
 from uuid import uuid4
+from random import choice
 
 from app.database import User, Office, Operators
 from app.utils import get_module_columns, get_module_values
@@ -80,6 +81,33 @@ def test_update_user(client):
 
     assert response.status == '200 OK'
     assert User.get(user.id).name == new_name
+
+
+def test_update_operator(client):
+    with client.application.app_context():
+        office = choice(Office.query.all())
+        new_office = choice(Office.query.all())
+
+        while new_office == office:
+            new_office = choice(Office.query.all())
+
+    name = f'{uuid4()}'.replace('-', '')
+    password = 'password'
+    role = 3
+    new_name = f'{uuid4()}'.replace('-', '')
+
+    client.post('/user_a', data={
+        'name': name, 'password': password, 'role': role, 'offices': office.id
+    })
+
+    user = User.query.filter_by(name=name).first() 
+    response = client.post(f'/user_u/{user.id}', data={
+        'name': new_name, 'password': password, 'role': role, 'offices': new_office.id
+    }, follow_redirects=True)
+
+    assert response.status == '200 OK'
+    assert User.get(user.id).name == new_name
+    assert Operators.get(user.id).office_id == new_office.id
 
 
 def test_delete_user(client):
