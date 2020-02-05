@@ -136,13 +136,15 @@ def fill_tickets(entry_number=100):
     db.session.commit()
 
     # Filling the waiting tickets stack
-    tickets_to_fill = Serial.query.filter_by(p=False)\
+    tickets_to_fill = Serial.query.filter(Serial.p == False,
+                                          Serial.number != 100)\
                                   .order_by(Serial.number)\
                                   .limit(11 - Waiting.query.count())
 
     for ticket in tickets_to_fill:
-        db.session.add(Waiting(number=ticket.number, office_id=ticket.office_id,
-                               task_id=ticket.task_id, name=ticket.name, n=ticket.n))
+        if 10 >= Waiting.query.count():
+            db.session.add(Waiting(number=ticket.number, office_id=ticket.office_id,
+                                   task_id=ticket.task_id, name=ticket.name, n=ticket.n))
     db.session.commit()
 
 

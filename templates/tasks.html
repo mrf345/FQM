@@ -131,7 +131,7 @@ $(document).ready(function () {
 			], toWarn=translate('Waiting', 'en', [defLang])) }}
 			<div class="row text-center">
 		    	<div class="pagination">
-					{{ macros.pagination_widget(pagination, '.task', o_id=o_id) }}
+					{{ macros.pagination_widget(pagination, '.task', o_id=o_id, ofc_id=office.id) }}
 		    	</div>
 			</div>
 	    </div>

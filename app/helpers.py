@@ -8,6 +8,7 @@ from flask import current_app, flash, redirect, url_for
 from flask_login import current_user
 
 import app.database as data
+from app.middleware import db
 
 
 def is_god():
@@ -44,11 +45,30 @@ def is_office_operator(office_id):
 
     Returns
     -------
-        True if operator False if not
+        True if a valid operator False if not
     '''
     operator = data.Operators.get(current_user.id)
 
     return bool(operator and operator.office_id == office_id)
+
+
+def is_common_task_operator(task_id):
+    ''' Check if the current user's an operator of common task.
+
+    Parameters
+    ----------
+        task_id: int
+            common task's id to check for its operators.
+
+    Returns
+    -------
+        True if a valid operator False if not
+    '''
+    task = data.Task.get(task_id)
+
+    return any([
+        is_office_operator(office.id) for office in (task and task.offices) or []
+    ])
 
 
 def reject_not_god(function):
@@ -163,5 +183,57 @@ def reject_no_offices(function):
         with current_app.app_context():
             flash('Error: No offices exist to delete', 'danger')
             return redirect(url_for('manage_app.all_offices'))
+
+    return decorated
+
+
+def refill_waiting_list(function):
+    ''' Decorator to refill tickets waiting list whenever endpoint is called.
+
+    Parameters
+    ----------
+        function: callable
+            endpoint we want to instigate refilling whenever it's called.
+
+    Returns
+    -------
+        Decorator for the passed `function`
+    '''
+    # NOTE: we'll end-up with total of 11 tickets in Waiting
+    LIMIT = 10
+
+    @wraps(function)
+    def decorated(*args, **kwargs):
+        next_tickets = data.Serial.query.filter_by(p=False)\
+                                        .filter(data.Serial.number != 100)\
+                                        .order_by(data.Serial.number)\
+                                        .limit(LIMIT)
+
+        for ticket in next_tickets:
+            existing = data.Waiting.query.filter_by(task_id=ticket.task_id,
+                                                    number=ticket.number)\
+                                         .first()
+
+            if not existing:
+                db.session.add(data.Waiting(number=ticket.number,
+                                            office_id=ticket.office_id,
+                                            task_id=ticket.task_id,
+                                            name=ticket.name,
+                                            n=ticket.n))
+        db.session.commit()
+
+        leftover_tickets = data.Waiting.query.order_by(data.Waiting.number)\
+                                             .all()
+
+        for _index, ticket in enumerate(leftover_tickets):
+            original = data.Serial.query.filter_by(number=ticket.number,
+                                                   task_id=ticket.task_id)\
+                                        .first()
+
+            if not original or original.p or _index > LIMIT:
+                db.session.delete(ticket)
+        db.session.commit()
+
+        return function(*args, **kwargs)
 
     return decorated

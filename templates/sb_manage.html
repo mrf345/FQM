@@ -70,15 +70,10 @@
 				{{ office.id }}.{{ translate('Office', 'en', [defLang]) }}  {{ office.prefix }}{{ office.name }}
 				<span class="caret"></span>
 				<!-- To solve counting all the common and non-common tasks tickets -->
-				{% set counter = namespace(a=0) %}
-				{% for toTask in office.tasks %}
-					{% if checkId(office.id, toTask.offices) %}
-				    {% set counter.a = counter.a + serial.filter_by(p=False, task_id=toTask.id).count() %}
-					{% endif %}
-				{% endfor %}
-				{% if counter.a > 0 %}
+				{% set total_tickets = Serial.all_office_tickets(office.id).filter_by(p=False).count() %}
+				{% if total_tickets > 0 %}
 				<span class="badge pull-right">
-					{{ counter.a }}
+					{{ total_tickets }}
 				</span>
 				{% endif %}
 			    </a>
@@ -129,9 +124,10 @@
 						<a href="{{ url_for('core.pull', o_id=task.id, ofc_id=office.id) }}">
 								<span class="fa fa-minus"></span>
 								{{ translate('Pull a ticket', 'en', [defLang]) }}
-								{% if serial.filter_by(p=False, task_id=task.id).count() >= 1 %}
+								{% set task_tickets = Serial.all_task_tickets(office.id, task.id).filter_by(p=False).count() %}
+								{% if task_tickets >= 1 %}
 								<span class="badge pull-right">
-									{{ serial.filter_by(p=False, task_id=task.id).count() }}
+									{{ task_tickets }}
 								</span>
 								{% endif %}
 						</a>

@@ -3,11 +3,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from sqlalchemy.sql import and_
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from app.middleware import db
+from app.constants import USER_ROLES
 
 mtasks = db.Table(
     'mtasks',
@@ -122,7 +123,7 @@ class Serial(db.Model):
 
     @classmethod
     def all_office_tickets(cls, office_id):
-        ''' To get tickets of the common task from other offices.
+        ''' get tickets of the common task from other offices.
 
         Parameters
         ----------
@@ -133,19 +134,61 @@ class Serial(db.Model):
         -------
             Query of office tickets unionned with other offices tickets.
         '''
+        strict_pulling = Settings.get().strict_pulling
         office = Office.get(office_id)
-        all_tickets = cls.query.filter(cls.office_id == office_id)
+        all_tickets = cls.query.filter(cls.office_id == office_id,
+                                       cls.number != 100)
 
-        for task in office.tasks:
-            other_office_tickets = cls.query.filter(and_(
-                cls.task_id == task.id,
-                cls.office_id != office_id
-            ))
+        if not strict_pulling:
+            for task in office.tasks:
+                other_office_tickets = cls.query.filter(and_(cls.task_id == task.id,
+                                                             cls.office_id != office_id))
 
-            if other_office_tickets.count():
-                all_tickets = all_tickets.union(other_office_tickets)
+                if other_office_tickets.count():
+                    all_tickets = all_tickets.union(other_office_tickets)
 
-        return all_tickets
+        return all_tickets.filter(Serial.number != 100)\
+                          .order_by(Serial.p, Serial.timestamp.desc())
+
+    @classmethod
+    def all_task_tickets(cls, office_id, task_id):
+        ''' get tickets related to a given task and office.
+
+        Parameters
+        ----------
+            office_id: int
+                id of the office that we're querying from.
+            task_id: int
+                id of the task we want to retrieve its tickets.
+
+        Returns
+        -------
+            Query of task tickets filterred based on `strict_pulling`.
+        '''
+        strict_pulling = Settings.get().strict_pulling
+        filter_parameters = {'office_id': office_id, 'task_id': task_id}
+
+        if not strict_pulling:
+            filter_parameters.pop('office_id')
+
+        return cls.query.filter_by(**filter_parameters)\
+                        .filter(cls.number != 100)\
+                        .order_by(cls.p, cls.timestamp.desc())
+
+    def pull(self, office_id):
+        ''' Mark a ticket as pulled and do the dues.
+
+        Parameters
+        ----------
+            office_id: int
+                id of the office from which the ticket is pulled.
+        '''
+        self.p = True
+        self.pdt = datetime.utcnow()
+        self.pulledBy = getattr(current_user, 'id', None)
+        self.office_id = office_id
+
+        db.session.commit()
 
 
 class Waiting(db.Model):
@@ -163,6 +206,22 @@ class Waiting(db.Model):
         self.task_id = task_id
         self.name = name
         self.n = n
+
+    @classmethod
+    def drop(cls, ticket):
+        ''' remove a ticket from waiting list.
+
+        Parameters
+        ----------
+            ticket: Serial record
+                ticket instance to remove from waiting list.
+        '''
+        waiting_ticket = cls.query.filter_by(number=ticket.number)\
+                                  .first()
+
+        if waiting_ticket:
+            db.session.delete(waiting_ticket)
+            db.session.commit()
 
 
 class Waiting_c(db.Model):
@@ -182,6 +241,35 @@ class Waiting_c(db.Model):
         self.tname = tname
         self.n = n
         self.name = name
+
+    @classmethod
+    def get(cls):
+        cls.query.first()
+
+    @classmethod
+    def assume(cls, ticket, office, task, show_prefix):
+        ''' change the current ticket details to match the passed ticket.
+
+        Parameters
+        ----------
+            ticket: Serila record
+                ticket to assume its properties.
+            office: Office record
+                office to dislay its prefix and number.
+            task: Task record
+                task to display its name.
+            show_prefix: bool
+                flag to show or hide office prefix.
+        '''
+        current_ticket = cls.query.first()
+        prefix = office.prefix if show_prefix else ''
+        current_ticket.ticket = f'{prefix}{ticket.number}'
+        current_ticket.oname = f'{prefix}{office.name}'
+        current_ticket.tname = task.name
+        current_ticket.n = ticket.n
+        current_ticket.name = ticket.name
+
+        db.session.commit()
 
 
 class Operators(db.Model, Mixin):
@@ -227,6 +315,20 @@ class Roles(db.Model):
     __tablename__ = "roles"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(10), unique=True)
+
+    def __init__(self, id, name):
+        self.id = id
+        self.name = name
+
+    @classmethod
+    def load_roles(cls):
+        for _id, name in USER_ROLES.items():
+            existing = cls.query.filter_by(id=_id, name=name)\
+                                .first()
+
+            if not existing:
+                db.session.add(Roles(id=_id, name=name))
+        db.session.commit()
 
 
 class Printer(db.Model):
@@ -402,6 +504,10 @@ class Display_store(db.Model):
         self.vkey = vkey
         self.akey = akey
 
+    @classmethod
+    def get(cls):
+        return cls.query.first()
+
 # -- Slides storage table
 
 
@@ -507,8 +613,14 @@ class Aliases(db.Model):
 class Settings(db.Model):
     __tablename__ = 'settings'
     id = db.Column(db.Integer, primary_key=True)
-    notifications = db.Column(db.Boolean)
+    notifications = db.Column(db.Boolean, nullable=True)
+    strict_pulling = db.Column(db.Boolean, nullable=True)
 
-    def __init__(self, notifications=True):
+    def __init__(self, notifications=True, strict_pulling=False):
         self.id = 0
         self.notifications = notifications
+        self.strict_pulling = strict_pulling
+
+    @classmethod
+    def get(cls):
+        return cls.query.first()

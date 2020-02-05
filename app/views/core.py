@@ -5,7 +5,6 @@
 
 import os
 from sys import platform
-from datetime import datetime
 from flask import url_for, flash, render_template, redirect, session, jsonify, Blueprint, current_app
 from flask_login import current_user, login_required, login_user
 
@@ -13,8 +12,11 @@ import app.forms as forms
 import app.database as data
 from app.printer import assign, printit, printit_ar, print_ticket_windows, print_ticket_windows_ar
 from app.middleware import db
-from app.helpers import reject_no_offices, reject_operator, is_operator, reject_not_admin
 from app.utils import execute
+from app.helpers import (
+    reject_no_offices, reject_operator, is_operator, reject_not_admin, is_office_operator,
+    is_common_task_operator, refill_waiting_list
+)
 
 
 core = Blueprint('core', __name__)
@@ -321,116 +323,62 @@ def serial_rt(t_id, ofc_id=None):
 @core.route('/pull', defaults={'o_id': None, 'ofc_id': None})
 @core.route('/pull/<int:o_id>/<int:ofc_id>')
 @login_required
+@refill_waiting_list
 def pull(o_id=None, ofc_id=None):
-    """ to change the state of a ticket to be pulled """
-    # FIX: pulling tickets by task_id instead of office_id
-    # to allow for pulling form specific office
-    if o_id is not None:
-        if data.Task.query.filter_by(id=o_id).first() is None:
-            flash('Error: wrong entry, something went wrong', 'danger')
-            return redirect(url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
-    if is_operator() and data.Operators.query.filter_by(id=current_user.id).first() is None:
-        flash("Error: operators are not allowed to access the page ",
-              'danger')
+    ''' pull ticket for specific task and office or globally. '''
+    def operators_not_allowed():
+        flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
-    if o_id is not None:
-        if is_operator() and data.Operators.query.filter_by(id=current_user.id).first().office_id not in\
-                [o.id for o in data.Task.query.filter_by(id=o_id).first().offices]:
-            flash("Error: operators are not allowed to access the page ", 'danger')
-            return redirect(url_for('core.root'))
-    else:
+
+    task = data.Task.get(o_id)
+    office = data.Office.get(ofc_id)
+    show_prefix = data.Display_store.get().prefix
+    strict_pulling = data.Settings.get().strict_pulling
+    global_pull = not bool(o_id and ofc_id)
+    general_redirection = redirect(url_for('manage_app.all_offices')
+                                   if global_pull else
+                                   url_for('manage_app.task', ofc_id=ofc_id, o_id=o_id))
+
+    if global_pull:
         if is_operator():
-            flash("Error: operators are not allowed to access the page ", 'danger')
-            return redirect(url_for('core.root'))
-    # Loading up the 10 waiting list
-    # FIX: limit the tickets to the range of waitting tickets, prevent overflow.
-    limited_tickets = data.Serial.query.filter_by(p=False)\
-                                       .filter(data.Serial.number != 100)\
-                                       .order_by(data.Serial.timestamp)\
-                                       .limit(11)
-    if data.Serial.query.filter_by(p=False).count() >= 0:
-        for a in range(data.Waiting.query.count(), 11):
-            for b in limited_tickets.all():
-                if data.Waiting.query.filter_by(office_id=b.office_id,
-                                                number=b.number,
-                                                task_id=b.task_id
-                                                ).first() is None:
-                    db.session.add(data.Waiting(b.number, b.office_id,
-                                                b.task_id, b.name, b.n))
-        db.session.commit()
+            return operators_not_allowed()
     else:
-        flash(
-            "Error: no tickets left to pull from ..",
-            'danger')
-        return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
-    # Setting the office in case it's not pull from all
-    # The goal is to specify the exact office responsible for the pull
-    # and update the about to be pulled tickets with responsible office
-    if ofc_id is not None and o_id is not None:
-        if data.Task.query.filter_by(id=o_id).first().common:
-            for record in [data.Serial, data.Waiting]:
-                record = record.query.filter_by(task_id=o_id).first()
-                if record is not None:
-                    if data.Office.query.filter_by(id=ofc_id).first() is not None:
-                        record.office_id = ofc_id
-                        db.session.commit()
-                    else:
-                        flash("Error: office used to pull is non existing", 'danger')
-                        return redirect(url_for("core_app.root"))
-    cs = data.Waiting.query.all() if o_id is None else data.Waiting.query.filter_by(task_id=o_id, office_id=ofc_id).first()
-    if cs is None:
-        flash(
-            "Error: no tickets left to pull from ..",
-            'danger')
-        return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
-    # Fix: pulling tickets by task_id instead of office_id
-    # have to switch positions
-    # --- Reassigning cs seems to fix it
-    # Fix: pulling tickets by task_id instead of office_id
-    # modifying removing from  waiting with task_id 
-    processed_ticket = data.Serial.query.order_by(data.Serial.number)\
-                                        .filter(data.Serial.number != 100,
-                                                data.Serial.p != True)
+        if not task:
+            flash('Error: wrong entry, something went wrong', 'danger')
+            return redirect(url_for('core.root'))
 
-    if o_id:
-        processed_ticket = processed_ticket.filter(data.Serial.task_id == cs.task_id)
+        if is_operator() and not (is_office_operator(ofc_id)
+                                  if strict_pulling else
+                                  is_common_task_operator(task.id)):
+            return operators_not_allowed()
 
-    if ofc_id and not data.Task.query.filter_by(id=o_id).first().common:
-        # NOTE: skip filtering by office for common tasks
-        processed_ticket = processed_ticket.filter(data.Serial.office_id == cs.office_id)
+    next_tickets = data.Serial.query.filter(data.Serial.number != 100,
+                                            data.Serial.p != True)
+    next_ticket = None
 
-    processed_ticket = processed_ticket.first()
+    if not global_pull:
+        next_ticket = next_tickets.filter(data.Serial.task_id == task.id)
 
-    if not processed_ticket:
-        flash("Error: no tickets left to pull from ..", 'danger')
-        return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
+        if strict_pulling:
+            next_ticket = next_ticket.filter(data.Serial.office_id == office.id)
 
-    cs = data.Waiting.query.filter_by(**({'task_id': o_id, 'office_id': processed_ticket.office_id, 'number': processed_ticket.number} if o_id is not None else {'number': processed_ticket.number})).first()
-    # NOTE: Fallback to ticket record if ticket is not pushed yet to waiting
-    # if cs is None:
-    #     flash("Error: no tickets left to pull from ..", 'danger')
-    #     return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
-    # adding to current waiting
-    pIt = data.Display_store.query.first().prefix
-    ocs = data.Office.query.filter_by(id=(cs or processed_ticket).office_id).first()
-    cl = data.Waiting_c.query.first()
-    cl.ticket = (ocs.prefix if pIt else '') + str((cs or processed_ticket).number)
-    cl.oname = (ocs.prefix if pIt else '') + str(ocs.name)
-    cl.tname = data.Task.query.filter_by(id=(cs or processed_ticket).task_id).first().name
-    cl.n = (cs or processed_ticket).n
-    cl.name = (cs or processed_ticket).name
-    db.session.commit()
+    next_ticket = (next_tickets if global_pull else next_ticket)\
+        .order_by(data.Serial.timestamp)\
+        .first()
 
-    processed_ticket.p = True
-    processed_ticket.pdt = datetime.utcnow()
-    processed_ticket.pulledBy = getattr(current_user, 'id', None)
+    if not next_ticket:
+        flash('Error: no tickets left to pull from ..', 'danger')
+        return general_redirection
 
-    db.session.add(processed_ticket)
-    if cs:
-        db.session.delete(cs)
-    db.session.commit()
-    flash("Notice: Ticket has been pulled ..", 'info')
-    return redirect(url_for('manage_app.all_offices') if o_id is None else url_for("manage_app.task", **({'ofc_id': ofc_id, 'o_id': o_id} if ofc_id else {'o_id': o_id})))
+    office = office or data.Office.get(next_ticket.office_id)
+    task = task or data.Task.get(next_ticket.task_id)
+
+    data.Waiting_c.assume(next_ticket, office, task, show_prefix)
+    next_ticket.pull(office.id)
+    data.Waiting.drop(next_ticket)
+
+    flash('Notice: Ticket has been pulled ..', 'info')
+    return general_redirection
 
 
 @core.route('/feed', methods=['GET'], defaults={'disable': None})
@@ -550,19 +498,23 @@ def touch(a):
                            form=form, a=ts.tmp, d=d)
 
 
-@core.route('/notifications/<togo>')
+@core.route('/settings/<setting>/<togo>')
 @login_required
 @reject_not_admin
-def notifications(togo):
-    """ to toggle the front-end notifications """
-    settings = data.Settings.query.filter_by(id=0).first()
-    if settings is not None:
-        settings.notifications = False if settings.notifications else True
-        db.session.add(settings)
-        db.session.commit()
-        flash("Notice: Notification got " + (
-            "Enabled" if settings.notifications else "Disabled"
-        ) + " successfully", 'info')
-    else:
-        flash("Error: Failed to find settings in the database", 'danger')
-    return redirect(togo.replace('(', '/'))
+def settings(setting, togo):
+    ''' toggle a setting. '''
+    settings = data.Settings.get()
+    togo = f'{togo}'.replace('(', '/')
+
+    if not settings:
+        flash('Error: Failed to find settings in the database', 'danger')
+        return redirect(togo)
+
+    toggled_setting_value = not bool(getattr(settings, setting, True))
+
+    settings.__setattr__(setting, toggled_setting_value)
+    db.session.commit()
+    flash(f'Notice: Setting got {"Enabled" if toggled_setting_value else "Disabled"} successfully.',
+          'info')
+
+    return redirect(togo)
