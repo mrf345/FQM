@@ -16,3 +16,10 @@ SUPPORTED_MEDIA_FILES = [
     ['wav', 'WAV', 'mp3', 'MP3'],
     ['mp4', 'MP4', 'AVI', 'avi', 'webm', 'WEBM']
 ]
+
+USER_ROLES = {
+    # NOTE: User roles keyed with their ids.
+    1: 'Administrator',
+    2: 'Monitor',
+    3: 'Operator'
+}

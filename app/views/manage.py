@@ -42,7 +42,7 @@ def all_offices():
     ''' lists all offices. '''
     page = request.args.get('page', 1, type=int)
     tickets = data.Serial.query.filter(data.Serial.number != 100)\
-                               .order_by(data.Serial.p, data.Serial.number.desc())
+                               .order_by(data.Serial.p, data.Serial.timestamp.desc())
     pagination = tickets.paginate(page, per_page=10, error_out=False)
     last_ticket_pulled = tickets.filter_by(p=True).first()
     last_ticket_office = last_ticket_pulled and data.Office.query\
@@ -81,9 +81,7 @@ def offices(o_id):
 
     form = forms.Offices_a(upd=office.prefix, defLang=session.get('lang'))
     page = request.args.get('page', 1, type=int)
-    tickets = data.Serial.all_office_tickets(o_id)\
-                         .filter(data.Serial.number != 100)\
-                         .order_by(data.Serial.p, data.Serial.number.desc())
+    tickets = data.Serial.all_office_tickets(o_id)
     last_ticket_pulled = tickets.filter_by(p=True).first()
     pagination = tickets.paginate(page, per_page=10, error_out=False)
 
@@ -111,7 +109,7 @@ def offices(o_id):
                            o_id=o_id,
                            ooid=office,
                            len=len,
-                           serial=data.Serial.query.filter(data.Serial.number != 100),
+                           serial=tickets,
                            offices=data.Office.query,
                            tasks=data.Task.query,
                            users=data.User.query,
@@ -253,15 +251,15 @@ def search():
 @login_required
 def task(o_id, ofc_id=None):
     ''' view specific task. '''
-    task = data.Task.query.filter_by(id=o_id).first()
+    task = data.Task.get(o_id)
 
     if task is None:
         flash('Error: wrong entry, something went wrong', 'danger')
         return redirect(url_for('core.root'))
 
-    form = forms.Task_a(session.get('lang'), True if len(task.offices) > 1 else False)
+    form = forms.Task_a(session.get('lang'), task.common)
 
-    if is_operator() and data.Operators.query.filter_by(id=current_user.id).first() is None:
+    if is_operator() and not is_office_operator(ofc_id):
         flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
 
@@ -274,9 +272,7 @@ def task(o_id, ofc_id=None):
         return redirect(url_for('core.root'))
 
     page = request.args.get('page', 1, type=int)
-    tickets = data.Serial.query.filter(data.Serial.task_id == o_id,
-                                       data.Serial.number != 100)\
-                               .order_by(data.Serial.timestamp.desc())
+    tickets = data.Serial.all_task_tickets(ofc_id, task.id)
     last_ticket_pulled = tickets.filter_by(p=True).first()
     pagination = tickets.paginate(page, per_page=10, error_out=False)
 
@@ -323,7 +319,7 @@ def task(o_id, ofc_id=None):
                            page_title='Task : ' + task.name,
                            tasksp=pagination.items,
                            pagination=pagination,
-                           serial=data.Serial.query.filter(data.Serial.number != 100),
+                           serial=tickets,
                            o_id=o_id,
                            ofc_id=ofc_id,
                            common=task.common,
@@ -337,7 +333,8 @@ def task(o_id, ofc_id=None):
                            dropdown='#dropdown-lvl%i' % ofc_id,  # dropdown a list of offices
                            hash='#tt%i%i' % (ofc_id, o_id),
                            last_ticket_pulled=last_ticket_pulled,
-                           edit_task=len(task.offices) == 1 or not is_operator())
+                           edit_task=len(task.offices) == 1 or not is_operator(),
+                           office=data.Office.get(ofc_id))
 
 
 @manage_app.route('/task_d/<int:t_id>', defaults={'ofc_id': None})

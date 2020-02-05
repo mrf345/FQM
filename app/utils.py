@@ -294,6 +294,20 @@ def mse():
     db.session.commit()
 
 
+def create_default_records():
+    ''' create database necessary records, if not existing. '''
+    tables = [data.Display_store, data.Touch_store, data.Slides_c,
+              data.Settings, data.Vid, data.Waiting_c, data.Printer,
+              data.Aliases]
+
+    # NOTE: Create default records, if non-existing.
+    for table in tables:
+        if not table.query.first():
+            db.session.add(table())
+    db.session.commit()
+    data.Roles.load_roles()
+
+
 def getFolderSize(folder, safely=False):
     # -- get a folder size
     if safely and not os.path.isdir(folder):

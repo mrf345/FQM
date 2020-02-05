@@ -5,6 +5,7 @@
 
 import os
 from functools import reduce
+from sqlalchemy.sql import text
 from flask import Flask, request, Markup, session, redirect, url_for, flash, render_template
 from flask_pagedown import PageDown
 from flask_moment import Moment
@@ -24,8 +25,8 @@ from app.views.administrate import administrate
 from app.views.core import core
 from app.views.customize import cust_app
 from app.views.manage import manage_app
-from app.utils import mse, absolute_path, log_error
-from app.database import Settings
+from app.utils import absolute_path, log_error, create_default_records
+from app.database import Settings, Serial
 from app.constants import SUPPORTED_LANGUAGES, SUPPORTED_MEDIA_FILES, VERSION
 
 
@@ -88,7 +89,14 @@ def create_db(app):
     with app.app_context():
         db.create_all()
         db.session.commit()
-        mse()
+        try:
+            create_default_records()
+        except Exception:
+            # NOTE: Settings table will have to be recreated to avoid migration for now
+            db.engine.execute(text('DROP TABLE settings;'))
+            db.create_all()
+            db.session.commit()
+            create_default_records()
 
 
 def bundle_app(config={}):
@@ -161,9 +169,9 @@ def bundle_app(config={}):
         admin_routes = ['/users', '/user_a', '/admin_u', '/user_u', '/csv', '/settings']
         admin_route = any([path in admin_routes, path[:7] in admin_routes, path[:5] in admin_routes])
 
-        return dict(path=path, notifications=Settings.query.first().notifications,
-                    adme=admin_route, brp=Markup('<br>'), ar=ar, current_path=request.path,
+        return dict(path=path, adme=admin_route, brp=Markup('<br>'), ar=ar, current_path=request.path,
                     version=VERSION, str=str, defLang=session.get('lang'), getattr=getattr,
-                    checkId=lambda id, records: id in [i.id for i in records])
+                    settings=Settings.get(), checkId=lambda id, records: id in [i.id for i in records],
+                    Serial=Serial)
 
     return app
