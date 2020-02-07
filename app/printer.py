@@ -108,7 +108,7 @@ def listp():
     return vl
 
 
-def printit_ar(pname, ti, ofc, tnu, tas, cticket):
+def printit_ar(pname, ti, ofc, tnu, tas, cticket, lang=None):
     def fsizeit(text, t, f):
         ltxt = "A" * len(t)
         return f.getsize(t)

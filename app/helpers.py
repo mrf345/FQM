@@ -204,6 +204,9 @@ def refill_waiting_list(function):
 
     @wraps(function)
     def decorated(*args, **kwargs):
+        # NOTE: executing the function prior to refilling the list
+        response = function(*args, **kwargs)
+
         next_tickets = data.Serial.query.filter_by(p=False)\
                                         .filter(data.Serial.number != 100)\
                                         .order_by(data.Serial.number)\
@@ -234,6 +237,6 @@ def refill_waiting_list(function):
                 db.session.delete(ticket)
         db.session.commit()
 
-        return function(*args, **kwargs)
+        return response
 
     return decorated
