@@ -111,14 +111,13 @@ def test_delete_all_offices(client):
 
 def test_search(client):
     with client.application.app_context():
-        date = datetime.now().strftime('%Y-%m-%d')
         office = get_first_office_with_tickets(client)
         ticket = Serial.query.filter(Serial.office_id == office.id,
                                       Serial.number != 100)\
                              .first()
 
     response = client.post('/search', data={
-        'date': date, 'number': ticket.number, f'tl': office.id
+        'number': ticket.number, 'tl': office.id
     }, follow_redirects=True)
     page_content = response.data.decode('utf-8')
 

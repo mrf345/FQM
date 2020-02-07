@@ -8,7 +8,7 @@ from sqlalchemy.sql import and_
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from app.middleware import db
-from app.constants import USER_ROLES
+from app.constants import USER_ROLES, DEFAULT_PASSWORD
 
 mtasks = db.Table(
     'mtasks',
@@ -48,6 +48,11 @@ class Office(db.Model, Mixin):
 
         return prefix and prefix.upper()
 
+    @property
+    def tickets(self):
+        return Serial.query.filter(Serial.office_id == self.id,
+                                   Serial.number != 100)
+
 
 class Task(db.Model, Mixin):
     __tablename__ = "tasks"
@@ -71,6 +76,11 @@ class Task(db.Model, Mixin):
     def least_tickets_office(self):
         self.offices.sort(key=lambda o: Serial.query.filter_by(office_id=o.id).count())
         return self.offices[0]
+
+    @property
+    def tickets(self):
+        return Serial.query.filter(Serial.task_id == self.id,
+                                   Serial.number != 100)
 
     def migrate_tickets(self, from_office, to_office):
         params = dict(office_id=from_office.id, task_id=self.id)
@@ -208,20 +218,22 @@ class Waiting(db.Model):
         self.n = n
 
     @classmethod
-    def drop(cls, ticket):
+    def drop(cls, tickets=[]):
         ''' remove a ticket from waiting list.
 
         Parameters
         ----------
-            ticket: Serial record
+            tickets: list of Serial record
                 ticket instance to remove from waiting list.
         '''
-        waiting_ticket = cls.query.filter_by(number=ticket.number)\
-                                  .first()
+        for ticket in tickets:
 
-        if waiting_ticket:
-            db.session.delete(waiting_ticket)
-            db.session.commit()
+            waiting_ticket = cls.query.filter_by(number=ticket.number)\
+                                      .first()
+
+            if waiting_ticket:
+                db.session.delete(waiting_ticket)
+                db.session.commit()
 
 
 class Waiting_c(db.Model):
@@ -309,6 +321,10 @@ class User(UserMixin, db.Model, Mixin):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    @classmethod
+    def has_default_password(cls):
+        return cls.query.filter_by(id=1).first().verify_password(DEFAULT_PASSWORD)
 
 
 class Roles(db.Model):

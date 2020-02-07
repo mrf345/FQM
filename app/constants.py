@@ -23,3 +23,5 @@ USER_ROLES = {
     2: 'Monitor',
     3: 'Operator'
 }
+
+DEFAULT_PASSWORD = 'admin'

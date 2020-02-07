@@ -43,7 +43,7 @@
 					.then(function (j) {
 						if (j.replay === 'yes') {
 							if (player) player.replay()
-							$.get('/feed/1')
+							$.get('/repeat_announcement/True')
 						}
 					}).fail(function (e) { console.log(e) })
 			}, 200)

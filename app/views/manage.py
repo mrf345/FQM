@@ -9,7 +9,8 @@ import app.forms as forms
 import app.database as data
 from app.middleware import db
 from app.utils import ids
-from app.helpers import reject_operator, reject_no_offices, is_operator, is_office_operator
+from app.helpers import (reject_operator, reject_no_offices, is_operator, is_office_operator,
+                         is_common_task_operator)
 
 
 manage_app = Blueprint('manage_app', __name__)
@@ -259,15 +260,7 @@ def task(o_id, ofc_id=None):
 
     form = forms.Task_a(session.get('lang'), task.common)
 
-    if is_operator() and not is_office_operator(ofc_id):
-        flash('Error: operators are not allowed to access the page ', 'danger')
-        return redirect(url_for('core.root'))
-
-    if request.method == 'POST' and is_operator() and any([
-        len(ids(task.offices)) > 1,
-        ofc_id not in ids(task.offices),
-        data.Operators.query.filter_by(id=current_user.id).first().office_id != ofc_id
-    ]):
+    if is_operator() and not is_common_task_operator(task.id):
         flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
 
@@ -348,11 +341,7 @@ def task_d(t_id, ofc_id=None):
         flash('Error: wrong entry, something went wrong', 'danger')
         return redirect(url_for('core.root'))
 
-    if is_operator() and any([
-        len(ids(task.offices)) > 1,
-        ofc_id not in ids(task.offices),
-        data.Operators.query.filter_by(id=current_user.id).first().office_id != ofc_id
-    ]):
+    if is_operator() and not is_common_task_operator(task.id):
         flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
 
@@ -363,7 +352,7 @@ def task_d(t_id, ofc_id=None):
         return redirect(url_for('manage_app.task', o_id=t_id, ofc_id=ofc_id))
 
     tickets.delete()
-    db.session.delete(task)
+    db.session.delete(data.Task.get(t_id))
     db.session.commit()
     flash('Notice: task has been deleted .', 'info')
     return redirect(url_for('manage_app.offices', o_id=ofc_id) if ofc_id else url_for('manage_app.all_offices'))
@@ -435,11 +424,7 @@ def task_a(o_id):
         flash('Error: wrong entry, something went wrong', 'danger')
         return redirect(url_for('core.root'))
 
-    if is_operator() and data.Operators.get(current_user.id) is None:
-        flash('Error: operators are not allowed to access the page ', 'danger')
-        return redirect(url_for('core.root'))
-
-    if is_operator() and o_id != data.Operators.get(current_user.id).office_id:
+    if is_operator() and not is_office_operator(office.id):
         flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
 
