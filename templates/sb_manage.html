@@ -25,7 +25,7 @@
 				<span class="fa fa-ticket"></span>
 				{{ translate('All tickets', 'en', [defLang]) }}
 					<span class="badge pull-right">
-						{{ serial.filter_by(p=False).count() }}
+						{{ Serial.query.filter_by(p=False).count() }}
 					</span>
 			    </a>
 			</li>
@@ -33,9 +33,9 @@
 				<a href="{{ url_for('core.pull') }}">
 						<span class="fa fa-minus"></span>
 						{{ translate('Pull a ticket', 'en', [defLang]) }}
-						{% if serial.filter_by(p=False).count() >= 1 %}
+						{% if Serial.query.filter_by(p=False).count() >= 1 %}
 						<span class="badge pull-right">
-							{{ serial.filter_by(p=False).count() }}
+							{{ Serial.query.filter_by(p=False).count() }}
 						</span>
 						{% endif %}
 				</a>
