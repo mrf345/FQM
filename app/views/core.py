@@ -296,7 +296,7 @@ def feed():
     # To fix `uniqueness` not picking up the change in passed waiting list
     waiting_list_parameters[f'w{len(waiting_list_parameters)}'] = name_or_number
 
-    return jsonify(con=office_name, cot=task_name, cott=name_or_number,
+    return jsonify(con=office_name, cot=name_or_number, cott=task_name,
                    replay='yes' if display_settings.r_announcement else 'no',
                    **waiting_list_parameters)
 
