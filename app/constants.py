@@ -25,3 +25,6 @@ USER_ROLES = {
 }
 
 DEFAULT_PASSWORD = 'admin'
+DEFAULT_USER = 'Admin'
+
+MIGRATION_FOLDER = 'migrations'

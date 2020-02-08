@@ -18,7 +18,7 @@ Flask-Colorpicker==0.9
 Flask-Datepicker==0.8
 Flask-Fontpicker==0.2
 Flask-Googletrans==0.9
-Flask-gTTS==0.12
+Flask-gTTS==0.14
 Flask-Less==0.5
 Flask-Login==0.4.0
 Flask-Mail==0.9.1
@@ -31,6 +31,7 @@ Flask-SQLAlchemy==2.2
 Flask-Uploads==0.2.1
 Flask-WhooshAlchemy==0.56
 Flask-WTF==0.14.2
+Flask-Migrate==2.5.2
 future==0.16.0
 gevent==1.4.0
 googletrans==2.4.0

@@ -17,6 +17,7 @@
 	var languages = "{{ ts.announce }}".split(',')
 	var announcement_texts = {
 		// text-to-speech announcement text
+		// FIXME: Figure out how to pass this from the backend without corrupting UTF-8
 		'en-us': ' , please proceed to the ' + '{{ alias.office }}' + ' number : ',
 		'ar': ' : توجه إلى المكتب رقم ',
 		'fr': ", s'il vous plaît procéder au numéro de bureau : ",

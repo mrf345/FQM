@@ -6,13 +6,15 @@
 > Default tickets incrementing behavior was altered which resolved the issue
 - [x] Refactor `manage` and `core` endpoints (2020-02-07)
 - [x] Always hit tasks with office id to fix possible random redirection (2020-02-02)
-- [ ] Arabic GUI fonts on Windows
+- [x] ~~Arabic GUI fonts on Windows~~ (2020-02-09)
+> Only effects Windows 10 with high DPI
 
 
 ### To Add :
 
 - [x] Add flag setting to enable or disable common office strict tickets pulling (2020-02-05)
-- [ ] Pre-load waiting tickets from `/feed` to reduce text-to-speech generation latency.
+- [x] Add migration setup with `flask-migrate` to avoid dropping tables with each release (2020-02-09)
+- [x] Pre-load waiting tickets from `/feed` to reduce text-to-speech generation latency (2020-02-09)
 - [ ] Add option to disable all the transition effects and reddit-wallpapers
 - [ ] Pull random ticket from `tasks` or `offices`
 - [ ] Option to display ticket number beside name on `display` screen
