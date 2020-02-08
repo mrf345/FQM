@@ -11,7 +11,7 @@ import app.database as data
 from app.middleware import db, login_manager
 import app.forms as forms
 from app.utils import absolute_path, get_module_columns, get_module_values
-from app.helpers import reject_not_god, reject_not_admin, reject_god
+from app.helpers import reject_not_god, reject_not_admin, reject_god, is_operator, is_office_operator
 
 
 administrate = Blueprint('administrate', __name__)
@@ -128,8 +128,7 @@ def operators(t_id):
         flash('Error: wrong entry, something went wrong', 'danger')
         return redirect(url_for('root'))
 
-    if getattr(current_user, 'role_id', None) == 3 and\
-       data.Operators.query.filter_by(id=current_user.id).first() is None:
+    if is_operator() and not is_office_operator(office.id):
         flash('Error: only administrator can access the page', 'danger')
         return redirect(url_for('root'))
 
@@ -209,7 +208,7 @@ def user_u(u_id):
 
         # Remove operator if role has changed
         if form.role.data == 3:
-            if data.Office.query.filter_by(id=form.offices.data).first() is None:
+            if not data.Office.get(id=form.offices.data):
                 flash('Error: Office selected does not exist!', 'danger')
                 return redirect(url_for('core.root'))
 
@@ -223,7 +222,8 @@ def user_u(u_id):
             else:
                 operator.office_id = form.offices.data
         else:
-            to_delete = data.Operators.query.filter_by(id=user.id).first()
+            to_delete = data.Operators.get(user.id)
+
             if to_delete is not None:
                 db.session.delete(to_delete)
 

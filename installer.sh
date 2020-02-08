@@ -80,6 +80,15 @@ then
   else
     echo $error1
   fi
+elif [ "$1" == "--migrate" ]
+then
+  if [ -d installiation/ ]
+  then
+    source installiation/bin/activate
+    flask db migrate
+  else
+    echo $error1
+  fi
 else
   echo -e "\t --help : Usage \n"
   echo -e "\t\t $0 --install \t to install packages required"

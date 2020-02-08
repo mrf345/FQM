@@ -408,9 +408,9 @@ class Touch_store(db.Model):
                  mbg="rgba(0, 0, 0, 0.50)", msize="400%",
                  mcolor="rgb(255, 255, 0)", tcolor="btn-danger",
                  message="Ticket has been issued, pleas wait your turn",
-                 audio="bell_sound.wav", hfont="El Messiri", mfont="Mada",
+                 audio="false", hfont="El Messiri", mfont="Mada",
                  tfont="Amiri", ikey=1, tmp=2, akey=5,
-                 mduration="3000", bgcolor="bg_dark.jpg", p=False, n=True):
+                 mduration="3000", bgcolor="rgb(0, 0, 0)", p=False, n=True):
         self.id = 0
         self.hfont = hfont
         self.mfont = mfont
@@ -483,11 +483,11 @@ class Display_store(db.Model):
                  h2color="rgb(184, 193, 255)", h2font="Mada",
                  hbg="rgba(0, 0, 0, 0.5)", tsize="600%",
                  tcolor="rgb(184, 193, 255)", ssize="500%",
-                 scolor="rgb(224, 224, 224)", audio="bell_sound.wav",
+                 scolor="rgb(224, 224, 224)", audio="false",
                  hfont="El Messiri", tfont="Mada", repeats="3", effect="fade",
                  sfont="Amiri", mduration="3000", rrate="2000",
                  announce="en-us", ikey=4, vkey=6, akey=5,
-                 anr=2, anrt="each", bgcolor="rgb(0,0,0)", tmp=0):
+                 anr=2, anrt="each", bgcolor="rgb(0,0,0)", tmp=1):
         self.id = 0
         self.tfont = tfont
         self.hfont = hfont

@@ -17,6 +17,7 @@ from flask import current_app
 
 import app.database as data
 from app.middleware import db
+from app.constants import DEFAULT_PASSWORD, DEFAULT_USER
 
 
 def execute(command, parser=None, encoding='utf-8'):
@@ -268,32 +269,6 @@ def get_with_alias():
     }
 
 
-def mse():
-    lodb = [data.Display_store,
-            data.Touch_store,
-            data.Slides_c, data.Settings,
-            data.Vid, data.Waiting_c,
-            data.Printer, data.Aliases]
-    # -- make sure objects are created,
-    # And if not create an auto filled one
-    for t in lodb:
-        if t.query.first() is None:
-            db.session.add(t())
-    # fill in user roles if not existed
-    if data.Roles.query.first() is None:
-        for r in range(1, 4):
-            ra = data.Roles()
-            ra.id = r
-            if r == 1:
-                ra.name = 'Administrator'
-            elif r == 2:
-                ra.name = 'Monitor'
-            else:
-                ra.name = 'Operator'
-            db.session.add(ra)
-    db.session.commit()
-
-
 def create_default_records():
     ''' create database necessary records, if not existing. '''
     tables = [data.Display_store, data.Touch_store, data.Slides_c,
@@ -306,6 +281,13 @@ def create_default_records():
             db.session.add(table())
     db.session.commit()
     data.Roles.load_roles()
+
+    # NOTE: Add default user account if not existing
+    if not data.User.query.first():
+        db.session.add(data.User(name=DEFAULT_USER,
+                                 password=DEFAULT_PASSWORD,
+                                 role_id=1))
+        db.session.commit()
 
 
 def getFolderSize(folder, safely=False):

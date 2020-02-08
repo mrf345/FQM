@@ -14,11 +14,11 @@ from app.gui import MainWindow
 from app.utils import get_accessible_ips, get_random_available_port
 from app.constants import VERSION
 
+app = bundle_app()
+
 
 def run_app():
     ''' To run the app through a command-line interface. '''
-    app = bundle_app()
-
     @click.command()
     @click.option('--cli', is_flag=True, default=False, help='To use commandline interface instead of GUI.')
     @click.option('--quiet', is_flag=True, default=False, help='To silence web server logs.')

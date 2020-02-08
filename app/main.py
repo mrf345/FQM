@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+''' This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/. '''
 
 import os
 from functools import reduce
-from sqlalchemy.sql import text
 from flask import Flask, request, Markup, session, redirect, url_for, flash, render_template
+from flask_migrate import upgrade as database_upgrade
 from flask_pagedown import PageDown
 from flask_moment import Moment
 from flask_uploads import configure_uploads
@@ -17,9 +16,8 @@ from flask_colorpicker import colorpicker
 from flask_fontpicker import fontpicker
 from flask_less import lessc
 from flask_minify import minify
-from flask_gtts import gtts
 
-from app.middleware import db, login_manager, files, gtranslator
+from app.middleware import db, login_manager, files, gtranslator, gTTs, migrate
 from app.printer import listp
 from app.views.administrate import administrate
 from app.views.core import core
@@ -27,7 +25,8 @@ from app.views.customize import cust_app
 from app.views.manage import manage_app
 from app.utils import absolute_path, log_error, create_default_records
 from app.database import Settings, Serial
-from app.constants import SUPPORTED_LANGUAGES, SUPPORTED_MEDIA_FILES, VERSION
+from app.tasks import start_tasks
+from app.constants import SUPPORTED_LANGUAGES, SUPPORTED_MEDIA_FILES, VERSION, MIGRATION_FOLDER
 
 
 def create_app(config={}):
@@ -50,7 +49,6 @@ def create_app(config={}):
     app.config['SECRET_KEY'] = os.urandom(24)
     app.config.update(config)
 
-
     # Initiating extensions before registering blueprints
     PageDown(app)
     Moment(app)
@@ -58,6 +56,7 @@ def create_app(config={}):
     configure_uploads(app, files)
     login_manager.init_app(app)
     db.init_app(app)
+    migrate.init_app(app, db=db)
     datepicker(app, local=['static/css/jquery-ui.min.css', 'static/jquery-ui.min.js'])
     colorpicker(app, local=['static/css/spectrum.css', 'static/spectrum.js'])
     fontpicker(app, local=['static/jquery-ui.min.js', 'static/css/jquery-ui.min.css', 'static/webfont.js',
@@ -65,7 +64,7 @@ def create_app(config={}):
     lessc(app)
     minify(app, js=True, caching_limit=3, fail_safe=True,
            bypass=['/touch/<int:a>', '/serial/<int:t_id>', '/display'])
-    gtts(app=app, route=True)
+    gTTs.init_app(app)
     gtranslator.init_app(app)
 
     # Register blueprints
@@ -87,15 +86,13 @@ def create_db(app):
             app to use its context to create tables and load initial data.
     '''
     with app.app_context():
-        db.create_all()
-        db.session.commit()
         try:
+            db.create_all()
             create_default_records()
         except Exception:
-            # NOTE: Settings table will have to be recreated to avoid migration for now
-            db.engine.execute(text('DROP TABLE settings;'))
+            # NOTE: this handling needs to be commented out, when migrating with `Flask.cli`
+            database_upgrade(directory=MIGRATION_FOLDER)
             db.create_all()
-            db.session.commit()
             create_default_records()
 
 
@@ -103,6 +100,7 @@ def bundle_app(config={}):
     ''' Create a Flask app, set settings, load extensions, blueprints and create database. '''
     app = create_app(config)
     create_db(app)
+    start_tasks(app)
 
     if os.name != 'nt':
         # !!! it did not work creates no back-end available error !!!
