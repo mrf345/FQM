@@ -229,8 +229,8 @@ def test_feed_stream_tickets(client):
 
     assert response.status == '200 OK'
     assert response.json.get('con') == current_ticket.oname
-    assert response.json.get('cot') == current_ticket.tname
-    assert response.json.get('cott') == getattr(current_ticket,
+    assert response.json.get('cott') == current_ticket.tname
+    assert response.json.get('cot') == getattr(current_ticket,
                                                 'name' if current_ticket.n
                                                 else 'ticket')
 
