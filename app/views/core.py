@@ -282,7 +282,7 @@ def feed():
                              'Empty')
 
     def get_prefix(ticket):
-        f'{data.Office.get(ticket.office_id).prefix}.' if show_prefix else ''
+        f'{ticket.office.prefix}.' if show_prefix else ''
 
     waiting_tickets = (data.Waiting.query.limit(9).all() + ([None] * 9))[:9]
     waiting_list_parameters = {
