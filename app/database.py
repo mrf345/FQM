@@ -198,6 +198,7 @@ class Serial(db.Model):
         self.pulledBy = getattr(current_user, 'id', None)
         self.office_id = office_id
 
+        db.session.add(self)
         db.session.commit()
 
 

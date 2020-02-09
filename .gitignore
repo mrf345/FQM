@@ -105,3 +105,9 @@ installiation/
 
 # editor
 .vscode/
+
+# database
+data.sqlite
+
+# audio files
+*.mp3

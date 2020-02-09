@@ -74,13 +74,13 @@ $(document).ready(function () {
 		</div>
         <div class="panel-body">
 	    	<div class="row text-center h3 text-muted hidden-xs ar2">
-				<div class="col-xs-2">
+				<div class="col-xs-1">
 				    ({{ translate('Ticket', 'en', [defLang]) }})
 				</div>
 				<div class="col-xs-2">
 				    ({{ translate('Issued', 'en', [defLang]) }})
 				</div>
-				<div class="col-xs-3">
+				<div class="col-xs-2">
 				    ({{ translate('Pulled', 'en', [defLang]) }})
 				</div>
 				<div class="col-xs-3">
@@ -89,17 +89,20 @@ $(document).ready(function () {
 				<div class="col-xs-2">
 				    ({{ translate('Ticket type', 'en', [defLang]) }})
 				</div>
+				<div class="col-xs-2">
+					({{ translate('Actions', 'en', [defLang]) }})
+				</div>
 	    	</div>
 	    	{% for o in tasksp %}
 	    	
 	    	<div class="row well {% if o.p %} text-primary {% else %} text-danger {% endif %} ar1 h4 text-center">
-	    	  <div class="col-xs-12 col-sm-2">
+	    	  <div class="col-xs-12 col-sm-1">
 				<b> {% for oo in o.offices %} {{ oo.prefix }} {% endfor %} {# offices.filter_by(id=o.office_id).first().prefix #}{{ o.number }}.</b>
 	    	  </div>
 	    	  <div class="col-xs-12 col-sm-2">
 				<u>{{ moment(o.timestamp).format('L') }}</u>
 	    	  </div>
-	    	  <div class="col-xs-12 col-sm-3">
+	    	  <div class="col-xs-12 col-sm-2">
 				{% if o.p %} <u>{{ users.filter_by(id=o.pulledBy).first().name }} / {{ moment(o.pdt).fromNow() }}</u>
 				{% else %}
 				<u>{{ translate('Waiting', 'en', [defLang]) }}</u>
@@ -112,7 +115,18 @@ $(document).ready(function () {
 	    	  </div>
 	    	  <div class="col-xs-12 col-sm-2">
 				<u> {% if o.n %} {{ translate('Registered', 'en', [defLang]) }} {% else %} {{ translate('Printed', 'en', [defLang]) }} {% endif %} </u>
-	    	  </div>
+			  </div>
+			  <div class="col-xs-12 col-sm-2">
+				{% if not o.p %}
+				<a href="{{ url_for('core.pull_unordered', office_id=ofc_id, ticket_id=o.id, redirect_to=current_path.replace('/', '(')) }}"
+				   data-toggle="tooltip" title="{{ translate('Pull', 'en', [defLang]) }}"
+				>
+					  <span class="fa fa-minus text-primary"></span>
+				</a>
+				{% else %}
+					 <u>{{ translate('None', 'en', [defLang]) }}</u>
+				{% endif %}
+			  </div>
 	    	</div>
 	    	
 			{% endfor %}

@@ -16,7 +16,7 @@
 - [x] Add migration setup with `flask-migrate` to avoid dropping tables with each release (2020-02-09)
 - [x] Pre-load waiting tickets from `/feed` to reduce text-to-speech generation latency (2020-02-09)
 - [ ] Add option to disable all the transition effects and reddit-wallpapers
-- [ ] Pull random ticket from `tasks` or `offices`
+- [x] Pull random ticket from `tasks` or `offices` (2020-02-10)
 - [ ] Option to display ticket number beside name on `display` screen
 - [ ] Put random ticket on-hold
 
