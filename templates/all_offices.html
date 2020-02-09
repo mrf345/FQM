@@ -67,13 +67,13 @@
         </div>
         <div class="panel-body">
 	    	<div class="row text-center ar2 h3 text-muted hidden-xs">
-				<div class="col-xs-2">
+				<div class="col-xs-1">
 		    		({{ translate('Ticket', 'en', [defLang]) }})
 				</div>
 				<div class="col-xs-2">
 		    		({{ translate('Issued', 'en', [defLang]) }})
 				</div>
-				<div class="col-xs-3">
+				<div class="col-xs-2">
 		    		({{ translate('pulled', 'en', [defLang]) }})
 				</div>
 				<div class="col-xs-3">
@@ -82,17 +82,20 @@
 				<div class="col-xs-2">
 		    		({{ translate('Ticket type', 'en', [defLang]) }})
 				</div>
+				<div class="col-xs-2">
+					({{ translate('Actions', 'en', [defLang]) }})
+				</div>
 	    	</div>
 	    	{% for o in officesp %}
 	      	
 			<div class="row well {% if o.p %} text-primary {% else %} text-danger {% endif %} h4  text-center">
-		  		<div class="col-xs-12 col-sm-2">
+		  		<div class="col-xs-12 col-sm-1">
 		    		<b> {{ o.office.prefix }}{{ o.number }}.</b>
 		  		</div>
 		  		<div class="col-xs-12 col-sm-2">
 					  {{ moment(o.timestamp).format('L') }}
 		  		</div>
-		  		<div class="col-xs-12 col-sm-3">
+		  		<div class="col-xs-12 col-sm-2">
 		    		{% if o.p %} <u>{{ o.puller_name }} / {{ moment(o.pdt).fromNow() }}</u>
 		    		{% else %} <u>{{ translate('Waiting', 'en', [defLang]) }}</u> {% endif %}
 		  		</div>
@@ -101,7 +104,18 @@
 		  		</div>
 		  		<div class="col-xs-12 col-sm-2">
 		      		<u> {% if o.n %} {{ translate('Registered', 'en', [defLang]) }} {% else %} {{ translate('Printed', 'en', [defLang]) }} {% endif %} </u>
-		  		</div>
+				</div>
+				<div class="col-xs-12 col-sm-2">
+					{% if not o.p %}
+					<a href="{{ url_for('core.pull_unordered', ticket_id=o.id, redirect_to=current_path.replace('/', '(')) }}"
+					   data-toggle="tooltip" title="{{ translate('Pull', 'en', [defLang]) }}"
+					>
+						  <span class="fa fa-minus text-primary"></span>
+					</a>
+					{% else %}
+						 <u>{{ translate('None', 'en', [defLang]) }}</u>
+					{% endif %}
+				</div>
 			</div>
 	      	
 			{% endfor %}

@@ -152,6 +152,20 @@ def test_pull_tickets_from_all(_, client):
 
 
 @pytest.mark.parametrize('_', range(TEST_REPEATS))
+def test_pull_random_ticket(_, client):
+    with client.application.app_context():
+        ticket = choice(Serial.query.filter_by(n=False)\
+                                    .limit(10)\
+                                    .all())
+        office = choice(ticket.task.offices)
+
+    response = client.get(f'/pull_unordered/{ticket.id}/testing/{office.id}')
+
+    assert Serial.query.filter_by(id=ticket.id).first().p == True
+    assert Waiting.query.filter_by(number=ticket.number).first() is None
+
+
+@pytest.mark.parametrize('_', range(TEST_REPEATS))
 def test_pull_tickets_from_common_task(_, client):
     with client.application.app_context():
         task = Task.get_first_common()

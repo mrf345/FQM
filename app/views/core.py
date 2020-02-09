@@ -269,6 +269,36 @@ def pull(o_id=None, ofc_id=None):
     return general_redirection
 
 
+@core.route('/pull_unordered/<ticket_id>/<redirect_to>', defaults={'office_id': None})
+@core.route('/pull_unordered/<ticket_id>/<redirect_to>/<office_id>')
+@login_required
+@refill_waiting_list
+def pull_unordered(ticket_id, redirect_to, office_id=None):
+    office = data.Office.get(office_id)
+    ticket = data.Serial.query.filter_by(id=ticket_id).first()
+    strict_pulling = data.Settings.get().strict_pulling
+    show_prefix = data.Display_store.get().prefix
+
+    if not ticket:
+        flash('Error: wrong entry, something went wrong', 'danger')
+        return redirect(url_for('core.root'))
+
+    if is_operator() and not (is_office_operator(ticket.office_id)
+                              if strict_pulling else
+                              is_common_task_operator(ticket.task_id)):
+        flash('Error: operators are not allowed to access the page ', 'danger')
+        return redirect(url_for('core.root'))
+
+    office = office or ticket.office
+
+    data.Waiting_c.assume(ticket, office, ticket.task, show_prefix)
+    ticket.pull(office.id)
+    data.Waiting.drop([ticket])
+
+    flash('Notice: Ticket has been pulled ..', 'info')
+    return redirect(f'{redirect_to}'.replace('(', '/'))
+
+
 @core.route('/feed')
 def feed():
     ''' stream list of waiting tickets and current ticket. '''
