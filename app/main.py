@@ -77,7 +77,7 @@ def create_app(config={}):
     return app
 
 
-def create_db(app):
+def create_db(app, testing=False):
     ''' Creating all non-existing tables and load initial data.
 
     Parameters
@@ -88,17 +88,18 @@ def create_db(app):
     with app.app_context():
         try:
             db.create_all()
+            not testing and database_upgrade(directory=MIGRATION_FOLDER)
             create_default_records()
         except Exception:
             # NOTE: this handling needs to be commented out, when migrating with `Flask.cli`
-            database_upgrade(directory=MIGRATION_FOLDER)
+            not testing and database_upgrade(directory=MIGRATION_FOLDER)
             create_default_records()
 
 
 def bundle_app(config={}):
     ''' Create a Flask app, set settings, load extensions, blueprints and create database. '''
     app = create_app(config)
-    create_db(app)
+    create_db(app, testing=app.config.get('TESTING'))
     start_tasks(app)
 
     if os.name != 'nt':

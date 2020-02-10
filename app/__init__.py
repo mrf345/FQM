@@ -14,7 +14,8 @@ from app.gui import MainWindow
 from app.utils import get_accessible_ips, get_random_available_port
 from app.constants import VERSION
 
-app = bundle_app()
+# NOTE: uncomment when migrating
+# app = bundle_app()
 
 
 def run_app():
@@ -25,6 +26,8 @@ def run_app():
     @click.option('--ip', default=None, help='IP address to stream the service on.')
     @click.option('--port', default=None, help='Port to stream the service through.')
     def interface(cli, quiet, ip, port):
+        app = bundle_app()
+
         if cli:
             ip = ip or get_accessible_ips()[0][1]
             port = port or get_random_available_port(ip)
