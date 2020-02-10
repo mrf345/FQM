@@ -18,7 +18,7 @@
 - [x] Add option to disable all the transition effects and reddit-wallpapers (2020-02-10)
 - [x] Pull random ticket from `tasks` or `offices` (2020-02-10)
 - [ ] Option to display ticket number beside name on `display` screen
-- [ ] Put random ticket on-hold
+- [x] Put random ticket on-hold (2020-02-10)
 
 - [ ] Multiple Display screen support **based on offices**
 > - [ ] Add multiple display screen routing

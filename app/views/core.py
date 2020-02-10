@@ -241,7 +241,8 @@ def pull(o_id=None, ofc_id=None):
             return operators_not_allowed()
 
     next_tickets = data.Serial.query.filter(data.Serial.number != 100,
-                                            data.Serial.p != True)
+                                            data.Serial.p != True,
+                                            data.Serial.on_hold == False)
     next_ticket = None
 
     if not global_pull:
@@ -279,7 +280,7 @@ def pull_unordered(ticket_id, redirect_to, office_id=None):
     strict_pulling = data.Settings.get().strict_pulling
     show_prefix = data.Display_store.get().prefix
 
-    if not ticket:
+    if not ticket or ticket.on_hold:
         flash('Error: wrong entry, something went wrong', 'danger')
         return redirect(url_for('core.root'))
 
@@ -296,6 +297,27 @@ def pull_unordered(ticket_id, redirect_to, office_id=None):
     data.Waiting.drop([ticket])
 
     flash('Notice: Ticket has been pulled ..', 'info')
+    return redirect(f'{redirect_to}'.replace('(', '/'))
+
+
+@core.route('/on_hold/<ticket_id>/<redirect_to>')
+@login_required
+def on_hold(ticket_id, redirect_to):
+    ticket = data.Serial.query.filter_by(id=ticket_id).first()
+    strict_pulling = data.Settings.get().strict_pulling
+
+    if not ticket:
+        flash('Error: wrong entry, something went wrong', 'danger')
+        return redirect(url_for('core.root'))
+
+    if is_operator() and not (is_office_operator(ticket.office_id)
+                              if strict_pulling else
+                              is_common_task_operator(ticket.task_id)):
+        flash('Error: operators are not allowed to access the page ', 'danger')
+        return redirect(url_for('core.root'))
+
+    ticket.toggle_on_hold()
+    flash('Notice: On-hold status has changed successfully', 'info')
     return redirect(f'{redirect_to}'.replace('(', '/'))
 
 

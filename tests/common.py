@@ -35,14 +35,16 @@ TEST_REPEATS = 3
 
 @pytest.fixture
 def client():
-    app = bundle_app({'LOGIN_DISABLED': True, 'WTF_CSRF_ENABLED': False})
-    db_fd, app.config['DATABASE'] = tempfile.mkstemp()
-    app.config['TESTING'] = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_PATH}'
+    app_config = {'LOGIN_DISABLED': True,
+                  'WTF_CSRF_ENABLED': False,
+                  'TESTING': True,
+                  'SQLALCHEMY_DATABASE_URI': f'sqlite:///{DB_PATH}'}
+    db_fd, app_config['DATABASE'] = tempfile.mkstemp()
+    app = bundle_app(app_config)
 
     with app.test_client() as client:
         with app.app_context():
-            create_db(app)
+            db.create_all()
             teardown_tables(copy.copy(MODULES))
             fill_offices()
             fill_tasks()

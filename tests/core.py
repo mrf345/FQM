@@ -231,6 +231,26 @@ def test_pull_common_task_strict_pulling(_, client):
     assert Waiting.query.count() == 10
 
 
+def test_pull_ticket_on_hold(client):
+    with client.application.app_context():
+        ticket_to_be_pulled = Serial.query.order_by(Serial.number)\
+                                          .filter(Serial.number != 100, Serial.p != True)\
+                                          .first()
+
+    client.get(f'/on_hold/{ticket_to_be_pulled.id}/testing')
+    response = client.get(f'/pull', follow_redirects=True)
+
+    assert response.status == '200 OK'
+    assert ticket_to_be_pulled is not None
+    assert ticket_to_be_pulled.p is False
+    assert Serial.query.filter_by(number=ticket_to_be_pulled.number,
+                                  office_id=ticket_to_be_pulled.office_id,
+                                  task_id=ticket_to_be_pulled.task_id,
+                                  p=True)\
+                       .order_by(Serial.number)\
+                       .first() is None
+
+
 def test_feed_stream_tickets(client):
     client.get('/pull', follow_redirects=True) # NOTE: initial pull to fill stacks
 

@@ -105,6 +105,7 @@ class Serial(db.Model):
     pdt = db.Column(db.DateTime())
     # Fix: adding pulled by feature to tickets
     pulledBy = db.Column(db.Integer)
+    on_hold = db.Column(db.Boolean, default=False)
     office_id = db.Column(db.Integer, db.ForeignKey('offices.id'))
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
 
@@ -197,6 +198,13 @@ class Serial(db.Model):
         self.pdt = datetime.utcnow()
         self.pulledBy = getattr(current_user, 'id', None)
         self.office_id = office_id
+
+        db.session.add(self)
+        db.session.commit()
+
+    def toggle_on_hold(self):
+        ''' Toggle the ticket `on_hold` status. '''
+        self.on_hold = not self.on_hold
 
         db.session.add(self)
         db.session.commit()
