@@ -632,11 +632,13 @@ class Settings(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     notifications = db.Column(db.Boolean, nullable=True)
     strict_pulling = db.Column(db.Boolean, nullable=True)
+    visual_effects = db.Column(db.Boolean, nullable=True)
 
-    def __init__(self, notifications=True, strict_pulling=False):
+    def __init__(self, notifications=True, strict_pulling=True, visual_effects=True):
         self.id = 0
         self.notifications = notifications
         self.strict_pulling = strict_pulling
+        self.visual_effects = visual_effects
 
     @classmethod
     def get(cls):

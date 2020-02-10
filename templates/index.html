@@ -3,6 +3,7 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
 {% from "_beloadingNotifier.html" import beloadingNotifier %}
+{% from "_wallpapers.js" import wallpapers %}
 <html>
     <head>
         <title>{% block title %} FQM - {{ page_title }} {% endblock %}</title>
@@ -24,20 +25,10 @@
         <script src="{{ url_for('static', filename='backstrap/js/bootstrap.min.js') }}"></script>
         <script src="{{ url_for('static', filename='wallpapers.js') }}"></script>
         {{ datepicker.loader() }}
-        {{ beloadingNotifier(version, release=translate("You are using an older version of FQM, a newer release is available on fqms.github.io", 'en', [defLang]), firefox=translate("You are not using Firefox browser, which this project is designed and most suited for.", 'en', [defLang])) }}
+        {{ beloadingNotifier(version, beload=settings.strict_pulling, release=translate("You are using an older version of FQM, a newer release is available on fqms.github.io", 'en', [defLang]), firefox=translate("You are not using Firefox browser, which this project is designed and most suited for.", 'en', [defLang])) }}
         <script type="text/javascript">
             $(document).ready(function(){
-                redditWallpapers({
-                    isFixed: 'true',
-                    id: '.wallpapers',
-                    isOverlayed: 'true',
-                    overlay: 'rgba(0,0,0,0.1)',
-                    duration: 30,
-                    limit: 100,
-                    timeout: 1,
-                    category: ['CityPorn'],
-                    defaultImg: "{{ url_for('static', filename='images/dbg.jpg') }}"
-                })
+                {{ wallpapers('.wallpapers', enable_reddit=settings.visual_effects, duration=30, overlay='rgba(0,0,0,0.1)') }}
                 {% if n or form.errors %}
                 // to toggle logging form modal if errors or unsigned login attempt
                 $("#upd").modal('show')
