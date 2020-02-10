@@ -144,20 +144,26 @@ def get_module_values(module, stringify=True):
     return group_of_values
 
 
-def log_error(error):
+def log_error(error, quiet=False):
     ''' Utility to log error to `errors.txt` file.
 
     Parameters
     ----------
         error: Error instance
             error that we want to log.
+        quiet: bool
+            to log or silence the error.
     '''
     log_file = absolute_path('errors.log')
+    formated_error = ''.join(TracebackException.from_exception(error).format())
 
     not os.path.isfile(log_file) and os.system(f'touch {log_file}')
     with open(log_file, 'a') as file:
         file.write(f'{"#" * 5} {datetime.now()} {"#" * 5}\n')
-        file.write(''.join(TracebackException.from_exception(error).format()))
+        file.write(formated_error)
+
+    if not quiet:
+        print(formated_error)
 
 
 def get_accessible_ips():

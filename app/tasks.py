@@ -8,6 +8,7 @@ from sqlalchemy.sql import not_
 
 from app.database import Serial, Display_store, Aliases
 from app.middleware import gTTs
+from app.utils import log_error
 
 
 class CacheTicketsAnnouncements(QThread):
@@ -71,30 +72,40 @@ class CacheTicketsAnnouncements(QThread):
         while not self.cut_circut:
             with self.app.app_context():
                 display_settings = Display_store.query.first()
-                aliases = Aliases.query.first()
-                languages = display_settings.announce.split(',')
-                tickets_to_remove = Serial.query.filter(Serial.p == True,
-                                                        Serial.number.in_(self.cached))
-                tickets_to_cache = Serial.query.filter(Serial.p == False,
-                                                       Serial.number != 100,
-                                                       not_(Serial.number.in_(self.cached)))\
-                                               .order_by(Serial.timestamp)\
-                                               .limit(self.limit)
 
-                for ticket in tickets_to_cache:
-                    for language in languages:
-                        gTTs.say(language,
-                                 self.format_announcement_text(ticket,
-                                                               aliases,
-                                                               language,
-                                                               display_settings.prefix))
-                    self.cached.append(ticket.number)
-                    # TODO: Use a proper logger to integrate with gevent's ongoing one
-                    print(f'Cached TTS {ticket.number}')
+                if display_settings.announce != 'false':
+                    aliases = Aliases.query.first()
+                    languages = display_settings.announce.split(',')
+                    tickets_to_remove = Serial.query.filter(Serial.p == True,
+                                                            Serial.number.in_(self.cached))
+                    tickets_to_cache = Serial.query.filter(Serial.p == False,
+                                                           Serial.number != 100,
+                                                           not_(Serial.number.in_(self.cached)))\
+                                                   .order_by(Serial.timestamp)\
+                                                   .limit(self.limit)
 
-                # NOTE: Remove the processed tickets from cache stack
-                for ticket in tickets_to_remove:
-                    self.cached.remove(ticket.number)
+                    for ticket in tickets_to_cache:
+                        success = False
+
+                        for language in languages:
+                            try:
+                                gTTs.say(language,
+                                         self.format_announcement_text(ticket,
+                                                                       aliases,
+                                                                       language,
+                                                                       display_settings.prefix))
+                                success = True
+                            except Exception as exception:
+                                log_error(exception)
+
+                        if success:
+                            self.cached.append(ticket.number)
+                            # TODO: Use a proper logger to integrate with gevent's ongoing one
+                            print(f'Cached TTS {ticket.number}')
+
+                    # NOTE: Remove the processed tickets from cache stack
+                    for ticket in tickets_to_remove:
+                        self.cached.remove(ticket.number)
 
             # NOTE: cache stack is adhereing to the limit to avoid overflow
             self.cached = self.cached[:self.limit]
