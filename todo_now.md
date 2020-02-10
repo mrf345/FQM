@@ -15,7 +15,7 @@
 - [x] Add flag setting to enable or disable common office strict tickets pulling (2020-02-05)
 - [x] Add migration setup with `flask-migrate` to avoid dropping tables with each release (2020-02-09)
 - [x] Pre-load waiting tickets from `/feed` to reduce text-to-speech generation latency (2020-02-09)
-- [ ] Add option to disable all the transition effects and reddit-wallpapers
+- [x] Add option to disable all the transition effects and reddit-wallpapers (2020-02-10)
 - [x] Pull random ticket from `tasks` or `offices` (2020-02-10)
 - [ ] Option to display ticket number beside name on `display` screen
 - [ ] Put random ticket on-hold

@@ -92,7 +92,6 @@ def create_db(app):
         except Exception:
             # NOTE: this handling needs to be commented out, when migrating with `Flask.cli`
             database_upgrade(directory=MIGRATION_FOLDER)
-            db.create_all()
             create_default_records()
 
 

@@ -3,6 +3,7 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
 {% from "_beloadingNotifier.html" import beloadingNotifier %}
+{% from "_wallpapers.js" import wallpapers %}
 <html>
     <head>
         <title>{% block title %} FQM {% endblock %}</title>
@@ -44,17 +45,7 @@
                     localStorage.redWallIndex = undefined
                     sessionStorage.toClear = 'yes'
                 }
-                redditWallpapers({
-                    isFixed: 'true',
-                    id: '.widw',
-                    isOverlayed: 'true',
-                    overlay: 'rgba(0,0,0,0.7)',
-                    duration: 60,
-                    limit: 100,
-                    timeout: 1,
-                    category: ['CityPorn'],
-                    defaultImg: "{{ url_for('static', filename='images/dbg.jpg') }}"
-                })
+                {{ wallpapers('.widw', enable_reddit=settings.visual_effects) }}
                 disciple({
                     identifier: '.disciple',
                     msg_text: "{{ translate('You made changes on the previous form without submitting. Do you wish to restore it ?', 'en', [defLang]) }}",
@@ -68,6 +59,10 @@
                     forget_classes: ['ar1', 'btn', 'btn-danger', 'lightit'],
                     restoring_classes: ['ar1']
                 })
+                {% if not settings.visual_effects %}
+                // Remove spinning animation if effects setting is disabled
+                $('.fa-spin').removeClass('fa-spin')
+                {% endif %}
             }
         </script>
         {% endblock %}
@@ -134,6 +129,13 @@
                                         <a href="{{ url_for('core.settings', setting='strict_pulling', togo=current_path.replace('/', '(')) }}">
                                             <span class="fa fa-lock"></span>
                                             {{ translate('Disable' if settings.strict_pulling == True else 'Enable', 'en', [defLang]) }}
+                                        </a>
+                                    </li>
+                                    <li class="dropdown-header">( {{ translate('Visual Effects', 'en', [defLang]) }} )</li>
+                                    <li>
+                                        <a href="{{ url_for('core.settings', setting='visual_effects', togo=current_path.replace('/', '(')) }}">
+                                            <span class="fa fa-eye"></span>
+                                            {{ translate('Disable' if settings.visual_effects == True else 'Enable', 'en', [defLang]) }}
                                         </a>
                                     </li>
                                     <li class="dropdown-header">( {{ translate('Notifications', 'en', [defLang]) }} )</li>

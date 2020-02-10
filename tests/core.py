@@ -168,6 +168,11 @@ def test_pull_random_ticket(_, client):
 @pytest.mark.parametrize('_', range(TEST_REPEATS))
 def test_pull_tickets_from_common_task(_, client):
     with client.application.app_context():
+        # NOTE: Disabling strict pulling
+        settings = Settings.get()
+        settings.strict_pulling = False
+        db.session.commit()
+
         task = Task.get_first_common()
         office = choice(task.offices)
         ticket_to_be_pulled = Serial.query.order_by(Serial.number)\
@@ -197,11 +202,6 @@ def test_pull_tickets_from_common_task(_, client):
 @pytest.mark.parametrize('_', range(TEST_REPEATS))
 def test_pull_common_task_strict_pulling(_, client):
     with client.application.app_context():
-        # NOTE: Enabling strict pulling
-        settings = Settings.get()
-        settings.strict_pulling = True
-        db.session.commit()
-
         # NOTE: Finding the proper next common ticket to be pulled
         ticket_to_be_pulled = None
         tickets = Serial.query.order_by(Serial.number)\
@@ -272,3 +272,13 @@ def test_touch_screen(client):
     page_content = response.data.decode('utf-8')
 
     assert touch_screen_settings.title in page_content
+
+
+def test_toggle_setting(client):
+    with client.application.app_context():
+        setting = 'visual_effects'
+        setting_value = getattr(Settings.get(), setting)
+
+    response = client.get(f'/settings/{setting}/testing')
+
+    assert getattr(Settings.get(), setting) == (not setting_value)
