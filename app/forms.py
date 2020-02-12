@@ -174,6 +174,7 @@ class Display_c(FlaskForm):
     naudio = SelectField(coerce=int)
     bgcolor = StringField()
     prefix = BooleanField()
+    always_show_ticket_number = BooleanField()
     submit = SubmitField()
 
     def __init__(self, defLang='en', *args, **kwargs):
@@ -251,6 +252,7 @@ class Display_c(FlaskForm):
         self.naudio.label = gtranslator.translate("Select audio notification : ", 'en', [defLang])
         self.bgcolor.label = gtranslator.translate("Select a background color : ", 'en', [defLang])
         self.prefix.label = gtranslator.translate("Attach prefix office letter: ", 'en', [defLang])
+        self.always_show_ticket_number.label = gtranslator.translate("Always show ticket number: ", 'en', [defLang])
         self.submit.label = gtranslator.translate('Apply', 'en', [defLang])
         bgs = []
         aud = []

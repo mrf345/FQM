@@ -327,11 +327,9 @@ def feed():
     display_settings = data.Display_store.query.first()
     show_prefix = display_settings.prefix
     current_ticket = data.Waiting_c.query.first()
+    current_ticket_text = current_ticket and current_ticket.get_ticket_display_text() or 'Empty'
     office_name = getattr(current_ticket, 'oname', 'Empty')
     task_name = getattr(current_ticket, 'tname', 'Empty')
-    name_or_number = getattr(current_ticket,
-                             'name' if current_ticket and current_ticket.n else 'ticket',
-                             'Empty')
 
     def get_prefix(ticket):
         return f'{ticket.office.prefix}.' if show_prefix else ''
@@ -339,16 +337,18 @@ def feed():
     waiting_tickets = (data.Waiting.query.limit(9).all() + ([None] * 9))[:9]
     waiting_list_parameters = {
         f'w{_index + 1}':
-        f'{_index + 1}. {get_prefix(ticket)}{ticket.name if ticket.n else ticket.number}'
-        if ticket else 'Empty'
+        f'{_index + 1}. {get_prefix(ticket)}{ticket.get_ticket_display_text()}' if ticket else 'Empty'
         for _index, ticket in enumerate(waiting_tickets)
     }
 
     # NOTE: Ensure `waiting_list_parameters` last value is as distinct as the `current_ticket`
     # To fix `uniqueness` not picking up the change in passed waiting list
-    waiting_list_parameters[f'w{len(waiting_list_parameters)}'] = name_or_number
+    waiting_list_parameters[f'w{len(waiting_list_parameters)}'] = (current_ticket.name
+                                                                   if current_ticket.n else
+                                                                   current_ticket.ticket
+                                                                   )if current_ticket else 'Empty'
 
-    return jsonify(con=office_name, cot=name_or_number, cott=task_name,
+    return jsonify(con=office_name, cot=current_ticket_text, cott=task_name,
                    replay='yes' if display_settings.r_announcement else 'no',
                    **waiting_list_parameters)
 

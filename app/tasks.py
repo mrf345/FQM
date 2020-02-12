@@ -59,13 +59,12 @@ class CacheTicketsAnnouncements(QThread):
             office = ticket.office
             prefix = office.prefix if show_prefix else ''
             office_text = f'{prefix}{office.name}'
-            ticket_text = f'{prefix}{ticket.number}'
             tts_text = self.tts_texts.get(language)
 
             if language == 'en-us':
                 tts_text = tts_text.format(aliases.office)
 
-            return (f'{ticket.name if ticket.n else ticket_text}'
+            return (f'{ticket.get_ticket_display_text()}'
                     f'{tts_text}{office_text}')
 
     def run(self):

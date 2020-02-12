@@ -252,9 +252,38 @@
 		        <hr>
 		        {{ render_field(form.background, class="mb-3 form-control") }}
 		        {{ form.bgcolor(class_="sp") }}
+                <p class="pb-3"></p>
+                <p class="pb-4"></p>
+		        {{ unique_btns(translate('Previous', 'en', [defLang]), translate('Apply', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
+                <p class="pt-4"></p>
+	        </div>
+		</div>
+		<div class="panel panel-default uniqueness">
+	        <div class="panel-heading text-center">
+		        <h3 class="text-muted">
+                    <strong>
+						<span class="fa fa-cog"></span>
+						{{ translate('Display screen', 'en', [defLang]) }} - {{ translate('Preferences', 'en', [defLang]) }}
+					</strong>
+                </h3>
+	        </div>
+	        <div class="panel-body">
+		        <center>
+		            <a data-toggle="modal" data-target="#mym">
+			            <img class="img-responsive img-thumbnail tobc mt-4" id="map" width="40%"
+                            src="{{ url_for('static', filename='images/map2.jpg') }}"
+                        >
+		            </a>
+		            <h3 class="text text-muted text-center ar2 mt-2 mb-4">
+		            	| {{ translate('Additional preferences and settings to control certain features within the display screen', 'en', [defLang]) }} |
+		            </h3>
+		        </center>
 		        <hr>
 				{{ render_field(form.rrate, class="form-control") }}
+				<p class="pb-1"></p>
 				{{ render_field(form.prefix, class="form-control") }}
+				<p class="pb-1"></p>
+				{{ render_field(form.always_show_ticket_number, class="form-control") }}
                 <p class="pb-3"></p>
 		        {% if form.errors %}
 		        <div class="well">
