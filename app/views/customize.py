@@ -475,6 +475,7 @@ def displayscreen_c(stab):
         touch_s.effect = form.effect.data
         touch_s.repeats = form.repeats.data
         touch_s.prefix = form.prefix.data
+        touch_s.always_show_ticket_number = form.always_show_ticket_number.data
         bg = form.background.data
         if bg == 00:
             touch_s.bgcolor = form.bgcolor.data
@@ -526,6 +527,7 @@ def displayscreen_c(stab):
         form.effect.data = touch_s.effect
         form.repeats.data = touch_s.repeats
         form.prefix.data = touch_s.prefix
+        form.always_show_ticket_number.data = touch_s.always_show_ticket_number
         if touch_s.bgcolor[:3] == "rgb":
             form.bgcolor.data = touch_s.bgcolor
             form.background.data = 00

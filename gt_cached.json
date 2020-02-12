@@ -196,6 +196,13 @@
         "fr": "Ajouter un utilisateur",
         "it": "Aggiungi utente"
     },
+    "Additional preferences and settings to control certain features within the display screen": {
+        "ar": "\u062a\u0641\u0636\u064a\u0644\u0627\u062a \u0648\u0625\u0639\u062f\u0627\u062f\u0627\u062a \u0625\u0636\u0627\u0641\u064a\u0629 \u0644\u0644\u0633\u064a\u0637\u0631\u0629 \u0639\u0644\u0649 \u0645\u064a\u0632\u0627\u062a \u0645\u0639\u064a\u0646\u0629 \u0641\u064a \u0634\u0627\u0634\u0629 \u0627\u0644\u0639\u0631\u0636",
+        "en": "Additional preferences and settings to control certain features within the display screen",
+        "es": "preferencias y ajustes adicionales para controlar ciertas funciones dentro de la pantalla de visualizaci\u00f3n",
+        "fr": "pr\u00e9f\u00e9rences et param\u00e8tres suppl\u00e9mentaires pour contr\u00f4ler certaines fonctions au sein de l'\u00e9cran d'affichage",
+        "it": "preferenze e le impostazioni aggiuntive per controllare alcune funzioni all'interno dello schermo di visualizzazione"
+    },
     "Administration": {
         "ar": "\u0627\u0644\u0627\u062f\u0627\u0631\u0629",
         "en": "Administration",
@@ -300,6 +307,13 @@
         "es": "Permite al administrador, permitido por los operadores administrativos, buscar con par\u00e1metros determinados de n\u00famero de ticket, prefijo de ticket y / o fecha del ticket para llegar al ticket espec\u00edfico destinado a ser buscado de una manera din\u00e1mica y reparable, que fue bien intencionado en el dise\u00f1o.",
         "fr": "Permet \u00e0 l'administrateur, autoris\u00e9 par les op\u00e9rateurs admin de rechercher avec des param\u00e8tres donn\u00e9s du num\u00e9ro de ticket, du pr\u00e9fixe de ticket et / ou de la date du ticket pour atteindre le ticket sp\u00e9cifique destin\u00e9 \u00e0 \u00eatre recherch\u00e9 de mani\u00e8re dynamique et r\u00e9parable.",
         "it": "Consente all'amministratore, autorizzato dagli amministratori, di cercare con determinati parametri il numero del biglietto, il prefisso del biglietto e la data del biglietto per raggiungere lo specifico biglietto destinato alla ricerca in modo dinamico e risolvibile, che era ben inteso nel design."
+    },
+    "Always show ticket number: ": {
+        "ar": "\u062a\u0638\u0647\u0631 \u062f\u0627\u0626\u0645\u0627 \u0631\u0642\u0645 \u0627\u0644\u062a\u0630\u0643\u0631\u0629:",
+        "en": "Always show ticket number:",
+        "es": "Siempre mostrar el n\u00famero del billete:",
+        "fr": "Toujours afficher le num\u00e9ro de billet:",
+        "it": "Mostra sempre il numero del biglietto:"
     },
     "Apply": {
         "ar": "\u062a\u0637\u0628\u064a\u0642",
@@ -1923,6 +1937,13 @@
     },
     "Please, enter the number to be registered along with your ticket": {
         "en": "Please, enter the number to be registered along with your ticket"
+    },
+    "Preferences": {
+        "ar": "\u062a\u0641\u0636\u064a\u0644\u0627\u062a",
+        "en": "Preferences",
+        "es": "preferencias",
+        "fr": "pr\u00e9f\u00e9rences",
+        "it": "Preferenze"
     },
     "Prefix": {
         "ar": "\u0627\u062e\u062a\u0635\u0627\u0631",

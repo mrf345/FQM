@@ -251,10 +251,16 @@ def test_pull_ticket_on_hold(client):
                        .first() is None
 
 
-def test_feed_stream_tickets(client):
+def test_feed_stream_tickets_preferences_enabled(client):
     client.get('/pull', follow_redirects=True) # NOTE: initial pull to fill stacks
 
     with client.application.app_context():
+        # NOTE: enable settings to always display ticket number and prefix
+        display_settings = Display_store.query.first()
+        display_settings.prefix = True
+        display_settings.always_show_ticket_number = True
+        db.session.commit()
+
         tickets = Waiting.query.limit(8)\
                                .all()
         current_ticket = Waiting_c.query.first()
@@ -264,14 +270,40 @@ def test_feed_stream_tickets(client):
     assert response.status == '200 OK'
     assert response.json.get('con') == current_ticket.oname
     assert response.json.get('cott') == current_ticket.tname
-    assert response.json.get('cot') == getattr(current_ticket,
-                                                'name' if current_ticket.n
-                                                else 'ticket')
+    assert response.json.get('cot') == current_ticket.get_ticket_display_text()
 
     for i, ticket in enumerate(tickets):
-        assert (ticket.name
-                if ticket.n else
-                ticket.number) in response.json.get(f'w{i + 1}')
+        assert ticket.name in response.json.get(f'w{i + 1}')
+        assert f'{ticket.office.prefix}.' in response.json.get(f'w{i + 1}')
+        assert f'{ticket.number}' in response.json.get(f'w{i + 1}')
+
+
+
+def test_feed_stream_tickets_preferences_disabled(client):
+    client.get('/pull', follow_redirects=True) # NOTE: initial pull to fill stacks
+
+    with client.application.app_context():
+        # NOTE: enable settings to always display ticket number and prefix
+        display_settings = Display_store.query.first()
+        display_settings.prefix = False
+        display_settings.always_show_ticket_number = False
+        db.session.commit()
+
+        tickets = Waiting.query.limit(8)\
+                               .all()
+        current_ticket = Waiting_c.query.first()
+
+    response = client.get('/feed', follow_redirects=True)
+
+    assert response.status == '200 OK'
+    assert response.json.get('con') == current_ticket.oname
+    assert response.json.get('cott') == current_ticket.tname
+    assert response.json.get('cot') == current_ticket.get_ticket_display_text()
+
+    for i, ticket in enumerate(tickets):
+        assert ticket.name in response.json.get(f'w{i + 1}')
+        assert f'{ticket.office.prefix}.' not in response.json.get(f'w{i + 1}')
+        assert f'{ticket.number}' not in response.json.get(f'w{i + 1}')
 
 
 def test_display_screen(client):

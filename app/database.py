@@ -21,6 +21,22 @@ class Mixin:
     def get(cls, id):
         return cls.query.filter_by(id=id).first()
 
+
+class TicketsMixin:
+    def get_ticket_display_text(self):
+        display_settings = Display_store.query.first()
+        always_show_ticket_number = display_settings.always_show_ticket_number
+        name_and_or_number = f'{getattr(self, "number", getattr(self, "ticket", "Empty"))}'
+
+        if self.n:  # NOTE: registered ticket
+            if always_show_ticket_number:
+                name_and_or_number = f'{name_and_or_number} {self.name}'
+            else:
+                name_and_or_number = f'{self.name}'
+
+        return name_and_or_number
+
+
 class Office(db.Model, Mixin):
     __tablename__ = "offices"
     id = db.Column(db.Integer, primary_key=True)
@@ -92,7 +108,7 @@ class Task(db.Model, Mixin):
 
         db.session.commit()
 
-class Serial(db.Model):
+class Serial(db.Model, TicketsMixin):
     __tablename__ = "serials"
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.Integer)
@@ -210,7 +226,7 @@ class Serial(db.Model):
         db.session.commit()
 
 
-class Waiting(db.Model):
+class Waiting(db.Model, TicketsMixin):
     __tablename__ = "waitings"
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.Integer)
@@ -244,8 +260,16 @@ class Waiting(db.Model):
                 db.session.delete(waiting_ticket)
                 db.session.commit()
 
+    @property
+    def task(self):
+        return Task.query.filter_by(id=self.task_id).first()
 
-class Waiting_c(db.Model):
+    @property
+    def office(self):
+        return Office.query.filter_by(id=self.office_id).first()
+
+
+class Waiting_c(db.Model, TicketsMixin):
     __tablename__ = "waitings_c"
     id = db.Column(db.Integer, primary_key=True)
     ticket = db.Column(db.String)
@@ -475,6 +499,7 @@ class Display_store(db.Model):
     bgcolor = db.Column(db.String(100))
     tmp = db.Column(db.Integer)
     prefix = db.Column(db.Boolean, default=False)
+    always_show_ticket_number = db.Column(db.Boolean, default=False)
     # adding repeat announcement value
     r_announcement = db.Column(db.Boolean)
     akey = db.Column(db.Integer, db.ForeignKey("media.id",
