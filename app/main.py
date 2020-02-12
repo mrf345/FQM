@@ -26,7 +26,8 @@ from app.views.manage import manage_app
 from app.utils import absolute_path, log_error, create_default_records
 from app.database import Settings, Serial
 from app.tasks import start_tasks
-from app.constants import SUPPORTED_LANGUAGES, SUPPORTED_MEDIA_FILES, VERSION, MIGRATION_FOLDER
+from app.constants import (SUPPORTED_LANGUAGES, SUPPORTED_MEDIA_FILES, VERSION, MIGRATION_FOLDER,
+                           DATABASE_FILE)
 
 
 def create_app(config={}):
@@ -39,7 +40,7 @@ def create_app(config={}):
     '''
     app = Flask(__name__, static_folder=absolute_path('static'), template_folder=absolute_path('templates'))
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + absolute_path('data.sqlite')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + absolute_path(DATABASE_FILE)
     # Autoreload if templates change
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     # flask_upload settings
@@ -88,21 +89,24 @@ def create_db(app, testing=False):
             flag to disable migrations, mainly used during integration testing.
     '''
     with app.app_context():
-        try:
+        if not os.path.isfile(absolute_path(DATABASE_FILE)):
             db.create_all()
-            not testing and database_upgrade(directory=MIGRATION_FOLDER)
-            create_default_records()
-        except Exception:
-            # NOTE: this handling needs to be commented out, when migrating with `Flask.cli`
-            not testing and database_upgrade(directory=MIGRATION_FOLDER)
-            create_default_records()
+        else:
+            try:
+                not testing and database_upgrade(directory=MIGRATION_FOLDER)
+            except Exception as exception:
+                log_error(exception)
+        create_default_records()
 
 
 def bundle_app(config={}):
     ''' Create a Flask app, set settings, load extensions, blueprints and create database. '''
     app = create_app(config)
-    create_db(app, testing=app.config.get('TESTING'))
-    start_tasks(app)
+
+    # NOTE: avoid creating or interacting with the database during migration
+    if not app.config.get('MIGRATION', False):
+        create_db(app, testing=app.config.get('TESTING'))
+        start_tasks(app)
 
     if os.name != 'nt':
         # !!! it did not work creates no back-end available error !!!

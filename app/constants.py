@@ -28,3 +28,4 @@ DEFAULT_PASSWORD = 'admin'
 DEFAULT_USER = 'Admin'
 
 MIGRATION_FOLDER = 'migrations'
+DATABASE_FILE = 'data.sqlite'
