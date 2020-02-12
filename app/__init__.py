@@ -14,8 +14,8 @@ from app.gui import MainWindow
 from app.utils import get_accessible_ips, get_random_available_port
 from app.constants import VERSION
 
-# NOTE: uncomment when migrating
-# app = bundle_app()
+# NOTE: uncomment out while genrating migration
+# app = bundle_app({'MIGRATION': True})
 
 
 def run_app():
