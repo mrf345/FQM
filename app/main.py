@@ -84,6 +84,8 @@ def create_db(app, testing=False):
     ----------
         app: Flask app
             app to use its context to create tables and load initial data.
+        testing: bool
+            flag to disable migrations, mainly used during integration testing.
     '''
     with app.app_context():
         try:

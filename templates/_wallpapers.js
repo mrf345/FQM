@@ -17,6 +17,7 @@ $('{{ selector }}').css({
     'background-size': 'cover',
     'background-repeat': 'no-repeat',
     'background-position': 'center',
+    'background-attachment': 'fixed',
     'background-image': "linear-gradient({{ overlay }}, {{ overlay }}), url({{ url_for('static', filename='images/dbg.jpg') }})"
 })
 {% endif %}
