@@ -4,8 +4,8 @@ from random import choice
 from .common import client, NAMES, TEST_REPEATS
 from app.middleware import db
 from app.utils import ids, absolute_path
-from app.database import (Task, Office, Serial, Waiting, Settings, Touch_store,
-                          Waiting_c, Display_store, Touch_store)
+from app.database import (Task, Office, Serial, Settings, Touch_store, Display_store,
+                          Touch_store)
 
 def test_welcome_root_and_login(client):
     response = client.post('/log/a', follow_redirects=True)
@@ -101,7 +101,6 @@ def test_reset_all(client):
     assert response.status == '200 OK'
     assert Serial.query.count() != len(all_tickets)
     assert Serial.query.count() == Task.query.count()
-    assert Waiting.query.count() == 0
 
 
 @pytest.mark.parametrize('_', range(TEST_REPEATS))
@@ -134,8 +133,6 @@ def test_pull_tickets_from_all(_, client):
         ticket_to_be_pulled = Serial.query.order_by(Serial.number)\
                                           .filter(Serial.number != 100, Serial.p != True)\
                                           .first()
-        in_waiting = Waiting.query.filter_by(number=ticket_to_be_pulled.number)\
-                                  .first()
 
     response = client.get(f'/pull', follow_redirects=True)
 
@@ -148,7 +145,6 @@ def test_pull_tickets_from_all(_, client):
                                   p=True)\
                        .order_by(Serial.number)\
                        .first() is not None
-    assert Waiting.query.count() == (10 if in_waiting else 11)  # NOTE: last ticket pulled deducted
 
 
 @pytest.mark.parametrize('_', range(TEST_REPEATS))
@@ -162,7 +158,6 @@ def test_pull_random_ticket(_, client):
     response = client.get(f'/pull_unordered/{ticket.id}/testing/{office.id}')
 
     assert Serial.query.filter_by(id=ticket.id).first().p == True
-    assert Waiting.query.filter_by(number=ticket.number).first() is None
 
 
 @pytest.mark.parametrize('_', range(TEST_REPEATS))
@@ -179,8 +174,6 @@ def test_pull_tickets_from_common_task(_, client):
                                           .filter(Serial.number != 100, Serial.p != True,
                                                   Serial.task_id == task.id)\
                                           .first()
-        in_waiting = Waiting.query.filter_by(number=ticket_to_be_pulled.number)\
-                                  .first()
 
     response = client.get(f'/pull/{task.id}/{office.id}', follow_redirects=True)
     pulled_ticket = Serial.query.filter_by(number=ticket_to_be_pulled.number,
@@ -196,7 +189,6 @@ def test_pull_tickets_from_common_task(_, client):
     assert pulled_ticket is not None
     assert pulled_ticket.task_id == task.id
     assert pulled_ticket.office_id == office.id
-    assert Waiting.query.count() == (10 if in_waiting else 11)  # NOTE: last ticket pulled deducted
 
 
 @pytest.mark.parametrize('_', range(TEST_REPEATS))
@@ -228,7 +220,6 @@ def test_pull_common_task_strict_pulling(_, client):
     assert pulled_ticket is not None
     assert pulled_ticket.task_id == task.id
     assert pulled_ticket.office_id == office.id
-    assert Waiting.query.count() == 10
 
 
 def test_pull_ticket_on_hold(client):
@@ -261,22 +252,45 @@ def test_feed_stream_tickets_preferences_enabled(client):
         display_settings.always_show_ticket_number = True
         db.session.commit()
 
-        tickets = Waiting.query.limit(8)\
-                               .all()
-        current_ticket = Waiting_c.query.first()
+        tickets = Serial.get_waiting_list_tickets(limit=8)
+        current_ticket = Serial.get_last_pulled_ticket()
 
     response = client.get('/feed', follow_redirects=True)
 
     assert response.status == '200 OK'
-    assert response.json.get('con') == current_ticket.oname
-    assert response.json.get('cott') == current_ticket.tname
-    assert response.json.get('cot') == current_ticket.get_ticket_display_text()
+    assert response.json.get('con') == current_ticket.office.display_text
+    assert response.json.get('cott') == current_ticket.task.name
+    assert response.json.get('cot') == current_ticket.display_text
 
     for i, ticket in enumerate(tickets):
         assert ticket.name in response.json.get(f'w{i + 1}')
-        assert f'{ticket.office.prefix}.' in response.json.get(f'w{i + 1}')
-        assert f'{ticket.number}' in response.json.get(f'w{i + 1}')
+        assert f'{ticket.office.prefix}{ticket.number}' in response.json.get(f'w{i + 1}')
 
+
+def test_feed_office_with_preferences_enabled(client):
+    client.get('/pull', follow_redirects=True) # NOTE: initial pull to fill stacks
+
+    with client.application.app_context():
+        # NOTE: enable settings to always display ticket number and prefix
+        display_settings = Display_store.query.first()
+        display_settings.prefix = True
+        display_settings.always_show_ticket_number = True
+        db.session.commit()
+
+        current_ticket = Serial.get_last_pulled_ticket()
+        tickets = Serial.get_waiting_list_tickets(office_id=current_ticket.office.id,
+                                                  limit=8)
+
+    response = client.get(f'/feed/{current_ticket.office.id}', follow_redirects=True)
+
+    assert response.status == '200 OK'
+    assert response.json.get('con') == current_ticket.office.display_text
+    assert response.json.get('cott') == current_ticket.task.name
+    assert response.json.get('cot') == current_ticket.display_text
+
+    for i, ticket in enumerate(tickets):
+        assert ticket.name in response.json.get(f'w{i + 1}')
+        assert f'{ticket.office.prefix}{ticket.number}' in response.json.get(f'w{i + 1}')
 
 
 def test_feed_stream_tickets_preferences_disabled(client):
@@ -289,21 +303,19 @@ def test_feed_stream_tickets_preferences_disabled(client):
         display_settings.always_show_ticket_number = False
         db.session.commit()
 
-        tickets = Waiting.query.limit(8)\
-                               .all()
-        current_ticket = Waiting_c.query.first()
+        tickets = Serial.get_waiting_list_tickets(limit=8)
+        current_ticket = Serial.get_last_pulled_ticket()
 
     response = client.get('/feed', follow_redirects=True)
 
     assert response.status == '200 OK'
-    assert response.json.get('con') == current_ticket.oname
-    assert response.json.get('cott') == current_ticket.tname
-    assert response.json.get('cot') == current_ticket.get_ticket_display_text()
+    assert response.json.get('con') == current_ticket.office.display_text
+    assert response.json.get('cott') == current_ticket.task.name
+    assert response.json.get('cot') == current_ticket.display_text
 
     for i, ticket in enumerate(tickets):
         assert ticket.name in response.json.get(f'w{i + 1}')
-        assert f'{ticket.office.prefix}.' not in response.json.get(f'w{i + 1}')
-        assert f'{ticket.number}' not in response.json.get(f'w{i + 1}')
+        assert f'{ticket.office.prefix}{ticket.number}' not in response.json.get(f'w{i + 1}')
 
 
 def test_display_screen(client):
@@ -319,11 +331,28 @@ def test_display_screen(client):
 def test_touch_screen(client):
     with client.application.app_context():
         touch_screen_settings = Touch_store.query.first()
+        tasks = Task.query.all()
 
     response = client.get('/touch/0', follow_redirects=True)
     page_content = response.data.decode('utf-8')
 
     assert touch_screen_settings.title in page_content
+    for task in tasks:
+        assert task.name in page_content
+
+
+def test_touch_screen_office(client):
+    with client.application.app_context():
+        office = choice(Office.query.all())
+        touch_screen_settings = Touch_store.query.first()
+        tasks = Task.query.filter(Task.offices.contains(office))
+
+    response = client.get(f'/touch/0/{office.id}', follow_redirects=True)
+    page_content = response.data.decode('utf-8')
+
+    assert touch_screen_settings.title in page_content
+    for task in tasks:
+        assert task.name in page_content
 
 
 def test_toggle_setting(client):

@@ -112,18 +112,18 @@ reloadIf('/touch/0')
   	    <h1 id="msgs" class="hide messages">{{ ts.message }}</h1>
       </div>
   </div>
-  {% if tasks == 0 %}
+  {% if not tasks %}
   {{ touchFooter(translate('no tasks created yet', 'en', [defLang])) }}
   {% else %}
   {% for t in tasks %}
   <div class="row">
       <div class="col-md-12 hidden-sm hidden-xs text-center text-center">
-  	    <a class="btn btn-lg mt-2 mb-2 {{ ts.tcolor }}" href="{{ url_for('core.serial', t_id=t.id) }}" style="font-size: {{ ts.tsize }}; font-family: '{{ ts.tfont }}';">
+  	    <a class="btn btn-lg mt-2 mb-2 {{ ts.tcolor }}" href="{{ url_for('core.serial', t_id=t.id, office_id=office_id) }}" style="font-size: {{ ts.tsize }}; font-family: '{{ ts.tfont }}';">
   	      {{ t.name }}
   	    </a>
       </div>
       <div class="col-xs-12 hidden-md hidden-lg hidden-xl text-center">
-  	    <a class="btn btn-lg mt-1 mb-1 {{ ts.tcolor }}" href="{{ url_for('core.serial', t_id=t.id) }}" style="font-family: '{{ ts.tfont }}';">
+  	    <a class="btn btn-lg mt-1 mb-1 {{ ts.tcolor }}" href="{{ url_for('core.serial', t_id=t.id, office_id=office_id) }}" style="font-family: '{{ ts.tfont }}';">
   	      {{ t.name }}
   	    </a>
       </div>
@@ -147,18 +147,18 @@ reloadIf('/touch/0')
     	  <h1 id="msgl" class="hide messages">{{ ts.message }}</h1>
       </div>
     </div>
-    {% if tasks == 0 %}
+    {% if not tasks %}
     {{ touchFooter(translate('no tasks created yet', 'en', [defLang])) }}
     {% else %}
     <div class="row">
       {% for t in tasks %}
       <div class="col-xs-12 hidden-md hidden-lg hidden-xl text-center">
-        <a class="btn btn-lg mt-1 mb-1 {{ ts.tcolor }}" href="{{ url_for('core.serial', t_id=t.id) }}" style="font-family: '{{ ts.tfont }}';">
+        <a class="btn btn-lg mt-1 mb-1 {{ ts.tcolor }}" href="{{ url_for('core.serial', t_id=t.id, office_id=office_id) }}" style="font-family: '{{ ts.tfont }}';">
           {{ t.name }}
         </a>
       </div>
       <div class="col-md-6 hidden-xs hidden-sm text-center">
-      	<a class="btn btn-lg mt-2 mb-2 {{ ts.tcolor }}" href="{{ url_for('core.serial', t_id=t.id) }}" style="font-size: {{ ts.tsize }}; font-family: '{{ ts.tfont }}';">
+      	<a class="btn btn-lg mt-2 mb-2 {{ ts.tcolor }}" href="{{ url_for('core.serial', t_id=t.id, office_id=office_id) }}" style="font-size: {{ ts.tsize }}; font-family: '{{ ts.tfont }}';">
       	    {{ t.name }}
       	</a>
       </div>
@@ -185,12 +185,12 @@ reloadIf('/touch/0')
       <div class="col-xs-6">
   {% for t in tasks %}
         <div class="col-md-12 hidden-xs hidden-sm">
-  	      <a class="btn btn-lg mt-1 mb-2 {{ ts.tcolor }}" href="{{ url_for('core.serial', t_id=t.id) }}" style="font-size: {{ ts.tsize }}; font-family: '{{ ts.tfont }}';">
+  	      <a class="btn btn-lg mt-1 mb-2 {{ ts.tcolor }}" href="{{ url_for('core.serial', t_id=t.id, office_id=office_id) }}" style="font-size: {{ ts.tsize }}; font-family: '{{ ts.tfont }}';">
             {{ t.name }}
   	      </a>
         </div>
         <div class="col-xs-12 hidden-md hidden-lg hidden-xl">
-          <a class="btn btn-lg mt-1 mb-1 {{ ts.tcolor }}" href="{{ url_for('core.serial', t_id=t.id) }}" style="font-family: '{{ ts.tfont }}';">
+          <a class="btn btn-lg mt-1 mb-1 {{ ts.tcolor }}" href="{{ url_for('core.serial', t_id=t.id, office_id=office_id) }}" style="font-family: '{{ ts.tfont }}';">
             {{ t.name }}
           </a>
         </div>

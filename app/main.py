@@ -24,7 +24,7 @@ from app.views.core import core
 from app.views.customize import cust_app
 from app.views.manage import manage_app
 from app.utils import absolute_path, log_error, create_default_records
-from app.database import Settings, Serial
+from app.database import Settings, Serial, Office
 from app.tasks import start_tasks
 from app.constants import (SUPPORTED_LANGUAGES, SUPPORTED_MEDIA_FILES, VERSION, MIGRATION_FOLDER,
                            DATABASE_FILE)
@@ -89,7 +89,7 @@ def create_db(app, testing=False):
             flag to disable migrations, mainly used during integration testing.
     '''
     with app.app_context():
-        if not os.path.isfile(absolute_path(DATABASE_FILE)):
+        if not os.path.isfile(absolute_path(DATABASE_FILE)) or testing:
             db.create_all()
         else:
             try:
@@ -105,7 +105,7 @@ def bundle_app(config={}):
 
     # NOTE: avoid creating or interacting with the database during migration
     if not app.config.get('MIGRATION', False):
-        create_db(app, testing=app.config.get('TESTING'))
+        create_db(app, testing=app.config.get('TESTING', False))
         start_tasks(app)
 
     if os.name != 'nt':
@@ -176,6 +176,6 @@ def bundle_app(config={}):
         return dict(path=path, adme=admin_route, brp=Markup('<br>'), ar=ar, current_path=request.path,
                     version=VERSION, str=str, defLang=session.get('lang'), getattr=getattr,
                     settings=Settings.get(), checkId=lambda id, records: id in [i.id for i in records],
-                    Serial=Serial)
+                    Serial=Serial, offices=Office.query.all())
 
     return app

@@ -64,8 +64,7 @@ class CacheTicketsAnnouncements(QThread):
             if language == 'en-us':
                 tts_text = tts_text.format(aliases.office)
 
-            return (f'{ticket.get_ticket_display_text()}'
-                    f'{tts_text}{office_text}')
+            return f'{ticket.display_text}{tts_text}{office_text}'
 
     def run(self):
         while not self.cut_circut:

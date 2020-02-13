@@ -7,7 +7,7 @@ from atexit import register
 
 from app.main import create_db, bundle_app
 from app.middleware import db
-from app.database import User, Operators, Office, Task, Serial, Waiting
+from app.database import User, Operators, Office, Task, Serial
 from app.utils import absolute_path
 
 
@@ -28,7 +28,7 @@ NAMES = ('Aaron Enlightened', 'Abbott Father', 'Abel Breath', 'Abner Father',
 TEST_PREFIX = 'Z'
 PREFIXES = [p for p in list(map(lambda i: chr(i).upper(), range(97,123))) if p != TEST_PREFIX]
 
-MODULES = [Waiting, Serial, User, Operators, Task, Office]
+MODULES = [Serial, User, Operators, Task, Office]
 DB_PATH = absolute_path('testing.sqlite')
 TEST_REPEATS = 3
 
@@ -135,18 +135,6 @@ def fill_tickets(entry_number=100):
 
         db.session.add(Serial(number=number, office_id=office.id,
                               task_id=task.id, name=name, n=True))
-    db.session.commit()
-
-    # Filling the waiting tickets stack
-    tickets_to_fill = Serial.query.filter(Serial.p == False,
-                                          Serial.number != 100)\
-                                  .order_by(Serial.number)\
-                                  .limit(11 - Waiting.query.count())
-
-    for ticket in tickets_to_fill:
-        if 10 >= Waiting.query.count():
-            db.session.add(Waiting(number=ticket.number, office_id=ticket.office_id,
-                                   task_id=ticket.task_id, name=ticket.name, n=ticket.n))
     db.session.commit()
 
 

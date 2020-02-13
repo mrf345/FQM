@@ -1,4 +1,4 @@
-"""empty message
+""" Adding `on_hold` flag to tickets.
 
 Revision ID: 8f8e67fcbd9c
 Revises: 8aee5e17a98d
