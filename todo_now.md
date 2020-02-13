@@ -19,11 +19,14 @@
 - [x] Pull random ticket from `tasks` or `offices` (2020-02-10)
 - [x] Option to display ticket number beside name on `display` screen (2020-02-12)
 - [x] Put random ticket on-hold (2020-02-10)
+- [ ] Add office and tasks customization screen
+- [ ] Add time-spent-waiting column in `tasks` and `offices`
 
-- [ ] Multiple Display screen support **based on offices**
-> - [ ] Add multiple display screen routing
-> - [ ] Add dynamic `/feed` to handle any office
-> - [ ] Refactor display customization to handle multiple offices
+- [x] Multiple Touch screen support **based on offices** (2020-02-13)
+- [x] Multiple Display screen support **based on offices** (2020-02-13)
+> - [x] Add multiple display screen routing
+> - [x] Add dynamic `/feed` to handle any office
+> - [x] ~~Refactor display customization to handle multiple offices~~ **Move to backlog**
 
 - [x] Add `core` and `manage` full test coverage (2020-02-07)
 - [ ] Add windows build automation script

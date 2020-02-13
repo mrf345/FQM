@@ -26,7 +26,7 @@
 	}
 
 	var stream = JsonStream({
-		url: window.location.origin + '/feed',
+		url: "{{ feed_url }}",
 		duration: parseInt("{{ ts.rrate }}") / 1000,
 		effect_duration: parseInt("{{ ts.mduration }}"),
 		data_attr: 'stream',
@@ -40,7 +40,7 @@
 
 			// Adding prefix hiding from the front end
 			if (!forceRepeat) forceRepeat = setInterval(function () {
-				$.get('/feed')
+				$.get("{{ feed_url }}")
 					.then(function (j) {
 						if (j.replay === 'yes') {
 							if (player) player.replay()

@@ -23,16 +23,20 @@ class Mixin:
 
 
 class TicketsMixin:
-    def get_ticket_display_text(self):
+    @property
+    def display_text(self):
         display_settings = Display_store.query.first()
         always_show_ticket_number = display_settings.always_show_ticket_number
-        name_and_or_number = f'{getattr(self, "number", getattr(self, "ticket", "Empty"))}'
+        name_and_or_number = f'{getattr(self, "number", "")}'
+        prefix = f'{self.office.prefix} ' if display_settings.prefix else ''
 
         if self.n:  # NOTE: registered ticket
             if always_show_ticket_number:
-                name_and_or_number = f'{name_and_or_number} {self.name}'
+                name_and_or_number = f'{prefix.strip()}{name_and_or_number} {self.name}'
             else:
-                name_and_or_number = f'{self.name}'
+                name_and_or_number = f'{prefix}{self.name}'
+        else:  # NOTE: printed ticket
+            name_and_or_number = f'{prefix}{name_and_or_number}'
 
         return name_and_or_number
 
@@ -69,6 +73,13 @@ class Office(db.Model, Mixin):
         return Serial.query.filter(Serial.office_id == self.id,
                                    Serial.number != 100)
 
+    @property
+    def display_text(self):
+        show_prefix = Display_store.query.first()\
+                                         .prefix
+
+        return f'{self.prefix if show_prefix else ""}{self.name}'
+
 
 class Task(db.Model, Mixin):
     __tablename__ = "tasks"
@@ -101,7 +112,6 @@ class Task(db.Model, Mixin):
     def migrate_tickets(self, from_office, to_office):
         params = dict(office_id=from_office.id, task_id=self.id)
         tickets = Serial.query.filter_by(**params).all()
-        tickets += Waiting.query.filter_by(**params).all()
 
         for ticket in tickets:
             ticket.office_id = to_office.id
@@ -202,6 +212,53 @@ class Serial(db.Model, TicketsMixin):
                         .filter(cls.number != 100)\
                         .order_by(cls.p, cls.timestamp.desc())
 
+    @classmethod
+    def get_last_pulled_ticket(cls, office_id=None):
+        ''' get the last pulled ticket.
+
+        Parameters
+        ----------
+            office_id: int
+                office's id to filter last tickets by.
+
+        Returns
+        -------
+            Last ticket pulled record.
+        '''
+        last_ticket = cls.query.filter_by(p=True)\
+                               .filter(cls.number != 100)
+
+        if office_id:
+            last_ticket = last_ticket.filter_by(office_id=office_id)
+
+        return last_ticket.order_by(cls.pdt.desc())\
+                          .first()
+
+    @classmethod
+    def get_waiting_list_tickets(cls, office_id=None, limit=9):
+        ''' get list of waiting tickets to be processed next.
+
+        Parameters
+        ----------
+            office_id: int
+                office's id to filter tickets by.
+            limit: int
+                number of ticket to limit the query to.
+
+        Returns
+        -------
+            List of waiting list tickets.
+        '''
+        waiting_tickets = cls.query.filter_by(p=False)\
+                                   .filter(cls.number != 100)
+
+        if office_id:
+            waiting_tickets = waiting_tickets.filter(cls.office_id == office_id)
+
+        return waiting_tickets.order_by(cls.pdt.desc())\
+                              .limit(limit)\
+                              .all()
+
     def pull(self, office_id):
         ''' Mark a ticket as pulled and do the dues.
 
@@ -223,97 +280,6 @@ class Serial(db.Model, TicketsMixin):
         self.on_hold = not self.on_hold
 
         db.session.add(self)
-        db.session.commit()
-
-
-class Waiting(db.Model, TicketsMixin):
-    __tablename__ = "waitings"
-    id = db.Column(db.Integer, primary_key=True)
-    number = db.Column(db.Integer)
-    name = db.Column(db.String(300), nullable=True)
-    n = db.Column(db.Boolean)
-    office_id = db.Column(db.Integer, db.ForeignKey('offices.id'))
-    task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
-
-    def __init__(self, number, office_id, task_id, name=None, n=False):
-        self.number = number
-        self.office_id = office_id
-        self.task_id = task_id
-        self.name = name
-        self.n = n
-
-    @classmethod
-    def drop(cls, tickets=[]):
-        ''' remove a ticket from waiting list.
-
-        Parameters
-        ----------
-            tickets: list of Serial record
-                ticket instance to remove from waiting list.
-        '''
-        for ticket in tickets:
-
-            waiting_ticket = cls.query.filter_by(number=ticket.number)\
-                                      .first()
-
-            if waiting_ticket:
-                db.session.delete(waiting_ticket)
-                db.session.commit()
-
-    @property
-    def task(self):
-        return Task.query.filter_by(id=self.task_id).first()
-
-    @property
-    def office(self):
-        return Office.query.filter_by(id=self.office_id).first()
-
-
-class Waiting_c(db.Model, TicketsMixin):
-    __tablename__ = "waitings_c"
-    id = db.Column(db.Integer, primary_key=True)
-    ticket = db.Column(db.String)
-    oname = db.Column(db.String)
-    tname = db.Column(db.String)
-    n = db.Column(db.Boolean)
-    name = db.Column(db.String(300), nullable=True)
-
-    def __init__(self, ticket="Empty", oname="Empty", tname="Empty",
-                 n=False, name=None):
-        self.id = 0
-        self.ticket = ticket
-        self.oname = oname
-        self.tname = tname
-        self.n = n
-        self.name = name
-
-    @classmethod
-    def get(cls):
-        cls.query.first()
-
-    @classmethod
-    def assume(cls, ticket, office, task, show_prefix):
-        ''' change the current ticket details to match the passed ticket.
-
-        Parameters
-        ----------
-            ticket: Serila record
-                ticket to assume its properties.
-            office: Office record
-                office to dislay its prefix and number.
-            task: Task record
-                task to display its name.
-            show_prefix: bool
-                flag to show or hide office prefix.
-        '''
-        current_ticket = cls.query.first()
-        prefix = office.prefix if show_prefix else ''
-        current_ticket.ticket = f'{prefix}{ticket.number}'
-        current_ticket.oname = f'{prefix}{office.name}'
-        current_ticket.tname = task.name
-        current_ticket.n = ticket.n
-        current_ticket.name = ticket.name
-
         db.session.commit()
 
 

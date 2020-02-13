@@ -157,32 +157,46 @@
                                     <span class="caret"></span>
                                 </a>
     			                <ul class="dropdown-menu" role="menu">
-                                    <li class="dropdown-header">( {{ translate('New tab', 'en', [defLang]) }} )</li>
+                                    <li class="dropdown-header">( {{ translate('General Screens', 'en', [defLang]) }} )</li>
     			                    <li>
     				                    <a href="{{ url_for('core.touch', a=0) }}" target="_blank">
     				                        <span class="fa fa-desktop"></span>
                                             {{ translate('Touch screen', 'en', [defLang]) }}
                                         </a>
-    			                    </li>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-target="#touch_qr" data-toggle="modal">
+                                            <span class="fa fa-desktop"></span>
+                                            {{ translate('Touch screen', 'en', [defLang]) }} (QR Code)
+                                        </a>
+                                    </li>
     			                    <li>
     				                    <a href="{{ url_for('core.display') }}" target="_blank">
     				                        <span class="fa fa-television"></span>
                                             {{ translate('Display screen', 'en', [defLang]) }}
                                         </a>
-    			                    </li>
-                                    <li class="dropdown-header">( QR Codes )</li>
-                                    <li>
-                                        <a href="#" data-target="#touch_qr" data-toggle="modal">
-                                            <span class="fa fa-desktop"></span>
-                                            {{ translate('Touch screen', 'en', [defLang]) }}
-                                        </a>
                                     </li>
                                     <li>
                                         <a href="#" data-toggle="modal" data-target="#display_qr">
                                             <span class="fa fa-television"></span>
+                                            {{ translate('Display screen', 'en', [defLang]) }} (QR Code)
+                                        </a>
+                                    </li>
+                                    {% for office in offices %}
+                                    <li class="dropdown-header">( {{ office.display_text }} )</li>
+                                    <li>
+    				                    <a href="{{ url_for('core.touch', a=0, office_id=office.id) }}" target="_blank">
+    				                        <span class="fa fa-desktop"></span>
+                                            {{ translate('Touch screen', 'en', [defLang]) }}
+                                        </a>
+                                    </li>
+    			                    <li>
+    				                    <a href="{{ url_for('core.display', office_id=office.id) }}" target="_blank">
+    				                        <span class="fa fa-television"></span>
                                             {{ translate('Display screen', 'en', [defLang]) }}
                                         </a>
                                     </li>
+                                    {% endfor %}
                                 </ul>
                             </li>
     			            <li class="dropdown">

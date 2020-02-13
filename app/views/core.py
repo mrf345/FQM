@@ -10,10 +10,10 @@ from flask_login import current_user, login_required, login_user
 import app.forms as forms
 import app.database as data
 from app.printer import assign, printit, printit_ar, print_ticket_windows, print_ticket_windows_ar
-from app.middleware import db
+from app.middleware import db, gtranslator
 from app.utils import execute, log_error
 from app.helpers import (reject_no_offices, reject_operator, is_operator, reject_not_admin,
-                         is_office_operator, is_common_task_operator, refill_waiting_list)
+                         is_office_operator, is_common_task_operator)
 
 
 core = Blueprint('core', __name__)
@@ -59,9 +59,9 @@ def root(n=None):
                            n=wrong_credentials, dpass=has_default_password)
 
 
-@core.route('/serial/<int:t_id>', methods=['POST', 'GET'])
-@refill_waiting_list
-def serial(t_id):
+@core.route('/serial/<int:t_id>', methods=['POST', 'GET'], defaults={'office_id': None})
+@core.route('/serial/<int:t_id>/<int:office_id>', methods=['GET', 'POST'])
+def serial(t_id, office_id=None):
     ''' generate a new ticket and print it. '''
     def printer_failure_redirect(exception):
         flash('Error: you must have available printer, to use printed', 'danger')
@@ -78,6 +78,7 @@ def serial(t_id):
 
     form = forms.Touch_name(session.get('lang'))
     task = data.Task.get(t_id)
+    office = data.Office.get(office_id)
     touch_screen_stings = data.Touch_store.query.first()
     ticket_settings = data.Printer.query.first()
     printed = not touch_screen_stings.n
@@ -94,12 +95,13 @@ def serial(t_id):
                                tnumber=numeric_ticket_form, ts=touch_screen_stings,
                                bgcolor=touch_screen_stings.bgcolor, a=4, done=False,
                                page_title='Touch Screen - Enter name ', form=form,
-                               dire='multimedia/', alias=data.Aliases.query.first())
+                               dire='multimedia/', alias=data.Aliases.query.first(),
+                               office_id=office_id)
 
     # NOTE: Incrementing the ticket number from the last generated ticket globally
     next_number = data.Serial.query.order_by(data.Serial.number.desc())\
                                    .first().number + 1
-    office = task.least_tickets_office()
+    office = office or task.least_tickets_office()
 
     if printed:
         common_arguments = (f'{office.prefix}.{next_number}',
@@ -134,7 +136,7 @@ def serial(t_id):
     db.session.add(data.Serial(number=next_number, office_id=office.id, task_id=task.id,
                                name=name_or_number, n=not printed))
     db.session.commit()
-    return redirect(url_for('core.touch', a=1))
+    return redirect(url_for('core.touch', a=1, office_id=office_id))
 
 
 @core.route('/serial_r/<int:o_id>')
@@ -151,7 +153,6 @@ def serial_r(o_id):
         flash('Error: the office is already resetted', 'danger')
         return redirect(url_for('manage_app.offices', o_id=o_id))
 
-    data.Waiting.query.filter_by(office_id=office.id).delete()
     office.tickets.delete()
     db.session.commit()
     flash('Notice: office has been resetted. ..', 'info')
@@ -170,7 +171,6 @@ def serial_ra():
         flash('Error: the office is already resetted', 'danger')
         return redirect(url_for('manage_app.all_offices'))
 
-    data.Waiting.query.delete()
     tickets.delete()
     db.session.commit()
     flash('Notice: office has been resetted. ..', 'info')
@@ -201,7 +201,6 @@ def serial_rt(t_id, ofc_id=None):
         flash('Error: the task is already resetted', 'danger')
         return redirect(url_for('manage_app.task', o_id=t_id, ofc_id=ofc_id))
 
-    data.Waiting.drop(tickets)
     tickets.delete()
     db.session.commit()
     flash('Error: the task is already resetted', 'info')
@@ -211,7 +210,6 @@ def serial_rt(t_id, ofc_id=None):
 @core.route('/pull', defaults={'o_id': None, 'ofc_id': None})
 @core.route('/pull/<int:o_id>/<int:ofc_id>')
 @login_required
-@refill_waiting_list
 def pull(o_id=None, ofc_id=None):
     ''' pull ticket for specific task and office or globally. '''
     def operators_not_allowed():
@@ -220,7 +218,6 @@ def pull(o_id=None, ofc_id=None):
 
     task = data.Task.get(o_id)
     office = data.Office.get(ofc_id)
-    show_prefix = data.Display_store.get().prefix
     strict_pulling = data.Settings.get().strict_pulling
     global_pull = not bool(o_id and ofc_id)
     general_redirection = redirect(url_for('manage_app.all_offices')
@@ -262,23 +259,18 @@ def pull(o_id=None, ofc_id=None):
     office = office or data.Office.get(next_ticket.office_id)
     task = task or data.Task.get(next_ticket.task_id)
 
-    data.Waiting_c.assume(next_ticket, office, task, show_prefix)
     next_ticket.pull(office.id)
-    data.Waiting.drop([next_ticket])
-
     flash('Notice: Ticket has been pulled ..', 'info')
     return general_redirection
 
 
 @core.route('/pull_unordered/<ticket_id>/<redirect_to>', defaults={'office_id': None})
-@core.route('/pull_unordered/<ticket_id>/<redirect_to>/<office_id>')
+@core.route('/pull_unordered/<ticket_id>/<redirect_to>/<int:office_id>')
 @login_required
-@refill_waiting_list
 def pull_unordered(ticket_id, redirect_to, office_id=None):
     office = data.Office.get(office_id)
     ticket = data.Serial.query.filter_by(id=ticket_id).first()
     strict_pulling = data.Settings.get().strict_pulling
-    show_prefix = data.Display_store.get().prefix
 
     if not ticket or ticket.on_hold:
         flash('Error: wrong entry, something went wrong', 'danger')
@@ -290,12 +282,7 @@ def pull_unordered(ticket_id, redirect_to, office_id=None):
         flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
 
-    office = office or ticket.office
-
-    data.Waiting_c.assume(ticket, office, ticket.task, show_prefix)
-    ticket.pull(office.id)
-    data.Waiting.drop([ticket])
-
+    ticket.pull((office or ticket.office).id)
     flash('Notice: Ticket has been pulled ..', 'info')
     return redirect(f'{redirect_to}'.replace('(', '/'))
 
@@ -321,23 +308,21 @@ def on_hold(ticket_id, redirect_to):
     return redirect(f'{redirect_to}'.replace('(', '/'))
 
 
-@core.route('/feed')
-def feed():
+@core.route('/feed', defaults={'office_id': None})
+@core.route('/feed/<int:office_id>')
+def feed(office_id=None):
     ''' stream list of waiting tickets and current ticket. '''
     display_settings = data.Display_store.query.first()
-    show_prefix = display_settings.prefix
-    current_ticket = data.Waiting_c.query.first()
-    current_ticket_text = current_ticket and current_ticket.get_ticket_display_text() or 'Empty'
-    office_name = getattr(current_ticket, 'oname', 'Empty')
-    task_name = getattr(current_ticket, 'tname', 'Empty')
+    current_ticket = data.Serial.get_last_pulled_ticket(office_id)
+    empty_text = gtranslator.translate('Empty', dest=[session.get('lang')])
+    current_ticket_text = current_ticket and current_ticket.display_text or empty_text
+    current_ticket_office_name = current_ticket and current_ticket.office.display_text or empty_text
+    current_ticket_task_name = current_ticket and current_ticket.task.name or empty_text
+    waiting_tickets = (data.Serial.get_waiting_list_tickets(office_id) + ([None] * 9))[:9]
 
-    def get_prefix(ticket):
-        return f'{ticket.office.prefix}.' if show_prefix else ''
-
-    waiting_tickets = (data.Waiting.query.limit(9).all() + ([None] * 9))[:9]
     waiting_list_parameters = {
         f'w{_index + 1}':
-        f'{_index + 1}. {get_prefix(ticket)}{ticket.get_ticket_display_text()}' if ticket else 'Empty'
+        f'{_index + 1}. {ticket.display_text}' if ticket else empty_text
         for _index, ticket in enumerate(waiting_tickets)
     }
 
@@ -346,11 +331,10 @@ def feed():
     waiting_list_parameters[f'w{len(waiting_list_parameters)}'] = (current_ticket.name
                                                                    if current_ticket.n else
                                                                    current_ticket.ticket
-                                                                   )if current_ticket else 'Empty'
+                                                                   ) if current_ticket else empty_text
 
-    return jsonify(con=office_name, cot=current_ticket_text, cott=task_name,
-                   replay='yes' if display_settings.r_announcement else 'no',
-                   **waiting_list_parameters)
+    return jsonify(con=current_ticket_office_name, cot=current_ticket_text, cott=current_ticket_task_name,
+                   replay='yes' if display_settings.r_announcement else 'no', **waiting_list_parameters)
 
 
 @core.route('/repeat_announcement', methods=['POST', 'GET'], defaults={'reached': False})
@@ -365,14 +349,16 @@ def repeat_announcement(reached=False):
     return 'success'
 
 
-@core.route('/display')
-def display():
+@core.route('/display', defaults={'office_id': None})
+@core.route('/display/<int:office_id>')
+def display(office_id=None):
     ''' display screen view. '''
     display_settings = data.Display_store.query.first()
     slideshow_settings = data.Slides_c.query.first()
     slides = data.Slides.query.order_by(data.Slides.id.desc()).all() or None
     aliases_settings = data.Aliases.query.first()
     video_settings = data.Vid.query.first()
+    feed_url = url_for('core.feed', office_id=office_id)
 
     return render_template('display.html',
                            audio=1 if display_settings.audio == 'true' else 0,
@@ -380,22 +366,28 @@ def display():
                            ss=slides, sli=slideshow_settings, ts=display_settings,
                            slides=data.Slides.query, tv=display_settings.tmp,
                            page_title='Display Screen', anr=display_settings.anr,
-                           alias=aliases_settings, vid=video_settings)
+                           alias=aliases_settings, vid=video_settings,
+                           feed_url=feed_url)
 
 
-@core.route('/touch/<int:a>')
-def touch(a):
+@core.route('/touch/<int:a>', defaults={'office_id': None})
+@core.route('/touch/<int:a>/<int:office_id>')
+def touch(a, office_id=None):
     ''' touch screen view. '''
     form = forms.Touch_name_ar() if session.get('lang') == 'AR' else forms.Touch_name()
-    tasks = data.Task.query.order_by(data.Task.timestamp).all() or 0
     touch_screen_stings = data.Touch_store.query.first()
     numeric_ticket_form = data.Printer.query.first().value == 2
     aliases_settings = data.Aliases.query.first()
+    tasks = data.Task.query.order_by(data.Task.timestamp)
+    office = data.Office.get(office_id)
 
-    return render_template('touch.html', ts=touch_screen_stings, tasks=tasks,
+    if office:
+        tasks = tasks.filter(data.Task.offices.contains(office))
+
+    return render_template('touch.html', ts=touch_screen_stings, tasks=tasks.all(),
                            tnumber=numeric_ticket_form, page_title='Touch Screen',
                            alias=aliases_settings, form=form, d=a == 1,
-                           a=touch_screen_stings.tmp)
+                           a=touch_screen_stings.tmp, office_id=office_id)
 
 
 @core.route('/settings/<setting>/<togo>')

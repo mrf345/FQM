@@ -1,4 +1,4 @@
-"""empty message
+""" Adding `always_show_ticket_number` to display screen settings.
 
 Revision ID: 1728b52497ba
 Revises: 8f8e67fcbd9c
