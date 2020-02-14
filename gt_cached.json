@@ -1223,6 +1223,13 @@
         "fr": "Images diapositives",
         "it": "Diapositive di immagini"
     },
+    "In-Waiting": {
+        "ar": "\u0645\u0646\u062a\u0638\u0631",
+        "en": "In-Waiting",
+        "es": "En espera",
+        "fr": "En attente",
+        "it": "In attesa"
+    },
     "Inserisci un titolo:": {
         "en": "Inserisci un titolo:",
         "it": "Inserisci un titolo:"
@@ -3730,13 +3737,6 @@
         "es": "soplo",
         "fr": "bouff\u00e9e",
         "it": "soffio"
-    },
-    "pulled": {
-        "ar": "\u0633\u062d\u0628\u062a",
-        "en": "pulled",
-        "es": "tirado",
-        "fr": "tir\u00e9",
-        "it": "tirato"
     },
     "pulsate": {
         "ar": "\u062e\u0641\u0642",

@@ -163,6 +163,24 @@ def bundle_app(config={}):
             return redirect(url_for('core.root'))
         return render_template('nojs.html', page_title='Javascript is disabled')
 
+    def moment_wrapper(moment):
+        ''' Temproray moment wrapper to add `.toTime()` and `.toNow()`
+            TODO: Remove and update Flask-Moment when PR's mereged.
+        '''
+        def toTime(*args, **kwargs):
+            content = str(moment.fromTime(*args, **kwargs))
+
+            return Markup(content.replace('from(', 'to('))
+
+        def toNow(*args, **kwargs):
+            content = str(moment.fromNow(*args, **kwargs))
+
+            return Markup(content.replace('fromNow(', 'toNow('))
+
+        setattr(moment, 'toTime', toTime)
+        setattr(moment, 'toNow', toNow)
+        return moment
+
     @app.context_processor
     def inject_vars():
         ''' Injecting default variables to all templates. '''
@@ -176,6 +194,6 @@ def bundle_app(config={}):
         return dict(path=path, adme=admin_route, brp=Markup('<br>'), ar=ar, current_path=request.path,
                     version=VERSION, str=str, defLang=session.get('lang'), getattr=getattr,
                     settings=Settings.get(), checkId=lambda id, records: id in [i.id for i in records],
-                    Serial=Serial, offices=Office.query.all())
+                    Serial=Serial, offices=Office.query.all(), moment_wrapper=moment_wrapper)
 
     return app

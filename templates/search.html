@@ -9,7 +9,6 @@
 {{ datepicker.loader() }}
 {{ datepicker.picker(id='#date') }}
 {% endblock %}
-are
 
 {%- from "sb_manage.html" import sb_manage with context %}
 {% block sidebar %}
@@ -36,7 +35,7 @@ are
 		    <hr>
 		    {{ render_field(form.tl, class="form-control") }}
 		    {{ render_field(form.number, class="form-control") }}
-        {{ render_field(form.date, class="form-control") }}
+        	{{ render_field(form.date, class="form-control") }}
         <p class="pt-6"></p>
 		    <center>
           <button class="btn btn-md btn-danger">{{ translate('Search', 'en', [defLang]) }}</button>

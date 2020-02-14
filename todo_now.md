@@ -19,8 +19,7 @@
 - [x] Pull random ticket from `tasks` or `offices` (2020-02-10)
 - [x] Option to display ticket number beside name on `display` screen (2020-02-12)
 - [x] Put random ticket on-hold (2020-02-10)
-- [ ] Add office and tasks customization screen
-- [ ] Add time-spent-waiting column in `tasks` and `offices`
+- [x] Add time-spent-waiting column in `tasks` and `offices` (2020-02-15)
 
 - [x] Multiple Touch screen support **based on offices** (2020-02-13)
 - [x] Multiple Display screen support **based on offices** (2020-02-13)
