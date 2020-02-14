@@ -83,11 +83,11 @@ $(document).ready(function () {
 				<div class="col-xs-2">
 				    ({{ translate('Pulled', 'en', [defLang]) }})
 				</div>
+				<div class="col-xs-2">
+					({{ translate('In-Waiting', 'en', [defLang]) }})
+				</div>
 				<div class="col-xs-3">
 				    ({{ translate('Value', 'en', [defLang]) }})
-				</div>
-				<div class="col-xs-2">
-				    ({{ translate('Ticket type', 'en', [defLang]) }})
 				</div>
 				<div class="col-xs-2">
 					({{ translate('Actions', 'en', [defLang]) }})
@@ -107,15 +107,16 @@ $(document).ready(function () {
 				{% else %}
 				<u>{{ translate('Waiting', 'en', [defLang]) }}</u>
 				{% endif %}
-	    	  </div>
+			  </div>
+			  <div class="col-xs-12 col-sm-2">
+				{% if o.p %} <u> {{ moment_wrapper(moment(o.timestamp)).toTime(o.pdt) }} </u>
+				{% else %} <u> {{ moment_wrapper(moment(o.timestamp)).toNow() }} </u> {% endif %}
+			  </div>
 	    	  <div class="col-xs-12 col-sm-3">
 				{% if o.n %}<u> {{ o.name }} </u> {% else %}
-				<u> {{ translate('None', 'en', [defLang]) }} </u>
+				<u> {{ translate('None', 'en', [defLang]) }}/{{ translate('Printed', 'en', [defLang]) }} </u>
 				{% endif %}
 	    	  </div>
-	    	  <div class="col-xs-12 col-sm-2">
-				<u> {% if o.n %} {{ translate('Registered', 'en', [defLang]) }} {% else %} {{ translate('Printed', 'en', [defLang]) }} {% endif %} </u>
-			  </div>
 			  <div class="col-xs-12 col-sm-2">
 				{% if not o.p %}
 				<a href="{{ url_for('core.on_hold', ticket_id=o.id, redirect_to=current_path.replace('/', '(')) }}"

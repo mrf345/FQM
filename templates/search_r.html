@@ -29,14 +29,17 @@
         </div>
     	<div class="panel-body">
 	    	<div class="row text-center h3 text-muted hidden-xs ar2">
-				<div class="col-xs-2">
+				<div class="col-xs-1">
 				    ({{ translate('Ticket', 'en', [defLang]) }})
 				</div>
 				<div class="col-xs-2">
 				    ({{ translate('Issued', 'en', [defLang]) }})
 				</div>
-				<div class="col-xs-3">
+				<div class="col-xs-2">
 				    ({{ translate('Pulled', 'en', [defLang]) }})
+				</div>
+				<div class="col-xs-2">
+		    		({{ translate('In-Waiting', 'en', [defLang]) }})
 				</div>
 				<div class="col-xs-3">
 				    ({{ translate('Value', 'en', [defLang]) }})
@@ -48,17 +51,21 @@
 			{% for o in serialsp %}
 			
 	    	<div class="row well {% if o.p %} text-primary {% else %} text-danger {% endif %} h4 text-center">
-				<div class="col-xs-12 col-sm-2">
+				<div class="col-xs-12 col-sm-1">
 				    <b> {{ offices.filter_by(id=o.office_id).first().prefix }}{{ o.number }}.</b>
 				</div>
 				<div class="col-xs-12 col-sm-2">
 				    <u>{{ moment(o.timestamp).format('L') }}</u>
 				</div>
-				<div class="col-xs-12 col-sm-3">
+				<div class="col-xs-12 col-sm-2">
 					{% if o.p %} <u>{{ users.filter_by(id=o.pulledBy).first().name }} / {{ moment(o.pdt).fromNow() }}</u>
 			    	{% else %}
         			<u>{{ translate('Waiting', 'en', [defLang]) }}</u>
         			{% endif %}
+				</div>
+				<div class="col-xs-12 col-sm-2">
+					{% if o.p %} <u> {{ moment_wrapper(moment(o.timestamp)).toTime(o.pdt) }} </u>
+					{% else %} <u> {{ moment_wrapper(moment(o.timestamp)).toNow() }} </u> {% endif %}
 				</div>
 				<div class="col-xs-12 col-sm-3">
 				    {% if o.n %}<u> {{ o.name }} </u> {% else %}

@@ -657,5 +657,7 @@ def alias():
         form.number.data = aliases.number
     return render_template(
         'alias.html', page_title='Aliases',
-        navbar="#snb2", form=form, hash='#da8'
+        navbar="#snb2", form=form, hash='#da8',
+        vtrue=data.Vid.query.first().enable,
+        strue=data.Slides_c.query.first().status
     )
