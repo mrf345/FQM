@@ -275,13 +275,15 @@
                 </div>
             </div>
             {% for category, message in get_flashed_messages(with_categories=true) %}
+                {% set tra = message and translate(message, 'en', [defLang]) %}
+                {% if tra %}
                 <div class="col-md-{% if adme %}12{% else %}10{% endif %} content">
                     <div class="alert alert-{{ category }} alert-dismissable">
                         <button class="close" type="button" data-dismiss="alert">&times;</button>
-                        {% set tra = translate(message, 'en', [defLang]).split(':') %}
-    	                <h4 class="text text-center ar2">[ <strong>{{ tra[0] }}</strong>: {{ tra[1] }} ]</h4>
+                        <h4 class="text text-center ar2">[ <strong>{{ tra.split(':')[0] }}</strong>: {{ tra.split(':')[1] }} ]</h4>
     	            </div>
                 </div>
+                {% endif %}
             {% endfor %}
             <div class="col-md-{% if adme %}12{% else %}10{% endif %} content mb-1">
     	        {% block page_content %} {% endblock %}
