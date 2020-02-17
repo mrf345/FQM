@@ -8,7 +8,8 @@
 - [x] Always hit tasks with office id to fix possible random redirection (2020-02-02)
 - [x] ~~Arabic GUI fonts on Windows~~ (2020-02-09)
 > Only effects Windows 10 with high DPI
-
+- [x] Fix multimedia unused files always showing up as used (2020-02-17)
+- [x] Fix video none-responsive resolution (2020-02-17)
 
 ### To Add :
 
@@ -20,6 +21,7 @@
 - [x] Option to display ticket number beside name on `display` screen (2020-02-12)
 - [x] Put random ticket on-hold (2020-02-10)
 - [x] Add time-spent-waiting column in `tasks` and `offices` (2020-02-15)
+- [x] Add printed ticket font size scaling (2020-02-16)
 
 - [x] Multiple Touch screen support **based on offices** (2020-02-13)
 - [x] Multiple Display screen support **based on offices** (2020-02-13)

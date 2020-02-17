@@ -553,9 +553,9 @@ class Video(FlaskForm):
         (2, "Disable")]]
         vds = []
         if data.Media.query.filter_by(vid=True).count() >= 1:
+            vds.append((00, gtranslator.translate("Do not assign video", 'en', [defLang])))
             for v in data.Media.query.filter_by(vid=True):
                 vds.append((v.id, str(v.id) + ".  " + v.name))
-            vds.append((00, gtranslator.translate("Do not assign video", 'en', [defLang])))
         else:
             vds.append((00, gtranslator.translate("No videos were found", 'en', [defLang])))
         self.video.choices = vds

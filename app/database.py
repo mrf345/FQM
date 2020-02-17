@@ -410,7 +410,7 @@ class Touch_store(db.Model):
                  mcolor="rgb(255, 255, 0)", tcolor="btn-danger",
                  message="Ticket has been issued, pleas wait your turn",
                  audio="false", hfont="El Messiri", mfont="Mada",
-                 tfont="Amiri", ikey=1, tmp=2, akey=5,
+                 tfont="Amiri", ikey=None, tmp=2, akey=None,
                  mduration="3000", bgcolor="rgb(0, 0, 0)", p=False, n=True):
         self.id = 0
         self.hfont = hfont
@@ -488,7 +488,7 @@ class Display_store(db.Model):
                  scolor="rgb(224, 224, 224)", audio="false",
                  hfont="El Messiri", tfont="Mada", repeats="3", effect="fade",
                  sfont="Amiri", mduration="3000", rrate="2000",
-                 announce="en-us", ikey=4, vkey=6, akey=5,
+                 announce="en-us", ikey=4, vkey=None, akey=None,
                  anr=2, anrt="each", bgcolor="rgb(0,0,0)", tmp=1):
         self.id = 0
         self.tfont = tfont
@@ -598,7 +598,7 @@ class Vid(db.Model):
                                                ondelete='cascade'),
                      nullable=True)
 
-    def __init__(self, vname="Tokyo.mp4", enable=1, ar=1, controls=1,
+    def __init__(self, vname="", enable=1, ar=1, controls=1,
                  mute=2, vkey=6):
         self.vname = vname
         self.enable = enable
