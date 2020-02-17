@@ -1601,6 +1601,7 @@
     },
     "Notice: aliases got updated successfully.": {
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u062a\u0645 \u062a\u062d\u062f\u064a\u062b \u0627\u0644\u0623\u0633\u0645\u0627\u0621 \u0627\u0644\u0645\u0633\u062a\u0639\u0627\u0631\u0629 \u0628\u0646\u062c\u0627\u062d.",
+        "en": "Notice: aliases got updated successfully.",
         "es": "Aviso: los alias se han actualizado con \u00e9xito.",
         "fr": "Remarque: les alias ont \u00e9t\u00e9 mis \u00e0 jour avec succ\u00e8s.",
         "it": "Avviso: gli alias sono stati aggiornati correttamente."
@@ -2393,6 +2394,13 @@
         "es": "Seleccione la fecha para buscar:",
         "fr": "S\u00e9lectionnez la date \u00e0 rechercher:",
         "it": "Seleziona la data da cercare:"
+    },
+    "Select font scaling measurement for printed tickets :": {
+        "ar": "\u062d\u062f\u062f \u0642\u064a\u0627\u0633 \u0627\u0644\u062a\u062d\u062c\u064a\u0645 \u0627\u0644\u062e\u0637 \u0644\u0644\u062a\u0630\u0627\u0643\u0631 \u0627\u0644\u0645\u0637\u0628\u0648\u0639\u0629:",
+        "en": "Select font scaling measurement for printed tickets :",
+        "es": "Seleccione la fuente de medici\u00f3n de escala para los billetes impresos:",
+        "fr": "S\u00e9lectionnez la mesure de mise \u00e0 l'\u00e9chelle pour la police des billets imprim\u00e9s:",
+        "it": "Selezionare la misura ridimensionamento dei caratteri per i biglietti stampati:"
     },
     "Select heading background color :": {
         "ar": "\u0627\u062e\u062a\u0631 \u0644\u0648\u0646 \u062e\u0644\u0641\u064a\u0629 \u0627\u0644\u0639\u0646\u0648\u0627\u0646:",

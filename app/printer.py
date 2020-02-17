@@ -15,8 +15,40 @@ from PIL import Image, ImageDraw, ImageFont
 from os import remove, getcwd, path, name, system
 
 from app.utils import absolute_path, get_with_alias
-from app.constants import VERSION
 from app.middleware import gtranslator
+from app.constants import VERSION, PRINTED_TICKET_DIMENSIONS, PRINTED_TICKET_MAXIMUM_HEIGH_OR_WIDTH
+
+
+def get_font_height_width(font='regular', scale=1):
+    ''' helper to retrieve the font size based on the given scale.
+        TODO: Figure out scaling for Arabic drawn tickets.
+
+    Parameters
+    ----------
+        font: str
+            font to calculate the scaled size for.
+        scale: int
+            scale to multiple the font size by.
+
+    Returns
+    -------
+        Dict of scaled `height` and `width`.
+
+    '''
+    dimensions = PRINTED_TICKET_DIMENSIONS
+    height, width = dimensions.get(font, dimensions['regular'])
+
+    def multiply_within_limit(height_or_width):
+        outcome = int(height_or_width * scale)
+
+        # NOTE: Will limit the heightest width and height to avoid raising exception
+        # escpos.exceptions.SetVariableError: Set variable out of range
+        return (PRINTED_TICKET_MAXIMUM_HEIGH_OR_WIDTH
+                if outcome > PRINTED_TICKET_MAXIMUM_HEIGH_OR_WIDTH
+                else outcome)
+
+    return {'height': multiply_within_limit(height),
+            'width': multiply_within_limit(width)}
 
 
 class find_class(object):
@@ -48,20 +80,21 @@ def get_translation(text, language):
 
 
 def printit(printer, ticket, office, tnumber,
-            task, cticket, site='https://fqms.github.io', lang='en'):
-    printer.set(align='center', height=4, width=4)
+            task, cticket, site='https://fqms.github.io', lang='en',
+            scale=1):
+    printer.set(align='center', **get_font_height_width('logo', scale))
     printer.text("FQM\n")
-    printer.set(align='center', height=1, width=1)
+    printer.set(align='center', **get_font_height_width('regular', scale))
     printer.text(get_translation('Version ', lang) + VERSION)
-    printer.set('center', 'a', 'u', 1, 1)
+    printer.set('center', 'a', 'u', **get_font_height_width('regular', scale))
     printer.text("\n" + site + "\n")
-    printer.set(align='center', height=1, width=2)
+    printer.set(align='center', **get_font_height_width('spacer', scale))
     printer.text("\n" + '-' * 15 + "\n")
-    printer.set(align='center', height=3, width=3)
+    printer.set(align='center', **get_font_height_width('large', scale))
     printer.text("\n" + str(ticket) + "\n")
-    printer.set(align='center', height=1, width=2)
+    printer.set(align='center', **get_font_height_width('spacer', scale))
     printer.text("\n" + '-' * 15 + "\n")
-    printer.set(align='left', height=1, width=1)
+    printer.set(align='left', **get_font_height_width('regular', scale))
     printer.text(f'\n{get_translation("Office : ", lang)}{office}\n')
     printer.text(f'\n{get_translation("Current ticket : ", lang)}{cticket}\n')
     printer.text(f'\n{get_translation("Tickets ahead : ", lang)}{tnumber}\n')
@@ -74,8 +107,8 @@ def printit(printer, ticket, office, tnumber,
     return printer
 
 
-def print_ticket_windows(pname, a, b, c, d, cit, l, ip):
-    content = printit(Dummy(), a, b, c, d, cit, lang=l).output
+def print_ticket_windows(pname, a, b, c, d, cit, l, ip, scale=1):
+    content = printit(Dummy(), a, b, c, d, cit, lang=l, scale=scale).output
     file_path = path.join(getcwd(),
                           f'{uuid.uuid4()}'.replace('-', '') + '.txt')
 

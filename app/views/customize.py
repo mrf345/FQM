@@ -70,6 +70,7 @@ def ticket():
             pr.active = True
             pr.langu = form.langu.data
             pr.value = form.value.data
+            pr.scale = form.scale.data
             db.session.add(tc)
             db.session.add(pr)
         db.session.commit()
@@ -85,6 +86,7 @@ def ticket():
         form.printers.data += '_' + str(pr.in_ep) + '_' + str(pr.out_ep)
         form.langu.data = pr.langu
         form.value.data = pr.value
+        form.scale.data = pr.scale
     return render_template('ticket.html', navbar='#snb2',
                            page_title='Tickets',
                            vtrue=data.Vid.query.first().enable,

@@ -129,7 +129,8 @@ def serial(t_id, office_id=None):
 
                 (printit_ar if ticket_settings.langu == 'ar' else printit)(printer,
                                                                            *common_arguments,
-                                                                           lang=ticket_settings.langu)
+                                                                           lang=ticket_settings.langu,
+                                                                           scale=ticket_settings.scale)
             except Exception as exception:
                 return printer_failure_redirect(exception)
 

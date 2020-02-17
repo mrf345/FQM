@@ -13,7 +13,7 @@ from wtforms.validators import InputRequired, Length, NumberRange, Optional
 
 import app.database as data
 from app.middleware import gtranslator
-from app.constants import SUPPORTED_MEDIA_FILES, SUPPORTED_LANGUAGES
+from app.constants import SUPPORTED_MEDIA_FILES, SUPPORTED_LANGUAGES, PRINTED_TICKET_SCALES
 
 
 # -- List Tuples of colors, sizes, text background
@@ -568,6 +568,7 @@ class Printer_f(FlaskForm):
     value = SelectField(coerce=int)
     langu = SelectField(choices=list(SUPPORTED_LANGUAGES.items()), coerce=str)
     printers = SelectField(coerce=str)
+    scale = SelectField(coerce=int)
     submit = SubmitField('Set ticket')
 
     def __init__(self, inspected_printers_from_view, defLang='en', *args, **kwargs):
@@ -582,6 +583,9 @@ class Printer_f(FlaskForm):
             for t in [(1, 'Name'), (2, 'Number')]]
         self.langu.label = gtranslator.translate("Select language of printed ticket : ", 'en', [defLang])
         self.printers.label = gtranslator.translate('Select a usb printer : ', 'en', [defLang])
+        self.scale.label = gtranslator.translate('Select font scaling measurement for printed tickets :',
+                                                 'en', [defLang])
+        self.scale.choices = [(i, f'x{i}') for i in PRINTED_TICKET_SCALES]
 
         printers = []
         inspected_printers = inspected_printers_from_view
