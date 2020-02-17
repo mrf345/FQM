@@ -24,6 +24,16 @@ USER_ROLES = {
     3: 'Operator'
 }
 
+PRINTED_TICKET_MAXIMUM_HEIGH_OR_WIDTH = 8
+PRINTED_TICKET_SCALES = range(1, 4)
+PRINTED_TICKET_DIMENSIONS = {
+    # NOTE: Default printer fonts sizing (height, width).
+    'regular': (1, 1),
+    'logo': (4, 4),
+    'spacer': (1, 2),
+    'large': (3, 3)
+}
+
 DEFAULT_PASSWORD = 'admin'
 DEFAULT_USER = 'Admin'
 

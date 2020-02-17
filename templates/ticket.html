@@ -84,6 +84,9 @@ $(document).ready(function () {
           <div class="tohide hide">
   		      {{ render_field(form.printers, class="form-control") }}
           </div>
+          <div class="tohide hide">
+            {{ render_field(form.scale, class="form-control") }}
+          </div>
 		    <center>
           <p class="pt-5"></p>
           <button class="btn btn-md btn-danger" type="submit">{{ translate('Apply', 'en', [defLang]) }}</button>

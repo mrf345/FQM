@@ -356,16 +356,18 @@ class Printer(db.Model):
     active = db.Column(db.Boolean())
     langu = db.Column(db.String(100))
     value = db.Column(db.Integer)
+    scale = db.Column(db.Integer, default=1)
 
     def __init__(self, vendor=" ", product=" ",
                  in_ep=0, out_ep=0, active=False,
-                 langu='en', value=1):
+                 langu='en', value=1, scale=1):
         self.vendor = vendor
         self.product = product
         self.in_ep = in_ep
         self.out_ep = out_ep
         self.active = active
         self.value = value
+        self.scale = scale
 
 
 # 00 Configuration Tabels 00 #
