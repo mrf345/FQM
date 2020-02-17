@@ -108,7 +108,8 @@ def video():
     if form.validate_on_submit():
         if form.video.data == 00:
             vdb.enable = 2
-            vdb.vkey = 00
+            vdb.vkey = None
+            vdb.vname = ''
         else:
             vdb.vkey = form.video.data
             vdb.enable = form.enable.data

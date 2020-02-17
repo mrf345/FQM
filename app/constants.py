@@ -12,9 +12,10 @@ SUPPORTED_LANGUAGES = {
 
 SUPPORTED_MEDIA_FILES = [
     # NOTE: The officially supported media files.
-    ['jpg', 'JPG', 'png', 'PNG'],
-    ['wav', 'WAV', 'mp3', 'MP3'],
-    ['mp4', 'MP4', 'AVI', 'avi', 'webm', 'WEBM']
+    ['jpg', 'JPG', 'png', 'PNG'],  # Images
+    ['wav', 'WAV', 'mp3', 'MP3'],  # Audio
+    ['mp4', 'MP4', 'AVI', 'avi',
+     'webm', 'WEBM', 'mkv', 'MKV']  # Video
 ]
 
 USER_ROLES = {
