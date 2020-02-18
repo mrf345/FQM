@@ -30,4 +30,4 @@
 > - [x] ~~Refactor display customization to handle multiple offices~~ **Move to backlog**
 
 - [x] Add `core` and `manage` full test coverage (2020-02-07)
-- [ ] Add windows build automation script
+- [x] ~~Add windows build automation script~~ **Move to backlog**

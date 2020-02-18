@@ -1,9 +1,5 @@
 #!/bin/bash
-# NOTE: this script will install FQM requirements and add your user into the
-# printing group. this script purpose is to ease the process of installing, uninstalling
-# FQM on Linux and MacOS. 
 
-version="0.6"
 pip_exi=`command -v pip`
 python=`command -v python`
 virtenv=`command -v virtualenv`
@@ -64,10 +60,11 @@ then
     echo $error1
     exit 0
   fi
+  version=`python -c "from app.constants import VERSION; print(VERSION)"`
   echo "##### Running FQM $version #####"
   if [ -f run.py ]
   then
-    python run.py
+    python run.py $2 $3 $4
   else
     echo "Error: can not find FQM run.py"
   fi
@@ -80,22 +77,25 @@ then
   else
     echo $error1
   fi
-elif [ "$1" == "--migrate" ]
+elif [ "$1" == "--migration" ]
 then
   if [ -d installiation/ ]
   then
     source installiation/bin/activate
-    flask db migrate
+    python -c "p='app/__init__.py'; f=open(p, 'r'); c=f.read().replace('# app = bundle_app({', 'app = bundle_app({'); f=open(p, 'w+'); f.write(c); f.close()"
+    flask db $2
+    python -c "p='app/__init__.py'; f=open(p, 'r'); c=f.read().replace('app = bundle_app({', '# app = bundle_app({'); f=open(p, 'w+'); f.write(c); f.close()"
   else
     echo $error1
   fi
 else
-  echo -e "\t --help : Usage \n"
-  echo -e "\t\t $0 --install \t to install packages required"
-  echo -e "\t\t $0 --uninstall \t to remove packages installed"
-  echo -e "\t\t $0 --run \t to run FQM with the right settings"
-  echo -e "\t\t $0 --test \t to run FQM tests"
-  echo -e "\t\t $0 --help \t to print out this message"
+  echo -e "$0 $1: Examples\n"
+  echo -e "\t $0 --install \t to install packages required"
+  echo -e "\t $0 --uninstall \t to remove packages installed"
+  echo -e "\t $0 --run \t\t to run FQM"
+  echo -e "\t $0 --test \t\t to run FQM tests"
+  echo -e "\t $0 --migration \t to run FQM migration"
+  echo -e "\t $0 --help \t\t to print out this message"
 fi
 
 exit 0

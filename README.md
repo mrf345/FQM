@@ -27,31 +27,40 @@
 <hr />
 
 
-## Features:
-> - Support for POS USB printers on major operating systems. <br />
-> - Customize-able interfaces. <br />
-> - Supports text-to-speech announcement. <br />
+### Features:
+- Support for POS USB printers on major operating systems.
+- Customize-able interfaces.
+- Supports text-to-speech announcement.
 
-## Setup:
+### Setup:
+
 #### - Using installer.sh for Linux, MacOS:
-> - Execute the following commands in a terminal window
-> 1. `chmod +x installer.sh`
-> 2. `./installer.sh --install`
-> 3. `./installer.sh --run`
-> - If you want to remove the virtual environment and installed there dependencies
-> 4. `./installer.sh --uninstall`
+- Execute the following commands in a terminal window
+1. `chmod +x installer.sh`
+2. `./installer.sh --install`
+3. `./installer.sh --run`
+
+- To checkout the supported command-line options `./installer.sh --help`:
+```bash
+./installer.sh --help: Examples
+
+    ./installer.sh --install        to install packages required
+    ./installer.sh --uninstall      to remove packages installed
+    ./installer.sh --run            to run FQM
+    ./installer.sh --test           to run FQM tests
+    ./installer.sh --migrate        to run FQM migration
+    ./installer.sh --help           to print out this message
+```
 
 #### - From the source:
-> - Execute the following commands in a terminal window
-> 1. `git clone https://github.com/mrf345/FQM.git` <br />
-> 2. `cd FQM` <br />
-> - You can choose to use Python 3.7 <br />
-> 3. `pip install -r requirements/dev.txt` <br />
-> 4. `python run.py` <br />
+- Make sure to install and use **Python 3.7**
+- Execute the following commands in a terminal window:
+1. `git clone https://github.com/mrf345/FQM.git`
+2. `cd FQM`
+3. `python -m pip install -r requirements/main.txt`
+4. `python run.py`
 
-> - To checkout the supported command-line options:
-> 1. `python run.py --help` <br />
-
+- To checkout the supported command-line options `python run.py --help`:
 ```bash
 Usage: run.py [OPTIONS]
 
@@ -64,16 +73,22 @@ Options:
   --ip TEXT    IP address to stream the service on.
   --port TEXT  Port to stream the service through.
   --help       Show this message and exit.
+
+Example: python run.py --cli --port 8080
 ```
 
-#### - With executable:
-> You can get an executable that's suitable to your OS from : <br />
-> - https://fqms.github.io/#download <br />
-> - https://sourceforge.net/projects/free-queue-manager/ <br />
+#### - Data migration:
+Since the `0.7` release we're able to migrate data generated in previous releases to the new ones.
+You'll have to copy the `data.sqlite` file from the project folder to the new release project folder, **prior to staring the system**.
 
-## Documentation:
-> You can find a useful user guide for the current version on : <br />
-> https://fqms.github.io/images/user_guide.pdf
+#### - With executable:
+You can get an executable that's suitable to your OS from :
+- https://fqms.github.io/#download
+- https://github.com/mrf345/FQM/releases/
+- https://sourceforge.net/projects/free-queue-manager/
+
+### Documentation:
+You can find a useful and a very outdated 😓 user guide [here](https://fqms.github.io/images/user_guide.pdf).
 
 
 <br />
