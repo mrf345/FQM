@@ -77,15 +77,15 @@ Options:
 Example: python run.py --cli --port 8080
 ```
 
-#### - Data migration:
-Since the `0.7` release we're able to migrate data generated in previous releases to the new ones.
-You'll have to copy the `data.sqlite` file from the project folder to the new release project folder, **prior to staring the system**.
-
 #### - With executable:
 You can get an executable that's suitable to your OS from :
 - https://fqms.github.io/#download
 - https://github.com/mrf345/FQM/releases/
 - https://sourceforge.net/projects/free-queue-manager/
+
+#### - Database migration:
+Since the `0.7` release we're able to migrate the data generated in previous releases to the new ones.
+You'll have to copy the `data.sqlite` file from the project folder to the new release project folder, **prior to staring the system**.
 
 ### Documentation:
 You can find a useful and a very outdated 😓 user guide [here](https://fqms.github.io/images/user_guide.pdf).
