@@ -16,6 +16,7 @@ from flask_colorpicker import colorpicker
 from flask_fontpicker import fontpicker
 from flask_less import lessc
 from flask_minify import minify
+from sqlalchemy.exc import OperationalError
 
 from app.middleware import db, login_manager, files, gtranslator, gTTs, migrate
 from app.printer import listp
@@ -95,7 +96,8 @@ def create_db(app, testing=False):
             try:
                 not testing and database_upgrade(directory=MIGRATION_FOLDER)
             except Exception as exception:
-                log_error(exception)
+                if not isinstance(exception, OperationalError):
+                    log_error(exception, quiet=os.name == 'nt')
         create_default_records()
 
 

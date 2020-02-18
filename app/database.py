@@ -598,7 +598,7 @@ class Vid(db.Model):
                                                ondelete='cascade'),
                      nullable=True)
 
-    def __init__(self, vname="", enable=1, ar=1, controls=1,
+    def __init__(self, vname="", enable=0, ar=1, controls=1,
                  mute=2, vkey=6):
         self.vname = vname
         self.enable = enable
