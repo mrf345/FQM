@@ -10,7 +10,7 @@ a = Analysis(['run.py'],
              hiddenimports=[
                 'email.mime.multipart', 'win32com.client', 'pythoncom', 'email.mime.message',
                 'email.mime.text', 'email.mime.image', 'email.mime.audio',
-                'sqlalchemy.sql.default_comparator', 'jinja2', 'logger.config'
+                'sqlalchemy.sql.default_comparator', 'jinja2', 'logging.config'
             ],
              hookspath=[],
              runtime_hooks=[],
