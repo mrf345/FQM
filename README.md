@@ -35,7 +35,8 @@
 ### Setup:
 
 #### - Using installer.sh for Linux, MacOS:
-- Execute the following commands in a terminal window
+- Make sure to install and use **Python 3.7**
+- Execute the following commands in a terminal window:
 1. `chmod +x installer.sh`
 2. `./installer.sh --install`
 3. `./installer.sh --run`
