@@ -1,22 +1,22 @@
 #!/bin/bash
 
-pip_exi=`command -v pip`
-python=`command -v python`
+pip_exi=`command -v pip3.7`
+python=`command -v python3.7`
 virtenv=`command -v virtualenv`
 error1="Error: must --install enviroment first .."
 
 if [ "$python" == "" ]
 then
-  echo "Error: please install python, from your package manager"
+  echo "Error: please install python 3.7, from your package manager"
   exit 0
 fi
 if [ "$pip_exi" == "" ]
 then
-  sudo python3 -m ensurepip
+  sudo python3.7 -m ensurepip
 fi
 if [ "$virtenv" == "" ]
 then
-  sudo pip3 install virtualenv
+  sudo pip3.7 install virtualenv
 fi
 
 
@@ -83,7 +83,7 @@ then
   then
     source installiation/bin/activate
     python -c "p='app/__init__.py'; f=open(p, 'r'); c=f.read().replace('# app = bundle_app({', 'app = bundle_app({'); f=open(p, 'w+'); f.write(c); f.close()"
-    flask db $2
+    flask db $2 $3
     python -c "p='app/__init__.py'; f=open(p, 'r'); c=f.read().replace('app = bundle_app({', '# app = bundle_app({'); f=open(p, 'w+'); f.write(c); f.close()"
   else
     echo $error1
