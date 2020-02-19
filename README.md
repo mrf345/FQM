@@ -85,7 +85,11 @@ You can get an executable that's suitable to your OS from :
 
 #### - Database migration:
 Since the `0.7` release we're able to migrate the data generated in previous releases to the new ones.
-You'll have to copy the `data.sqlite` file from the project folder to the new release project folder, **prior to staring the system**.
+
+- You'll have to copy the `data.sqlite` file from the main project folder to the new release project folder.
+- If you've uploaded any `Multimedia` files to your previous setup, make sure to copy them over to the new project folder manually from and to `FQM/static/multimedia/` folder.
+
+**Make sure the migration steps are performed prior to running the new release of the system**.
 
 ### Documentation:
 You can find a useful and a very outdated 😓 user guide [here](https://fqms.github.io/images/user_guide.pdf).
