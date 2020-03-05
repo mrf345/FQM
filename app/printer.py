@@ -107,7 +107,7 @@ def printit(printer, ticket, office, tnumber,
     return printer
 
 
-def print_ticket_windows(pname, a, b, c, d, cit, l, ip, scale=1):
+def print_ticket_windows(pname, a, b, c, d, cit, ip, l='en', scale=1):
     content = printit(Dummy(), a, b, c, d, cit, lang=l, scale=scale).output
     file_path = path.join(getcwd(),
                           f'{uuid.uuid4()}'.replace('-', '') + '.txt')
@@ -264,7 +264,7 @@ def printit_ar(pname, ti, ofc, tnu, tas, cticket, lang=None):
         remove(finame)
 
 
-def print_ticket_windows_ar(pname, ti, ofc, tnu, tas, cticket, ip):
+def print_ticket_windows_ar(pname, ti, ofc, tnu, tas, cticket, ip, l=None):
     def fsizeit(text, t, f):
         return f.getsize(t)
 
