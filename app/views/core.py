@@ -104,11 +104,15 @@ def serial(t_id, office_id=None):
     office = office or task.least_tickets_office()
 
     if printed:
+        try:
+            current_ticket = data.Serial.all_office_tickets(office.id).first().number
+        except Exception: 
+            current_ticket = None
         common_arguments = (f'{office.prefix}.{next_number}',
                             f'{office.prefix}{office.name}',
                             data.Serial.all_office_tickets(office.id).count(),
                             task.name,
-                            f'{office.prefix}.{data.Serial.all_office_tickets(office.id).first().number}')
+                            f'{office.prefix}.{current_ticket}')
 
         if os.name == 'nt':  # NOTE: Windows printing
             has_printers = bool(execute('wmic printer get sharename', parser='\n', encoding='utf-16')[1:])
@@ -119,7 +123,8 @@ def serial(t_id, office_id=None):
                      if ticket_settings.langu == 'ar' else
                      print_ticket_windows)(ticket_settings.product,
                                            *common_arguments,
-                                           ip=current_app.config.get('LOCALADDR'))
+                                           ip=current_app.config.get('LOCALADDR'),
+                                           l=ticket_settings.langu)
                 except Exception as exception:
                     return printer_failure_redirect(exception)
         else:
