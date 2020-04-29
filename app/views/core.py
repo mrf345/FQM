@@ -336,7 +336,7 @@ def feed(office_id=None):
     # To fix `uniqueness` not picking up the change in passed waiting list
     waiting_list_parameters[f'w{len(waiting_list_parameters)}'] = (current_ticket.name
                                                                    if current_ticket.n else
-                                                                   current_ticket.ticket
+                                                                   current_ticket.number
                                                                    ) if current_ticket else empty_text
 
     return jsonify(con=current_ticket_office_name, cot=current_ticket_text, cott=current_ticket_task_name,
