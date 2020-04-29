@@ -3,13 +3,12 @@ from random import randint
 from datetime import datetime
 from escpos.printer import Dummy
 
-from .common import client, TEST_REPEATS
 from app.printer import get_font_height_width, printit
 from app.constants import PRINTED_TICKET_DIMENSIONS, PRINTED_TICKET_SCALES, PRINTED_TICKET_MAXIMUM_HEIGH_OR_WIDTH
-from app.database import Printer
 
 
-def test_printer_height_and_width_random_scaling(client):
+@pytest.mark.usefixtures('c')
+def test_printer_height_and_width_random_scaling(c):
     dimensions = PRINTED_TICKET_DIMENSIONS
     random_scale = randint(1, 20)
 
@@ -27,8 +26,9 @@ def test_printer_height_and_width_random_scaling(client):
                                                    else expected_width)
 
 
+@pytest.mark.usefixtures('c')
 @pytest.mark.parametrize('scale', PRINTED_TICKET_SCALES)
-def test_printit_random_scales_sanity_check(scale, client):
+def test_printit_random_scales_sanity_check(scale, c):
     printer = Dummy()
     ticket = 'TESTING100'
     office = 'TESTING_OFFICE'

@@ -1,6 +1,6 @@
 [pep8]
 ignore = E226,E302,E41
 max-line-length = 130
-exclude = tests/*
+exclude = migrations/*
 max-complexity = 15
 

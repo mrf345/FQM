@@ -5,7 +5,7 @@ import pytest
 from random import choice, randint
 from atexit import register
 
-from app.main import create_db, bundle_app
+from app.main import bundle_app
 from app.middleware import db
 from app.database import User, Operators, Office, Task, Serial
 from app.utils import absolute_path
@@ -26,7 +26,7 @@ NAMES = ('Aaron Enlightened', 'Abbott Father', 'Abel Breath', 'Abner Father',
          'Baron Nobleman', 'Barrett Bear-Like', 'Barry Marksman',
          'Bartholomew Warlike', 'Basil King-like')
 TEST_PREFIX = 'Z'
-PREFIXES = [p for p in list(map(lambda i: chr(i).upper(), range(97,123))) if p != TEST_PREFIX]
+PREFIXES = [p for p in list(map(lambda i: chr(i).upper(), range(97, 123))) if p != TEST_PREFIX]
 
 MODULES = [Serial, User, Operators, Task, Office]
 DB_PATH = absolute_path('testing.sqlite')
@@ -34,7 +34,7 @@ TEST_REPEATS = 3
 
 
 @pytest.fixture
-def client():
+def c():
     app_config = {'LOGIN_DISABLED': True,
                   'WTF_CSRF_ENABLED': False,
                   'TESTING': True,
@@ -61,7 +61,7 @@ def teardown_tables(modules):
     if modules:
         for record in modules.pop().query.all():
             db.session.delete(record)
-    
+
         db.session.commit()
         return teardown_tables(modules)
 
