@@ -5,12 +5,10 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/. '''
 
 import sys
 import click
-from PyQt5.QtCore import QCoreApplication
-from PyQt5.QtWidgets import QApplication
+from importlib import import_module
 from gevent import monkey, pywsgi
 
 from app.main import bundle_app
-from app.gui import MainWindow
 from app.utils import get_accessible_ips, get_random_available_port
 from app.constants import VERSION
 
@@ -26,22 +24,43 @@ def run_app():
     @click.option('--ip', default=None, help='IP address to stream the service on.')
     @click.option('--port', default=None, help='Port to stream the service through.')
     def interface(cli, quiet, ip, port):
-        app = bundle_app()
+        app, threads = bundle_app()
 
-        if cli:
-            ip = ip or get_accessible_ips()[0][1]
-            port = port or get_random_available_port(ip)
-            app.config['LOCALADDR'] = ip
+        def kill_threads():
+            for name, thread in threads.items():
+                print(f'Killing {name}...')
+                thread.stop()
 
-            click.echo(click.style(f'FQM {VERSION} is running on http://{ip}:{port}', bold=True, fg='green'))
+        def start_cli():
+            alt_ip = ip or get_accessible_ips()[0][1]
+            alt_port = port or get_random_available_port(alt_ip)
+            app.config['LOCALADDR'] = alt_ip
+            app.config['CLI_OR_DEPLOY'] = True
+
+            click.echo(click.style(f'FQM {VERSION} is running on http://{alt_ip}:{alt_port}', bold=True, fg='green'))
             click.echo('')
             click.echo(click.style('Press Control-c to stop', blink=True, fg='black', bg='white'))
             monkey.patch_socket()
-            pywsgi.WSGIServer((str(ip), int(port)), app, log=None if quiet else 'default').serve_forever()
-        else:
-            gui_process = QApplication(sys.argv)
-            window = MainWindow(app)  # NOTE: has to be decleared in a var to work properly
-            QCoreApplication.processEvents()
-            gui_process.exec_()
 
+            try:
+                pywsgi.WSGIServer((str(alt_ip), int(alt_port)), app, log=None if quiet else 'default').serve_forever()
+            except KeyboardInterrupt:
+                kill_threads()
+
+        if cli:
+            start_cli()
+        else:
+            try:
+                app.config['CLI_OR_DEPLOY'] = False
+                PyQt5 = import_module('PyQt5')
+                gui = import_module('app', 'gui')
+                gui_process = PyQt5.QtWidgets.QApplication(sys.argv)
+                window = gui.MainWindow(app, kill_threads)  # NOTE: has to be decleared in a var to work properly
+
+                PyQt5.QtCore.QCoreApplication.processEvents()
+                gui_process.exec_()
+            except Exception as e:
+                print('Failed to start PyQt GUI, fallback to CLI.')
+                print(e)
+                start_cli()
     interface()

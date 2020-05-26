@@ -25,28 +25,20 @@ class RunnerThread(QThread):
         monkey.patch_socket()
         self.app.config['LOCALADDR'] = str(self.ip)
         self.server = pywsgi.WSGIServer((str(self.ip), int(self.port)), self.app, log=None)
-        try:  # NOTE: gevent server known to have issues on stopping
-            self.server.start()
-            self.stopper.wait()
-        except Exception:
-            print('Error STA webserver : please, help us improve by reporting')
-            print("to us on : \n\thttps://fqms.github.io/")
-            sys.exit(0)
+        self.server.start()
+        self.stopper.wait()
 
     def stop(self):
-        try:
-            self.stopper.set()
-            self.server.stop()
-        except Exception:
-            print('Error STD webserver : please, help us improve by reporting')
-            print("to us on : \n\thttps://fqms.github.io/")
-            sys.exit(0)
+        self.stopper.set()
+        self.server.stop()
+
 
 
 class MainWindow(QWidget):
-    def __init__(self, app=None):
+    def __init__(self, app=None, callback=lambda: 'kill threads'):
         super(MainWindow, self).__init__()
         self.app = app
+        self.callback = callback
         global_layout = QVBoxLayout(self)
         icon_path = absolute_path(solve_path('static/images/favicon.png'))
         # NOTE: need to use objective message boxes instead of functions to set font
@@ -256,6 +248,10 @@ class MainWindow(QWidget):
         global_layout.addWidget(self.about_button)
 
     def closeEvent(self, event=None):  # NOTE: Factory method
+        def exiting():
+            self.callback()
+            sys.exit(0)
+
         if self.currently_running:
             answer = self.exit_question(
                 self.get_translation('Exiting while running'),
@@ -265,7 +261,7 @@ class MainWindow(QWidget):
                     event.accept()
                 if self.Process.isRunning():
                     self.Process.stop()
-                sys.exit(0)
+                exiting()
             else:
                 if event is not None:
                     event.ignore()
@@ -274,7 +270,7 @@ class MainWindow(QWidget):
                 event.accept()
             if self.Process.isRunning():
                 self.Process.stop()
-            sys.exit(0)
+            exiting()
 
     def exit_question(self, title, msg):
         return QMessageBox.question(

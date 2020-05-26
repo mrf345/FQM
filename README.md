@@ -58,8 +58,8 @@
 - Execute the following commands in a terminal window:
 1. `git clone https://github.com/mrf345/FQM.git`
 2. `cd FQM`
-3. `python -m pip install -r requirements/main.txt`
-4. `python run.py`
+3. `python -m pip install -r requirements/deploy.txt`
+4. `python run.py --cli`
 
 - To checkout the supported command-line options `python run.py --help`:
 ```bash

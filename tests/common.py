@@ -40,7 +40,11 @@ def c():
                   'TESTING': True,
                   'SQLALCHEMY_DATABASE_URI': f'sqlite:///{DB_PATH}'}
     db_fd, app_config['DATABASE'] = tempfile.mkstemp()
-    app = bundle_app(app_config)
+    app, threads = bundle_app(app_config)
+
+    # FIXME: Tasks are not integration tested yet.
+    for _, thread in threads.items():
+        thread.stop()
 
     with app.test_client() as client:
         with app.app_context():
