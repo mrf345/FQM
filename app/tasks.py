@@ -3,7 +3,8 @@ License, v. 2.0. If a copy of the MPL was not distributed with this
 file, You can obtain one at http://mozilla.org/MPL/2.0/. '''
 
 from time import sleep
-from PyQt5.QtCore import QThread
+from importlib import import_module
+from threading import Thread
 from sqlalchemy.sql import not_
 
 from app.database import Serial, Display_store, Aliases
@@ -11,8 +12,31 @@ from app.middleware import gTTs
 from app.utils import log_error
 
 
-class CacheTicketsAnnouncements(QThread):
-    def __init__(self, app, interval=2, limit=30):
+class AltThread:
+    ''' Alternative to a QThread, to use when PyQt is not used. '''
+    def __init__(self, app):
+        self.thread = None
+        self.app = app
+
+    def alt_start(self):
+        if not self.app.config.get('CLI_OR_DEPLOY', True):
+            PyQt5 = import_module('PyQt5')
+
+            class QThreadBase(PyQt5.QtCore.QThread):
+                pass
+
+            if self.__class__ != QThreadBase:
+                self.__class__ = QThreadBase
+                PyQt5.QtCore.QThread.__init__(self)
+
+            return self.start()
+
+        self.thread = Thread(target=self.run)
+        self.thread.start()
+
+
+class CacheTicketsAnnouncements(AltThread):
+    def __init__(self, app, interval=4, limit=30):
         ''' Task to cache tickets text-to-speech announcement audio files.
 
         Parameters
@@ -23,7 +47,7 @@ class CacheTicketsAnnouncements(QThread):
             limit: int
                 limit of tickets to processes each iteration.
         '''
-        QThread.__init__(self)
+        super().__init__(app)
         self.app = app
         self.interval = interval
         self.limit = limit
@@ -131,6 +155,6 @@ def start_tasks(app):
     for task in TASKS:
         if task.__name__ not in THREADS:
             THREADS[task.__name__] = task(app)
-            THREADS[task.__name__].start()
+            THREADS[task.__name__].alt_start()
 
     return THREADS

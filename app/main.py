@@ -104,11 +104,12 @@ def create_db(app, testing=False):
 def bundle_app(config={}):
     ''' Create a Flask app, set settings, load extensions, blueprints and create database. '''
     app = create_app(config)
+    threads = {}
 
     # NOTE: avoid creating or interacting with the database during migration
     if not app.config.get('MIGRATION', False):
         create_db(app, testing=app.config.get('TESTING', False))
-        start_tasks(app)
+        threads.update(start_tasks(app))
 
     if os.name != 'nt':
         # !!! it did not work creates no back-end available error !!!
@@ -198,4 +199,4 @@ def bundle_app(config={}):
                     settings=Settings.get(), checkId=lambda id, records: id in [i.id for i in records],
                     Serial=Serial, offices=Office.query.all(), moment_wrapper=moment_wrapper)
 
-    return app
+    return app, threads
