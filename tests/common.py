@@ -9,6 +9,7 @@ from app.main import bundle_app
 from app.middleware import db
 from app.database import User, Operators, Office, Task, Serial
 from app.utils import absolute_path
+from app.tasks import stop_tasks
 
 
 NAMES = ('Aaron Enlightened', 'Abbott Father', 'Abel Breath', 'Abner Father',
@@ -40,11 +41,10 @@ def c():
                   'TESTING': True,
                   'SQLALCHEMY_DATABASE_URI': f'sqlite:///{DB_PATH}'}
     db_fd, app_config['DATABASE'] = tempfile.mkstemp()
-    app, threads = bundle_app(app_config)
+    app = bundle_app(app_config)
 
     # FIXME: Tasks are not integration tested yet.
-    for _, thread in threads.items():
-        thread.stop()
+    stop_tasks()
 
     with app.test_client() as client:
         with app.app_context():
