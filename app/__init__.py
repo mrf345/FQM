@@ -11,6 +11,7 @@ from gevent import monkey, pywsgi
 from app.main import bundle_app
 from app.utils import get_accessible_ips, get_random_available_port
 from app.constants import VERSION
+from app.tasks import stop_tasks
 
 # NOTE: uncomment out while genrating migration
 # app = bundle_app({'MIGRATION': True})
@@ -24,12 +25,7 @@ def run_app():
     @click.option('--ip', default=None, help='IP address to stream the service on.')
     @click.option('--port', default=None, help='Port to stream the service through.')
     def interface(cli, quiet, ip, port):
-        app, threads = bundle_app()
-
-        def kill_threads():
-            for name, thread in threads.items():
-                print(f'Killing {name}...')
-                thread.stop()
+        app = bundle_app()
 
         def start_cli():
             alt_ip = ip or get_accessible_ips()[0][1]
@@ -45,19 +41,17 @@ def run_app():
             try:
                 pywsgi.WSGIServer((str(alt_ip), int(alt_port)), app, log=None if quiet else 'default').serve_forever()
             except KeyboardInterrupt:
-                kill_threads()
+                stop_tasks()
 
         if cli:
             start_cli()
         else:
             try:
                 app.config['CLI_OR_DEPLOY'] = False
-                PyQt5 = import_module('PyQt5')
-                gui = import_module('app', 'gui')
-                gui_process = PyQt5.QtWidgets.QApplication(sys.argv)
-                window = gui.MainWindow(app, kill_threads)  # NOTE: has to be decleared in a var to work properly
+                gui_process = import_module('PyQt5.QtWidgets').QApplication(sys.argv)
+                window = import_module('app.gui').MainWindow(app)  # NOTE: has to be decleared in a var to work properly
 
-                PyQt5.QtCore.QCoreApplication.processEvents()
+                import_module('PyQt5.QtCore').QCoreApplication.processEvents()
                 gui_process.exec_()
             except Exception as e:
                 print('Failed to start PyQt GUI, fallback to CLI.')

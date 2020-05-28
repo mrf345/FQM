@@ -12,8 +12,8 @@ from app.middleware import gTTs
 from app.utils import log_error
 
 
-class AltThread:
-    ''' Alternative to a QThread, to use when PyQt is not used. '''
+class Task:
+    ''' Mainly an alternative to a QThread, to use when PyQt is not used. '''
     def __init__(self, app):
         self.thread = None
         self.app = app
@@ -35,8 +35,8 @@ class AltThread:
         self.thread.start()
 
 
-class CacheTicketsAnnouncements(AltThread):
-    def __init__(self, app, interval=4, limit=30):
+class CacheTicketsAnnouncements(Task):
+    def __init__(self, app, interval=1, limit=30):
         ''' Task to cache tickets text-to-speech announcement audio files.
 
         Parameters
@@ -158,3 +158,23 @@ def start_tasks(app):
             THREADS[task.__name__].alt_start()
 
     return THREADS
+
+
+def stop_tasks(tasks=[]):
+    ''' stop all tasks in `tasks or TASKS`.
+
+    Parameters
+    ----------
+        tasks: list
+            list of task names to stop, if empty will stop all.
+    '''
+    threads = []
+
+    if tasks:
+        threads += [i for i in THREADS.items() if i[0] in tasks]
+    else:
+        threads += THREADS.items()
+
+    for task, thread in threads:
+        print(f'Stopping task: {task} ...')
+        thread.stop()

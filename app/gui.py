@@ -10,6 +10,7 @@ from gevent.event import Event as thevent
 from app.utils import absolute_path, solve_path, get_accessible_ips, get_random_available_port, is_port_available
 from app.middleware import gtranslator
 from app.constants import SUPPORTED_LANGUAGES, VERSION
+from app.tasks import stop_tasks
 
 
 class RunnerThread(QThread):
@@ -33,12 +34,10 @@ class RunnerThread(QThread):
         self.server.stop()
 
 
-
 class MainWindow(QWidget):
-    def __init__(self, app=None, callback=lambda: 'kill threads'):
+    def __init__(self, app=None):
         super(MainWindow, self).__init__()
         self.app = app
-        self.callback = callback
         global_layout = QVBoxLayout(self)
         icon_path = absolute_path(solve_path('static/images/favicon.png'))
         # NOTE: need to use objective message boxes instead of functions to set font
@@ -249,7 +248,7 @@ class MainWindow(QWidget):
 
     def closeEvent(self, event=None):  # NOTE: Factory method
         def exiting():
-            self.callback()
+            stop_tasks()
             sys.exit(0)
 
         if self.currently_running:
