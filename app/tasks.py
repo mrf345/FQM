@@ -1,7 +1,6 @@
 ''' This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
 file, You can obtain one at http://mozilla.org/MPL/2.0/. '''
-
 from time import sleep
 from importlib import import_module
 from threading import Thread
@@ -17,8 +16,9 @@ class Task:
     def __init__(self, app):
         self.thread = None
         self.app = app
+        self.cut_circut = False
 
-    def alt_start(self):
+    def init(self):
         if not self.app.config.get('CLI_OR_DEPLOY', True):
             PyQt5 = import_module('PyQt5')
 
@@ -34,9 +34,22 @@ class Task:
         self.thread = Thread(target=self.run)
         self.thread.start()
 
+    def none_blocking_loop(self, iterator=[]):
+        def wrapper(todo):
+            for i in iterator:
+                if self.cut_circut:
+                    break
+
+                todo(i)
+
+        return wrapper
+
+    def stop(self):
+        self.cut_circut = True
+
 
 class CacheTicketsAnnouncements(Task):
-    def __init__(self, app, interval=1, limit=30):
+    def __init__(self, app, interval=5, limit=30):
         ''' Task to cache tickets text-to-speech announcement audio files.
 
         Parameters
@@ -51,7 +64,6 @@ class CacheTicketsAnnouncements(Task):
         self.app = app
         self.interval = interval
         self.limit = limit
-        self.cut_circut = False
         self.cached = []
 
         # FIXME: Move this hardcoding to the database to be customizable in the future
@@ -106,35 +118,34 @@ class CacheTicketsAnnouncements(Task):
                                                    .order_by(Serial.timestamp)\
                                                    .limit(self.limit)
 
-                    for ticket in tickets_to_cache:
-                        success = False
+                    @self.none_blocking_loop(tickets_to_cache)
+                    def cache_tickets(ticket):
+                        successes = []
 
-                        for language in languages:
+                        @self.none_blocking_loop(languages)
+                        def loop_languages(language):
                             try:
                                 gTTs.say(language,
                                          self.format_announcement_text(ticket,
                                                                        aliases,
                                                                        language,
                                                                        display_settings.prefix))
-                                success = True
+                                successes.append(language)
                             except Exception as exception:
                                 log_error(exception)
 
-                        if success:
+                        if successes:
                             self.cached.append(ticket.number)
                             # TODO: Use a proper logger to integrate with gevent's ongoing one
                             print(f'Cached TTS {ticket.number}')
 
-                    # NOTE: Remove the processed tickets from cache stack
-                    for ticket in tickets_to_remove:
+                    @self.none_blocking_loop(tickets_to_remove)
+                    def remove_processed_tickets_from_cache(ticket):
                         self.cached.remove(ticket.number)
 
             # NOTE: cache stack is adhereing to the limit to avoid overflow
             self.cached = self.cached[:self.limit]
-            sleep(self.interval)
-
-    def stop(self):
-        self.cut_circut = True
+            self.none_blocking_loop(range(self.interval))(lambda _: sleep(1))
 
 
 TASKS = [CacheTicketsAnnouncements]
@@ -155,7 +166,7 @@ def start_tasks(app):
     for task in TASKS:
         if task.__name__ not in THREADS:
             THREADS[task.__name__] = task(app)
-            THREADS[task.__name__].alt_start()
+            THREADS[task.__name__].init()
 
     return THREADS
 
