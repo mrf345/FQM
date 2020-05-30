@@ -37,6 +37,14 @@
 		ensure_value: 'w9',
 		todo: function (data, toPlay) {
 			toPlay = toPlay || []
+			var audioNotification = "{{'/static/multimedia/'+ts.audio}}"
+			function play (links) {
+				return new AudioSequence({
+					files: links.map(function (i) { if (i !== "") return i}),
+					repeats: parseInt("{{ ts.anr }}"),
+					{% if ts.anrt == 'whole' %}repeat_whole{% else %}repeat_each{% endif %}: 'true'
+				})
+			}
 
 			// Adding prefix hiding from the front end
 			if (!forceRepeat) forceRepeat = setInterval(function () {
@@ -50,22 +58,21 @@
 			}, 200)
 			if (player) player.exit(false)
 
-			if ('{{ ts.announce }}' !== 'false') $.when.apply($, languages.map(function(language, index) {
-				var link = '/gtts/' + language + '/' + data.cot + announcement_texts[language] + data.con
+			if ('{{ ts.announce }}' !== 'false') {
+				$.when.apply($, languages.map(function(language, index) {
+					var link = '/gtts/' + language + '/' + data.cot + announcement_texts[language] + data.con
 
-				return $.get(link)
-					.then(function(json) { return json.mp3 })
-			}))
-			.then(function() {
-				var results = $.makeArray(arguments).sort()
+					return $.get(link)
+						.then(function(json) { return json.mp3 })
+				}))
+				.then(function() {
+					var results = $.makeArray(arguments).sort()
 
-				{% if ts.audio != 'false' %}results.unshift("{{'/static/multimedia/'+ts.audio}}"){% endif %}
-				player = new AudioSequence({
-					files: results.map(function (i) { if (i !== "") return i}),
-					repeats: parseInt("{{ ts.anr }}"),
-					{% if ts.anrt == 'whole' %}repeat_whole{% else %}repeat_each{% endif %}: 'true'
-				})
-			}).fail(function (e) { console.log(e) })
+					{% if ts.audio != 'false' %}results.unshift(audioNotification){% endif %}
+					player = play(results)
+				}).fail(function (e) { console.log(e) })
+			} else if ('{{ ts.audio}}' != 'false') player = play([audioNotification])
+
 		}
 	})
 </script>
