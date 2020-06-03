@@ -15,15 +15,16 @@
 	var player = undefined
 	var forceRepeat = undefined
 	var languages = "{{ ts.announce }}".split(',')
-	var announcement_texts = {
-		// text-to-speech announcement text
-		// FIXME: Figure out how to pass this from the backend without corrupting UTF-8
-		'en-us': ' , please proceed to the ' + '{{ alias.office }}' + ' number : ',
-		'ar': ' : توجه إلى المكتب رقم ',
-		'fr': ", s'il vous plaît procéder au numéro de bureau : ",
-		'es': ' , por favor diríjase al número de la oficina : ',
-		'it': " , si prega di procedere al numero dell'ufficio : "
-	}
+	var announcement_texts = undefined
+	
+	$.getJSON("{{ url_for('static', filename='tts.json') }}")
+		.then(function(j) {
+			announcement_texts = j
+			var en = announcement_texts['en-us']
+
+			if (en) announcement_texts['en-us'].message = en.message
+				.replace('{}', "{{ alias.office }}")
+		})
 
 	var stream = JsonStream({
 		url: "{{ feed_url }}",
@@ -58,21 +59,22 @@
 			}, 200)
 			if (player) player.exit(false)
 
-			if ('{{ ts.announce }}' !== 'false') {
-				$.when.apply($, languages.map(function(language, index) {
-					var link = '/gtts/' + language + '/' + data.cot + announcement_texts[language] + data.con
+			if (announcement_texts) {
+				if ('{{ ts.announce }}' !== 'false') {
+					$.when.apply($, languages.map(function(language, index) {
+						var message = announcement_texts[language].message
+						var link = '/gtts/' + language + '/' + data.cot + message + data.con
 
-					return $.get(link)
-						.then(function(json) { return json.mp3 })
-				}))
-				.then(function() {
-					var results = $.makeArray(arguments).sort()
+						return $.get(link).then(function(json) { return json.mp3 })
+					}))
+					.then(function() {
+						var results = $.makeArray(arguments).sort()
 
-					{% if ts.audio != 'false' %}results.unshift(audioNotification){% endif %}
-					player = play(results)
-				}).fail(function (e) { console.log(e) })
-			} else if ('{{ ts.audio}}' != 'false') player = play([audioNotification])
-
+						{% if ts.audio != 'false' %}results.unshift(audioNotification){% endif %}
+						player = play(results)
+					}).fail(function (e) { console.log(e) })
+				} else if ('{{ ts.audio}}' != 'false') player = play([audioNotification])
+			}
 		}
 	})
 </script>

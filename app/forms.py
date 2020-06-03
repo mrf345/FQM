@@ -14,6 +14,7 @@ from wtforms.validators import InputRequired, Length, NumberRange, Optional
 import app.database as data
 from app.middleware import gtranslator
 from app.constants import SUPPORTED_MEDIA_FILES, SUPPORTED_LANGUAGES, PRINTED_TICKET_SCALES
+from app.helpers import get_tts_safely
 
 
 # -- List Tuples of colors, sizes, text background
@@ -44,31 +45,7 @@ export_options = {
     4: 'Hashtag'
 }
 tms = [(0, "First Template"), (1, "Second Template"), (2, "Third Template")]
-
-
-def announce_tuples():
-    """ To generate list of tuples for announcement languages mixed together """
-    languages = [
-        {'desc': 'English', 'sc': 'en-us'},
-        {'desc': 'Arabic', 'sc': 'ar'},
-        {'desc': 'Italian', 'sc': 'it'},
-        {'desc': 'French', 'sc': 'fr'},
-        {'desc': 'Spanish', 'sc': 'es'}
-    ]
-    toReturn = [("false", "Disable")]
-    for lang in languages:
-        toReturn.append((lang['sc'], lang['desc']))
-    for lang in languages:
-        for other_lang in languages:
-            if lang != other_lang:
-                toReturn.append((lang['sc'] + ',' + other_lang['sc'], lang['desc'] + ' > ' + other_lang['desc']))
-                for another_lang in languages:
-                    if lang != another_lang and other_lang != another_lang:
-                        toReturn.append(
-                            (lang['sc'] + ',' + other_lang['sc'] + ',' + another_lang['sc'],
-                            lang['desc'] + ' > ' + other_lang['desc'] + ' > ' + another_lang['desc']))
-    return toReturn
-
+tts = get_tts_safely()
 
 # -- Customizing and updating touch
 
@@ -168,7 +145,6 @@ class Display_c(FlaskForm):
     rrate = SelectField(coerce=str)
     effect = SelectField(coerce=str)
     repeats = SelectField(coerce=str)
-    announce = SelectField(choices=announce_tuples(), coerce=str)
     anr = SelectField(coerce=int)
     anrt = SelectField(coerce=str)
     naudio = SelectField(coerce=int)
@@ -176,6 +152,8 @@ class Display_c(FlaskForm):
     prefix = BooleanField()
     always_show_ticket_number = BooleanField()
     submit = SubmitField()
+    for shortcode in tts.keys():
+        locals()[f'check{shortcode}'] = BooleanField()
 
     def __init__(self, defLang='en', *args, **kwargs):
         super(Display_c, self).__init__(*args, **kwargs)
@@ -237,7 +215,6 @@ class Display_c(FlaskForm):
             ("9", "9 times"),
             ("10", "10 times")
         ]]
-        self.announce.label = gtranslator.translate("Verbal announcement : ", 'en', [defLang])
         self.anr.label = gtranslator.translate('Number of announcement repeating : ', 'en', [defLang])
         self.anr.choices = [(t[0], gtranslator.translate(t[1], 'en', [defLang])) for t in [(1, 'One time'),
         (2, 'Two times'),
@@ -265,6 +242,10 @@ class Display_c(FlaskForm):
                 aud.append((v.id, str(v.id) + ".  " + v.name))
         self.naudio.choices = aud
         self.background.choices = bgs
+        for shortcode, bundle in tts.items():
+            self[f'check{shortcode}'].label = gtranslator.translate(bundle.get('language'),
+                                                                    'en',
+                                                                    [defLang])
 
 
 # -- Customizing and updating display

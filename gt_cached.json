@@ -322,6 +322,13 @@
         "fr": "Appliquer",
         "it": "Applicare"
     },
+    "Arabic": {
+        "ar": "\u0639\u0631\u0628\u0649",
+        "en": "Arabic",
+        "es": "Ar\u00e1bica",
+        "fr": "arabe",
+        "it": "Arabo"
+    },
     "Are you really sure, you want to exit ?": {
         "ar": "\u062a\u0631\u064a\u062f \u0628\u0627\u0644\u0641\u0639\u0644 , \u0627\u0644\u062e\u0631\u0648\u062c \u0648 \u0625\u064a\u0642\u0627\u0641 \u0627\u0644\u0628\u0631\u0646\u0627\u0645\u062c \u061f",
         "en": "Are you really sure, you want to exit ?",
@@ -675,6 +682,13 @@
         "es": "Habilitar o deshabilitar los controles de video:",
         "fr": "Activer ou d\u00e9sactiver les contr\u00f4les vid\u00e9o:",
         "it": "Abilita o disabilita i controlli video:"
+    },
+    "English": {
+        "ar": "\u0627\u0644\u0625\u0646\u062c\u0644\u064a\u0632\u064a\u0629",
+        "en": "English",
+        "es": "Ingl\u00e9s",
+        "fr": "Anglais",
+        "it": "inglese"
     },
     "Enter a duration in seconds to auto-reload the page in :": {
         "ar": "\u0623\u062f\u062e\u0644 \u0645\u062f\u0629 \u0628\u0627\u0644\u062b\u0648\u0627\u0646\u064a \u0644\u0625\u0639\u0627\u062f\u0629 \u062a\u062d\u0645\u064a\u0644 \u0627\u0644\u0635\u0641\u062d\u0629 \u062a\u0644\u0642\u0627\u0626\u064a\u064b\u0627 \u0641\u064a:",
@@ -1163,6 +1177,13 @@
         "fr": "Quatre fois",
         "it": "Quattro volte"
     },
+    "French": {
+        "ar": "\u0641\u0631\u0646\u0633\u064a",
+        "en": "French",
+        "es": "franc\u00e9s",
+        "fr": "fran\u00e7ais",
+        "it": "francese"
+    },
     "General Screens": {
         "ar": "\u0634\u0627\u0634\u0627\u062a \u0627\u0644\u0639\u0627\u0645\u0629",
         "en": "General Screens",
@@ -1272,6 +1293,13 @@
         "es": "Es la pantalla con la que el cliente elige una tarea determinada de una lista de tareas administradas. Eso generar\u00e1 un ticket \u00fanico con cada clic y mostrar\u00e1 una notificaci\u00f3n de respuesta. El prop\u00f3sito de la pantalla t\u00e1ctil puede ir m\u00e1s all\u00e1 de ese simple uso, ya que se agregaron caracter\u00edsticas adicionales o se seleccionaron plantillas especiales.",
         "fr": "C'est l'\u00e9cran avec lequel le client choisit une t\u00e2che donn\u00e9e \u00e0 partir d'une liste de t\u00e2ches g\u00e9r\u00e9es, qui g\u00e9n\u00e9rera un ticket unique \u00e0 chaque clic et affichera une notification de r\u00e9ponse. L'objectif de l'\u00e9cran tactile peut aller au-del\u00e0 de cette simple utilisation avec des fonctionnalit\u00e9s suppl\u00e9mentaires ajout\u00e9es ou des mod\u00e8les sp\u00e9ciaux ont \u00e9t\u00e9 choisis.",
         "it": "\u00c8 lo schermo con il quale il cliente sceglie una determinata attivit\u00e0 da un elenco di attivit\u00e0 gestite, che generer\u00e0 un ticket univoco con ciascun clic e visualizzer\u00e0 una notifica di risposta. Lo scopo del touch screen pu\u00f2 andare al di l\u00e0 di questo semplice utilizzo con funzionalit\u00e0 aggiuntive o modelli speciali scelti."
+    },
+    "Italian": {
+        "ar": "\u0627\u0644\u0625\u064a\u0637\u0627\u0644\u064a",
+        "en": "Italian",
+        "es": "italiano",
+        "fr": "italien",
+        "it": "italiano"
     },
     "Last seen": {
         "ar": "\u0627\u062e\u0631 \u0638\u0647\u0648\u0631",
@@ -2661,6 +2689,13 @@
         "es": "Por lo tanto, le recomendamos habilitar Javascript o utilizar un navegador con Javascript como Firefox.",
         "fr": "Nous vous recommandons donc d'activer Javascript ou d'utiliser un navigateur Javascript \u00e9quip\u00e9 comme Firefox.",
         "it": "Quindi ti consigliamo di abilitare Javascript o di usare un browser con Javascript come Firefox."
+    },
+    "Spanish": {
+        "ar": "\u0627\u0644\u0623\u0633\u0628\u0627\u0646\u064a\u0629",
+        "en": "Spanish",
+        "es": "Espa\u00f1ol",
+        "fr": "Espagnol",
+        "it": "spagnolo"
     },
     "Start": {
         "ar": "\u062a\u0634\u063a\u064a\u0644",

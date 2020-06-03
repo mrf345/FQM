@@ -2,13 +2,14 @@
 ''' This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
 file, You can obtain one at http://mozilla.org/MPL/2.0/. '''
-
+import os
+import json
 from functools import wraps
 from flask import current_app, flash, redirect, url_for
 from flask_login import current_user
 
 import app.database as data
-from app.middleware import db
+from app.utils import absolute_path, log_error
 
 
 def is_god():
@@ -185,3 +186,30 @@ def reject_no_offices(function):
             return redirect(url_for('manage_app.all_offices'))
 
     return decorated
+
+
+def get_tts_safely():
+    ''' Helper to read gTTS data from `static/tts.json` file safely.
+
+    Parameters
+    ----------
+        failsafe: boolean
+            to silence any encountered errors.
+
+    Returns
+    -------
+        Dict of gTTS content. Example::
+        {"en-us": {"langauge": "English", "message": "new ticket!"}, ...}
+    '''
+    tts_path = os.path.join(absolute_path('static'), 'tts.json')
+    tts_content = {}
+
+    try:
+        with open(tts_path, encoding='utf-8') as tts_file:
+            tts_content.update(json.load(tts_file))
+    except Exception as e:
+        log_error(e)
+        tts_content.update({'en-us': {'language': 'English',
+                                      'message': ' , please proceed to the {} number : '}})
+
+    return tts_content

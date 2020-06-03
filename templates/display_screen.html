@@ -221,9 +221,11 @@
 		        </center>
 		        <hr>
 		        {{ render_field(form.naudio, class="form-control") }}
-		        {{ render_field(form.announce, class="form-control") }}
                 {{ render_field(form.anr, class='form-control') }}
-                {{ render_field(form.anrt, class="form-control")}}
+				{{ render_field(form.anrt, class="form-control")}}
+				{% for short, bundle in tts.items() %}
+					{{ render_field(form['check' + short], class='form-control') }}
+				{% endfor %}
                 <p class="pb-6"></p>
                 {{ unique_btns(translate('Previous', 'en', [defLang]), translate('Apply', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
                 <p class="pb-4"></p>

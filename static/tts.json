@@ -1,0 +1,22 @@
+{
+    "en-us": {
+        "language": "English",
+        "message": " , please proceed to the {} number : "
+    },
+    "ar": {
+        "language": "Arabic",
+        "message": " : توجه إلى المكتب رقم "
+    },
+    "fr": {
+        "language": "French",
+        "message": ", s'il vous plaît procéder au numéro de bureau : "
+    },
+    "es": {
+        "language": "Spanish",
+        "message": " , por favor diríjase al número de la oficina : "
+    },
+    "it": {
+        "language": "Italian",
+        "message": " , si prega di procedere al numero dell'ufficio : "
+    }
+}
