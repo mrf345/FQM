@@ -16,7 +16,7 @@ from app.middleware import db, files
 from app.printer import listp
 from app.utils import absolute_path, getFolderSize, execute
 from app.constants import SUPPORTED_MEDIA_FILES
-from app.helpers import reject_not_admin
+from app.helpers import reject_not_admin, get_tts_safely
 
 
 cust_app = Blueprint('cust_app', __name__)
@@ -26,10 +26,10 @@ cust_app = Blueprint('cust_app', __name__)
 @login_required
 @reject_not_admin
 def customize():
-    """ view of main customize screen """
-    return render_template("customize.html",
-                           page_title="Customization",
-                           navbar="#snb2",
+    ''' view of main customize screen '''
+    return render_template('customize.html',
+                           page_title='Customization',
+                           navbar='#snb2',
                            vtrue=data.Vid.query.first().enable,
                            strue=data.Slides_c.query.first().status)
 
@@ -38,55 +38,55 @@ def customize():
 @login_required
 @reject_not_admin
 def ticket():
-    """ view of ticket customization """
+    ''' view of ticket customization '''
+    windows = os.name == 'nt'
     printers = execute('wmic printer get sharename',
                        parser='\n',
-                       encoding='utf-16')[1:] if os.name == 'nt' else listp()
+                       encoding='utf-16'
+                       )[1:] if windows else listp()
     form = forms.Printer_f(printers, session.get('lang'))
-    tc = data.Touch_store.query.first()
-    pr = data.Printer.query.first()
+    touch_screen_settings = data.Touch_store.query.first()
+    printer = data.Printer.query.first()
 
     if form.validate_on_submit():
-        if form.kind.data == 1:
-            tc.n = True
-            pr.value = form.value.data
-            pr.active = False
-            db.session.add(tc)
-            db.session.add(pr)
-        else:
-            if form.printers.data == "00":
+        if form.kind.data == 1:  # Rigestered
+            printer.value = form.value.data
+            printer.active = False
+            touch_screen_settings.n = True
+        else:  # Printed
+            printer_id = form.printers.data
+
+            if printer_id == '00':  # Not found
                 flash('Error: you must have available printer, to use printed',
                       'danger')
                 return redirect(url_for('cust_app.ticket'))
-            f = form.printers.data
-            pr.product = f
-            if os.name != 'nt':
-                f = f.split('_')
-                pr.vendor = f[0]
-                pr.product = f[1]
-                pr.in_ep = int(f[2])
-                pr.out_ep = int(f[3])
-            tc.n = False
-            pr.active = True
-            pr.langu = form.langu.data
-            pr.value = form.value.data
-            pr.scale = form.scale.data
-            db.session.add(tc)
-            db.session.add(pr)
+
+            if windows:
+                id_chunks = printer_id.split('_')
+                printer.vendor = id_chunks[0]
+                printer.product = id_chunks[1]
+                printer.in_ep = int(id_chunks[2])
+                printer.out_ep = int(id_chunks[3])
+
+            printer.product = printer_id
+            printer.active = True
+            printer.langu = form.langu.data
+            printer.value = form.value.data
+            printer.scale = form.scale.data
+            touch_screen_settings.n = False
+
         db.session.commit()
-        flash('Notice: settings have been updated .',
-              'info')
+        flash('Notice: settings have been updated .', 'info')
         return redirect(url_for('cust_app.ticket'))
+
     if not form.errors:
-        if tc.n:
-            form.kind.data = 1
-        else:
-            form.kind.data = 2
-        form.printers.data = pr.vendor + '_' + pr.product
-        form.printers.data += '_' + str(pr.in_ep) + '_' + str(pr.out_ep)
-        form.langu.data = pr.langu
-        form.value.data = pr.value
-        form.scale.data = pr.scale
+        form.kind.data = 1 if touch_screen_settings.n else 2
+        form.printers.data = f'{printer.vendor}_{printer.product}'
+        form.printers.data += f'_{printer.in_ep}_{printer.out_ep}'
+        form.langu.data = printer.langu
+        form.value.data = printer.value
+        form.scale.data = printer.scale
+
     return render_template('ticket.html', navbar='#snb2',
                            page_title='Tickets',
                            vtrue=data.Vid.query.first().enable,
@@ -98,40 +98,44 @@ def ticket():
 @login_required
 @reject_not_admin
 def video():
-    """ view of video customization for display """
+    ''' view of video customization for display '''
     if data.Slides_c.query.first().status == 1:
         flash('Error: must disable slide-show before using video',
               'danger')
         return redirect(url_for('cust_app.slide_c'))
+
     form = forms.Video(session.get('lang'))
-    vdb = data.Vid.query.first()
+    display_screen_settings = data.Display_store.query.first()
+    video = data.Vid.query.first()
+
     if form.validate_on_submit():
-        if form.video.data == 00:
-            vdb.enable = 2
-            vdb.vkey = None
-            vdb.vname = ''
+        if form.video.data == 00:  # not found
+            video.enable = 2
+            video.vkey = None
+            video.vname = ''
         else:
-            vdb.vkey = form.video.data
-            vdb.enable = form.enable.data
-            mname = data.Media.query.filter_by(id=form.video.data).first()
-            vdb.vname = mname.name
-            data.Display_store.query.first().vkey = form.video.data
-            data.Media.query.filter_by(
-                id=form.video.data).first().used = True
-        vdb.ar = form.ar.data
-        vdb.controls = form.controls.data
-        vdb.mute = form.mute.data
-        db.session.add(vdb)
+            media_record = data.Media.get(form.video.data)
+            video.vkey = form.video.data
+            video.enable = form.enable.data
+            video.vname = media_record.name
+            media_record.used = True
+            display_screen_settings.vkey = form.video.data
+
+        video.ar = form.ar.data
+        video.controls = form.controls.data
+        video.mute = form.mute.data
+
         db.session.commit()
-        flash('Notice: new video has been set.',
-              'info')
+        flash('Notice: new video has been set.', 'info')
         return redirect(url_for('cust_app.video'))
-    if vdb is not None and not form.errors:
-        form.video.data = vdb.vkey
-        form.enable.data = vdb.enable
-        form.ar.data = vdb.ar
-        form.controls.data = vdb.controls
-        form.mute.data = vdb.mute
+
+    if video and not form.errors:
+        form.video.data = video.vkey
+        form.enable.data = video.enable
+        form.ar.data = video.ar
+        form.controls.data = video.controls
+        form.mute.data = video.mute
+
     return render_template('video.html',
                            page_title='Video settings',
                            navbar='#snb2',
@@ -145,25 +149,26 @@ def video():
 @login_required
 @reject_not_admin
 def slideshow():
-    """ view of slide-show customization for display """
+    ''' view of slide-show customization for display '''
     if data.Vid.query.first().enable == 1:
         flash('Error: must disable video before using slide-show',
               'danger')
         return redirect(url_for('cust_app.video'))
+
     page = request.args.get('page', 1, type=int)
     pagination = data.Slides.query.paginate(page, per_page=10,
                                             error_out=False)
-    return render_template("slideshow.html",
+    return render_template('slideshow.html',
                            len=len,
-                           navbar="#snb2", sli=data.Slides_c.query.first(),
+                           navbar='#snb2', sli=data.Slides_c.query.first(),
                            mmm=data.Slides.query,
                            slides=pagination.items,
                            pagination=pagination,
                            sm=data.Slides.query.filter(data.Slides.
                                                        ikey != 0).count(),
-                           page_title="All slides",
-                           hash="#ss1",
-                           dropdown="#dropdown-lvl3",
+                           page_title='All slides',
+                           hash='#ss1',
+                           dropdown='#dropdown-lvl3',
                            vtrue=data.Vid.query.first().enable,
                            strue=data.Slides_c.query.first().status)
 
@@ -172,11 +177,12 @@ def slideshow():
 @login_required
 @reject_not_admin
 def slide_a():
-    """ adding a slide """
+    ''' adding a slide '''
     if data.Vid.query.first().enable == 1:
         flash('Error: must disable video before using slide-show',
               'danger')
         return redirect(url_for('cust_app.video'))
+
     form = forms.Slide_a(session.get('lang'))
     if form.validate_on_submit():
         if form.background.data == 00:
@@ -184,9 +190,8 @@ def slide_a():
         else:
             bb = data.Media.query.filter_by(id=form.background.data).first()
             if bb is None:
-                flash('Error: wrong entry, something went wrong',
-                'danger')
-                return redirect(url_for("cust_app.slide_a"))
+                flash('Error: wrong entry, something went wrong', 'danger')
+                return redirect(url_for('cust_app.slide_a'))
             bb = bb.name
         ss = data.Slides()
         ss.title = form.title.data
@@ -203,11 +208,11 @@ def slide_a():
         ss.ikey = form.background.data
         db.session.add(ss)
         db.session.commit()
-        flash("Notice: templates been updated.", 'info')
-        return redirect(url_for("cust_app.slideshow"))
-    return render_template("slide_add.html",
-                           page_title="Add Slide ",
-                           form=form, navbar="#snb2",
+        flash('Notice: templates been updated.', 'info')
+        return redirect(url_for('cust_app.slideshow'))
+    return render_template('slide_add.html',
+                           page_title='Add Slide ',
+                           form=form, navbar='#snb2',
                            hash=1,
                            dropdown='#dropdown-lvl3',
                            vtrue=data.Vid.query.first().enable,
@@ -218,7 +223,7 @@ def slide_a():
 @login_required
 @reject_not_admin
 def slide_c():
-    """ updating a slide """
+    ''' updating a slide '''
     if data.Vid.query.first().enable == 1:
         flash('Error: must disable video before using slide-show',
               'danger')
@@ -232,19 +237,19 @@ def slide_c():
         sc.status = form.status.data
         db.session.add(sc)
         db.session.commit()
-        flash("Notice: slide settings is done.",
+        flash('Notice: slide settings is done.',
         'info')
-        return redirect(url_for("cust_app.slide_c"))
+        return redirect(url_for('cust_app.slide_c'))
     if not form.errors:
         form.rotation.data = sc.rotation
         form.navigation.data = sc.navigation
         form.effect.data = sc.effect
         form.status.data = sc.status
-    return render_template("slide_settings.html",
-                           form=form, navbar="#snb2",
-                           hash="#ss2",
-                           page_title="Slideshow settings",
-                           dropdown="#dropdown-lvl3",
+    return render_template('slide_settings.html',
+                           form=form, navbar='#snb2',
+                           hash='#ss2',
+                           page_title='Slideshow settings',
+                           dropdown='#dropdown-lvl3',
                            vtrue=data.Vid.query.first().enable,
                            strue=data.Slides_c.query.first().status)
 
@@ -253,9 +258,9 @@ def slide_c():
 @login_required
 @reject_not_admin
 def slide_r(f_id):
-    """ removing a slide """
+    ''' removing a slide '''
     if data.Slides.query.count() <= 0:
-        flash("Error: there is no slides to be removed ",
+        flash('Error: there is no slides to be removed ',
         'danger')
         return redirect(url_for('cust_app.slideshow'))
     if data.Vid.query.first().enable == 1:
@@ -267,16 +272,16 @@ def slide_r(f_id):
             if a is not None:
                 db.session.delete(a)
         db.session.commit()
-        flash("Notice: All slides removed.", 'info')
+        flash('Notice: All slides removed.', 'info')
         return redirect(url_for('cust_app.slideshow'))
     mf = data.Slides.query.filter_by(id=f_id).first()
     if mf is not None:
         db.session.delete(mf)
         db.session.commit()
-        flash("Notice: All slides removed.", 'info')
+        flash('Notice: All slides removed.', 'info')
         return redirect(url_for('cust_app.slideshow'))
     else:
-        flash("Error: there is no slides to be removed ", 'danger')
+        flash('Error: there is no slides to be removed ', 'danger')
         return redirect(url_for('core.root'))
 
 
@@ -284,7 +289,7 @@ def slide_r(f_id):
 @login_required
 @reject_not_admin
 def multimedia(aa):
-    """ uploading multimedia files """
+    ''' uploading multimedia files '''
     # Number of files limit
     nofl = 300
     # size folder limit in MB
@@ -296,16 +301,16 @@ def multimedia(aa):
     if aa == 0:
         if data.Media.query.count() >= nofl:
             flash(
-                "Error: you have reached the amount limit of multimedia files " + str(nofl),
+                'Error: you have reached the amount limit of multimedia files ' + str(nofl),
                 'danger')
             return redirect(url_for('cust_app.multimedia', aa=1))
         else:
-            flash("Notice: if you followed the rules, it should be uploaded ..",
-                  "success")
+            flash('Notice: if you followed the rules, it should be uploaded ..',
+                  'success')
     elif aa != 1:
         flash('Error: wrong entry, something went wrong',
               'danger')
-        return redirect(url_for("core.root"))
+        return redirect(url_for('core.root'))
     mmm = data.Media.query
     page = request.args.get('page', 1, type=int)
     pagination = data.Media.query.paginate(page, per_page=10,
@@ -343,15 +348,15 @@ def multimedia(aa):
                             if me.vid:
                                 t.vid = None
                             if t != data.Slides:
-                                t.bgcolor = "bg-danger"
+                                t.bgcolor = 'bg-danger'
                             else:
-                                t.bgname = "bg-danger"
+                                t.bgname = 'bg-danger'
                             db.session.add(t)
                         ttt = t.query.filter_by(akey=me.id).first()
                         if me.audio and ttt is not None:
                             if t != data.Slides:
                                 t.akey = None
-                                t.audio = "false"
+                                t.audio = 'false'
                                 db.session.add(t)
                 db.session.delete(me)
         db.session.commit()
@@ -367,32 +372,32 @@ def multimedia(aa):
             files.save(request.files['mf'], name=ffn)
             if imghdr.what(dire + ffn) is None:
                 os.remove(dire + ffn)
-                return redirect(url_for("cust_app.multimedia", aa=1))
+                return redirect(url_for('cust_app.multimedia', aa=1))
             db.session.add(data.Media(False, False, True, False, ffn))
             db.session.commit()
-            return redirect(url_for("cust_app.multimedia", aa=1))
+            return redirect(url_for('cust_app.multimedia', aa=1))
         elif e in SUPPORTED_MEDIA_FILES[1]:
             files.save(request.files['mf'], name=ffn)
             # FIXME: Find an alternative to sndhdr for audio file detection
             # if sndhdr.what(dire + ffn) is None:
             #     os.remove(dire + ffn)
-            #     return redirect(url_for("cust_app.multimedia", aa=1))
+            #     return redirect(url_for('cust_app.multimedia', aa=1))
             db.session.add(data.Media(False, True, False, False, ffn))
             db.session.commit()
-            return redirect(url_for("cust_app.multimedia", aa=1))
+            return redirect(url_for('cust_app.multimedia', aa=1))
         elif e in SUPPORTED_MEDIA_FILES[2] or ffn[-4:] in SUPPORTED_MEDIA_FILES[2]:
             files.save(request.files['mf'], name=ffn)
             db.session.add(data.Media(True, False, False, False, ffn))
             db.session.commit()
-            return redirect(url_for("cust_app.multimedia", aa=1))
+            return redirect(url_for('cust_app.multimedia', aa=1))
         else:
             flash('Error: wrong entry, something went wrong', 'danger')
-            return redirect(url_for("cust_app.multimedia", aa=1))
-    return render_template("multimedia.html",
-                           page_title="Multimedia",
-                           navbar="#snb2",
+            return redirect(url_for('cust_app.multimedia', aa=1))
+    return render_template('multimedia.html',
+                           page_title='Multimedia',
+                           navbar='#snb2',
                            form=form,
-                           hash="#da1",
+                           hash='#da1',
                            mmm=mmm,
                            len=len,
                            ml=SUPPORTED_MEDIA_FILES,
@@ -411,10 +416,10 @@ def multimedia(aa):
 @login_required
 @reject_not_admin
 def multi_del(f_id):
-    """ to delete multimedia file """
+    ''' to delete multimedia file '''
     dire = absolute_path('static/multimedia/')
     if data.Media.query.filter_by(used=False).count() <= 0:
-        flash("Error: there is no unused multimedia file to be removed !",
+        flash('Error: there is no unused multimedia file to be removed !',
               'danger')
         return redirect(url_for('cust_app.multimedia', aa=1))
     if f_id == 00:
@@ -424,22 +429,22 @@ def multi_del(f_id):
                     os.remove(dire + a.name)
                 db.session.delete(a)
         db.session.commit()
-        flash("Notice: multimedia file been removed.", 'info')
+        flash('Notice: multimedia file been removed.', 'info')
         return redirect(url_for('cust_app.multimedia', aa=1))
     mf = data.Media.query.filter_by(id=f_id).first()
     if mf is not None:
         if mf.used:
-            flash("Error: there is no unused multimedia file to be removed !",
+            flash('Error: there is no unused multimedia file to be removed !',
                   'danger')
             return redirect(url_for('cust_app.multimedia', aa=1))
         if os.path.exists(dire + mf.name):
             os.remove(dire + mf.name)
         db.session.delete(mf)
         db.session.commit()
-        flash("Notice: multimedia file been removed.", 'info')
+        flash('Notice: multimedia file been removed.', 'info')
         return redirect(url_for('cust_app.multimedia', aa=1))
     else:
-        flash("Error: there is no unused multimedia file to be removed !", 'danger')
+        flash('Error: there is no unused multimedia file to be removed !', 'danger')
         return redirect(url_for('core.root'))
 
 
@@ -447,12 +452,16 @@ def multi_del(f_id):
 @login_required
 @reject_not_admin
 def displayscreen_c(stab):
-    """ view for display screen customization """
+    ''' view for display screen customization '''
     form = forms.Display_c(session.get('lang'))
+    tts = get_tts_safely()
+
     if stab not in range(1, 9):
         flash('Error: wrong entry, something went wrong', 'danger')
         return redirect(url_for('core.root'))
+
     touch_s = data.Display_store.query.filter_by(id=0).first()
+
     if form.validate_on_submit():
         touch_s.tmp = form.display.data
         touch_s.title = form.title.data
@@ -472,7 +481,6 @@ def displayscreen_c(stab):
         touch_s.sfont = form.sfont.data
         touch_s.mduration = form.mduration.data
         touch_s.rrate = form.rrate.data
-        touch_s.announce = form.announce.data
         touch_s.anr = form.anr.data
         touch_s.anrt = form.anrt.data
         touch_s.effect = form.effect.data
@@ -480,6 +488,7 @@ def displayscreen_c(stab):
         touch_s.prefix = form.prefix.data
         touch_s.always_show_ticket_number = form.always_show_ticket_number.data
         bg = form.background.data
+        au = form.naudio.data
         if bg == 00:
             touch_s.bgcolor = form.bgcolor.data
             touch_s.ikey = None
@@ -490,9 +499,8 @@ def displayscreen_c(stab):
                                        .data).first().used = True
             db.session.commit()
             touch_s.ikey = form.background.data
-        au = form.naudio.data
         if au == 00:
-            touch_s.audio = "false"
+            touch_s.audio = 'false'
             touch_s.akey = None
         else:
             touch_s.audio = data.Media.query.filter_by(id=form.naudio
@@ -501,10 +509,15 @@ def displayscreen_c(stab):
                                        .data).first().used = True
             db.session.commit()
             touch_s.akey = form.naudio.data
+
+        enabled_tts = [s for s in tts.keys() if form[f'check{s}'].data]
+        touch_s.announce = ','.join(enabled_tts) if enabled_tts else 'false'
+
         db.session.add(touch_s)
         db.session.commit()
-        flash("Notice: Display customization has been updated. ..", 'info')
-        return redirect(url_for("cust_app.displayscreen_c", stab=1))
+        flash('Notice: Display customization has been updated. ..', 'info')
+        return redirect(url_for('cust_app.displayscreen_c', stab=1))
+
     if not form.errors:
         form.display.data = touch_s.tmp
         form.title.data = touch_s.title
@@ -524,36 +537,43 @@ def displayscreen_c(stab):
         form.sfont.data = touch_s.sfont
         form.mduration.data = touch_s.mduration
         form.rrate.data = touch_s.rrate
-        form.announce.data = touch_s.announce
         form.anr.data = touch_s.anr
         form.anrt.data = touch_s.anrt
         form.effect.data = touch_s.effect
         form.repeats.data = touch_s.repeats
         form.prefix.data = touch_s.prefix
         form.always_show_ticket_number.data = touch_s.always_show_ticket_number
-        if touch_s.bgcolor[:3] == "rgb":
+        if touch_s.bgcolor[:3] == 'rgb':
             form.bgcolor.data = touch_s.bgcolor
             form.background.data = 00
         else:
             form.background.data = touch_s.ikey
-        if touch_s.audio == "false":
+        if touch_s.audio == 'false':
             form.naudio.data = 00
         else:
             form.naudio.data = touch_s.akey
-    return render_template("display_screen.html",
+
+        for short in touch_s.announce.split(','):
+            field = getattr(form, f'check{short}', None)
+
+            if field:
+                field.data = short in touch_s.announce
+
+    return render_template('display_screen.html',
                            form=form,
-                           page_title="Display Screen customize",
-                           navbar="#snb2",
+                           page_title='Display Screen customize',
+                           navbar='#snb2',
                            hash=stab,
                            dropdown='#dropdown-lvl2',
                            vtrue=data.Vid.query.first().enable,
-                           strue=data.Slides_c.query.first().status)
+                           strue=data.Slides_c.query.first().status,
+                           tts=tts)
 
 
 @cust_app.route('/touchscreen_c/<int:stab>', methods=['POST', 'GET'])
 @reject_not_admin
 def touchscreen_c(stab):
-    """ view for touch screen customization """
+    ''' view for touch screen customization '''
     form = forms.Touch_c(defLang=session.get('lang'))
     if stab not in range(0, 6):
         flash('Error: wrong entry, something went wrong', 'danger')
@@ -587,7 +607,7 @@ def touchscreen_c(stab):
             touch_s.ikey = form.background.data
         au = form.naudio.data
         if au == 00:
-            touch_s.audio = "false"
+            touch_s.audio = 'false'
             touch_s.akey = None
         else:
             touch_s.audio = data.Media.query.filter_by(id=form.naudio
@@ -597,9 +617,9 @@ def touchscreen_c(stab):
             touch_s.akey = form.naudio.data
         db.session.add(touch_s)
         db.session.commit()
-        flash("Notice: Touchscreen customization has been updated. ..",
+        flash('Notice: Touchscreen customization has been updated. ..',
               'info')
-        return redirect(url_for("cust_app.touchscreen_c", stab=0))
+        return redirect(url_for('cust_app.touchscreen_c', stab=0))
     if not form.errors:
         form.touch.data = touch_s.tmp
         form.title.data = touch_s.title
@@ -616,18 +636,18 @@ def touchscreen_c(stab):
         form.tfont.data = touch_s.tfont
         form.mfont.data = touch_s.mfont
         form.message.data = touch_s.message
-        if touch_s.bgcolor[:3] == "rgb":
+        if touch_s.bgcolor[:3] == 'rgb':
             form.bcolor.data = touch_s.bgcolor
             form.background.data = 00
         else:
             form.background.data = touch_s.ikey
-        if touch_s.audio == "false":
+        if touch_s.audio == 'false':
             form.naudio.data = 00
         else:
             form.naudio.data = touch_s.akey
-    return render_template("touch_screen.html",
-                           page_title="Touch Screen customize",
-                           navbar="#snb2",
+    return render_template('touch_screen.html',
+                           page_title='Touch Screen customize',
+                           navbar='#snb2',
                            form=form,
                            dropdown='#dropdown-lvl1',
                            hash=stab,
@@ -639,7 +659,7 @@ def touchscreen_c(stab):
 @login_required
 @reject_not_admin
 def alias():
-    """ view for aliases customization """
+    ''' view for aliases customization '''
     form = forms.Alias(session.get('lang'))
     aliases = data.Aliases.query.first()
     if form.validate_on_submit():
@@ -660,7 +680,7 @@ def alias():
         form.number.data = aliases.number
     return render_template(
         'alias.html', page_title='Aliases',
-        navbar="#snb2", form=form, hash='#da8',
+        navbar='#snb2', form=form, hash='#da8',
         vtrue=data.Vid.query.first().enable,
         strue=data.Slides_c.query.first().status
     )
