@@ -188,6 +188,57 @@ def reject_no_offices(function):
     return decorated
 
 
+def reject_videos_enabled(function):
+    ''' Decorator to flash and redirect to `cust_app.video`.
+
+    Parameters
+    ----------
+        function: callable
+            then endpoint to be rejected if videos enabled.
+
+    Returns
+    -------
+        Decorator for the passed `function`
+    '''
+    @wraps(function)
+    def decorated(*args, **kwargs):
+        with current_app.app_context():
+            enabled = data.Vid.query.first().enable == 1
+
+            if enabled:
+                flash('Error: you must disable videos first', 'danger')
+                return redirect(url_for('cust_app.video'))
+
+            return function(*args, **kwargs)
+
+    return decorated
+
+
+def reject_slides_enabled(function):
+    ''' Decorator to flash and redirect to `cust_app.slide_c`.
+
+    Parameters
+    ----------
+        function: callable
+            then endpoint to be rejected if slides enabled.
+
+    Returns
+    -------
+        Decorator for the passed `function`
+    '''
+    @wraps(function)
+    def decorated(*args, **kwargs):
+        with current_app.app_context():
+            enabled = data.Slides_c.query.first().status == 1
+
+            if enabled:
+                flash('Error: you must disable slide-show first', 'danger')
+                return redirect(url_for('cust_app.video'))
+
+            return function(*args, **kwargs)
+
+    return decorated
+
 def get_tts_safely():
     ''' Helper to read gTTS data from `static/tts.json` file safely.
 
