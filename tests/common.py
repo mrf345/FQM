@@ -7,7 +7,8 @@ from atexit import register
 
 from app.main import bundle_app
 from app.middleware import db
-from app.database import User, Operators, Office, Task, Serial
+from app.database import (User, Operators, Office, Task, Serial, Media, Touch_store,
+                          Display_store, Vid, Slides_c, Slides, Aliases)
 from app.utils import absolute_path
 from app.tasks import stop_tasks
 
@@ -29,9 +30,11 @@ NAMES = ('Aaron Enlightened', 'Abbott Father', 'Abel Breath', 'Abner Father',
 TEST_PREFIX = 'Z'
 PREFIXES = [p for p in list(map(lambda i: chr(i).upper(), range(97, 123))) if p != TEST_PREFIX]
 
-MODULES = [Serial, User, Operators, Task, Office]
+MODULES = [Serial, User, Operators, Task, Office, Media, Slides]
+DEFAULT_MODULES = [Touch_store, Display_store, Vid, Slides_c, Aliases]
 DB_PATH = absolute_path('testing.sqlite')
 TEST_REPEATS = 3
+ENTRY_NUMBER = 10
 
 
 @pytest.fixture
@@ -50,10 +53,12 @@ def c():
         with app.app_context():
             db.create_all()
             teardown_tables(copy.copy(MODULES))
+            recreate_defaults(DEFAULT_MODULES)
             fill_offices()
             fill_tasks()
             fill_users()
             fill_tickets()
+            fill_slides()
         yield client
 
     register(lambda: os.path.isfile(DB_PATH) and os.remove(DB_PATH))
@@ -70,7 +75,17 @@ def teardown_tables(modules):
         return teardown_tables(modules)
 
 
-def fill_users(entry_number=10, role=None):
+def recreate_defaults(models):
+    for model in models:
+        for record in model.query.all():
+            db.session.delete(record)
+        db.session.commit()
+
+        db.session.add(model())
+        db.session.commit()
+
+
+def fill_users(entry_number=ENTRY_NUMBER, role=None):
     for _ in range(entry_number):
         def recur():
             role_id = role or choice(range(1, 4))
@@ -92,7 +107,7 @@ def fill_users(entry_number=10, role=None):
     db.session.commit()
 
 
-def fill_offices(entry_number=10):
+def fill_offices(entry_number=ENTRY_NUMBER):
     for _ in range(entry_number):
         prefix = choice([
             p for p in PREFIXES
@@ -107,7 +122,7 @@ def fill_offices(entry_number=10):
     db.session.commit()
 
 
-def fill_tasks(entry_number=10):
+def fill_tasks(entry_number=ENTRY_NUMBER):
     for _ in range(entry_number):
         name = f'TEST{randint(10000, 99999999)}'
         offices = []
@@ -139,6 +154,17 @@ def fill_tickets(entry_number=100):
 
         db.session.add(Serial(number=number, office_id=office.id,
                               task_id=task.id, name=name, n=True))
+    db.session.commit()
+
+
+def fill_slides(entry_number=ENTRY_NUMBER):
+    for i in range(entry_number):
+        slide = Slides()
+        slide.title = f'{i}_testing'
+        slide.bname = f'{i}_testing.ext'
+
+        db.session.add(slide)
+
     db.session.commit()
 
 

@@ -4,7 +4,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from flask_login import UserMixin, current_user
-from sqlalchemy.sql import and_
+from sqlalchemy.sql import and_, or_
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from app.middleware import db
@@ -18,7 +18,10 @@ mtasks = db.Table(
 
 class Mixin:
     @classmethod
-    def get(cls, id):
+    def get(cls, id=False):
+        if id is False:
+            return cls.query.first()
+
         return cls.query.filter_by(id=id).first()
 
 
@@ -346,7 +349,7 @@ class Roles(db.Model):
         db.session.commit()
 
 
-class Printer(db.Model):
+class Printer(db.Model, Mixin):
     __tablename__ = "printers"
     id = db.Column(db.Integer, primary_key=True)
     vendor = db.Column(db.String(100), nullable=True, unique=True)
@@ -374,7 +377,7 @@ class Printer(db.Model):
 # -- Touch custimization table
 
 
-class Touch_store(db.Model):
+class Touch_store(db.Model, Mixin):
     __tablename__ = 'touchs'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(300))
@@ -439,7 +442,7 @@ class Touch_store(db.Model):
 # -- Touch customization table
 
 
-class Display_store(db.Model):
+class Display_store(db.Model, Mixin):
     __tablename__ = 'displays'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(300))
@@ -529,7 +532,7 @@ class Display_store(db.Model):
 # -- Slides storage table
 
 
-class Slides(db.Model):
+class Slides(db.Model, Mixin):
     __tablename__ = "slides"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(300))
@@ -550,7 +553,7 @@ class Slides(db.Model):
 
 # -- ^^ Slides custimization table
 
-class Slides_c(db.Model):
+class Slides_c(db.Model, Mixin):
     __tablename__ = "slides_c"
     id = db.Column(db.Integer, primary_key=True)
     rotation = db.Column(db.String(100))
@@ -568,7 +571,7 @@ class Slides_c(db.Model):
         self.navigation = navigation
 
 
-class Media(db.Model):
+class Media(db.Model, Mixin):
     __tablename__ = "media"
     id = db.Column(db.Integer, primary_key=True)
     vid = db.Column(db.Boolean())
@@ -585,8 +588,20 @@ class Media(db.Model):
         self.used = used
         self.name = name
 
+    def is_used(self):
+        return any([
+            Vid.query.filter_by(vkey=self.id).first(),
+            Slides.query.filter_by(ikey=self.id).first(),
+            Display_store.query.filter(or_(
+                Display_store.ikey == self.id,
+                Display_store.akey == self.id)).first(),
+            Touch_store.query.filter(or_(
+                Touch_store.ikey == self.id,
+                Touch_store.akey == self.id)).first()
+        ])
 
-class Vid(db.Model):
+
+class Vid(db.Model, Mixin):
     __tablename__ = "vids"
     id = db.Column(db.Integer, primary_key=True)
     vname = db.Column(db.String(300))
@@ -608,7 +623,7 @@ class Vid(db.Model):
         self.vkey = vkey
 
 
-class Aliases(db.Model):
+class Aliases(db.Model, Mixin):
     __tablename__ = "aliases"
     id = db.Column(db.Integer, primary_key=True)
     office = db.Column(db.String(100))
@@ -617,9 +632,8 @@ class Aliases(db.Model):
     name = db.Column(db.String(100))
     number = db.Column(db.String(100))
 
-    def __init__(self, 
-        office="office", task="task", ticket="ticket",
-        name="name", number="number"):
+    def __init__(self, office="office", task="task", ticket="ticket", name="name",
+                 number="number"):
         self.id = 0
         self.office = office
         self.task = task
@@ -628,7 +642,7 @@ class Aliases(db.Model):
         self.number = number
 
 
-class Settings(db.Model):
+class Settings(db.Model, Mixin):
     __tablename__ = 'settings'
     id = db.Column(db.Integer, primary_key=True)
     notifications = db.Column(db.Boolean, nullable=True)
@@ -640,7 +654,3 @@ class Settings(db.Model):
         self.notifications = notifications
         self.strict_pulling = strict_pulling
         self.visual_effects = visual_effects
-
-    @classmethod
-    def get(cls):
-        return cls.query.first()
