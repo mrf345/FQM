@@ -93,7 +93,8 @@ Since the `0.7` release we're able to migrate the data generated in previous rel
 **Make sure the migration steps are performed prior to running the new release of the system**.
 
 ### Documentation:
-You can find a useful and a very outdated 😓 user guide [here](https://fqms.github.io/images/user_guide.pdf).
+- [Useful and very outdated 😓 user guide](https://fqms.github.io/images/user_guide.pdf).
+- [How do i add support for my language ?](docs/localization.md)
 
 
 <br />
