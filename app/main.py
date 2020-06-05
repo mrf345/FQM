@@ -42,6 +42,7 @@ def create_app(config={}):
     app = Flask(__name__, static_folder=absolute_path('static'), template_folder=absolute_path('templates'))
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + absolute_path(DATABASE_FILE)
+    app.config['DB_NAME'] = DATABASE_FILE
     # Autoreload if templates change
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     # flask_upload settings

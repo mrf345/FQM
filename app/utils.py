@@ -4,6 +4,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import os
+from collections import namedtuple
 from uuid import uuid4
 from traceback import TracebackException
 from datetime import datetime
@@ -17,7 +18,7 @@ from flask import current_app
 
 import app.database as data
 from app.middleware import db
-from app.constants import DEFAULT_PASSWORD, DEFAULT_USER
+from app.constants import DEFAULT_PASSWORD, DEFAULT_USER, DATABASE_FILE
 
 
 def execute(command, parser=None, encoding='utf-8'):
@@ -236,32 +237,54 @@ def get_random_available_port(ip):
     return available_port
 
 
-def get_with_alias():
+def create_aliternative_db(db_name=None):
+    ''' Utility to create an alternative database SQLAlchemy session.
+
+    Parameters
+    ----------
+        db_name: name of the database file.
+
+    Returns
+    -------
+        session: SQLAlchemy Session
+        classes SQLAlchemy Base.classes
+    '''
+    session = None
+    classes = None
+
+    try:
+        db_path = absolute_path(db_name or DATABASE_FILE)
+        base = automap_base()
+        engine = create_engine(f'sqlite:///{db_path}')
+
+        base.prepare(engine, reflect=True)
+
+        session = Session(engine)
+        classes = base.classes
+    except Exception as e:
+        log_error(e)
+
+    return session, classes
+
+
+def get_with_alias(db_name=None):
     ''' Resolve querying aliases without app_context in languages.
+
+    Parameters
+    ----------
+        db_name: name of the database file.
 
     Returns
     -------
         Dict of texts with aliases embodied.
-
-    TODO: Cleanup this, there must be a better way to resolve it.
     '''
-    class Aliases(object):
-        office = 'office'
-        ticket = 'ticket'
-        task = 'task'
-
-    alias = Aliases()
-    base_path = os.path.abspath('.')
+    alias = namedtuple(
+        'alias', ['office', 'ticket', 'task']
+    )('office', 'ticket', 'task')
 
     try:
-        if os.path.isfile(os.path.join(base_path, 'data.sqlite')):
-            Base = automap_base()
-            engine = create_engine('sqlite:///' + os.path.join(base_path, 'data.sqlite'))
-            Base.prepare(engine, reflect=True)
-            if hasattr(Base.classes, 'aliases'):
-                Aliases = Base.classes.aliases
-                session = Session(engine)
-                alias = session.query(Aliases).first()
+        session, db = create_aliternative_db(db_name)
+        alias = session.query(data.Aliases).first()
     except Exception:
         pass
 
