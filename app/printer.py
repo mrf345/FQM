@@ -14,7 +14,7 @@ from bidi.algorithm import get_display
 from PIL import Image, ImageDraw, ImageFont
 from os import remove, getcwd, path, name, system
 
-from app.utils import absolute_path, get_with_alias
+from app.utils import absolute_path, get_with_alias, log_error
 from app.middleware import gtranslator
 from app.constants import VERSION, PRINTED_TICKET_DIMENSIONS, PRINTED_TICKET_MAXIMUM_HEIGH_OR_WIDTH
 
@@ -120,12 +120,9 @@ def print_ticket_windows(pname, a, b, c, d, cit, ip, l='en', scale=1):
 
 
 def assign(v, p, in_ep, out_ep):
-    try:
-        printer = getp.Usb(v, p, 0, in_ep, out_ep)
-        printer.text("\n")
-        return printer
-    except Exception:
-        return None
+    printer = getp.Usb(v, p, 0, in_ep, out_ep)
+    printer.text("\n")
+    return printer
 
 
 def listp():
@@ -136,8 +133,8 @@ def listp():
             in_ep = int(cfg[(0, 0)][0].bEndpointAddress)
             out_ep = int(cfg[(0, 0)][1].bEndpointAddress)
             vl.append([ll.idVendor, ll.idProduct, in_ep, out_ep])
-    except Exception:
-        pass
+    except Exception as exception:
+        log_error(exception)
     return vl
 
 

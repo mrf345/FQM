@@ -8,7 +8,7 @@ from atexit import register
 from app.main import bundle_app
 from app.middleware import db
 from app.database import (User, Operators, Office, Task, Serial, Media, Touch_store,
-                          Display_store, Vid, Slides_c, Slides, Aliases)
+                          Display_store, Vid, Slides_c, Slides, Aliases, Printer)
 from app.utils import absolute_path
 from app.tasks import stop_tasks
 
@@ -31,7 +31,7 @@ TEST_PREFIX = 'Z'
 PREFIXES = [p for p in list(map(lambda i: chr(i).upper(), range(97, 123))) if p != TEST_PREFIX]
 
 MODULES = [Serial, User, Operators, Task, Office, Media, Slides]
-DEFAULT_MODULES = [Touch_store, Display_store, Vid, Slides_c, Aliases]
+DEFAULT_MODULES = [Touch_store, Display_store, Vid, Slides_c, Aliases, Printer]
 DB_PATH = absolute_path('testing.sqlite')
 TEST_REPEATS = 3
 ENTRY_NUMBER = 10

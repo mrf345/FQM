@@ -1,5 +1,8 @@
 import pytest
 import io
+import usb.core
+from unittest.mock import MagicMock
+from collections import namedtuple
 
 from app.middleware import db
 from app.helpers import get_tts_safely
@@ -32,6 +35,52 @@ def test_ticket_registered(c):
     assert Printer.get().value == printer_value
     assert Printer.get().active is False
     assert Touch_store.get().n is True
+
+
+@pytest.mark.usefixtures('c')
+def test_ticket_printed(c, monkeypatch):
+    vendor = '0xAA'
+    product = '0xAA'
+    in_ep = 170
+    out_ep = 170
+    in_config = namedtuple('in_config', ['bEndpointAddress'])
+    usb_device = namedtuple('usb', ['get_active_configuration', 'idVendor', 'idProduct'])
+    mock_usb_find = MagicMock(return_value=[usb_device(
+        lambda: {(0, 0): [in_config(in_ep), in_config(out_ep)]},
+        vendor,
+        product)])
+    monkeypatch.setattr(usb.core, 'find', mock_usb_find)
+
+    with c.application.app_context():
+        # NOTE: set ticket setting to printed
+        touch_screen_settings = Touch_store.get()
+        touch_screen_settings.n = False
+        db.session.commit()
+
+    printer_value = 1
+    kind = 2  # NOTE: Printed
+    lang = 'en'
+    printers = f'{vendor}_{product}_{in_ep}_{out_ep}'
+    scale = 1
+    response = c.post('/ticket', data={
+        'value': printer_value,
+        'kind': kind,
+        'langu': lang,
+        'printers': printers,
+        'scale': scale
+    }, follow_redirects=True)
+
+    assert response.status == '200 OK'
+    assert Touch_store.get().n is False
+    assert Printer.get().active is True
+    assert Printer.get().value == printer_value
+    assert Printer.get().langu == lang
+    assert Printer.get().scale == scale
+    assert Printer.get().in_ep == in_ep
+    assert Printer.get().out_ep == out_ep
+    assert Printer.get().vendor == vendor
+    assert Printer.get().product == product
+    assert mock_usb_find.call_count == 2
 
 
 @pytest.mark.usefixtures('c')

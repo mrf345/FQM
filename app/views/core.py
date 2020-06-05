@@ -104,10 +104,7 @@ def serial(t_id, office_id=None):
     office = office or task.least_tickets_office()
 
     if printed:
-        try:
-            current_ticket = data.Serial.all_office_tickets(office.id).first().number
-        except Exception: 
-            current_ticket = None
+        current_ticket = getattr(data.Serial.all_office_tickets(office.id).first(), 'number', None)
         common_arguments = (f'{office.prefix}.{next_number}',
                             f'{office.prefix}{office.name}',
                             data.Serial.all_office_tickets(office.id).count(),
@@ -129,7 +126,7 @@ def serial(t_id, office_id=None):
                     return printer_failure_redirect(exception)
         else:
             try:
-                printer = assign(int(ticket_settings.vendor), int(ticket_settings.product),
+                printer = assign(int(ticket_settings.vendor, 16), int(ticket_settings.product, 16),
                                  int(ticket_settings.in_ep), int(ticket_settings.out_ep))
 
                 (printit_ar if ticket_settings.langu == 'ar' else printit)(printer,
