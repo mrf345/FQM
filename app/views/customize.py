@@ -57,13 +57,14 @@ def ticket():
                 return redirect(url_for('cust_app.ticket'))
 
             if windows:
+                printer.product = printer_id
+            else:
                 id_chunks = printer_id.split('_')
                 printer.vendor = id_chunks[0]
                 printer.product = id_chunks[1]
                 printer.in_ep = int(id_chunks[2])
                 printer.out_ep = int(id_chunks[3])
 
-            printer.product = printer_id
             printer.active = True
             printer.langu = form.langu.data
             printer.value = form.value.data
