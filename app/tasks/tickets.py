@@ -3,7 +3,7 @@ from sqlalchemy.sql import not_
 from app.tasks.base import Task
 from app.database import Serial, Display_store, Aliases
 from app.middleware import gTTs
-from app.utils import log_error
+from app.utils import log_error, create_aliternative_db
 from app.helpers import get_tts_safely
 
 
@@ -25,6 +25,7 @@ class CacheTicketsAnnouncements(Task):
         self.limit = limit
         self.cached = []
         self.tts_texts = get_tts_safely()
+        self.session, self.db = create_aliternative_db(self.app.config.get('DB_NAME'))
 
     def format_announcement_text(self, ticket, aliases, language, show_prefix):
         ''' Helper to format text-to-speech text.
@@ -58,18 +59,22 @@ class CacheTicketsAnnouncements(Task):
     def run(self):
         @self.execution_loop()
         def main():
-            display_settings = Display_store.query.first()
+            display_settings = self.session.query(Display_store).first()
 
             if display_settings.announce != 'false':
                 aliases = Aliases.query.first()
                 languages = display_settings.announce.split(',')
-                tickets_to_remove = Serial.query.filter(Serial.p == True,
-                                                        Serial.number.in_(self.cached))
-                tickets_to_cache = Serial.query.filter(Serial.p == False,
-                                                       Serial.number != 100,
-                                                       not_(Serial.number.in_(self.cached)))\
-                                               .order_by(Serial.timestamp)\
-                                               .limit(self.limit)
+                tickets_to_remove = self.session\
+                                        .query(Serial)\
+                                        .filter(Serial.p == True,
+                                                Serial.number.in_(self.cached))
+                tickets_to_cache = self.session\
+                                       .query(Serial)\
+                                       .filter(Serial.p == False,
+                                               Serial.number != 100,
+                                               not_(Serial.number.in_(self.cached)))\
+                                       .order_by(Serial.timestamp)\
+                                       .limit(self.limit)
 
                 @self.none_blocking_loop(tickets_to_cache)
                 def cache_tickets(ticket):

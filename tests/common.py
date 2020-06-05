@@ -32,7 +32,8 @@ PREFIXES = [p for p in list(map(lambda i: chr(i).upper(), range(97, 123))) if p 
 
 MODULES = [Serial, User, Operators, Task, Office, Media, Slides]
 DEFAULT_MODULES = [Touch_store, Display_store, Vid, Slides_c, Aliases, Printer]
-DB_PATH = absolute_path('testing.sqlite')
+DB_NAME = 'testing.sqlite'
+DB_PATH = absolute_path(DB_NAME)
 TEST_REPEATS = 3
 ENTRY_NUMBER = 10
 
@@ -42,6 +43,7 @@ def c():
     app_config = {'LOGIN_DISABLED': True,
                   'WTF_CSRF_ENABLED': False,
                   'TESTING': True,
+                  'DB_NAME': DB_NAME,
                   'SQLALCHEMY_DATABASE_URI': f'sqlite:///{DB_PATH}'}
     db_fd, app_config['DATABASE'] = tempfile.mkstemp()
     app = bundle_app(app_config)

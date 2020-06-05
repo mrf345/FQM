@@ -197,8 +197,8 @@ def test_pull_tickets_from_all(_, c):
 @pytest.mark.usefixtures('c')
 def test_pull_random_ticket(_, c):
     with c.application.app_context():
-        ticket = choice(Serial.query.filter_by(n=False)\
-                                    .limit(10)\
+        ticket = choice(Serial.query.filter_by(n=False)
+                                    .limit(10)
                                     .all())
         office = choice(ticket.task.offices)
 
