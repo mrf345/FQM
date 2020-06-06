@@ -146,7 +146,7 @@ def test_new_printed_ticket_fail(c):
 
     assert response.status == '200 OK'
     assert new_ticket.id == last_ticket.id
-    assert "ValueError: invalid literal for int() with base 16: ' '" in errors_log_content
+    assert 'escpos.exceptions.USBNotFoundError: USB device not found' in errors_log_content
 
 
 @pytest.mark.usefixtures('c')
