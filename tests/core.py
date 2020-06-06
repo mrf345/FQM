@@ -1,8 +1,11 @@
 import pytest
+import os
 import escpos.printer
 from random import choice
 from unittest.mock import MagicMock
 
+import app.views.core
+import app.printer
 from .common import NAMES, TEST_REPEATS
 from app.middleware import db
 from app.utils import absolute_path
@@ -54,8 +57,8 @@ def test_new_printed_ticket(c, monkeypatch):
         printer_settings = Printer.get()
         touch_screen_settings = Touch_store.get()
         touch_screen_settings.n = False
-        printer_settings.vendor = '0xAA'
-        printer_settings.product = '0xAA'
+        printer_settings.vendor = 150
+        printer_settings.product = 3
         printer_settings.in_ep = 170
         printer_settings.out_ep = 170
         db.session.commit()
@@ -78,6 +81,48 @@ def test_new_printed_ticket(c, monkeypatch):
     assert mock_printer().set.call_count == 7
     mock_printer().set.assert_called_with(align='left', height=1, width=1)
     mock_printer().cut.assert_called_once()
+
+
+@pytest.mark.usefixtures('c')
+def test_new_printed_ticket_windows(c, monkeypatch):
+    last_ticket = None
+    printer_name = 'testing_printer'
+    printer_path = 'testing_path'
+    printer_full_path = os.path.join(os.getcwd(), f'{printer_path}.txt')
+    mock_uuid = MagicMock()
+    mock_uuid.uuid4 = MagicMock(return_value=printer_path)
+    mock_os = MagicMock()
+    mock_os.name = 'nt'
+    mock_system = MagicMock()
+    monkeypatch.setattr(app.views.core, 'os', mock_os)
+    monkeypatch.setattr(app.printer, 'name', 'nt')
+    monkeypatch.setattr(app.printer, 'uuid', mock_uuid)
+    monkeypatch.setattr(app.printer, 'system', mock_system)
+
+    with c.application.app_context():
+        # NOTE: set ticket setting to printed
+        printer_settings = Printer.get()
+        touch_screen_settings = Touch_store.get()
+        touch_screen_settings.n = False
+        printer_settings.name = printer_name
+        db.session.commit()
+
+        task = choice(Task.query.all())
+        last_ticket = Serial.query.filter_by(task_id=task.id)\
+                                  .order_by(Serial.number.desc()).first()
+
+    name = 'TESTING PRINTED TICKET'
+    response = c.post(f'/serial/{task.id}', data={
+        'name': name
+    }, follow_redirects=True)
+    new_ticket = Serial.query.filter_by(task_id=task.id)\
+                             .order_by(Serial.number.desc()).first()
+
+    assert response.status == '200 OK'
+    assert last_ticket.number != new_ticket.number
+    assert new_ticket.name == name
+    mock_system.assert_called_once_with(
+        f'print /D:\\\localhost\\"{printer_name}" "{printer_full_path}"')
 
 
 @pytest.mark.usefixtures('c')

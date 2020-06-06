@@ -19,7 +19,7 @@ from flask_minify import minify
 from sqlalchemy.exc import OperationalError
 
 from app.middleware import db, login_manager, files, gtranslator, gTTs, migrate
-from app.printer import listp
+from app.printer import get_printers
 from app.views.administrate import administrate
 from app.views.core import core
 from app.views.customize import cust_app
@@ -114,7 +114,7 @@ def bundle_app(config={}):
     if os.name != 'nt':
         # !!! it did not work creates no back-end available error !!!
         # !!! strange bug , do not remove !!!
-        if listp():
+        if get_printers():
             pass
 
     @app.route('/language_switch/<language>')

@@ -352,18 +352,18 @@ class Roles(db.Model):
 class Printer(db.Model, Mixin):
     __tablename__ = "printers"
     id = db.Column(db.Integer, primary_key=True)
-    vendor = db.Column(db.String(100), nullable=True, unique=True)
-    product = db.Column(db.String(100), unique=True)
+    vendor = db.Column(db.Integer, nullable=True, unique=True)
+    product = db.Column(db.Integer, nullable=True, unique=True)
     in_ep = db.Column(db.Integer, nullable=True)
     out_ep = db.Column(db.Integer, nullable=True)
     active = db.Column(db.Boolean())
     langu = db.Column(db.String(100))
     value = db.Column(db.Integer)
     scale = db.Column(db.Integer, default=1)
+    name = db.Column(db.String(100), nullable=True)
 
-    def __init__(self, vendor=" ", product=" ",
-                 in_ep=0, out_ep=0, active=False,
-                 langu='en', value=1, scale=1):
+    def __init__(self, vendor=0, product=0, in_ep=None, out_ep=None, active=False,
+                 langu='en', value=1, scale=1, name=None):
         self.vendor = vendor
         self.product = product
         self.in_ep = in_ep
@@ -371,6 +371,7 @@ class Printer(db.Model, Mixin):
         self.active = active
         self.value = value
         self.scale = scale
+        self.name = name
 
 
 # 00 Configuration Tabels 00 #
