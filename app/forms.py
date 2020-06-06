@@ -567,20 +567,25 @@ class Printer_f(FlaskForm):
         self.scale.label = gtranslator.translate('Select font scaling measurement for printed tickets :',
                                                  'en', [defLang])
         self.scale.choices = [(i, f'x{i}') for i in PRINTED_TICKET_SCALES]
+        printer_choices = []
 
-        printers = []
-        inspected_printers = inspected_printers_from_view
-        if len(inspected_printers) >= 1:
-            for printer in inspected_printers:
+        if inspected_printers_from_view:
+            for printer in inspected_printers_from_view:
                 if name == 'nt':
-                    printers.append((str(printer), 'Printer Name: ' + str(printer)))
+                    printer_choices.append((f'{printer}', f'Printer Name: {printer}'))
                 else:
-                    ful = str(printer[0]) + '_' + str(printer[1])
-                    ful += '_' + str(printer[2]) + '_' + str(printer[3])
-                    printers.append((ful, 'Printer ID : ' + str(printer[0]) + '_' + str(printer[1])))
+                    vendor, product = printer.get('vendor'), printer.get('product')
+                    in_ep, out_ep = printer.get('in_ep'), printer.get('out_ep')
+                    identifier = f'{vendor}_{product}'
+
+                    if in_ep and out_ep:
+                        identifier += f'_{in_ep}_{out_ep}'
+
+                    printer_choices.append((identifier, f'Printer ID: {vendor}_{product}'))
         else:
-            printers.append(('00', gtranslator.translate("No printers were found", 'en', [defLang])))
-        self.printers.choices = printers
+            printer_choices.append(('00', gtranslator.translate("No printers were found", 'en', [defLang])))
+
+        self.printers.choices = printer_choices
 
 
 # Aliases form

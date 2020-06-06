@@ -63,7 +63,6 @@ def c():
             fill_slides()
         yield client
 
-    register(lambda: os.path.isfile(DB_PATH) and os.remove(DB_PATH))
     os.close(db_fd)
     os.unlink(app.config['DATABASE'])
 
@@ -181,3 +180,11 @@ def get_first_office_with_tickets(client):
                                    Serial.office_id == office.id)\
                            .first():
                 return office
+
+
+def before_exit():
+    os.path.isfile(DB_PATH) and os.remove(DB_PATH)
+    os.path.isfile(absolute_path('errors.log')) and os.remove(absolute_path('errors.log'))
+
+
+register(before_exit)

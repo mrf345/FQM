@@ -7,8 +7,8 @@ from werkzeug import secure_filename
 import app.forms as forms
 import app.database as data
 from app.middleware import db, files
-from app.printer import listp
-from app.utils import absolute_path, getFolderSize, execute
+from app.printer import get_printers
+from app.utils import absolute_path, getFolderSize, execute, convert_to_int_or_hex
 from app.constants import SUPPORTED_MEDIA_FILES
 from app.helpers import (reject_not_admin, get_tts_safely, reject_slides_enabled,
                          reject_videos_enabled)
@@ -38,7 +38,7 @@ def ticket():
     printers = execute('wmic printer get sharename',
                        parser='\n',
                        encoding='utf-16'
-                       )[1:] if windows else listp()
+                       )[1:] if windows else get_printers()
     form = forms.Printer_f(printers, session.get('lang'))
     touch_screen_settings = data.Touch_store.get()
     printer = data.Printer.get()
@@ -57,13 +57,18 @@ def ticket():
                 return redirect(url_for('cust_app.ticket'))
 
             if windows:
-                printer.product = printer_id
+                printer.name = printer_id
             else:
                 id_chunks = printer_id.split('_')
-                printer.vendor = id_chunks[0]
-                printer.product = id_chunks[1]
-                printer.in_ep = int(id_chunks[2])
-                printer.out_ep = int(id_chunks[3])
+                printer.vendor = convert_to_int_or_hex(id_chunks[0])
+                printer.product = convert_to_int_or_hex(id_chunks[1])
+
+                if len(id_chunks) == 4:
+                    printer.in_ep = convert_to_int_or_hex(id_chunks[2])
+                    printer.out_ep = convert_to_int_or_hex(id_chunks[3])
+                else:
+                    printer.in_ep = None
+                    printer.out_ep = None
 
             printer.active = True
             printer.langu = form.langu.data
@@ -77,11 +82,15 @@ def ticket():
 
     if not form.errors:
         form.kind.data = 1 if touch_screen_settings.n else 2
-        form.printers.data = f'{printer.vendor}_{printer.product}'
-        form.printers.data += f'_{printer.in_ep}_{printer.out_ep}'
         form.langu.data = printer.langu
         form.value.data = printer.value
         form.scale.data = printer.scale
+
+        if windows:
+            form.printers.data = printer.name or ''
+        else:
+            form.printers.data = f'{printer.vendor}_{printer.product}'
+            form.printers.data += f'_{printer.in_ep}_{printer.out_ep}'
 
     return render_template('ticket.html', navbar='#snb2',
                            page_title='Tickets',

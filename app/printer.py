@@ -14,9 +14,25 @@ from bidi.algorithm import get_display
 from PIL import Image, ImageDraw, ImageFont
 from os import remove, getcwd, path, name, system
 
-from app.utils import absolute_path, get_with_alias, log_error
+from app.utils import absolute_path, get_with_alias, log_error, convert_to_int_or_hex
 from app.middleware import gtranslator
 from app.constants import VERSION, PRINTED_TICKET_DIMENSIONS, PRINTED_TICKET_MAXIMUM_HEIGH_OR_WIDTH
+
+
+class find_class(object):
+    def __init__(self, class_):
+        self._class = class_
+
+    def __call__(self, device):
+        if device.bDeviceClass == self._class:
+            return True
+
+        for cfg in device:
+            intf = usb.util.find_descriptor(cfg, bInterfaceClass=self._class)
+            if intf is not None:
+                return True
+
+        return False
 
 
 def get_font_height_width(font='regular', scale=1):
@@ -51,23 +67,61 @@ def get_font_height_width(font='regular', scale=1):
             'width': multiply_within_limit(width)}
 
 
-class find_class(object):
-    def __init__(self, class_):
-        self._class = class_
+def get_printers():
+    ''' Get list of printers via `PyUSB.core.find`.
 
-    def __call__(self, device):
-        # first, let's check the device
-        if device.bDeviceClass == self._class:
-            return True
-        # ok, transverse all devices to find an
-        # interface that matches our class
-        for cfg in device:
-            # find_descriptor: what's it?
-            intf = usb.util.find_descriptor(cfg, bInterfaceClass=self._class)
-            if intf is not None:
-                return True
+    Returns
+    -------
+        List of printers details. Example::
+            [{'vendor': int, 'product': int, 'in_ep': int, 'out_ep': int}, ...]
+    '''
+    printers = []
 
-        return False
+    try:
+        for printer in usb.core.find(find_all=True, custom_match=find_class(7)):
+            details = {}
+            details['vendor'] = convert_to_int_or_hex(printer.idVendor)
+            details['product'] = convert_to_int_or_hex(printer.idProduct)
+
+            try:
+                configuration = printer.get_active_configuration()
+                in_ep = configuration[(0, 0)][0].bEndpointAddress
+                out_ep = configuration[(0, 0)][1].bEndpointAddress
+                details['in_ep'] = convert_to_int_or_hex(in_ep)
+                details['out_ep'] = convert_to_int_or_hex(out_ep)
+            except Exception:
+                pass
+
+            printers.append(details)
+    except Exception as exception:
+        log_error(exception)
+
+    return printers
+
+
+def assign(vendor_id, product_id, in_ep=None, out_ep=None):
+    ''' Assign a new printer session and attach it.
+
+    Parameters
+    __________
+        vendor_id: int
+        product_id: int
+        in_ep: int
+        out_ep: int
+
+    Returns
+    -------
+        ESCPOS Printer instance.
+    '''
+    args = [vendor_id, product_id, 0]
+
+    if in_ep and out_ep:
+        args += [in_ep, out_ep]
+
+    printer = getp.Usb(*args)
+    printer.text("\n")
+
+    return printer
 
 
 def get_translation(text, language):
@@ -117,25 +171,6 @@ def print_ticket_windows(pname, a, b, c, d, cit, ip, l='en', scale=1):
 
     system(f'print /D:\\\localhost\\"{pname}" "{file_path}"')
     path.isfile(file_path) and remove(file_path)
-
-
-def assign(v, p, in_ep, out_ep):
-    printer = getp.Usb(v, p, 0, in_ep, out_ep)
-    printer.text("\n")
-    return printer
-
-
-def listp():
-    vl = []
-    try:
-        for ll in usb.core.find(find_all=True, custom_match=find_class(7)):
-            cfg = ll.get_active_configuration()
-            in_ep = int(cfg[(0, 0)][0].bEndpointAddress)
-            out_ep = int(cfg[(0, 0)][1].bEndpointAddress)
-            vl.append([ll.idVendor, ll.idProduct, in_ep, out_ep])
-    except Exception as exception:
-        log_error(exception)
-    return vl
 
 
 def printit_ar(pname, ti, ofc, tnu, tas, cticket, lang=None):

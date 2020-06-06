@@ -16,7 +16,7 @@ from app.constants import MIGRATION_FOLDER
 # currently needed for sql alchemy, login manager and flask-uploads
 
 db = SQLAlchemy()
-migrate = Migrate(directory=MIGRATION_FOLDER)
+migrate = Migrate(directory=MIGRATION_FOLDER, compare_type=True)
 login_manager = LoginManager()
 login_manager.login_view = "login"
 files = UploadSet('files', ALL)

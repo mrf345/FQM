@@ -63,19 +63,6 @@ def root(n=None):
 @core.route('/serial/<int:t_id>/<int:office_id>', methods=['GET', 'POST'])
 def serial(t_id, office_id=None):
     ''' generate a new ticket and print it. '''
-    def printer_failure_redirect(exception):
-        flash('Error: you must have available printer, to use printed', 'danger')
-        flash('Notice: make sure that printer is properly connected', 'info')
-
-        if os.name == 'nt':
-            flash('Notice: Make sure to make the printer shared on the local network', 'info')
-        elif 'linux' in platform:
-            flash('Notice: Make sure to execute the command `sudo gpasswd -a $(users) lp` and '
-                  'reboot the system', 'info')
-
-        log_error(exception)
-        return redirect(url_for('core.root'))
-
     form = forms.Touch_name(session.get('lang'))
     task = data.Task.get(t_id)
     office = data.Office.get(office_id)
@@ -111,30 +98,33 @@ def serial(t_id, office_id=None):
                             task.name,
                             f'{office.prefix}.{current_ticket}')
 
-        if os.name == 'nt':  # NOTE: Windows printing
-            has_printers = bool(execute('wmic printer get sharename', parser='\n', encoding='utf-16')[1:])
-
-            if has_printers:
-                try:
-                    (print_ticket_windows_ar
-                     if ticket_settings.langu == 'ar' else
-                     print_ticket_windows)(ticket_settings.product,
-                                           *common_arguments,
-                                           ip=current_app.config.get('LOCALADDR'),
-                                           l=ticket_settings.langu)
-                except Exception as exception:
-                    return printer_failure_redirect(exception)
-        else:
-            try:
-                printer = assign(int(ticket_settings.vendor, 16), int(ticket_settings.product, 16),
-                                 int(ticket_settings.in_ep), int(ticket_settings.out_ep))
-
+        try:
+            if os.name == 'nt':
+                (print_ticket_windows_ar
+                 if ticket_settings.langu == 'ar' else
+                 print_ticket_windows)(ticket_settings.name,
+                                       *common_arguments,
+                                       ip=current_app.config.get('LOCALADDR'),
+                                       l=ticket_settings.langu)
+            else:
+                printer = assign(ticket_settings.vendor, ticket_settings.product,
+                                 ticket_settings.in_ep, ticket_settings.out_ep)
                 (printit_ar if ticket_settings.langu == 'ar' else printit)(printer,
                                                                            *common_arguments,
                                                                            lang=ticket_settings.langu,
                                                                            scale=ticket_settings.scale)
-            except Exception as exception:
-                return printer_failure_redirect(exception)
+        except Exception as exception:
+            flash('Error: you must have available printer, to use printed', 'danger')
+            flash('Notice: make sure that printer is properly connected', 'info')
+
+            if os.name == 'nt':
+                flash('Notice: Make sure to make the printer shared on the local network', 'info')
+            elif 'linux' in platform:
+                flash('Notice: Make sure to execute the command `sudo gpasswd -a $(users) lp` and '
+                      'reboot the system', 'info')
+
+            log_error(exception)
+            return redirect(url_for('core.root'))
 
     db.session.add(data.Serial(number=next_number, office_id=office.id, task_id=task.id,
                                name=name_or_number, n=not printed))

@@ -73,7 +73,12 @@ then
   if [ -d installiation/ ]
   then
     source installiation/bin/activate
-    python -m pytest --count=2 -W ignore -vv tests/* --cov=./app
+    if [ -z "$2" ]
+    then
+      python -m pytest --count=2 -W ignore -vv tests/* --cov=./app
+    else
+      python -m pytest --count=$2 -W ignore -vv tests/* --cov=./app
+    fi
   else
     echo $error1
   fi

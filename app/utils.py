@@ -298,6 +298,27 @@ def get_with_alias(db_name=None):
     }
 
 
+def convert_to_int_or_hex(value):
+    ''' Covert string or hex string to int or int/16.
+
+    Parameters
+    ----------
+        value: str
+            value to convert to int.
+
+    Returns
+    -------
+        Int of converted value.
+    '''
+    try:
+        return int(value)
+    except Exception:
+        try:
+            return int(value, 16)
+        except Exception:
+            pass
+
+
 def create_default_records():
     ''' create database necessary records, if not existing. '''
     tables = [data.Display_store, data.Touch_store, data.Slides_c,
