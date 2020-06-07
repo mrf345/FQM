@@ -143,13 +143,13 @@
 		  			</div>
 					<div class="col-xs-12 col-sm-2">
 						{% if not o.p %}
-						<a href="{{ url_for('core.on_hold', ticket_id=o.id, redirect_to=current_path.replace('/', '(')) }}"
+						<a href="{{ url_for('core.on_hold', ticket_id=o.id, redirect_to=current_path) }}"
 					   	   data-toggle="tooltip" title="{{ translate('On-Hold', 'en', [defLang]) }}"
 						>
 						  <span class="mr-1 fa fa-{% if o.on_hold %}unlock text-primary{% else %}lock text-danger{% endif %}"></span>
 						</a>
 						{% if not o.on_hold %}
-							<a href="{{ url_for('core.pull_unordered', office_id=ooid.id, ticket_id=o.id, redirect_to=current_path.replace('/', '(')) }}"
+							<a href="{{ url_for('core.pull_unordered', office_id=ooid.id, ticket_id=o.id, redirect_to=current_path) }}"
 							   data-toggle="tooltip" title="{{ translate('Pull', 'en', [defLang]) }}"
 							>
           						<span class="fa fa-minus text-primary"></span>

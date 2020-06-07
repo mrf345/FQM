@@ -127,21 +127,21 @@
                                     {% if current_user.id == 1 %}
                                     <li class="dropdown-header">( {{ translate('Strict Tasks Pulling', 'en', [defLang]) }} )</li>
                                     <li>
-                                        <a href="{{ url_for('core.settings', setting='strict_pulling', togo=current_path.replace('/', '(')) }}">
+                                        <a href="{{ url_for('core.settings', setting='strict_pulling', togo=current_path) }}">
                                             <span class="fa fa-lock"></span>
                                             {{ translate('Disable' if settings.strict_pulling == True else 'Enable', 'en', [defLang]) }}
                                         </a>
                                     </li>
                                     <li class="dropdown-header">( {{ translate('Visual Effects', 'en', [defLang]) }} )</li>
                                     <li>
-                                        <a href="{{ url_for('core.settings', setting='visual_effects', togo=current_path.replace('/', '(')) }}">
+                                        <a href="{{ url_for('core.settings', setting='visual_effects', togo=current_path) }}">
                                             <span class="fa fa-eye"></span>
                                             {{ translate('Disable' if settings.visual_effects == True else 'Enable', 'en', [defLang]) }}
                                         </a>
                                     </li>
                                     <li class="dropdown-header">( {{ translate('Notifications', 'en', [defLang]) }} )</li>
                                     <li>
-                                        <a href="{{ url_for('core.settings', setting='notifications', togo=current_path.replace('/', '(')) }}">
+                                        <a href="{{ url_for('core.settings', setting='notifications', togo=current_path) }}">
                                             <span class="fa fa-bell"></span>
                                             {{ translate('Disable' if settings.notifications == True else 'Enable', 'en', [defLang]) }}
                                         </a>
