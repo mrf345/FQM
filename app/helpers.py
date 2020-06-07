@@ -4,6 +4,7 @@ License, v. 2.0. If a copy of the MPL was not distributed with this
 file, You can obtain one at http://mozilla.org/MPL/2.0/. '''
 import os
 import json
+from urllib.parse import unquote
 from functools import wraps
 from flask import current_app, flash, redirect, url_for
 from flask_login import current_user
@@ -238,6 +239,24 @@ def reject_slides_enabled(function):
             return function(*args, **kwargs)
 
     return decorated
+
+
+def decode_links(function):
+    ''' Decorator to `urllib.parse.unquote` string arguments.
+
+    Returns
+    -------
+        Decorator for the passed `function`
+    '''
+    @wraps(function)
+    def decorated(*args, **kwargs):
+        clean_args = [unquote(a) if type(a) is str else a for a in args]
+        clean_kwargs = {k: unquote(v) if type(v) is str else v for k, v in kwargs.items()}
+
+        return function(*clean_args, **clean_kwargs)
+
+    return decorated
+
 
 def get_tts_safely():
     ''' Helper to read gTTS data from `static/tts.json` file safely.

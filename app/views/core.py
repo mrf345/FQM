@@ -3,6 +3,7 @@ License, v. 2.0. If a copy of the MPL was not distributed with this
 file, You can obtain one at http://mozilla.org/MPL/2.0/. '''
 
 import os
+import urllib
 from sys import platform
 from flask import url_for, flash, render_template, redirect, session, jsonify, Blueprint, current_app
 from flask_login import current_user, login_required, login_user
@@ -11,9 +12,9 @@ import app.forms as forms
 import app.database as data
 from app.printer import assign, printit, printit_ar, print_ticket_windows, print_ticket_windows_ar
 from app.middleware import db, gtranslator
-from app.utils import execute, log_error
+from app.utils import log_error
 from app.helpers import (reject_no_offices, reject_operator, is_operator, reject_not_admin,
-                         is_office_operator, is_common_task_operator)
+                         is_office_operator, is_common_task_operator, decode_links)
 
 
 core = Blueprint('core', __name__)
@@ -260,6 +261,7 @@ def pull(o_id=None, ofc_id=None):
 @core.route('/pull_unordered/<ticket_id>/<redirect_to>', defaults={'office_id': None})
 @core.route('/pull_unordered/<ticket_id>/<redirect_to>/<int:office_id>')
 @login_required
+@decode_links
 def pull_unordered(ticket_id, redirect_to, office_id=None):
     office = data.Office.get(office_id)
     ticket = data.Serial.query.filter_by(id=ticket_id).first()
@@ -277,11 +279,12 @@ def pull_unordered(ticket_id, redirect_to, office_id=None):
 
     ticket.pull((office or ticket.office).id)
     flash('Notice: Ticket has been pulled ..', 'info')
-    return redirect(f'{redirect_to}'.replace('(', '/'))
+    return redirect(redirect_to)
 
 
 @core.route('/on_hold/<ticket_id>/<redirect_to>')
 @login_required
+@decode_links
 def on_hold(ticket_id, redirect_to):
     ticket = data.Serial.query.filter_by(id=ticket_id).first()
     strict_pulling = data.Settings.get().strict_pulling
@@ -298,7 +301,7 @@ def on_hold(ticket_id, redirect_to):
 
     ticket.toggle_on_hold()
     flash('Notice: On-hold status has changed successfully', 'info')
-    return redirect(f'{redirect_to}'.replace('(', '/'))
+    return redirect(redirect_to)
 
 
 @core.route('/feed', defaults={'office_id': None})
@@ -386,10 +389,10 @@ def touch(a, office_id=None):
 @core.route('/settings/<setting>/<togo>')
 @login_required
 @reject_not_admin
+@decode_links
 def settings(setting, togo):
     ''' toggle a setting. '''
     settings = data.Settings.get()
-    togo = f'{togo}'.replace('(', '/')
 
     if not settings:
         flash('Error: Failed to find settings in the database', 'danger')

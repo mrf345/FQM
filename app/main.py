@@ -4,6 +4,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/. '''
 
 import os
 from functools import reduce
+from urllib.parse import quote
 from flask import Flask, request, Markup, session, redirect, url_for, flash, render_template
 from flask_migrate import upgrade as database_upgrade
 from flask_pagedown import PageDown
@@ -194,9 +195,9 @@ def bundle_app(config={}):
         admin_routes = ['/users', '/user_a', '/admin_u', '/user_u', '/csv', '/settings']
         admin_route = any([path in admin_routes, path[:7] in admin_routes, path[:5] in admin_routes])
 
-        return dict(path=path, adme=admin_route, brp=Markup('<br>'), ar=ar, current_path=request.path,
-                    version=VERSION, str=str, defLang=session.get('lang'), getattr=getattr,
-                    settings=Settings.get(), checkId=lambda id, records: id in [i.id for i in records],
-                    Serial=Serial, offices=Office.query.all(), moment_wrapper=moment_wrapper)
+        return dict(path=path, adme=admin_route, brp=Markup('<br>'), ar=ar, version=VERSION, str=str,
+                    defLang=session.get('lang'), getattr=getattr, settings=Settings.get(), Serial=Serial,
+                    checkId=lambda id, records: id in [i.id for i in records], offices=Office.query.all(),
+                    moment_wrapper=moment_wrapper, current_path=quote(request.path, safe=''))
 
     return app
