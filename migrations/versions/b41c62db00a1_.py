@@ -17,16 +17,19 @@ depends_on = None
 
 
 def upgrade():
-    with op.batch_alter_table('printers') as batch:
-        batch.alter_column('vendor',
-                           existing_type=sa.VARCHAR(length=100),
-                           type_=sa.Integer(),
-                           existing_nullable=True)
-        batch.alter_column('product',
-                           existing_type=sa.VARCHAR(length=100),
-                           type_=sa.Integer(),
-                           existing_nullable=True)
-        batch.add_column(sa.Column('name', sa.String(100), nullable=True))
+    try:
+        with op.batch_alter_table('printers') as batch:
+            batch.alter_column('vendor',
+                               existing_type=sa.VARCHAR(length=100),
+                               type_=sa.Integer(),
+                               existing_nullable=True)
+            batch.alter_column('product',
+                               existing_type=sa.VARCHAR(length=100),
+                               type_=sa.Integer(),
+                               existing_nullable=True)
+            batch.add_column(sa.Column('name', sa.String(100), nullable=True))
+    except Exception:
+        pass
 
 
 def downgrade():

@@ -92,11 +92,11 @@ def create_db(app, testing=False):
             flag to disable migrations, mainly used during integration testing.
     '''
     with app.app_context():
-        if not os.path.isfile(absolute_path(DATABASE_FILE)) or testing:
+        if not os.path.isfile(absolute_path(app.config.get('DB_NAME'))):
             db.create_all()
         else:
             try:
-                not testing and database_upgrade(directory=MIGRATION_FOLDER)
+                database_upgrade(directory=MIGRATION_FOLDER)
             except Exception as exception:
                 if not isinstance(exception, OperationalError):
                     log_error(exception, quiet=os.name == 'nt')
