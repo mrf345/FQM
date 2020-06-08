@@ -126,6 +126,179 @@ def test_new_printed_ticket_windows(c, monkeypatch):
 
 
 @pytest.mark.usefixtures('c')
+def test_new_printed_ticket_lp(c, monkeypatch):
+    last_ticket = None
+    printer_name = 'testing_printer'
+    printer_path = 'testing_path'
+    printer_full_path = os.path.join(os.getcwd(), f'{printer_path}.txt')
+    mock_uuid = MagicMock()
+    mock_uuid.uuid4 = MagicMock(return_value=printer_path)
+    mock_os = MagicMock()
+    mock_os.name = 'linux'
+    mock_system = MagicMock()
+    monkeypatch.setattr(app.views.core, 'os', mock_os)
+    monkeypatch.setattr(app.printer, 'name', 'linux')
+    monkeypatch.setattr(app.printer, 'uuid', mock_uuid)
+    monkeypatch.setattr(app.printer, 'system', mock_system)
+
+    with c.application.app_context():
+        # NOTE: set ticket setting to printed and enable lp
+        settings = Settings.get()
+        printer_settings = Printer.get()
+        touch_screen_settings = Touch_store.get()
+        settings.lp_printing = True
+        touch_screen_settings.n = False
+        printer_settings.name = printer_name
+        db.session.commit()
+
+        task = choice(Task.query.all())
+        last_ticket = Serial.query.filter_by(task_id=task.id)\
+                                  .order_by(Serial.number.desc()).first()
+
+    name = 'TESTING PRINTED TICKET'
+    response = c.post(f'/serial/{task.id}', data={
+        'name': name
+    }, follow_redirects=True)
+    new_ticket = Serial.query.filter_by(task_id=task.id)\
+                             .order_by(Serial.number.desc()).first()
+
+    assert response.status == '200 OK'
+    assert last_ticket.number != new_ticket.number
+    assert new_ticket.name == name
+    mock_system.assert_called_once_with(
+        f'lp -d "{printer_name}" -o raw "{printer_full_path}"')
+
+
+@pytest.mark.usefixtures('c')
+def test_new_printed_ticket_arabic(c, monkeypatch):
+    last_ticket = None
+    mock_printer = MagicMock()
+    image_path = os.path.join(os.getcwd(), 'dummy.jpg')
+    monkeypatch.setattr(escpos.printer, 'Usb', mock_printer)
+
+    with c.application.app_context():
+        # NOTE: set ticket setting to printed
+        printer_settings = Printer.get()
+        touch_screen_settings = Touch_store.get()
+        touch_screen_settings.n = False
+        printer_settings.vendor = 150
+        printer_settings.product = 3
+        printer_settings.in_ep = 170
+        printer_settings.out_ep = 170
+        printer_settings.langu = 'ar'
+        db.session.commit()
+
+        task = choice(Task.query.all())
+        last_ticket = Serial.query.filter_by(task_id=task.id)\
+                                  .order_by(Serial.number.desc()).first()
+
+    name = 'TESTING PRINTED TICKET'
+    response = c.post(f'/serial/{task.id}', data={
+        'name': name
+    }, follow_redirects=True)
+    new_ticket = Serial.query.filter_by(task_id=task.id)\
+                             .order_by(Serial.number.desc()).first()
+
+    assert response.status == '200 OK'
+    assert last_ticket.number != new_ticket.number
+    assert new_ticket.name == name
+    assert mock_printer().text.call_count == 1
+    mock_printer().cut.assert_called_once()
+    mock_printer().close.assert_called_once()
+    mock_printer().image.assert_called_once_with(image_path,
+                                                 fragment_height=580,
+                                                 high_density_vertical=True)
+
+
+@pytest.mark.usefixtures('c')
+def test_new_printed_ticket_windows_arabic(c, monkeypatch):
+    last_ticket = None
+    printer_name = 'testing_printer'
+    printer_path = 'testing_path'
+    printer_full_path = os.path.join(os.getcwd(), f'{printer_path}.txt')
+    mock_uuid = MagicMock()
+    mock_uuid.uuid4 = MagicMock(return_value=printer_path)
+    mock_os = MagicMock()
+    mock_os.name = 'nt'
+    mock_system = MagicMock()
+    monkeypatch.setattr(app.views.core, 'os', mock_os)
+    monkeypatch.setattr(app.printer, 'name', 'nt')
+    monkeypatch.setattr(app.printer, 'uuid', mock_uuid)
+    monkeypatch.setattr(app.printer, 'system', mock_system)
+
+    with c.application.app_context():
+        # NOTE: set ticket setting to printed
+        printer_settings = Printer.get()
+        touch_screen_settings = Touch_store.get()
+        touch_screen_settings.n = False
+        printer_settings.name = printer_name
+        printer_settings.langu = 'ar'
+        db.session.commit()
+
+        task = choice(Task.query.all())
+        last_ticket = Serial.query.filter_by(task_id=task.id)\
+                                  .order_by(Serial.number.desc()).first()
+
+    name = 'TESTING PRINTED TICKET'
+    response = c.post(f'/serial/{task.id}', data={
+        'name': name
+    }, follow_redirects=True)
+    new_ticket = Serial.query.filter_by(task_id=task.id)\
+                             .order_by(Serial.number.desc()).first()
+
+    assert response.status == '200 OK'
+    assert last_ticket.number != new_ticket.number
+    assert new_ticket.name == name
+    mock_system.assert_called_once_with(
+        f'print /D:\\\localhost\\"{printer_name}" "{printer_full_path}"')
+
+
+@pytest.mark.usefixtures('c')
+def test_new_printed_ticket_lp_arabic(c, monkeypatch):
+    last_ticket = None
+    printer_name = 'testing_printer'
+    printer_path = 'testing_path'
+    printer_full_path = os.path.join(os.getcwd(), f'{printer_path}.txt')
+    mock_uuid = MagicMock()
+    mock_uuid.uuid4 = MagicMock(return_value=printer_path)
+    mock_os = MagicMock()
+    mock_os.name = 'linux'
+    mock_system = MagicMock()
+    monkeypatch.setattr(app.views.core, 'os', mock_os)
+    monkeypatch.setattr(app.printer, 'name', 'linux')
+    monkeypatch.setattr(app.printer, 'uuid', mock_uuid)
+    monkeypatch.setattr(app.printer, 'system', mock_system)
+
+    with c.application.app_context():
+        # NOTE: set ticket setting to printed and enable lp
+        settings = Settings.get()
+        printer_settings = Printer.get()
+        touch_screen_settings = Touch_store.get()
+        settings.lp_printing = True
+        touch_screen_settings.n = False
+        printer_settings.name = printer_name
+        printer_settings.langu = 'ar'
+        db.session.commit()
+
+        task = choice(Task.query.all())
+        last_ticket = Serial.query.filter_by(task_id=task.id)\
+                                  .order_by(Serial.number.desc()).first()
+
+    name = 'TESTING PRINTED TICKET'
+    response = c.post(f'/serial/{task.id}', data={
+        'name': name
+    }, follow_redirects=True)
+    new_ticket = Serial.query.filter_by(task_id=task.id)\
+                             .order_by(Serial.number.desc()).first()
+
+    assert response.status == '200 OK'
+    assert last_ticket.number != new_ticket.number
+    assert new_ticket.name == name
+    mock_system.assert_called_once_with(
+        f'lp -d "{printer_name}" -o raw "{printer_full_path}"')
+
+
+@pytest.mark.usefixtures('c')
 def test_new_printed_ticket_fail(c):
     with c.application.app_context():
         # NOTE: set ticket setting to printed

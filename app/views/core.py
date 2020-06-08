@@ -3,14 +3,13 @@ License, v. 2.0. If a copy of the MPL was not distributed with this
 file, You can obtain one at http://mozilla.org/MPL/2.0/. '''
 
 import os
-import urllib
 from sys import platform
-from flask import url_for, flash, render_template, redirect, session, jsonify, Blueprint, current_app
+from flask import url_for, flash, render_template, redirect, session, jsonify, Blueprint
 from flask_login import current_user, login_required, login_user
 
 import app.forms as forms
 import app.database as data
-from app.printer import assign, printit, printit_ar, print_ticket_windows, print_ticket_windows_ar
+from app.printer import assign, printit, printit_ar, print_ticket_cli, print_ticket_cli_ar
 from app.middleware import db, gtranslator
 from app.utils import log_error
 from app.helpers import (reject_no_offices, reject_operator, is_operator, reject_not_admin,
@@ -64,11 +63,13 @@ def root(n=None):
 @core.route('/serial/<int:t_id>/<int:office_id>', methods=['GET', 'POST'])
 def serial(t_id, office_id=None):
     ''' generate a new ticket and print it. '''
+    windows = os.name == 'nt'
     form = forms.Touch_name(session.get('lang'))
     task = data.Task.get(t_id)
     office = data.Office.get(office_id)
-    touch_screen_stings = data.Touch_store.query.first()
-    ticket_settings = data.Printer.query.first()
+    touch_screen_stings = data.Touch_store.get()
+    ticket_settings = data.Printer.get()
+    settings = data.Settings.get()
     printed = not touch_screen_stings.n
     numeric_ticket_form = ticket_settings.value == 2
     name_or_number = form.name.data or None
@@ -100,13 +101,14 @@ def serial(t_id, office_id=None):
                             f'{office.prefix}.{current_ticket}')
 
         try:
-            if os.name == 'nt':
-                (print_ticket_windows_ar
+            if windows or settings.lp_printing:
+                (print_ticket_cli_ar
                  if ticket_settings.langu == 'ar' else
-                 print_ticket_windows)(ticket_settings.name,
-                                       *common_arguments,
-                                       ip=current_app.config.get('LOCALADDR'),
-                                       l=ticket_settings.langu)
+                 print_ticket_cli)(ticket_settings.name,
+                                   *common_arguments,
+                                   language=ticket_settings.langu,
+                                   windows=windows,
+                                   unix=not windows)
             else:
                 printer = assign(ticket_settings.vendor, ticket_settings.product,
                                  ticket_settings.in_ep, ticket_settings.out_ep)
@@ -118,7 +120,7 @@ def serial(t_id, office_id=None):
             flash('Error: you must have available printer, to use printed', 'danger')
             flash('Notice: make sure that printer is properly connected', 'info')
 
-            if os.name == 'nt':
+            if windows:
                 flash('Notice: Make sure to make the printer shared on the local network', 'info')
             elif 'linux' in platform:
                 flash('Notice: Make sure to execute the command `sudo gpasswd -a $(users) lp` and '

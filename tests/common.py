@@ -8,7 +8,8 @@ from atexit import register
 from app.main import bundle_app
 from app.middleware import db
 from app.database import (User, Operators, Office, Task, Serial, Media, Touch_store,
-                          Display_store, Vid, Slides_c, Slides, Aliases, Printer)
+                          Display_store, Vid, Slides_c, Slides, Aliases, Printer,
+                          Settings)
 from app.utils import absolute_path
 from app.tasks import stop_tasks
 
@@ -31,11 +32,16 @@ TEST_PREFIX = 'Z'
 PREFIXES = [p for p in list(map(lambda i: chr(i).upper(), range(97, 123))) if p != TEST_PREFIX]
 
 MODULES = [Serial, User, Operators, Task, Office, Media, Slides]
-DEFAULT_MODULES = [Touch_store, Display_store, Vid, Slides_c, Aliases, Printer]
+DEFAULT_MODULES = [Touch_store, Display_store, Vid, Slides_c, Aliases, Printer, Settings]
 DB_NAME = 'testing.sqlite'
 DB_PATH = absolute_path(DB_NAME)
 TEST_REPEATS = 3
 ENTRY_NUMBER = 10
+
+
+def before_exit():
+    os.path.isfile(DB_PATH) and os.remove(DB_PATH)
+    os.path.isfile(absolute_path('errors.log')) and os.remove(absolute_path('errors.log'))
 
 
 @pytest.fixture
@@ -65,6 +71,7 @@ def c():
 
     os.close(db_fd)
     os.unlink(app.config['DATABASE'])
+    before_exit()
 
 
 def teardown_tables(modules):
@@ -180,11 +187,6 @@ def get_first_office_with_tickets(client):
                                    Serial.office_id == office.id)\
                            .first():
                 return office
-
-
-def before_exit():
-    os.path.isfile(DB_PATH) and os.remove(DB_PATH)
-    os.path.isfile(absolute_path('errors.log')) and os.remove(absolute_path('errors.log'))
 
 
 register(before_exit)

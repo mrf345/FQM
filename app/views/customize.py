@@ -7,8 +7,8 @@ from werkzeug import secure_filename
 import app.forms as forms
 import app.database as data
 from app.middleware import db, files
-from app.printer import get_printers
-from app.utils import absolute_path, getFolderSize, execute, convert_to_int_or_hex
+from app.printer import get_printers_cli, get_printers_usb
+from app.utils import absolute_path, getFolderSize, convert_to_int_or_hex
 from app.constants import SUPPORTED_MEDIA_FILES
 from app.helpers import (reject_not_admin, get_tts_safely, reject_slides_enabled,
                          reject_videos_enabled)
@@ -35,13 +35,14 @@ def customize():
 def ticket():
     ''' view of ticket customization '''
     windows = os.name == 'nt'
-    printers = execute('wmic printer get sharename',
-                       parser='\n',
-                       encoding='utf-16'
-                       )[1:] if windows else get_printers()
-    form = forms.Printer_f(printers, session.get('lang'))
-    touch_screen_settings = data.Touch_store.get()
+    settings = data.Settings.get()
     printer = data.Printer.get()
+    touch_screen_settings = data.Touch_store.get()
+    printers = get_printers_cli(windows=windows, unix=not windows)\
+        if windows or settings.lp_printing else get_printers_usb()
+    form = forms.Printer_f(printers,
+                           settings.lp_printing,
+                           session.get('lang'))
 
     if form.validate_on_submit():
         if form.kind.data == 1:  # Rigestered
@@ -56,7 +57,7 @@ def ticket():
                       'danger')
                 return redirect(url_for('cust_app.ticket'))
 
-            if windows:
+            if windows or settings.lp_printing:
                 printer.name = printer_id
             else:
                 id_chunks = printer_id.split('_')
@@ -86,7 +87,7 @@ def ticket():
         form.value.data = printer.value
         form.scale.data = printer.scale
 
-        if windows:
+        if windows or settings.lp_printing:
             form.printers.data = printer.name or ''
         else:
             form.printers.data = f'{printer.vendor}_{printer.product}'
