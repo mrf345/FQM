@@ -649,9 +649,12 @@ class Settings(db.Model, Mixin):
     notifications = db.Column(db.Boolean, nullable=True)
     strict_pulling = db.Column(db.Boolean, nullable=True)
     visual_effects = db.Column(db.Boolean, nullable=True)
+    lp_printing = db.Column(db.Boolean, nullable=True)
 
-    def __init__(self, notifications=True, strict_pulling=True, visual_effects=True):
+    def __init__(self, notifications=True, strict_pulling=True, visual_effects=True,
+                 lp_printing=False):
         self.id = 0
         self.notifications = notifications
         self.strict_pulling = strict_pulling
         self.visual_effects = visual_effects
+        self.lp_printing = lp_printing

@@ -146,6 +146,15 @@
                                             {{ translate('Disable' if settings.notifications == True else 'Enable', 'en', [defLang]) }}
                                         </a>
                                     </li>
+                                    {% if unix %}
+                                    <li class="dropdown-header">( {{ translate('Alternative printer driver', 'en', [defLang]) }} )</li>
+                                    <li>
+                                        <a href="{{ url_for('core.settings', setting='lp_printing', togo=current_path) }}">
+                                            <span class="fa fa-print"></span>
+                                            {{ translate('Disable' if settings.lp_printing == True else 'Enable', 'en', [defLang]) }}
+                                        </a>
+                                    </li>
+                                    {% endif %}
                                     {% endif %}
                                 </ul>
                             </li>

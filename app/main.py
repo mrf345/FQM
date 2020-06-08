@@ -20,7 +20,7 @@ from flask_minify import minify
 from sqlalchemy.exc import OperationalError
 
 from app.middleware import db, login_manager, files, gtranslator, gTTs, migrate
-from app.printer import get_printers
+from app.printer import get_printers_usb
 from app.views.administrate import administrate
 from app.views.core import core
 from app.views.customize import cust_app
@@ -115,7 +115,7 @@ def bundle_app(config={}):
     if os.name != 'nt':
         # !!! it did not work creates no back-end available error !!!
         # !!! strange bug , do not remove !!!
-        if get_printers():
+        if get_printers_usb():
             pass
 
     @app.route('/language_switch/<language>')
@@ -198,6 +198,7 @@ def bundle_app(config={}):
         return dict(path=path, adme=admin_route, brp=Markup('<br>'), ar=ar, version=VERSION, str=str,
                     defLang=session.get('lang'), getattr=getattr, settings=Settings.get(), Serial=Serial,
                     checkId=lambda id, records: id in [i.id for i in records], offices=Office.query.all(),
-                    moment_wrapper=moment_wrapper, current_path=quote(request.path, safe=''))
+                    moment_wrapper=moment_wrapper, current_path=quote(request.path, safe=''),
+                    windows=os.name == 'nt', unix=os.name != 'nt')
 
     return app

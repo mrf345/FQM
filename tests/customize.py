@@ -1,16 +1,16 @@
 import pytest
 import io
 import usb.core
-import os
 from unittest.mock import MagicMock
 from collections import namedtuple
 
+import app.printer
 import app.views.customize
 import app.forms
 from app.middleware import db
 from app.helpers import get_tts_safely
 from app.database import (Touch_store, Display_store, Printer, Slides_c,
-                          Vid, Media, Slides, Aliases)
+                          Vid, Media, Slides, Aliases, Settings)
 
 
 @pytest.mark.usefixtures('c')
@@ -89,11 +89,12 @@ def test_ticket_printed(c, monkeypatch):
 @pytest.mark.usefixtures('c')
 def test_ticket_printed_windows(c, monkeypatch):
     name = 'testing_printer'
-    printers = ['', name]
+    secondName = 'second_testing_printer'
+    printers = ['', name, secondName]
     mock_execute = MagicMock(return_value=printers)
     mock_os = MagicMock()
     mock_os.name = 'nt'
-    monkeypatch.setattr(app.views.customize, 'execute', mock_execute)
+    monkeypatch.setattr(app.printer, 'execute', mock_execute)
     monkeypatch.setattr(app.views.customize, 'os', mock_os)
     monkeypatch.setattr(app.forms, 'name', 'nt')
 
@@ -126,6 +127,50 @@ def test_ticket_printed_windows(c, monkeypatch):
     mock_execute.assert_called_with('wmic printer get sharename',
                                     parser='\n',
                                     encoding='utf-16')
+
+
+@pytest.mark.usefixtures('c')
+def test_ticket_printed_lp(c, monkeypatch):
+    name = 'testing_printer'
+    secondName = 'testing_second_printer'
+    printers = [f'{name} description stuff testing',
+                f'{secondName} description stuff testing']
+    mock_execute = MagicMock(return_value=printers)
+    mock_os = MagicMock()
+    mock_os.name = 'linux'
+    monkeypatch.setattr(app.printer, 'execute', mock_execute)
+    monkeypatch.setattr(app.views.customize, 'os', mock_os)
+    monkeypatch.setattr(app.forms, 'name', 'nt')
+
+    with c.application.app_context():
+        # NOTE: set ticket setting to printed
+        settings = Settings.get()
+        touch_screen_settings = Touch_store.get()
+        touch_screen_settings.n = False
+        settings.lp_printing = True
+        db.session.commit()
+
+    printer_value = 1
+    kind = 2  # NOTE: Printed
+    lang = 'en'
+    scale = 2
+    response = c.post('/ticket', data={
+        'value': printer_value,
+        'kind': kind,
+        'langu': lang,
+        'printers': secondName,
+        'scale': scale
+    }, follow_redirects=True)
+
+    assert response.status == '200 OK'
+    assert Touch_store.get().n is False
+    assert Printer.get().active is True
+    assert Printer.get().value == printer_value
+    assert Printer.get().langu == lang
+    assert Printer.get().scale == scale
+    assert Printer.get().name == secondName
+    assert mock_execute.call_count == 2
+    mock_execute.assert_called_with('lpstat -a', parser='\n')
 
 
 @pytest.mark.usefixtures('c')

@@ -14,7 +14,7 @@ from bidi.algorithm import get_display
 from PIL import Image, ImageDraw, ImageFont
 from os import remove, getcwd, path, name, system
 
-from app.utils import absolute_path, get_with_alias, log_error, convert_to_int_or_hex
+from app.utils import absolute_path, get_with_alias, log_error, convert_to_int_or_hex, execute
 from app.middleware import gtranslator
 from app.constants import VERSION, PRINTED_TICKET_DIMENSIONS, PRINTED_TICKET_MAXIMUM_HEIGH_OR_WIDTH
 
@@ -67,7 +67,7 @@ def get_font_height_width(font='regular', scale=1):
             'width': multiply_within_limit(width)}
 
 
-def get_printers():
+def get_printers_usb():
     ''' Get list of printers via `PyUSB.core.find`.
 
     Returns
@@ -95,6 +95,35 @@ def get_printers():
             printers.append(details)
     except Exception as exception:
         log_error(exception)
+
+    return printers
+
+
+def get_printers_cli(windows=False, unix=False):
+    '''Get list of printers via `os.system('lpstat - a')`
+
+    Parameters
+    ----------
+        windows: bool
+            if Windows system
+        unix: bool
+            if unix-like system
+
+    Returns
+    -------
+        list of printer names.
+    '''
+    printers = []
+
+    if unix:
+        printers += [p.split(' ')[0]
+                     for p in execute('lpstat -a', parser='\n')
+                     if p.split(' ')]
+    elif windows:
+        printers += execute('wmic printer get sharename',
+                            parser='\n',
+                            encoding='utf-16'
+                            )[1:]
 
     return printers
 
@@ -161,19 +190,53 @@ def printit(printer, ticket, office, tnumber,
     return printer
 
 
-def print_ticket_windows(pname, a, b, c, d, cit, ip, l='en', scale=1):
-    content = printit(Dummy(), a, b, c, d, cit, lang=l, scale=scale).output
+def print_ticket_cli(printer, ticket, office, tickets_ahead, task, current_ticket,
+                     host='localhost', language='en', scale=1, windows=False, unix=False):
+    '''Print a ticket through the Command-Line interface.
+
+    Parameters
+    ----------
+    printer : str
+        the printer name.
+    ticket : int
+        ticket number.
+    office : str
+        office number and prefix.
+    tickets_ahead : int
+        number of tickets ahead.
+    task : str
+        task's name.
+    current_ticket : int
+        current ticket in the queue.
+    host : str, optional
+        host to find printer on, by default 'localhost'
+    language : str, optional
+        printing language, by default 'en'
+    scale : int, optional
+        ticket font scale, by default 1
+    windows : bool, optional
+        if printing on Windows, by default False
+    unix : bool, optional
+        if printing on Unix-like, by default False
+    '''
+    ticket_content = printit(Dummy(), ticket, office, tickets_ahead, task,
+                             current_ticket, lang=language, scale=scale).output
     file_path = path.join(getcwd(),
                           f'{uuid.uuid4()}'.replace('-', '') + '.txt')
 
     with open(file_path, 'wb+') as file:
-        file.write(content)
+        file.write(ticket_content)
 
-    system(f'print /D:\\\localhost\\"{pname}" "{file_path}"')
-    path.isfile(file_path) and remove(file_path)
+    if unix:
+        system(f'lp -d "{printer}" -o raw "{file_path}"')
+    elif windows:
+        system(f'print /D:\\\{host}\\"{printer}" "{file_path}"')
+
+    if path.isfile(file_path):
+        remove(file_path)
 
 
-def printit_ar(pname, ti, ofc, tnu, tas, cticket, lang=None):
+def printit_ar(pname, ti, ofc, tnu, tas, cticket, **kwargs):
     def fsizeit(text, t, f):
         ltxt = "A" * len(t)
         return f.getsize(t)
@@ -289,14 +352,14 @@ def printit_ar(pname, ti, ofc, tnu, tas, cticket, lang=None):
     iname = 'dummy.jpg'
     finame = path.join(getcwd(), iname)
     mt.save(iname, format="JPEG")
-    pname.image(iname, fragment_height=tt, high_density_vertical=True)
+    pname.image(finame, fragment_height=tt, high_density_vertical=True)
     pname.cut()
     pname.close()
     if path.isfile(finame):
         remove(finame)
 
 
-def print_ticket_windows_ar(pname, ti, ofc, tnu, tas, cticket, ip, l=None):
+def print_ticket_cli_ar(pname, ti, ofc, tnu, tas, cticket, host='localhost', **kwargs):
     def fsizeit(text, t, f):
         return f.getsize(t)
 
@@ -304,10 +367,7 @@ def print_ticket_windows_ar(pname, ti, ofc, tnu, tas, cticket, ip, l=None):
         fs1, fs2 = fsizeit(text, t, f)
         return ((text.size[0] - fs1) / 2, (text.size[1] - fs2) / 2)
 
-    if name == 'nt':
-        fpath = absolute_path('static\\gfonts\\arial.ttf')
-    else:
-        fpath = absolute_path('static/gfonts/arial.ttf')
+    fpath = absolute_path('static/gfonts/arial.ttf')
     fonts = [ImageFont.truetype(fpath, 50),
              ImageFont.truetype(fpath, 30),
              ImageFont.truetype(fpath, 25)]
@@ -426,8 +486,11 @@ def print_ticket_windows_ar(pname, ti, ofc, tnu, tas, cticket, ip, l=None):
     p.close()
     f.close()
 
-    text = f'print /D:\\\localhost\\"{pname}" "{sfs[1]}"'
-    system(text)
+    if kwargs.get('windows'):
+        system(f'print /D:\\\{host}\\"{pname}" "{sffs[1]}"')
+    elif kwargs.get('unix'):
+        system(f'lp -d "{pname}" -o raw "{sffs[1]}"')
+
     for f in sffs:
         if path.isfile(f):
             remove(f)

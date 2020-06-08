@@ -552,7 +552,7 @@ class Printer_f(FlaskForm):
     scale = SelectField(coerce=int)
     submit = SubmitField('Set ticket')
 
-    def __init__(self, inspected_printers_from_view, defLang='en', *args, **kwargs):
+    def __init__(self, inspected_printers_from_view, lp_printing, defLang='en', *args, **kwargs):
         super(Printer_f, self).__init__(*args, **kwargs)
         self.kind.label = gtranslator.translate("Select type of ticket to use : ", 'en', [defLang])
         self.kind.choices = [
@@ -571,7 +571,7 @@ class Printer_f(FlaskForm):
 
         if inspected_printers_from_view:
             for printer in inspected_printers_from_view:
-                if name == 'nt':
+                if name == 'nt' or lp_printing:
                     printer_choices.append((f'{printer}', f'Printer Name: {printer}'))
                 else:
                     vendor, product = printer.get('vendor'), printer.get('product')
