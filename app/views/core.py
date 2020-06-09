@@ -310,7 +310,6 @@ def on_hold(ticket_id, redirect_to):
 @core.route('/feed/<int:office_id>')
 def feed(office_id=None):
     ''' stream list of waiting tickets and current ticket. '''
-    display_settings = data.Display_store.query.first()
     current_ticket = data.Serial.get_last_pulled_ticket(office_id)
     empty_text = gtranslator.translate('Empty', dest=[session.get('lang')])
     current_ticket_text = current_ticket and current_ticket.display_text or empty_text
@@ -331,20 +330,34 @@ def feed(office_id=None):
                                                                    current_ticket.number
                                                                    ) if current_ticket else empty_text
 
-    return jsonify(con=current_ticket_office_name, cot=current_ticket_text, cott=current_ticket_task_name,
-                   replay='yes' if display_settings.r_announcement else 'no', **waiting_list_parameters)
+    return jsonify(con=current_ticket_office_name,
+                   cot=current_ticket_text,
+                   cott=current_ticket_task_name,
+                   **waiting_list_parameters)
 
 
-@core.route('/repeat_announcement', methods=['POST', 'GET'], defaults={'reached': False})
-@core.route('/repeat_announcement/<reached>', methods=['POST', 'GET'])
+@core.route('/set_repeat_announcement/<int:status>')
 @login_required
-def repeat_announcement(reached=False):
-    ''' repeat TTS announcement. '''
-    display_settings = data.Display_store.query.first()
-    display_settings.r_announcement = not reached
-
+def set_repeat_announcement(status):
+    ''' set repeat TTS announcement status. '''
+    display_settings = data.Display_store.get()
+    display_settings.r_announcement = bool(status)
     db.session.commit()
-    return 'success'
+
+    return jsonify(status=bool(status))
+
+
+@core.route('/repeat_announcement')
+def repeat_announcement():
+    ''' get repeat TTS announcement. '''
+    display_settings = data.Display_store.get()
+    status = display_settings.r_announcement
+
+    if status:
+        display_settings.r_announcement = False
+        db.session.commit()
+
+    return jsonify(status=status)
 
 
 @core.route('/display', defaults={'office_id': None})

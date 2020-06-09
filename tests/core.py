@@ -637,3 +637,14 @@ def test_toggle_setting(c):
 
     c.get(f'/settings/{setting}/testing')
     assert getattr(Settings.get(), setting) == (not setting_value)
+
+
+@pytest.mark.usefixtures('c')
+def test_repeat_announcement(c):
+    c.get('/set_repeat_announcement/0')
+    assert Display_store.get().r_announcement is False
+    assert c.get('/repeat_announcement').json.get('status') is False
+
+    c.get('/set_repeat_announcement/1')
+    assert Display_store.get().r_announcement is True
+    assert c.get('/repeat_announcement').json.get('status') is True

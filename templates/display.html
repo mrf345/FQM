@@ -8,15 +8,22 @@
 {% block page_content %}
 <script type="text/javascript" src="{{ url_for('static', filename='jsonstream.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='audiosequence.js') }}"></script>
-<!-- <script src="https://mrf345.github.io/audio_sequence/bin/AudioSequence.min.js"></script> -->
 <script src="{{ url_for('static', filename='extFunctions.js') }}" type='text/javascript'></script>
 <script type='text/javascript'>
-	reloadIf()
-	var player = undefined
-	var forceRepeat = undefined
-	var languages = "{{ ts.announce }}".split(',')
 	var announcement_texts = undefined
-	
+	var audioNotification = "{{'/static/multimedia/'+ts.audio}}"
+	var playAudioNotification = '{{ ts.audio}}' != 'false'
+	var languages = "{{ ts.announce }}".split(',')
+	var refreshRate = parseInt("{{ ts.rrate }}")
+	var repeats = parseInt("{{ ts.anr }}")
+	var repeatType = "{{ ts.anrt }}"
+	var Player = new AudioSequence({
+		repeats: repeats,
+		repeat_whole: repeatType === 'whole',
+		repeat_each: repeatType === 'each'
+	})
+
+	reloadIf(window.location.href, refreshRate)
 	$.getJSON("{{ url_for('static', filename='tts.json') }}")
 		.then(function(j) {
 			announcement_texts = j
@@ -28,7 +35,7 @@
 
 	var stream = JsonStream({
 		url: "{{ feed_url }}",
-		duration: parseInt("{{ ts.rrate }}") / 1000,
+		duration: refreshRate / 1000,
 		effect_duration: parseInt("{{ ts.mduration }}"),
 		data_attr: 'stream',
 		effect_repeats: parseInt("{{ ts.repeats }}"),
@@ -37,28 +44,6 @@
 		effect: "{{ ts.effect }}",
 		ensure_value: 'w9',
 		todo: function (data, toPlay) {
-			toPlay = toPlay || []
-			var audioNotification = "{{'/static/multimedia/'+ts.audio}}"
-			function play (links) {
-				return new AudioSequence({
-					files: links.map(function (i) { if (i !== "") return i}),
-					repeats: parseInt("{{ ts.anr }}"),
-					{% if ts.anrt == 'whole' %}repeat_whole{% else %}repeat_each{% endif %}: 'true'
-				})
-			}
-
-			// Adding prefix hiding from the front end
-			if (!forceRepeat) forceRepeat = setInterval(function () {
-				$.get("{{ feed_url }}")
-					.then(function (j) {
-						if (j.replay === 'yes') {
-							if (player) player.replay()
-							$.get('/repeat_announcement/True')
-						}
-					}).fail(function (e) { console.log(e) })
-			}, 200)
-			if (player) player.exit(false)
-
 			if (announcement_texts) {
 				if ('{{ ts.announce }}' !== 'false') {
 					$.when.apply($, languages.map(function(language, index) {
@@ -68,15 +53,31 @@
 						return $.get(link).then(function(json) { return json.mp3 })
 					}))
 					.then(function() {
-						var results = $.makeArray(arguments).sort()
+						Player.files = $.makeArray(arguments).sort()
 
-						{% if ts.audio != 'false' %}results.unshift(audioNotification){% endif %}
-						player = play(results)
+						if (playAudioNotification) Player.files.unshift(audioNotification)
+						Player.load()
+							.then(function (elements) { Player.play() })
+							.catch(function (e) { console.log(e) })
 					}).fail(function (e) { console.log(e) })
-				} else if ('{{ ts.audio}}' != 'false') player = play([audioNotification])
+				} else if (playAudioNotification) {
+					Player.files = [audioNotification]
+					Player.load()
+						.then(function (elements) { Player.play() })
+						.catch(function (e) { console.log(e) })
+				}
 			}
 		}
 	})
+
+	var watchRepeatAnnouncement = setInterval(function () {
+		$.get('/repeat_announcement')
+			.then(function (j) {
+				if (j.status) Player.load()
+					.then(function(elements) { Player.play() })
+			}).fail(function (e) { console.log(e) })
+	}, refreshRate / 2)
+
 </script>
 <style>
 	body {

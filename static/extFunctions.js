@@ -38,7 +38,7 @@ var flashMsg = function (cate) {
 
 var announce = function () {
     // to $.post for repeating announcement and displaying flash message for success or failure
-    $.post(window.location.origin + '/repeat_announcement', function (resp) {
-        resp === 'success' ? flashMsg('info') : flashMsg('danger')
+    $.get('/set_repeat_announcement/1', function (resp) {
+        resp.status ? flashMsg('info') : flashMsg('danger')
     })
 }
