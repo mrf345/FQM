@@ -13,6 +13,7 @@
 	var announcement_texts = undefined
 	var audioNotification = "{{'/static/multimedia/'+ts.audio}}"
 	var playAudioNotification = '{{ ts.audio}}' != 'false'
+	var playAnnouncements = '{{ ts.announce }}' !== 'false'
 	var languages = "{{ ts.announce }}".split(',')
 	var refreshRate = parseInt("{{ ts.rrate }}")
 	var repeats = parseInt("{{ ts.anr }}")
@@ -20,7 +21,8 @@
 	var Player = new AudioSequence({
 		repeats: repeats,
 		repeat_whole: repeatType === 'whole',
-		repeat_each: repeatType === 'each'
+		repeat_each: repeatType === 'each',
+		auto_start: true,
 	})
 
 	reloadIf(window.location.href, refreshRate)
@@ -45,7 +47,7 @@
 		ensure_value: 'w9',
 		todo: function (data, toPlay) {
 			if (announcement_texts) {
-				if ('{{ ts.announce }}' !== 'false') {
+				if (playAnnouncements) {
 					$.when.apply($, languages.map(function(language, index) {
 						var message = announcement_texts[language].message
 						var link = '/gtts/' + language + '/' + data.cot + message + data.con
@@ -57,25 +59,19 @@
 
 						if (playAudioNotification) Player.files.unshift(audioNotification)
 						Player.load()
-							.then(function (elements) { Player.play() })
-							.catch(function (e) { console.log(e) })
 					}).fail(function (e) { console.log(e) })
 				} else if (playAudioNotification) {
 					Player.files = [audioNotification]
 					Player.load()
-						.then(function (elements) { Player.play() })
-						.catch(function (e) { console.log(e) })
 				}
 			}
 		}
 	})
 
-	var watchRepeatAnnouncement = setInterval(function () {
+	var watcher = setInterval(function () {
 		$.get('/repeat_announcement')
-			.then(function (j) {
-				if (j.status) Player.load()
-					.then(function(elements) { Player.play() })
-			}).fail(function (e) { console.log(e) })
+			.then(function (j) { if (j.status) Player.load() })
+			.fail(function (e) { console.log(e) })
 	}, refreshRate / 2)
 
 </script>
