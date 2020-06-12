@@ -39,7 +39,8 @@ def execute(command, parser=None, encoding='utf-8'):
     -------
         System command output as a string or a list if parsed.
     '''
-    temp_file = f'{uuid4()}'.replace('-', '')
+    temp_name = f'{uuid4()}'.replace('-', '') + '.tmp'
+    temp_file = absolute_path(temp_name)
     output = ''
     parsed = []
 
