@@ -40,5 +40,7 @@ def stop_tasks(tasks=[]):
         threads += THREADS.items()
 
     for task, thread in threads:
-        print(f'Stopping task: {task} ...')
+        if not thread.quiet:
+            print(f'Stopping task: {task} ...')
+
         thread.stop()

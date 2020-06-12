@@ -90,12 +90,11 @@ class CacheTicketsAnnouncements(Task):
                                                                    display_settings.prefix))
                             successes.append(language)
                         except Exception as exception:
-                            log_error(exception)
+                            log_error(exception, quit=self.quiet)
 
                     if successes:
                         self.cached.append(ticket.number)
-                        # TODO: Use a proper logger to integrate with gevent's ongoing one
-                        print(f'Cached TTS {ticket.number}')
+                        self.log(f'Cached TTS {ticket.number}')
 
                 @self.none_blocking_loop(tickets_to_remove)
                 def remove_processed_tickets_from_cache(ticket):
