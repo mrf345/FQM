@@ -64,7 +64,7 @@ then
   echo "##### Running FQM $version #####"
   if [ -f run.py ]
   then
-    python run.py $2 $3 $4
+    python run.py "${@:2}"
   else
     echo "Error: can not find FQM run.py"
   fi
@@ -88,7 +88,7 @@ then
   then
     source installiation/bin/activate
     python -c "p='app/__init__.py'; f=open(p, 'r'); c=f.read().replace('# app = bundle_app({', 'app = bundle_app({'); f=open(p, 'w+'); f.write(c); f.close()"
-    flask db $2 $3
+    flask db "${@:2}"
     python -c "p='app/__init__.py'; f=open(p, 'r'); c=f.read().replace('app = bundle_app({', '# app = bundle_app({'); f=open(p, 'w+'); f.write(c); f.close()"
   else
     echo $error1

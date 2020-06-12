@@ -7,7 +7,6 @@ from functools import reduce
 from urllib.parse import quote
 from flask import Flask, request, Markup, session, redirect, url_for, flash, render_template
 from flask_migrate import upgrade as database_upgrade
-from flask_pagedown import PageDown
 from flask_moment import Moment
 from flask_uploads import configure_uploads
 from flask_login import current_user
@@ -54,7 +53,6 @@ def create_app(config={}):
     app.config.update(config)
 
     # Initiating extensions before registering blueprints
-    PageDown(app)
     Moment(app)
     QRcode(app)
     configure_uploads(app, files)

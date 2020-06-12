@@ -8,8 +8,8 @@ a = Analysis(['run.py'],
              binaries=[],
              datas=[('arabic_reshaper\*', 'arabic_reshaper')],
              hiddenimports=[
-                'email.mime.multipart', 'win32com.client', 'pythoncom', 'email.mime.message',
-                'email.mime.text', 'email.mime.image', 'email.mime.audio',
+                'app.gui', 'PyQt5', 'PyQt5.QtWidgets', 'email.mime.multipart', 'win32com.client',
+                'email.mime.message', 'email.mime.text', 'email.mime.image', 'email.mime.audio',
                 'sqlalchemy.sql.default_comparator', 'jinja2', 'logging.config'
             ],
              hookspath=[],

@@ -4,10 +4,6 @@
 
 {% extends "base.html" %}
 {% block title %} FQM - {{ page_title }} {% endblock %}
-{% block head %}
-{{ super() }}
-{{ pagedown.include_pagedown() }}
-{% endblock %}
 
 {% import "bootstrap/wtf.html" as wtf %}
 {% import "_macros.html" as macros %}

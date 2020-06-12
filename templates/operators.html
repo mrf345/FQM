@@ -6,11 +6,6 @@
 {% block title %} FQM - {{ page_title  }} {% endblock %}
 {% import "_macros.html" as macros %}
 
-{% block head %}
-{{ super() }}
-{{ pagedown.include_pagedown() }}
-{% endblock %}
-
 {%- from "sb_manage.html" import sb_manage with context %}
 {% block sidebar %}
 {{ sb_manage() }}

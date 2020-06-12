@@ -13,6 +13,10 @@ class Task:
         self.spinned = False
         self.spinned_once = False
 
+    @property
+    def quiet(self):
+        return self.app.config.get('QUIET', False)
+
     def init(self):
         if not self.app.config.get('CLI_OR_DEPLOY', True):
             PyQt5 = import_module('PyQt5')
@@ -56,3 +60,8 @@ class Task:
 
     def sleep(self, duration=0):
         self.none_blocking_loop(range(duration or self.interval))(lambda _: sleep(1))
+
+    def log(self, message):
+        # FIXME: Use a proper logger to integrate with the ongoing one
+        if not self.quiet:
+            print(message)

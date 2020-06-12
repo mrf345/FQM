@@ -7,8 +7,7 @@ from app.printer import get_font_height_width, printit
 from app.constants import PRINTED_TICKET_DIMENSIONS, PRINTED_TICKET_SCALES, PRINTED_TICKET_MAXIMUM_HEIGH_OR_WIDTH
 
 
-@pytest.mark.usefixtures('c')
-def test_printer_height_and_width_random_scaling(c):
+def test_printer_height_and_width_random_scaling():
     dimensions = PRINTED_TICKET_DIMENSIONS
     random_scale = randint(1, 20)
 
@@ -26,9 +25,8 @@ def test_printer_height_and_width_random_scaling(c):
                                                    else expected_width)
 
 
-@pytest.mark.usefixtures('c')
 @pytest.mark.parametrize('scale', PRINTED_TICKET_SCALES)
-def test_printit_random_scales_sanity_check(scale, c):
+def test_printit_random_scales_sanity_check(scale):
     printer = Dummy()
     ticket = 'TESTING100'
     office = 'TESTING_OFFICE'

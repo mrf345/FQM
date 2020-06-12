@@ -49,7 +49,7 @@
     ./installer.sh --uninstall      to remove packages installed
     ./installer.sh --run            to run FQM
     ./installer.sh --test           to run FQM tests
-    ./installer.sh --migrate        to run FQM migration
+    ./installer.sh --migration      to run FQM migration
     ./installer.sh --help           to print out this message
 ```
 
@@ -65,17 +65,20 @@
 ```bash
 Usage: run.py [OPTIONS]
 
-If no `ip` is passed it will default to `127.0.0.1`
-If no `port` is passed it will default to a random port.
+  FQM command-line interface (CLI):
+
+  * if `--cli` is not used, initializing GUI will be attempted.
+
+  * If no `ip` is passed it will default to `127.0.0.1`.
+
+  * If no `port` is passed it will default to a random port.
 
 Options:
-  --cli        To use command-line interface instead of GUI.
+  --cli        To use commandline interface instead of GUI.
   --quiet      To silence web server logs.
   --ip TEXT    IP address to stream the service on.
   --port TEXT  Port to stream the service through.
   --help       Show this message and exit.
-
-Example: python run.py --cli --port 8080
 ```
 
 #### - With executable:
