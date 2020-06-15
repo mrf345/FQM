@@ -18,5 +18,13 @@
     "it": {
         "language": "Italian",
         "message": " , si prega di procedere al numero dell'ufficio : "
+    },
+    "de": {
+        "language": "German",
+        "message": "Bitte fahren Sie mit der Büronummer fort"
+    },
+    "ur": {
+        "language": "Urdu",
+        "message": "برائے مہربانی آفس نمبر پر آگے بڑھیں"
     }
 }

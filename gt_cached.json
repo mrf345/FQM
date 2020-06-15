@@ -1198,6 +1198,13 @@
         "fr": "\u00c9crans g\u00e9n\u00e9raux",
         "it": "Schermi generali"
     },
+    "German": {
+        "ar": "\u0623\u0644\u0645\u0627\u0646\u064a\u0629",
+        "en": "German",
+        "es": "alem\u00e1n",
+        "fr": "allemand",
+        "it": "Tedesco"
+    },
     "Green": {
         "ar": "\u0623\u062e\u0636\u0631",
         "en": "Green",
@@ -3105,6 +3112,13 @@
         "es": "Cargar archivo multimedia",
         "fr": "T\u00e9l\u00e9charger un fichier multim\u00e9dia",
         "it": "Carica file multimediale"
+    },
+    "Urdu": {
+        "ar": "\u0627\u0644\u0623\u0631\u062f\u064a\u0629",
+        "en": "Urdu",
+        "es": "Urdu",
+        "fr": "ourdou",
+        "it": "Urdu"
     },
     "Use color selection": {
         "ar": "\u0627\u0633\u062a\u062e\u062f\u0645 \u0627\u062e\u062a\u064a\u0627\u0631 \u0627\u0644\u0644\u0648\u0646",
