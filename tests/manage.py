@@ -85,7 +85,6 @@ def test_delete_office_after_reset(c):
         office = choice(Office.query.all())
         migrated_common_tasks = [t for t in office.tasks if t.common]
 
-
     c.get(f'/serial_r/{office.id}')  # NOTE: reseting office before deleting it
     response = c.get(f'/office_d/{office.id}', follow_redirects=True)
 

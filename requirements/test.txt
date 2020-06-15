@@ -5,3 +5,4 @@ pytest-repeat==0.8.0
 pytest-warnings==0.3.0
 coverage==4.5.4
 python-coveralls==2.9.3
+flake8==3.7.9

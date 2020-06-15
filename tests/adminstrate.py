@@ -81,7 +81,7 @@ def test_update_user(c):
         'name': name, 'password': password, 'role': role
     })
 
-    user = User.query.filter_by(name=name).first() 
+    user = User.query.filter_by(name=name).first()
     response = c.post(f'/user_u/{user.id}', data={
         'name': new_name, 'password': password, 'role': role
     }, follow_redirects=True)
@@ -108,7 +108,7 @@ def test_update_operator(c):
         'name': name, 'password': password, 'role': role, 'offices': office.id
     })
 
-    user = User.query.filter_by(name=name).first() 
+    user = User.query.filter_by(name=name).first()
     response = c.post(f'/user_u/{user.id}', data={
         'name': new_name, 'password': password, 'role': role, 'offices': new_office.id
     }, follow_redirects=True)

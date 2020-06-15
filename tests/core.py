@@ -122,7 +122,7 @@ def test_new_printed_ticket_windows(c, monkeypatch):
     assert last_ticket.number != new_ticket.number
     assert new_ticket.name == name
     mock_system.assert_called_once_with(
-        f'print /D:\\\localhost\\"{printer_name}" "{printer_full_path}"')
+        f'print /D:\\\localhost\\"{printer_name}" "{printer_full_path}"') # noqa
 
 
 @pytest.mark.usefixtures('c')
@@ -250,7 +250,7 @@ def test_new_printed_ticket_windows_arabic(c, monkeypatch):
     assert last_ticket.number != new_ticket.number
     assert new_ticket.name == name
     mock_system.assert_called_once_with(
-        f'print /D:\\\localhost\\"{printer_name}" "{printer_full_path}"')
+        f'print /D:\\\localhost\\"{printer_name}" "{printer_full_path}"')  # noqa
 
 
 @pytest.mark.usefixtures('c')
@@ -512,7 +512,7 @@ def test_pull_ticket_on_hold(c):
 
 @pytest.mark.usefixtures('c')
 def test_feed_stream_tickets_preferences_enabled(c):
-    c.get('/pull', follow_redirects=True) # NOTE: initial pull to fill stacks
+    c.get('/pull', follow_redirects=True)  # NOTE: initial pull to fill stacks
 
     with c.application.app_context():
         # NOTE: enable settings to always display ticket number and prefix
@@ -538,7 +538,7 @@ def test_feed_stream_tickets_preferences_enabled(c):
 
 @pytest.mark.usefixtures('c')
 def test_feed_office_with_preferences_enabled(c):
-    c.get('/pull', follow_redirects=True) # NOTE: initial pull to fill stacks
+    c.get('/pull', follow_redirects=True)  # NOTE: initial pull to fill stacks
 
     with c.application.app_context():
         # NOTE: enable settings to always display ticket number and prefix
@@ -565,7 +565,7 @@ def test_feed_office_with_preferences_enabled(c):
 
 @pytest.mark.usefixtures('c')
 def test_feed_stream_tickets_preferences_disabled(c):
-    c.get('/pull', follow_redirects=True) # NOTE: initial pull to fill stacks
+    c.get('/pull', follow_redirects=True)  # NOTE: initial pull to fill stacks
 
     with c.application.app_context():
         # NOTE: enable settings to always display ticket number and prefix
