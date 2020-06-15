@@ -223,6 +223,7 @@
 		        {{ render_field(form.naudio, class="form-control") }}
                 {{ render_field(form.anr, class='form-control') }}
 				{{ render_field(form.anrt, class="form-control")}}
+				{{ render_field(form.wait_for_announcement, class="form-control") }}
 				{% for short, bundle in tts.items() %}
 					{{ render_field(form['check' + short], class='form-control') }}
 				{% endfor %}

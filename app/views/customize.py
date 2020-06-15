@@ -427,6 +427,7 @@ def displayscreen_c(stab):
         touch_s.repeats = form.repeats.data
         touch_s.prefix = form.prefix.data
         touch_s.always_show_ticket_number = form.always_show_ticket_number.data
+        touch_s.wait_for_announcement = form.wait_for_announcement.data
 
         if not form.background.data:
             touch_s.bgcolor = form.bgcolor.data
@@ -483,6 +484,7 @@ def displayscreen_c(stab):
         form.repeats.data = touch_s.repeats
         form.prefix.data = touch_s.prefix
         form.always_show_ticket_number.data = touch_s.always_show_ticket_number
+        form.wait_for_announcement.data = touch_s.wait_for_announcement
 
         if touch_s.bgcolor[:3] == 'rgb':
             form.bgcolor.data = touch_s.bgcolor
