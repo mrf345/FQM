@@ -14,6 +14,7 @@
 	var audioNotification = "{{'/static/multimedia/'+ts.audio}}"
 	var playAudioNotification = '{{ ts.audio}}' != 'false'
 	var playAnnouncements = '{{ ts.announce }}' !== 'false'
+	var waitForEnding = '{{ ts.wait_for_announcement }}' === 'True'
 	var languages = "{{ ts.announce }}".split(',')
 	var refreshRate = parseInt("{{ ts.rrate }}")
 	var repeats = parseInt("{{ ts.anr }}")
@@ -24,6 +25,14 @@
 		repeat_each: repeatType === 'each',
 		auto_start: true,
 	})
+
+	function play (files) {
+		if (waitForEnding) Player.playAfter(files)
+		else {
+			Player.files = files
+			Player.load()
+		}
+	}
 
 	reloadIf(window.location.href, refreshRate)
 	$.getJSON("{{ url_for('static', filename='tts.json') }}")
@@ -55,22 +64,19 @@
 						return $.get(link).then(function(json) { return json.mp3 })
 					}))
 					.then(function() {
-						Player.files = $.makeArray(arguments).sort()
+						var files = $.makeArray(arguments).sort()
 
-						if (playAudioNotification) Player.files.unshift(audioNotification)
-						Player.load()
+						if (playAudioNotification) files.unshift(audioNotification)
+						play(files)
 					}).fail(function (e) { console.log(e) })
-				} else if (playAudioNotification) {
-					Player.files = [audioNotification]
-					Player.load()
-				}
+				} else if (playAudioNotification) play([audioNotification])
 			}
 		}
 	})
 
 	var watcher = setInterval(function () {
 		$.get('/repeat_announcement')
-			.then(function (j) { if (j.status) Player.load() })
+			.then(function (j) { if (j.status) play(Player.files) })
 			.fail(function (e) { console.log(e) })
 	}, refreshRate / 2)
 

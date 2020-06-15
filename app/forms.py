@@ -151,6 +151,7 @@ class Display_c(FlaskForm):
     bgcolor = StringField()
     prefix = BooleanField()
     always_show_ticket_number = BooleanField()
+    wait_for_announcement = BooleanField()
     submit = SubmitField()
     for shortcode in tts.keys():
         locals()[f'check{shortcode}'] = BooleanField()
@@ -230,6 +231,7 @@ class Display_c(FlaskForm):
         self.bgcolor.label = gtranslator.translate("Select a background color : ", 'en', [defLang])
         self.prefix.label = gtranslator.translate("Attach prefix office letter: ", 'en', [defLang])
         self.always_show_ticket_number.label = gtranslator.translate("Always show ticket number: ", 'en', [defLang])
+        self.wait_for_announcement.label = gtranslator.translate("Wait for announcement to finish:", 'en', [defLang])
         self.submit.label = gtranslator.translate('Apply', 'en', [defLang])
         bgs = []
         aud = []
