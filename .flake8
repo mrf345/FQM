@@ -1,6 +1,5 @@
 [flake8]
-ignore = E226,E302,E41
+ignore = E226,E302,E41,E712
 max-line-length = 130
-exclude = migrations/*
-max-complexity = 15
-
+exclude = *__pycache__*
+max-complexity = 25

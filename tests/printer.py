@@ -38,9 +38,8 @@ def test_printit_random_scales_sanity_check(scale):
     number_of_saperators = 2
 
     ticket_content = printit(printer, ticket, office, tickets_ahead, task,
-                             current_ticket, site, language, scale)\
-                        .output\
-                        .decode('utf-8')
+                             current_ticket, site, language, scale
+                             ).output.decode('utf-8')
 
     assert 'FQM\n' in ticket_content
     assert f'\n{site}\n' in ticket_content

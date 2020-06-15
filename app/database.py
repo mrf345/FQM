@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
 from flask_login import UserMixin, current_user
 from sqlalchemy.sql import and_, or_
 from werkzeug.security import generate_password_hash, check_password_hash

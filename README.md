@@ -15,15 +15,15 @@
 <a href='https://coveralls.io/github/mrf345/FQM?branch=master'>
   <img src='https://coveralls.io/repos/github/mrf345/FQM/badge.svg?branch=master' alt='Coverage Status' />
 </a>
+<a href='https://www.python.org/dev/peps/pep-0008/'>
+  <img src='https://img.shields.io/badge/code%20style-PEP8-orange.svg' alt='Code Style PEP8' />
+</a>
 <a href='https://github.com/mrf345/FQM/issues?q=is%3Aissue+is%3Aclosed'>
   <img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed/mrf345/FQM">
 </a>
-<a href='https://github.com/mrf345/FQM/blob/master/LICENSE'>
-  <img alt="GitHub" src="https://img.shields.io/github/license/mrf345/FQM">
-</a>
 </p>
 
-<h3 align='center'> Free Queue Manager (beta). A web based queue management system built with Python Flask as back-end, and Bootstrap, jQuery as front-end. </h3>
+<h3 align='center'> Free Queue Manager (beta). A web based queue management system built with Python Flask, Bootstrap and jQuery. </h3>
 <hr />
 
 
@@ -34,24 +34,13 @@
 
 ### Setup:
 
-#### - Using installer.sh for Linux, MacOS:
-- Make sure to install and use **Python 3.7**
-- Execute the following commands in a terminal window:
-1. `chmod +x installer.sh`
-2. `./installer.sh --install`
-3. `./installer.sh --run`
+#### - With executable:
+You get find an executable that's suitable to your OS from :
 
-- To checkout the supported command-line options `./installer.sh --help`:
-```bash
-./installer.sh --help: Examples
+- [FQMS](https://fqms.github.io/#download)
+- [Github Release](https://github.com/mrf345/FQM/releases/)
+- [Sourceforge](https://sourceforge.net/projects/free-queue-manager/)
 
-    ./installer.sh --install        to install packages required
-    ./installer.sh --uninstall      to remove packages installed
-    ./installer.sh --run            to run FQM
-    ./installer.sh --test           to run FQM tests
-    ./installer.sh --migration      to run FQM migration
-    ./installer.sh --help           to print out this message
-```
 
 #### - From the source:
 - Make sure to install and use **Python 3.7**
@@ -81,11 +70,25 @@ Options:
   --help       Show this message and exit.
 ```
 
-#### - With executable:
-You can get an executable that's suitable to your OS from :
-- https://fqms.github.io/#download
-- https://github.com/mrf345/FQM/releases/
-- https://sourceforge.net/projects/free-queue-manager/
+
+#### - For development on Linux\MacOS:
+- Make sure to install and use **Python 3.7**
+- Execute the following commands in a terminal window:
+1. `chmod +x installer.sh`
+2. `./installer.sh --install`
+3. `./installer.sh --run`
+
+- To checkout the supported command-line options `./installer.sh --help`:
+```bash
+./installer.sh --help: Examples
+
+    ./installer.sh --install        to install packages required
+    ./installer.sh --uninstall      to remove packages installed
+    ./installer.sh --run            to run FQM
+    ./installer.sh --test           to run FQM tests
+    ./installer.sh --migration      to run FQM migration
+    ./installer.sh --help           to print out this message
+```
 
 #### - Database migration:
 Since the `0.7` release we're able to migrate the data generated in previous releases to the new ones.
@@ -96,7 +99,7 @@ Since the `0.7` release we're able to migrate the data generated in previous rel
 **Make sure the migration steps are performed prior to running the new release of the system**.
 
 ### Documentation:
-- [Useful and very outdated 😓 user guide](https://fqms.github.io/images/user_guide.pdf).
+- [Useful but very outdated user guide](https://fqms.github.io/images/user_guide.pdf).
 - [How do i add support for my language ?](docs/localization.md)
 - [How do i add additional settings and customizations ?](docs/settings.md)
 

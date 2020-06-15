@@ -1,10 +1,10 @@
 language: python
 python:
   - "3.7"
-# command to install dependencies
+
 install:
   - pip install -r requirements/test.txt
-# command to run tests
-script: python -m pytest -W ignore -vv tests/* --cov=./app
+
+script: flake8 app/**/** tests/** && python -m pytest -W ignore -vv tests/* --cov=./app
 after_success:
   - coveralls
