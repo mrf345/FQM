@@ -35,7 +35,7 @@
 ### Setup:
 
 #### - With executable:
-You get find an executable that's suitable to your OS from :
+You can find an executable that's suitable to your OS from :
 
 - [FQMS](https://fqms.github.io/#download)
 - [Github Release](https://github.com/mrf345/FQM/releases/)
@@ -56,7 +56,7 @@ Usage: run.py [OPTIONS]
 
   FQM command-line interface (CLI):
 
-  * if `--cli` is not used, initializing GUI will be attempted.
+  * If `--cli` is not used, initializing GUI will be attempted.
 
   * If no `ip` is passed it will default to `127.0.0.1`.
 
