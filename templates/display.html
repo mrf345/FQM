@@ -141,6 +141,7 @@
 </div>
 <div class="row mt-1">
     <div class="{% if sli.status == 1 or vid.enable == 1 %} col-xs-4 {% else %} col-xs-12 {% endif %} text-center">
+		{% if not settings.single_row %}
 		<h1 class='offices mb-1'>
 			{% if alias.office != 'Office' %}{{ alias.office }}{% else %}{{ translate('Office', 'en', [defLang]) }}{% endif %} : 
 			<p stream='con' class='effectit ensureit inline'>{{ translate('Empty', 'en', [defLang]) }}</p>
@@ -149,6 +150,7 @@
 			{% if alias.task != 'Task' %}{{ alias.task }}{% else %}{{ translate('Task', 'en', [defLang]) }}{% endif %} : 
 			<p class='effectit ensureit inline' stream='cott'>{{ translate('Empty', 'en', [defLang]) }}</p>
 		</h1>
+		{% endif %}
 	    <h1 class='tasks mb-1'>
 			{% if alias.ticket != 'Ticket' %}{{ alias.ticket }}{% else %}{{ translate('Ticket', 'en', [defLang]) }}{% endif %} : 
 			<p class='effectdoit ensureit inline' stream='cot'>{{ translate('Empty', 'en', [defLang]) }}</p>
@@ -265,18 +267,20 @@
     </div>
 </div>
 <div class="row text-center mt-1">
+	{% if not settings.single_row %}
     <div class="col-xs-4">
 	    <h1 class='offices'>
 				{% if alias.office != 'Office' %}{{ alias.office }}{% else %}{{ translate('Office', 'en', [defLang]) }}{% endif %} : 
 				<p stream='con' class='effectit ensureit inline'>{{ translate('Empty', 'en', [defLang]) }}</p>
-			</h1>
-		</div>
+		</h1>
+	</div>
     <div class="col-xs-4">
       	<h1 class='tasks'>
 					{% if alias.task != 'Task' %}{{ alias.task }}{% else %}{{ translate('Task', 'en', [defLang]) }}{% endif %} : 
 			<p class='effectit ensureit inline' stream='cott'>{{ translate('Empty', 'en', [defLang]) }}</p>
 	  	</h1>
-    </div>
+	</div>
+	{% endif %}
     <div class="col-xs-4">
 	    <h1 class='tasks'>
 			{% if alias.ticket != 'Ticket' %}{{ alias.ticket }}{% else %}{{ translate('Ticket', 'en', [defLang]) }}{% endif %} : 
@@ -334,7 +338,8 @@
 {% elif tv == 2 %}
 <div class="row vertical-center text-center">
     <div class="col-xs-6">
-      	<h1 class='title mb-10'> {{ ts.title }} </h1>
+		  <h1 class='title mb-10'> {{ ts.title }} </h1>
+		{% if not settings.single_row %}
 		<h1 class='offices mb-5'>
 			{% if alias.office != 'Office' %}{{ alias.office }}{% else %}{{ translate('Office', 'en', [defLang]) }}{% endif %} : 
 			<p stream='con' class='effectit ensureit inline'>{{ translate('Empty', 'en', [defLang]) }}</p>
@@ -343,6 +348,7 @@
 					{% if alias.task != 'Task' %}{{ alias.task }}{% else %}{{ translate('Task', 'en', [defLang]) }}{% endif %} : 
 			<p class='effectit ensureit inline' stream='cott'>{{ translate('Empty', 'en', [defLang]) }}</p>
 		</h1>
+		{% endif %}
 		<h1 class='tasks'>
 			{% if alias.ticket != 'Ticket' %}{{ alias.ticket }}{% else %}{{ translate('Ticket', 'en', [defLang]) }}{% endif %} : 
 			<p class='effectdoit ensureit inline' stream='cot'>{{ translate('Empty', 'en', [defLang]) }}</p>

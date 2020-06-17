@@ -873,6 +873,16 @@
         "fr": "Erreur: le fichier t\u00e9l\u00e9charg\u00e9 est trop volumineux",
         "it": "Errore: il file caricato \u00e8 troppo grande"
     },
+    "Error: flag setting single_row must be disabled": {
+        "ar": "\u062e\u0637\u0623: \u064a\u062c\u0628 \u0623\u0646 \u064a\u0643\u0648\u0646 \u062a\u0639\u0637\u064a\u0644 \u0627\u0644\u0639\u0644\u0645 \u0625\u0639\u062f\u0627\u062f single_row",
+        "en": "Error: flag setting single_row must be disabled",
+        "es": "Error: la bandera de configuraci\u00f3n single_row debe ser desactivada",
+        "fr": "Erreur: param\u00e8tre indicateur SINGLE_ROW doit \u00eatre d\u00e9sactiv\u00e9",
+        "it": "Errore: impostazione bandiera single_row deve essere disabilitata"
+    },
+    "Error: flag setting single_row must be enabled": {
+        "en": "Error: flag setting single_row must be enabled"
+    },
     "Error: login is required to access the page": {
         "ar": "\u062e\u0637\u0623: \u0645\u0637\u0644\u0648\u0628 \u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062f\u062e\u0648\u0644 \u0644\u0644\u0648\u0635\u0648\u0644 \u0625\u0644\u0649 \u0627\u0644\u0635\u0641\u062d\u0629",
         "en": "Error: login is required to access the page",
@@ -1163,6 +1173,13 @@
         "fr": "Cinq fois",
         "it": "Cinque volte"
     },
+    "Flag Settings": {
+        "ar": "\u0625\u0639\u062f\u0627\u062f\u0627\u062a \u0627\u0644\u0639\u0644\u0645",
+        "en": "Flag Settings",
+        "es": "Ajustes de la bandera",
+        "fr": "R\u00e9glages drapeau",
+        "it": "Impostazioni Flag"
+    },
     "Forget it": {
         "ar": "\u0627\u0646\u0633\u0649 \u0630\u0644\u0643",
         "en": "Forget it",
@@ -1197,6 +1214,13 @@
         "es": "Pantallas generales",
         "fr": "\u00c9crans g\u00e9n\u00e9raux",
         "it": "Schermi generali"
+    },
+    "Generate a ticket": {
+        "ar": "\u062a\u0648\u0644\u064a\u062f \u062a\u0630\u0643\u0631\u0629",
+        "en": "Generate a ticket",
+        "es": "Generar un billete",
+        "fr": "G\u00e9n\u00e9rer un billet",
+        "it": "Genera un biglietto"
     },
     "German": {
         "ar": "\u0623\u0644\u0645\u0627\u0646\u064a\u0629",
@@ -2633,6 +2657,13 @@
         "es": "Mostrar los encabezados en el archivo CSV:",
         "fr": "Afficher les en-t\u00eates dans le fichier CSV:",
         "it": "Mostra intestazioni nel file CSV:"
+    },
+    "Single Row Queuing": {
+        "ar": "\u0635\u0641 \u0648\u0627\u062d\u062f \u0641\u064a \u0642\u0627\u0626\u0645\u0629 \u0627\u0646\u062a\u0638\u0627\u0631",
+        "en": "Single Row Queuing",
+        "es": "De una hilera de cola",
+        "fr": "Seule rang\u00e9e Queueing",
+        "it": "Singolo Queuing Row"
     },
     "Slide effect": {
         "ar": "\u062a\u0623\u062b\u064a\u0631 \u0627\u0644\u0634\u0631\u064a\u062d\u0629",

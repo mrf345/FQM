@@ -125,33 +125,36 @@
                                         </a>
                                     </li>
                                     {% if current_user.id == 1 %}
-                                    <li class="dropdown-header">( {{ translate('Strict Tasks Pulling', 'en', [defLang]) }} )</li>
+                                    <li class="dropdown-header">( {{ translate('Flag Settings', 'en', [defLang]) }} )</li>
                                     <li>
                                         <a href="{{ url_for('core.settings', setting='strict_pulling', togo=current_path) }}">
                                             <span class="fa fa-lock"></span>
-                                            {{ translate('Disable' if settings.strict_pulling == True else 'Enable', 'en', [defLang]) }}
+                                            {{ translate('Strict Tasks Pulling', 'en', [defLang]) }} ({{ translate('Disable' if settings.strict_pulling == True else 'Enable', 'en', [defLang]) }})
                                         </a>
                                     </li>
-                                    <li class="dropdown-header">( {{ translate('Visual Effects', 'en', [defLang]) }} )</li>
+                                    <li>
+                                        <a href="{{ url_for('core.settings', setting='single_row', togo=current_path) }}">
+                                            <span class="fa fa-arrow-up"></span>
+                                            {{ translate('Single Row Queuing', 'en', [defLang]) }} ({{ translate('Disable' if settings.single_row == True else 'Enable', 'en', [defLang]) }})
+                                        </a>
+                                    </li>
                                     <li>
                                         <a href="{{ url_for('core.settings', setting='visual_effects', togo=current_path) }}">
                                             <span class="fa fa-eye"></span>
-                                            {{ translate('Disable' if settings.visual_effects == True else 'Enable', 'en', [defLang]) }}
+                                            {{ translate('Visual Effects', 'en', [defLang]) }} ({{ translate('Disable' if settings.visual_effects == True else 'Enable', 'en', [defLang]) }})
                                         </a>
                                     </li>
-                                    <li class="dropdown-header">( {{ translate('Notifications', 'en', [defLang]) }} )</li>
                                     <li>
                                         <a href="{{ url_for('core.settings', setting='notifications', togo=current_path) }}">
                                             <span class="fa fa-bell"></span>
-                                            {{ translate('Disable' if settings.notifications == True else 'Enable', 'en', [defLang]) }}
+                                            {{ translate('Notifications', 'en', [defLang]) }} ({{ translate('Disable' if settings.notifications == True else 'Enable', 'en', [defLang]) }})
                                         </a>
                                     </li>
                                     {% if unix %}
-                                    <li class="dropdown-header">( {{ translate('Alternative printer driver', 'en', [defLang]) }} )</li>
                                     <li>
                                         <a href="{{ url_for('core.settings', setting='lp_printing', togo=current_path) }}">
                                             <span class="fa fa-print"></span>
-                                            {{ translate('Disable' if settings.lp_printing == True else 'Enable', 'en', [defLang]) }}
+                                            {{ translate('Alternative printer driver', 'en', [defLang]) }} ({{ translate('Disable' if settings.lp_printing == True else 'Enable', 'en', [defLang]) }})
                                         </a>
                                     </li>
                                     {% endif %}
@@ -169,18 +172,6 @@
     			                <ul class="dropdown-menu" role="menu">
                                     <li class="dropdown-header">( {{ translate('General Screens', 'en', [defLang]) }} )</li>
     			                    <li>
-    				                    <a href="{{ url_for('core.touch', a=0) }}" target="_blank">
-    				                        <span class="fa fa-desktop"></span>
-                                            {{ translate('Touch screen', 'en', [defLang]) }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-target="#touch_qr" data-toggle="modal">
-                                            <span class="fa fa-desktop"></span>
-                                            {{ translate('Touch screen', 'en', [defLang]) }} (QR Code)
-                                        </a>
-                                    </li>
-    			                    <li>
     				                    <a href="{{ url_for('core.display') }}" target="_blank">
     				                        <span class="fa fa-television"></span>
                                             {{ translate('Display screen', 'en', [defLang]) }}
@@ -190,6 +181,19 @@
                                         <a href="#" data-toggle="modal" data-target="#display_qr">
                                             <span class="fa fa-television"></span>
                                             {{ translate('Display screen', 'en', [defLang]) }} (QR Code)
+                                        </a>
+                                    </li>
+                                    {% if not settings.single_row %}
+                                    <li>
+    				                    <a href="{{ url_for('core.touch', a=0) }}" target="_blank">
+    				                        <span class="fa fa-desktop"></span>
+                                            {{ translate('Touch screen', 'en', [defLang]) }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-target="#touch_qr" data-toggle="modal">
+                                            <span class="fa fa-desktop"></span>
+                                            {{ translate('Touch screen', 'en', [defLang]) }} (QR Code)
                                         </a>
                                     </li>
                                     {% for office in offices %}
@@ -207,6 +211,7 @@
                                         </a>
                                     </li>
                                     {% endfor %}
+                                    {% endif %}
                                 </ul>
                             </li>
     			            <li class="dropdown">

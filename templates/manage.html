@@ -34,7 +34,7 @@
 				</strong>
 		    </h4>
 			<hr class="mb-4">
-		    {% if getattr(current_user, 'role_id', None) != 3 %}
+		    {% if getattr(current_user, 'role_id', None) != 3 or settings.single_row %}
 		    <div class="media mb-1">
 				<span class="fa fa-4x fa-search text-muted media-object pull-left"></span>
 				<div class="media-body">
