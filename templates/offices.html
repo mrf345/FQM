@@ -7,23 +7,11 @@
 {% block head %}
 {{ super() }}
 <script>
-	// solves offices not loading wallpapers exception bug
-	redditWallpapers({
-		isFixed: 'true',
-		id: '.widw',
-		isOverlayed: 'true',
-		overlay: 'rgba(0,0,0,0.7)',
-		duration: 60,
-		limit: 100,
-		timeout: 1,
-		category: ['CityPorn'],
-		defaultImg: "{{ url_for('static', filename='images/dbg.jpg') }}"
-	})
-	{% if form.errors %}
-	$(document).ready(function () {
-		$('.updb').click()
-	})
-	{% endif %}
+{% if form.errors %}
+$(document).ready(function () {
+	$('.updb').click()
+})
+{% endif %}
 </script>
 <style>
 .qrw:hover {

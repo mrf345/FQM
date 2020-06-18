@@ -25,7 +25,7 @@
         <script src="{{ url_for('static', filename='backstrap/js/bootstrap.min.js') }}"></script>
         <script src="{{ url_for('static', filename='wallpapers.js') }}"></script>
         {{ datepicker.loader() }}
-        {{ beloadingNotifier(version, beload=settings.strict_pulling, release=translate("You are using an older version of FQM, a newer release is available on fqms.github.io", 'en', [defLang]), firefox=translate("You are not using Firefox browser, which this project is designed and most suited for.", 'en', [defLang])) }}
+        {{ beloadingNotifier(version, beload=False, release=translate("You are using an older version of FQM, a newer release is available on fqms.github.io", 'en', [defLang]), firefox=translate("You are not using Firefox browser, which this project is designed and most suited for.", 'en', [defLang])) }}
         <script type="text/javascript">
             $(document).ready(function(){
                 {{ wallpapers('.wallpapers', enable_reddit=settings.visual_effects, duration=30, overlay='rgba(0,0,0,0.1)') }}
