@@ -9,7 +9,7 @@
 {% block head %}
 {{ super() }}
 {{ datepicker.loader() }}
-{{ beloadingNotifier(version, beload=settings.visual_effects, release=translate("You are using an older version of FQM, a newer release is available on fqms.github.io", 'en', [defLang]), firefox=translate("You are not using Firefox browser, which this project is designed and most suited for.", 'en', [defLang])) }}
+{{ beloadingNotifier(version, beload=False, release=translate("You are using an older version of FQM, a newer release is available on fqms.github.io", 'en', [defLang]), firefox=translate("You are not using Firefox browser, which this project is designed and most suited for.", 'en', [defLang])) }}
 {% endblock %}
 
 {%- from "sb_manage.html" import sb_manage with context %}

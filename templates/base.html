@@ -23,6 +23,7 @@
             href="{{ url_for('static', filename='images/favicon.ico') }}"
         >
         <link href="{{ url_for('static', filename='css/gfonts.css') }}" rel="stylesheet">
+        <script src="{{ url_for('static', filename='wallpapers.js') }}"></script>
         <script src="{{ url_for('static', filename='backstrap/jquery.min.js') }}"></script>
         <script src="{{ url_for('static', filename='jquery-ui.min.js') }}"></script>
         <script src="{{ url_for('static', filename='backstrap/js/bootstrap.min.js') }}"></script>
@@ -30,7 +31,6 @@
         {{ moment.locale(defLang) }}
         <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
         <script src="{{ url_for('static', filename='disciple.js') }}"></script>
-        <script src="{{ url_for('static', filename='wallpapers.js') }}"></script>
         <script src="{{ url_for('static', filename='extFunctions.js') }}"></script>
         {{ beloadingNotifier(version, beload=False, release=translate("You are using an older version of FQM, a newer release is available on fqms.github.io", 'en', [defLang]), firefox=translate("You are not using Firefox browser, which this project is designed and most suited for.", 'en', [defLang]), notifier=notifications) }}
         <script type="text/javascript">
