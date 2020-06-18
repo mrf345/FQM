@@ -72,7 +72,7 @@ Options:
 
 
 #### - For development on Linux\MacOS:
-- Make sure to install and use **Python 3.7** or **3.8**
+- Make sure to install and use **Python 3.7**
 - Execute the following commands in a terminal window:
 1. `chmod +x installer.sh`
 2. `./installer.sh --install`
