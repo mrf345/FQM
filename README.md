@@ -43,7 +43,7 @@ You can find an executable that's suitable to your OS from :
 
 
 #### - From the source:
-- Make sure to install and use **Python 3.7**
+- Make sure to install and use **Python 3.7** or **3.8**
 - Execute the following commands in a terminal window:
 1. `git clone https://github.com/mrf345/FQM.git`
 2. `cd FQM`
@@ -72,7 +72,7 @@ Options:
 
 
 #### - For development on Linux\MacOS:
-- Make sure to install and use **Python 3.7**
+- Make sure to install and use **Python 3.7** or **3.8**
 - Execute the following commands in a terminal window:
 1. `chmod +x installer.sh`
 2. `./installer.sh --install`
