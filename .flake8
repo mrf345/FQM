@@ -1,5 +1,5 @@
 [flake8]
-ignore = E226,E302,E41,E712
+ignore = E226,E302,E41,E712, E731
 max-line-length = 130
 exclude = *__pycache__*
 max-complexity = 25

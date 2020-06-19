@@ -7,7 +7,7 @@ import app.database as data
 from app.middleware import db
 from app.utils import ids
 from app.helpers import (reject_operator, reject_no_offices, is_operator, is_office_operator,
-                         is_common_task_operator)
+                         is_common_task_operator, reject_setting)
 
 
 manage_app = Blueprint('manage_app', __name__)
@@ -17,7 +17,7 @@ manage_app = Blueprint('manage_app', __name__)
 @login_required
 def manage():
     ''' management welcome screen. '''
-    if is_operator():
+    if is_operator() and not data.Settings.get().single_row:
         operator = data.Operators.get(current_user.id)
 
         flash('Error: operators are not allowed to access the page ', 'danger')
@@ -65,6 +65,7 @@ def all_offices():
 
 @manage_app.route('/offices/<int:o_id>', methods=['GET', 'POST'])
 @login_required
+@reject_setting('single_row', True)
 def offices(o_id):
     ''' view and update an office. '''
     office = data.Office.get(o_id)
@@ -121,6 +122,7 @@ def offices(o_id):
 @manage_app.route('/office_a', methods=['GET', 'POST'])
 @login_required
 @reject_operator
+@reject_setting('single_row', True)
 def office_a():
     ''' add an office. '''
     form = forms.Offices_a(defLang=session.get('lang'))
@@ -149,31 +151,20 @@ def office_a():
 @manage_app.route('/office_d/<int:o_id>')
 @login_required
 @reject_operator
+@reject_setting('single_row', True)
 def office_d(o_id):
     ''' delete office and its belongings. '''
-    office = data.Office.query.filter_by(id=o_id).first()
+    office = data.Office.get(o_id)
 
-    if office is None:
+    if not office:
         flash('Error: wrong entry, something went wrong', 'danger')
         return redirect(url_for('manage_app.offices', o_id=o_id))
 
-    tickets_to_delete = data.Serial.query.filter(data.Serial.office_id == o_id)
-
-    if tickets_to_delete.filter(data.Serial.number != 100).count():
+    if office.tickets.count():
         flash('Error: you must reset it, before you delete it ', 'danger')
         return redirect(url_for('manage_app.offices', o_id=o_id))
 
-    tickets_to_delete.delete()
-
-    # NOTE: common tasks should be removed from list of associated offices
-    for task in office.tasks:
-        if task.common:
-            office.tasks.remove(task)
-        else:
-            db.session.delete(task)
-
-    db.session.delete(office)
-    db.session.commit()
+    office.delete_all()
     flash('Notice: office and its all tasks been deleted ', 'info')
     return redirect(url_for('manage_app.all_offices'))
 
@@ -182,6 +173,7 @@ def office_d(o_id):
 @login_required
 @reject_operator
 @reject_no_offices
+@reject_setting('single_row', True)
 def office_da():
     ''' delete all offices and their belongings.'''
     if data.Serial.query.filter(data.Serial.number != 100).count():
@@ -247,6 +239,7 @@ def search():
 @manage_app.route('/task/<int:o_id>', methods=['POST', 'GET'], defaults={'ofc_id': None})
 @manage_app.route('/task/<int:o_id>/<int:ofc_id>', methods=['POST', 'GET'])
 @login_required
+@reject_setting('single_row', True)
 def task(o_id, ofc_id=None):
     ''' view specific task. '''
     task = data.Task.get(o_id)
@@ -330,6 +323,7 @@ def task(o_id, ofc_id=None):
 @manage_app.route('/task_d/<int:t_id>', defaults={'ofc_id': None})
 @manage_app.route('/task_d/<int:t_id>/<int:ofc_id>')
 @login_required
+@reject_setting('single_row', True)
 def task_d(t_id, ofc_id=None):
     ''' to delete a task '''
     task = data.Task.get(t_id)
@@ -358,6 +352,7 @@ def task_d(t_id, ofc_id=None):
 @manage_app.route('/common_task_a', methods=['GET', 'POST'])
 @login_required
 @reject_operator
+@reject_setting('single_row', True)
 def common_task_a():
     ''' to add a common task '''
     if data.Office.query.count() <= 1:
@@ -412,6 +407,7 @@ def common_task_a():
 
 @manage_app.route('/task_a/<int:o_id>', methods=['GET', 'POST'])
 @login_required
+@reject_setting('single_row', True)
 def task_a(o_id):
     ''' to add a task '''
     form = forms.Task_a(session.get('lang'))

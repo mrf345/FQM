@@ -2,6 +2,8 @@ from flask_login import UserMixin, current_user
 from sqlalchemy.sql import and_, or_
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from random import randint
+
 from app.middleware import db
 from app.constants import USER_ROLES, DEFAULT_PASSWORD
 
@@ -18,6 +20,16 @@ class Mixin:
             return cls.query.first()
 
         return cls.query.filter_by(id=id).first()
+
+    @classmethod
+    def create_generic(cls, **kwargs):
+        record = cls()
+
+        record.__dict__.update(kwargs)
+        db.session.add(record)
+        db.session.commit()
+
+        return cls.get(record.id)
 
 
 class TicketsMixin:
@@ -49,13 +61,14 @@ class Office(db.Model, Mixin):
     tasks = db.relationship('Task', secondary=mtasks, lazy='subquery',
                             backref=db.backref('offices', lazy=True))
 
-    def __init__(self, name, prefix):
-        self.name = name
-        self.prefix = prefix
+    def __init__(self, name=None, prefix=None):
+        self.name = name or self.get_generic_available_name()
+        self.prefix = prefix or self.get_first_available_prefix()
 
     @classmethod
     def get_first_available_prefix(cls):
-        letters = list(map(lambda i: chr(i), range(97, 123)))
+        letters = list(reversed(list(map(lambda i: chr(i),
+                                         range(97, 123)))))
         prefix = None
 
         while letters and not prefix:
@@ -65,6 +78,19 @@ class Office(db.Model, Mixin):
                 prefix = match_letter
 
         return prefix and prefix.upper()
+
+    @classmethod
+    def get_generic_available_name(cls):
+        name = 0
+
+        while not name:
+            temp_name = randint(1, 1000)
+            office = cls.query.filter_by(name=temp_name).first()
+
+            if not office:
+                name = temp_name
+
+        return name
 
     @property
     def tickets(self):
@@ -78,6 +104,19 @@ class Office(db.Model, Mixin):
 
         return f'{self.prefix if show_prefix else ""}{self.name}'
 
+    def delete_all(self):
+        for ticket in self.tickets:
+            db.session.delete(ticket)
+
+        for task in self.tasks:
+            if task.common:
+                self.tasks.remove(task)
+            else:
+                db.session.delete(task)
+
+        db.session.delete(self)
+        db.session.commit()
+
 
 class Task(db.Model, Mixin):
     __tablename__ = "tasks"
@@ -85,7 +124,7 @@ class Task(db.Model, Mixin):
     name = db.Column(db.String(300))
     timestamp = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
 
-    def __init__(self, name):
+    def __init__(self, name='Generic'):
         self.name = name
 
     @property
@@ -645,11 +684,13 @@ class Settings(db.Model, Mixin):
     strict_pulling = db.Column(db.Boolean, nullable=True)
     visual_effects = db.Column(db.Boolean, nullable=True)
     lp_printing = db.Column(db.Boolean, nullable=True)
+    single_row = db.Column(db.Boolean, nullable=True)
 
     def __init__(self, notifications=True, strict_pulling=True, visual_effects=True,
-                 lp_printing=False):
+                 lp_printing=False, single_row=False):
         self.id = 0
         self.notifications = notifications
         self.strict_pulling = strict_pulling
         self.visual_effects = visual_effects
         self.lp_printing = lp_printing
+        self.single_row = single_row

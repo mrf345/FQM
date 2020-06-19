@@ -13,7 +13,7 @@
 		<!-- Main Menu -->
 		<div class="side-menu-container">
 		    <ul class="nav navbar-nav">
-			{% if getattr(current_user, 'role_id', None) != 3 %}
+			{% if getattr(current_user, 'role_id', None) != 3 or settings.single_row %}
 			<li id="da1" >
 			    <a href="{{ url_for('manage_app.search') }}">
 				<span class="fa fa-search"></span>
@@ -24,15 +24,17 @@
 			    <a href="{{ url_for('manage_app.all_offices') }}">
 				<span class="fa fa-ticket"></span>
 				{{ translate('All tickets', 'en', [defLang]) }}
+					{% if not settings.single_row %}
 					<span class="badge pull-right">
 						{{ Serial.query.filter_by(p=False).count() }}
 					</span>
+					{% endif %}
 			    </a>
 			</li>
 			<li  id="da5" >
 				<a href="{{ url_for('core.pull') }}">
-						<span class="fa fa-minus"></span>
-						{{ translate('Pull a ticket', 'en', [defLang]) }}
+						<span class="fa fa-{% if settings.single_row %}plus{% else %}minus{% endif %}"></span>
+						{{ translate('Generate a ticket' if settings.single_row else 'Pull a ticket', 'en', [defLang]) }}
 						{% if Serial.query.filter_by(p=False).count() >= 1 %}
 						<span class="badge pull-right">
 							{{ Serial.query.filter_by(p=False).count() }}
@@ -40,7 +42,8 @@
 						{% endif %}
 				</a>
 			</li>
-			<li id="da3" >
+			{% if not settings.single_row %}
+			<li id="da3">
 			    <a href="{{ url_for('manage_app.office_a') }}">
 				<span class="fa fa-plus"></span>
 				{{ translate('Add new office', 'en', [defLang]) }}
@@ -54,6 +57,7 @@
 			    </a>
 			</li>
 			{% endif %}
+			{% endif %}
 			<li id="da4" >
 				<a onclick="announce()">
 				<span class="glyphicon glyphicon-refresh"></span>
@@ -62,6 +66,7 @@
 			</li>
 			{% endif %}
 			<!-- Dropdown--> 
+			{% if not settings.single_row %}
 			{% for office in offices %}
 			{% if getattr(current_user, 'role_id', None) != 3 or checkId(current_user.id, office.operators) %}
 			<li class="panel panel-default da{{ office.id+3 }} {% if ar %} ar1 {% endif %}" id="dropdown">
@@ -141,6 +146,7 @@
 
 			{% endif %}
 			{% endfor %}
+			{% endif %}
 		    </ul>
 		</div><!-- /.navbar-collapse -->
 	    </nav>

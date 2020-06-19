@@ -56,10 +56,12 @@
 			    			<span class="fa fa-reply-all"></span>
 			    			<strong>{{ translate('Reset all', 'en', [defLang]) }}</strong>
 						</a>
+						{% if not settings.single_row %}
 						<a class="btn btn-danger" data-toggle="modal" data-target="#dall">
 			    			<span class="fa fa-trash"></span>
 			    			<strong>{{ translate('Delete all', 'en', [defLang]) }}</strong>
 						</a>
+						{% endif %}
 		    		</div>
 				</div>
 	    	</div>
@@ -146,7 +148,7 @@
 {{ confirmModal(
 	[['rall', translate('Warning : Resetting all', 'en', [defLang]),
 	translate("You are attempting to reset every office and task to zero, with all tickets erased, that won't be retrievable , Are you sure of that ?", 'en', [defLang]),
-	url_for('core.serial_ra')
+	url_for('core.serial_r', o_id=0) if settings.single_row else url_for('core.serial_ra')
 	],
 	['dall', translate('Warning : Deleting all', 'en', [defLang]),
 	translate("You are attempting to delete every office and task under it with all tickets, which won't be retrievable , Are you sure of that ?", 'en', [defLang]),

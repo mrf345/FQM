@@ -1,0 +1,125 @@
+import pytest
+
+from .common import TEST_REPEATS
+from app.database import Task, Settings, Serial, Office
+from app.settings import single_row
+
+
+@pytest.mark.usefixtures('c')
+def test_single_row_restrictions_enabled(c):
+    with c.application.app_context():
+        task = Task.get()
+        office = task.offices[0]
+
+        if not Settings.get().single_row:
+            c.get('/settings/single_row', follow_redirects=True)
+
+        assert Settings.get().single_row is True
+
+    message = f'flag setting single_row must be disabled'
+    contains_message = lambda p: message in c\
+        .get(p, follow_redirects=True)\
+        .data.decode('utf-8')
+
+    assert contains_message(f'/serial/{task.id}') is True
+    assert contains_message('/serial_ra') is True
+    assert contains_message(f'/serial_rt/{task.id}') is True
+    assert contains_message(f'/pull_unordered/1/test') is True
+    assert contains_message(f'/on_hold/1/test') is True
+    assert contains_message(f'/touch/1') is True
+    assert contains_message(f'/offices/{office.id}') is True
+    assert contains_message(f'/office_a') is True
+    assert contains_message(f'/office_d/{office.id}') is True
+    assert contains_message(f'/office_da') is True
+    assert contains_message(f'/task/{task.id}') is True
+    assert contains_message(f'/task_d/{task.id}') is True
+    assert contains_message(f'/common_task_a') is True
+    assert contains_message(f'/task_a/{office.id}') is True
+
+
+@pytest.mark.usefixtures('c')
+def test_single_row_restrictions_disabled(c):
+    with c.application.app_context():
+        task = Task.get()
+        office = task.offices[0]
+
+        if Settings.get().single_row:
+            c.get('/settings/single_row', follow_redirects=True)
+
+        assert Settings.get().single_row is False
+
+    message = f'flag setting single_row must be disabled'
+    contains_message = lambda p: message in c\
+        .get(p, follow_redirects=True)\
+        .data.decode('utf-8')
+
+    assert contains_message(f'/serial/{task.id}') is False
+    assert contains_message('/serial_ra') is False
+    assert contains_message(f'/serial_rt/{task.id}') is False
+    assert contains_message(f'/touch/1') is False
+    assert contains_message(f'/offices/{office.id}') is False
+    assert contains_message(f'/office_a') is False
+    assert contains_message(f'/office_d/{office.id}') is False
+    assert contains_message(f'/office_da') is False
+    assert contains_message(f'/task/{task.id}') is False
+    assert contains_message(f'/task_d/{task.id}') is False
+    assert contains_message(f'/common_task_a') is False
+    assert contains_message(f'/task_a/{office.id}') is False
+
+
+@pytest.mark.parametrize('_', range(TEST_REPEATS))
+@pytest.mark.usefixtures('c')
+def test_single_row_pulling(_, c):
+    with c.application.app_context():
+        if not Settings.get().single_row:
+            c.get('/settings/single_row', follow_redirects=True)
+
+        assert Settings.get().single_row is True
+
+        office = Office.get(0)
+        tickets_length = office.tickets.count()
+        last_number = getattr(office.tickets.order_by(Serial.timestamp.desc()).first(),
+                              'number',
+                              100)
+
+    response = c.get(f'/pull', follow_redirects=True)
+
+    assert response.status == '200 OK'
+    assert Office.get(0).tickets.count() - 1 == tickets_length
+    assert Office.get(0).tickets.first().number - 1 == last_number
+    assert Office.get(0).tickets.first().p is True
+
+
+@pytest.mark.usefixtures('c')
+def test_single_row_switch_handler(c):
+    with c.application.app_context():
+        single_row(True)
+
+        assert Office.get(0) is not None
+        assert [Task.get(0)] == Office.get(0).tasks
+
+        single_row(False)
+
+        assert Office.get(0) is None
+
+
+@pytest.mark.parametrize('_', range(TEST_REPEATS))
+@pytest.mark.usefixtures('c')
+def test_single_row_feed(_, c):
+    with c.application.app_context():
+        if not Settings.get().single_row:
+            c.get('/settings/single_row', follow_redirects=True)
+
+        assert Settings.get().single_row is True
+        c.get(f'/pull', follow_redirects=True)
+
+        current_ticket = Serial.get_last_pulled_ticket(0)
+
+    expected_parameters = {
+        f'w{_index + 1}': f'{_index + 1}. {number}'
+        for _index, number in enumerate(range(current_ticket.number + 1,
+                                              current_ticket.number + 9))}
+    feed = c.get('/feed').json
+
+    for key, value in expected_parameters.items():
+        assert feed.get(key) == value

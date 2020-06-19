@@ -5,11 +5,13 @@ from flask_login import current_user, login_required, login_user
 
 import app.forms as forms
 import app.database as data
+import app.settings as settings_handlers
 from app.printer import assign, printit, printit_ar, print_ticket_cli, print_ticket_cli_ar
 from app.middleware import db, gtranslator
 from app.utils import log_error
 from app.helpers import (reject_no_offices, reject_operator, is_operator, reject_not_admin,
-                         is_office_operator, is_common_task_operator, decode_links)
+                         is_office_operator, is_common_task_operator, decode_links,
+                         reject_setting)
 
 
 core = Blueprint('core', __name__)
@@ -23,11 +25,12 @@ def root(n=None):
     has_default_password = data.User.has_default_password()
     wrong_credentials = n == 'a'
     should_redirect = n == 'b'
+    single_row = data.Settings.get().single_row
 
     def logged_in_all_good():
         destination = url_for('manage_app.manage')
 
-        if is_operator():
+        if is_operator() and not single_row:
             destination = url_for('manage_app.offices',
                                   o_id=data.Operators.get(current_user.id).office_id)
         elif should_redirect:
@@ -57,6 +60,7 @@ def root(n=None):
 
 @core.route('/serial/<int:t_id>', methods=['POST', 'GET'], defaults={'office_id': None})
 @core.route('/serial/<int:t_id>/<int:office_id>', methods=['GET', 'POST'])
+@reject_setting('single_row', True)
 def serial(t_id, office_id=None):
     ''' generate a new ticket and print it. '''
     windows = os.name == 'nt'
@@ -136,25 +140,29 @@ def serial(t_id, office_id=None):
 def serial_r(o_id):
     ''' reset by removing tickets of a given office. '''
     office = data.Office.get(o_id)
+    single_row = data.Settings.get().single_row
+    office_redirection = url_for('manage_app.all_offices')\
+        if single_row else url_for('manage_app.offices', o_id=o_id)
 
-    if is_operator() and not is_office_operator(o_id):
+    if (is_operator() and not is_office_operator(o_id)) and not single_row:
         flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
 
     if not office.tickets.first():
         flash('Error: the office is already resetted', 'danger')
-        return redirect(url_for('manage_app.offices', o_id=o_id))
+        return redirect(office_redirection)
 
     office.tickets.delete()
     db.session.commit()
     flash('Notice: office has been resetted. ..', 'info')
-    return redirect(url_for("manage_app.offices", o_id=o_id))
+    return redirect(office_redirection)
 
 
 @core.route('/serial_ra')
 @login_required
 @reject_operator
 @reject_no_offices
+@reject_setting('single_row', True)
 def serial_ra():
     ''' reset all offices by removing all tickets. '''
     tickets = data.Serial.query.filter(data.Serial.number != 100)
@@ -172,6 +180,7 @@ def serial_ra():
 @core.route('/serial_rt/<int:t_id>', defaults={'ofc_id': None})
 @core.route('/serial_rt/<int:t_id>/<int:ofc_id>')
 @login_required
+@reject_setting('single_row', True)
 def serial_rt(t_id, ofc_id=None):
     ''' reset a given task by removing its tickets. '''
     task = data.Task.get(t_id)
@@ -208,16 +217,17 @@ def pull(o_id=None, ofc_id=None):
         flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
 
-    task = data.Task.get(o_id)
-    office = data.Office.get(ofc_id)
     strict_pulling = data.Settings.get().strict_pulling
+    single_row = data.Settings.get().single_row
+    task = data.Task.get(0 if single_row else o_id)
+    office = data.Office.get(0 if single_row else ofc_id)
     global_pull = not bool(o_id and ofc_id)
     general_redirection = redirect(url_for('manage_app.all_offices')
-                                   if global_pull else
+                                   if global_pull or single_row else
                                    url_for('manage_app.task', ofc_id=ofc_id, o_id=o_id))
 
     if global_pull:
-        if is_operator():
+        if not single_row and is_operator():
             return operators_not_allowed()
     else:
         if not task:
@@ -244,6 +254,17 @@ def pull(o_id=None, ofc_id=None):
         .order_by(data.Serial.timestamp)\
         .first()
 
+    if single_row:
+        current_ticket = office.tickets\
+                               .order_by(data.Serial.timestamp.desc())\
+                               .first()
+        next_ticket = data.Serial(number=getattr(current_ticket, 'number', 100) + 1,
+                                  office_id=office.id,
+                                  task_id=task.id)
+
+        db.session.add(next_ticket)
+        db.session.commit()
+
     if not next_ticket:
         flash('Error: no tickets left to pull from ..', 'danger')
         return general_redirection
@@ -260,6 +281,7 @@ def pull(o_id=None, ofc_id=None):
 @core.route('/pull_unordered/<ticket_id>/<redirect_to>/<int:office_id>')
 @login_required
 @decode_links
+@reject_setting('single_row', True)
 def pull_unordered(ticket_id, redirect_to, office_id=None):
     office = data.Office.get(office_id)
     ticket = data.Serial.query.filter_by(id=ticket_id).first()
@@ -283,6 +305,7 @@ def pull_unordered(ticket_id, redirect_to, office_id=None):
 @core.route('/on_hold/<ticket_id>/<redirect_to>')
 @login_required
 @decode_links
+@reject_setting('single_row', True)
 def on_hold(ticket_id, redirect_to):
     ticket = data.Serial.query.filter_by(id=ticket_id).first()
     strict_pulling = data.Settings.get().strict_pulling
@@ -306,18 +329,24 @@ def on_hold(ticket_id, redirect_to):
 @core.route('/feed/<int:office_id>')
 def feed(office_id=None):
     ''' stream list of waiting tickets and current ticket. '''
+    single_row = data.Settings.get().single_row
     current_ticket = data.Serial.get_last_pulled_ticket(office_id)
     empty_text = gtranslator.translate('Empty', dest=[session.get('lang')])
     current_ticket_text = current_ticket and current_ticket.display_text or empty_text
     current_ticket_office_name = current_ticket and current_ticket.office.display_text or empty_text
     current_ticket_task_name = current_ticket and current_ticket.task.name or empty_text
-    waiting_tickets = (data.Serial.get_waiting_list_tickets(office_id) + ([None] * 9))[:9]
 
-    waiting_list_parameters = {
-        f'w{_index + 1}':
-        f'{_index + 1}. {ticket.display_text}' if ticket else empty_text
-        for _index, ticket in enumerate(waiting_tickets)
-    }
+    if single_row:
+        waiting_list_parameters = {
+            f'w{_index + 1}': f'{_index + 1}. {number}'
+            for _index, number in enumerate(range(current_ticket.number + 1,
+                                                  current_ticket.number + 10))}
+    else:
+        waiting_tickets = (data.Serial.get_waiting_list_tickets(office_id) + ([None] * 9))[:9]
+        waiting_list_parameters = {
+            f'w{_index + 1}':
+            f'{_index + 1}. {ticket.display_text}' if ticket else empty_text
+            for _index, ticket in enumerate(waiting_tickets)}
 
     # NOTE: Ensure `waiting_list_parameters` last value is as distinct as the `current_ticket`
     # To fix `uniqueness` not picking up the change in passed waiting list
@@ -379,6 +408,7 @@ def display(office_id=None):
 
 @core.route('/touch/<int:a>', defaults={'office_id': None})
 @core.route('/touch/<int:a>/<int:office_id>')
+@reject_setting('single_row', True)
 def touch(a, office_id=None):
     ''' touch screen view. '''
     form = forms.Touch_name_ar() if session.get('lang') == 'AR' else forms.Touch_name()
@@ -397,12 +427,14 @@ def touch(a, office_id=None):
                            a=touch_screen_stings.tmp, office_id=office_id)
 
 
+@core.route('/settings/<setting>', defaults={'togo': None})
 @core.route('/settings/<setting>/<togo>')
 @login_required
 @reject_not_admin
 @decode_links
-def settings(setting, togo):
+def settings(setting, togo=None):
     ''' toggle a setting. '''
+    togo = togo or '/'
     settings = data.Settings.get()
 
     if not settings:
@@ -411,6 +443,7 @@ def settings(setting, togo):
 
     toggled_setting_value = not bool(getattr(settings, setting, True))
 
+    getattr(settings_handlers, setting, lambda s: '')(toggled_setting_value)
     settings.__setattr__(setting, toggled_setting_value)
     db.session.commit()
     flash(f'Notice: Setting got {"Enabled" if toggled_setting_value else "Disabled"} successfully.',

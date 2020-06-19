@@ -120,10 +120,14 @@
                         </h3>
                         <!-- If operator redirect to specific office instead of manage -->
                         {% if getattr(current_user, 'role_id', None) == 3 %}
-                            <a 
-                                class="btn btn-lg btn-primary" 
-                                href="{{ url_for('manage_app.offices', o_id=operators.filter_by(id=current_user.id).first().office_id) }}"
-                            >
+                            {% if settings.single_row %}
+                                <a class="btn btn-lg btn-primary" href="{{ url_for('manage_app.all_offices') }}">
+                            {% else %}
+                                <a 
+                                    class="btn btn-lg btn-primary" 
+                                    href="{{ url_for('manage_app.offices', o_id=operators.filter_by(id=current_user.id).first().office_id) }}"
+                                >
+                            {% endif %}
                         {% else %}
                             <a class="btn btn-lg btn-primary" href="{{ url_for('manage_app.manage') }}">
                         {% endif %}

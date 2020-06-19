@@ -154,8 +154,9 @@ def reject_operator(function):
     def decorated(*args, **kwargs):
         if is_operator():
             with current_app.app_context():
-                flash('Error: operators are not allowed to access the page ', 'danger')
-                return redirect(url_for('core.root'))
+                if not data.Settings.get().single_row:
+                    flash('Error: operators are not allowed to access the page ', 'danger')
+                    return redirect(url_for('core.root'))
         return function(*args, **kwargs)
 
     return decorated
@@ -235,6 +236,30 @@ def reject_slides_enabled(function):
             return function(*args, **kwargs)
 
     return decorated
+
+
+def reject_setting(setting, status):
+    '''Decorator to reject and flash if setting match status.
+
+    Parameters
+    ----------
+    setting : str
+        flag setting name.
+    status : bool
+        flag setting status.
+    '''
+    def wrapper(function):
+        @wraps(function)
+        def decorator(*args, **kwargs):
+            with current_app.app_context():
+                if getattr(data.Settings.get(), setting, False) == status:
+                    flash(
+                        f'Error: flag setting {setting} must be {"disabled" if status else "enabled"}',
+                        'danger')
+                    return redirect(url_for('core.root'))
+            return function(*args, **kwargs)
+        return decorator
+    return wrapper
 
 
 def decode_links(function):
