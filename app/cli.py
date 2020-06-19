@@ -1,7 +1,9 @@
 import sys
 import click
-from importlib import import_module
+import gevent
+import signal
 from gevent import monkey, pywsgi
+from importlib import import_module
 
 from app.main import bundle_app
 from app.utils import get_accessible_ips, get_random_available_port, log_error
@@ -36,7 +38,12 @@ def interface(cli, quiet, ip, port):
         monkey.patch_socket()
 
         try:
-            pywsgi.WSGIServer((str(alt_ip), int(alt_port)), app, log=None if quiet else 'default').serve_forever()
+            server = pywsgi.WSGIServer((str(alt_ip), int(alt_port)),
+                                       app,
+                                       log=None if quiet else 'default')
+            gevent.signal(signal.SIGTERM, server.stop)
+            server.serve_forever()
+            gevent.get_hub().join()
         except KeyboardInterrupt:
             stop_tasks()
 
