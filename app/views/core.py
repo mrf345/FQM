@@ -339,8 +339,8 @@ def feed(office_id=None):
     if single_row:
         waiting_list_parameters = {
             f'w{_index + 1}': f'{_index + 1}. {number}'
-            for _index, number in enumerate(range(current_ticket.number + 1,
-                                                  current_ticket.number + 10))}
+            for _index, number in enumerate(range(getattr(current_ticket, 'number', 1) + 1,
+                                                  getattr(current_ticket, 'number', 1) + 10))}
     else:
         waiting_tickets = (data.Serial.get_waiting_list_tickets(office_id) + ([None] * 9))[:9]
         waiting_list_parameters = {
