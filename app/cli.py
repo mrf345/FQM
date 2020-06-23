@@ -1,7 +1,5 @@
 import sys
 import click
-import gevent
-import signal
 from gevent import monkey, pywsgi
 from importlib import import_module
 
@@ -35,15 +33,12 @@ def interface(cli, quiet, ip, port):
         click.echo(click.style(f'FQM {VERSION} is running on http://{alt_ip}:{alt_port}', bold=True, fg='green'))
         click.echo('')
         click.echo(click.style('Press Control-c to stop', blink=True, fg='black', bg='white'))
-        monkey.patch_socket()
 
         try:
-            server = pywsgi.WSGIServer((str(alt_ip), int(alt_port)),
-                                       app,
-                                       log=None if quiet else 'default')
-            gevent.signal(signal.SIGTERM, server.stop)
-            server.serve_forever()
-            gevent.get_hub().join()
+            monkey.patch_socket()
+            pywsgi.WSGIServer((str(alt_ip), int(alt_port)),
+                              app,
+                              log=None if quiet else 'default').serve_forever()
         except KeyboardInterrupt:
             stop_tasks()
 

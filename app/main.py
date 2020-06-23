@@ -90,7 +90,7 @@ def create_db(app, testing=False):
             db.create_all()
         else:
             try:
-                database_upgrade(directory=MIGRATION_FOLDER)
+                database_upgrade(directory=absolute_path(MIGRATION_FOLDER))
             except Exception as exception:
                 if not isinstance(exception, OperationalError):
                     log_error(exception, quiet=os.name == 'nt')
