@@ -12,10 +12,12 @@ def test_cli_start(monkeypatch):
     mock_bundle_app = MagicMock()
     mock_pywsgi = MagicMock()
     mock_monkey = MagicMock()
+    mock_gevent = MagicMock()
 
     monkeypatch.setattr(app.cli, 'bundle_app', mock_bundle_app)
     monkeypatch.setattr(app.cli, 'pywsgi', mock_pywsgi)
     monkeypatch.setattr(app.cli, 'monkey', mock_monkey)
+    monkeypatch.setattr(app.cli, 'gevent', mock_gevent)
     runner.invoke(interface, ['--cli', '--port', port, '--ip', ip, '--quiet'])
 
     mock_bundle_app().config['QUIET'] is True
@@ -24,6 +26,7 @@ def test_cli_start(monkeypatch):
     mock_monkey.patch_socket.assert_called_once_with()
     mock_pywsgi.WSGIServer.assert_called_once_with((ip, int(port)), mock_bundle_app(), log=None)
     mock_pywsgi.WSGIServer().serve_forever.assert_called_once_with()
+    mock_gevent.signal.assert_called_once()
 
 
 def test_gui_start(monkeypatch):
@@ -50,6 +53,7 @@ def test_gui_cli_fallback(monkeypatch):
     mock_sys = MagicMock()
     mock_pywsgi = MagicMock()
     mock_monkey = MagicMock()
+    mock_gevent = MagicMock()
 
     def mock_import():
         raise AttributeError()
@@ -59,8 +63,10 @@ def test_gui_cli_fallback(monkeypatch):
     monkeypatch.setattr(app.cli, 'sys', mock_sys)
     monkeypatch.setattr(app.cli, 'pywsgi', mock_pywsgi)
     monkeypatch.setattr(app.cli, 'monkey', mock_monkey)
+    monkeypatch.setattr(app.cli, 'gevent', mock_gevent)
     runner.invoke(interface, [])
 
     mock_bundle_app().config['QUIET'] is True
     mock_bundle_app().config['CLI_OR_DEPLOY'] is True
     mock_pywsgi.WSGIServer().serve_forever.assert_called_once_with()
+    mock_gevent.signal.assert_called_once()

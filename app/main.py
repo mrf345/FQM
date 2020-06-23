@@ -103,7 +103,7 @@ def bundle_app(config={}):
 
     # NOTE: avoid creating or interacting with the database during migration
     if not app.config.get('MIGRATION', False):
-        create_db(app, testing=app.config.get('TESTING', False))
+        create_db(app)
         start_tasks(app)
 
     if os.name != 'nt':
