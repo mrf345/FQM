@@ -75,9 +75,9 @@ then
     source installiation/bin/activate
     if [ -z "$2" ]
     then
-      python -m flake8 app/**/** tests/** && python -m pytest --count=2 -W ignore -vv tests/* --cov=./app
+      python -m flake8 app/**/** tests/** && python -m pytest --count=2 -vv tests/* --cov=./app
     else
-      python -m flake8 app/**/** tests/** && python -m pytest --count=$2 -W ignore -vv tests/* --cov=./app
+      python -m flake8 app/**/** tests/** && python -m pytest --count=$2 -vv tests/* --cov=./app
     fi
   else
     echo $error1

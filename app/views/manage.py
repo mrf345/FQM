@@ -7,7 +7,7 @@ import app.database as data
 from app.middleware import db
 from app.utils import ids
 from app.helpers import (reject_operator, reject_no_offices, is_operator, is_office_operator,
-                         is_common_task_operator, reject_setting)
+                         is_common_task_operator, reject_setting, get_or_reject)
 
 
 manage_app = Blueprint('manage_app', __name__)
@@ -27,7 +27,7 @@ def manage():
                            page_title='Management',
                            navbar='#snb1',
                            ooid=0,  # NOTE: filler to collapse specific office
-                           serial=data.Serial.query.filter(data.Serial.number != 100),
+                           serial=data.Serial.all_clean(),
                            offices=data.Office.query,
                            operators=data.Operators.query,
                            tasks=data.Task.query)
@@ -52,7 +52,7 @@ def all_offices():
                            pagination=pagination,
                            len=len,
                            page_title='All Offices',
-                           serial=data.Serial.query.filter(data.Serial.number != 100),
+                           serial=data.Serial.all_clean(),
                            offices=data.Office.query,
                            tasks=data.Task.query,
                            users=data.User.query,
@@ -66,36 +66,31 @@ def all_offices():
 @manage_app.route('/offices/<int:o_id>', methods=['GET', 'POST'])
 @login_required
 @reject_setting('single_row', True)
-def offices(o_id):
+@get_or_reject(o_id=data.Office)
+def offices(office):
     ''' view and update an office. '''
-    office = data.Office.get(o_id)
-
-    if office is None:
-        flash('Error: wrong entry, something went wrong', 'danger')
-        return redirect(url_for('core.root'))
-
-    if is_operator() and not is_office_operator(o_id):
+    if is_operator() and not is_office_operator(office.id):
         flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
 
     form = forms.Offices_a(upd=office.prefix, defLang=session.get('lang'))
     page = request.args.get('page', 1, type=int)
-    tickets = data.Serial.all_office_tickets(o_id)
+    tickets = data.Serial.all_office_tickets(office.id)
     last_ticket_pulled = tickets.filter_by(p=True).first()
     pagination = tickets.paginate(page, per_page=10, error_out=False)
 
     if form.validate_on_submit():
         # NOTE: Check if the office's name is already used
         for matching_office in data.Office.query.filter_by(name=form.name.data):
-            if matching_office.id != o_id:
+            if matching_office.id != office.id:
                 flash('Error: name is used by another one, choose another name', 'danger')
-                return redirect(url_for('manage_app.offices', o_id=o_id))
+                return redirect(url_for('manage_app.offices', o_id=office.id))
 
         office.name = form.name.data
         office.prefix = form.prefix.data.upper()
         db.session.commit()
         flash('Notice: office has been updated. ', 'info')
-        return redirect(url_for('manage_app.offices', o_id=o_id))
+        return redirect(url_for('manage_app.offices', o_id=office.id))
 
     form.name.data = office.name
     form.prefix.data = office.prefix.upper()
@@ -105,7 +100,7 @@ def offices(o_id):
                            officesp=pagination.items,
                            pagination=pagination,
                            page_title='Office : ' + office.prefix + str(office.name),
-                           o_id=o_id,
+                           o_id=office.id,
                            ooid=office,
                            len=len,
                            serial=tickets,
@@ -114,8 +109,8 @@ def offices(o_id):
                            users=data.User.query,
                            operators=data.Operators.query,
                            navbar='#snb1',
-                           dropdown='#dropdown-lvl' + str(o_id),
-                           hash='#t1' + str(o_id),
+                           dropdown='#dropdown-lvl' + str(office.id),
+                           hash='#t1' + str(office.id),
                            last_ticket_pulled=last_ticket_pulled)
 
 
@@ -145,24 +140,19 @@ def office_a():
                            operators=data.Operators.query,
                            navbar='#snb1',
                            hash='#da3',
-                           serial=data.Serial.query.filter(data.Serial.number != 100))
+                           serial=data.Serial.all_clean())
 
 
 @manage_app.route('/office_d/<int:o_id>')
 @login_required
 @reject_operator
 @reject_setting('single_row', True)
-def office_d(o_id):
+@get_or_reject(o_id=data.Office)
+def office_d(office):
     ''' delete office and its belongings. '''
-    office = data.Office.get(o_id)
-
-    if not office:
-        flash('Error: wrong entry, something went wrong', 'danger')
-        return redirect(url_for('manage_app.offices', o_id=o_id))
-
     if office.tickets.count():
         flash('Error: you must reset it, before you delete it ', 'danger')
-        return redirect(url_for('manage_app.offices', o_id=o_id))
+        return redirect(url_for('manage_app.offices', o_id=office.id))
 
     office.delete_all()
     flash('Notice: office and its all tasks been deleted ', 'info')
@@ -240,14 +230,9 @@ def search():
 @manage_app.route('/task/<int:o_id>/<int:ofc_id>', methods=['POST', 'GET'])
 @login_required
 @reject_setting('single_row', True)
-def task(o_id, ofc_id=None):
+@get_or_reject(o_id=data.Task)
+def task(task, ofc_id):
     ''' view specific task. '''
-    task = data.Task.get(o_id)
-
-    if task is None:
-        flash('Error: wrong entry, something went wrong', 'danger')
-        return redirect(url_for('core.root'))
-
     form = forms.Task_a(session.get('lang'), task.common)
 
     if is_operator() and not is_common_task_operator(task.id):
@@ -262,9 +247,9 @@ def task(o_id, ofc_id=None):
     if form.validate_on_submit():
         if data.Task.query.filter_by(name=form.name.data).count() > 1:
             flash('Error: name is used by another one, choose another name', 'danger')
-            return redirect(url_for('manage_app.task', o_id=o_id, ofc_id=ofc_id))
+            return redirect(url_for('manage_app.task', o_id=task.id, ofc_id=ofc_id))
 
-        task = data.Task.get(o_id)
+        task = data.Task.get(task.id)
         task.name = form.name.data
 
         if task.common:
@@ -285,7 +270,7 @@ def task(o_id, ofc_id=None):
 
         db.session.commit()
         flash('Notice: task has been updated .', 'info')
-        return redirect(url_for('manage_app.task', o_id=o_id, ofc_id=ofc_id))
+        return redirect(url_for('manage_app.task', o_id=task.id, ofc_id=ofc_id))
 
     if not form.errors:
         form.name.data = task.name
@@ -303,7 +288,7 @@ def task(o_id, ofc_id=None):
                            tasksp=pagination.items,
                            pagination=pagination,
                            serial=tickets,
-                           o_id=o_id,
+                           o_id=task.id,
                            ofc_id=ofc_id,
                            common=task.common,
                            len=len,
@@ -314,7 +299,7 @@ def task(o_id, ofc_id=None):
                            task=task,
                            navbar='#snb1',
                            dropdown='#dropdown-lvl%i' % ofc_id,  # dropdown a list of offices
-                           hash='#tt%i%i' % (ofc_id, o_id),
+                           hash='#tt%i%i' % (ofc_id, task.id),
                            last_ticket_pulled=last_ticket_pulled,
                            edit_task=len(task.offices) == 1 or not is_operator(),
                            office=data.Office.get(ofc_id))
@@ -324,41 +309,35 @@ def task(o_id, ofc_id=None):
 @manage_app.route('/task_d/<int:t_id>/<int:ofc_id>')
 @login_required
 @reject_setting('single_row', True)
-def task_d(t_id, ofc_id=None):
+@get_or_reject(t_id=data.Task)
+def task_d(task, ofc_id):
     ''' to delete a task '''
-    task = data.Task.get(t_id)
-
-    if task is None:
-        flash('Error: wrong entry, something went wrong', 'danger')
-        return redirect(url_for('core.root'))
-
     if is_operator() and not is_common_task_operator(task.id):
         flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
 
-    tickets = data.Serial.query.filter(data.Serial.task_id == t_id)
+    tickets = data.Serial.query.filter(data.Serial.task_id == task.id)
 
     if tickets.filter(data.Serial.number != 100).count() > 0:
         flash('Error: you must reset it, before you delete it ', 'danger')
-        return redirect(url_for('manage_app.task', o_id=t_id, ofc_id=ofc_id))
+        return redirect(url_for('manage_app.task', o_id=task.id, ofc_id=ofc_id))
 
     tickets.delete()
-    db.session.delete(data.Task.get(t_id))
+    db.session.delete(task)
     db.session.commit()
     flash('Notice: task has been deleted .', 'info')
-    return redirect(url_for('manage_app.offices', o_id=ofc_id) if ofc_id else url_for('manage_app.all_offices'))
+    return redirect(url_for('manage_app.offices', o_id=ofc_id)
+                    if ofc_id else
+                    url_for('manage_app.all_offices'))
 
 
 @manage_app.route('/common_task_a', methods=['GET', 'POST'])
 @login_required
 @reject_operator
+@reject_no_offices
 @reject_setting('single_row', True)
 def common_task_a():
     ''' to add a common task '''
-    if data.Office.query.count() <= 1:
-        flash('Error: not enough offices exist to add a common task', 'danger')
-        return redirect(url_for('manage_app.all_offices'))
-
     form = forms.Task_a(session.get('lang'), True)
 
     if form.validate_on_submit():
@@ -386,18 +365,16 @@ def common_task_a():
                                  .first()
 
             if not initial_ticket:
-                db.session.add(data.Serial(
-                    office_id=office.id,
-                    task_id=task.id,
-                    p=True
-                ))
+                db.session.add(data.Serial(office_id=office.id,
+                                           task_id=task.id,
+                                           p=True))
 
         db.session.commit()
         flash('Notice: a common task has been added.', 'info')
         return redirect(url_for('manage_app.all_offices'))
     return render_template('task_add.html', form=form,
                            offices=data.Office.query,
-                           serial=data.Serial.query.filter(data.Serial.number != 100),
+                           serial=data.Serial.all_clean(),
                            tasks=data.Task.query,
                            operators=data.Operators.query,
                            navbar='#snb1', common=True,
@@ -408,14 +385,10 @@ def common_task_a():
 @manage_app.route('/task_a/<int:o_id>', methods=['GET', 'POST'])
 @login_required
 @reject_setting('single_row', True)
-def task_a(o_id):
+@get_or_reject(o_id=data.Office)
+def task_a(office):
     ''' to add a task '''
     form = forms.Task_a(session.get('lang'))
-    office = data.Office.get(o_id)
-
-    if office is None:
-        flash('Error: wrong entry, something went wrong', 'danger')
-        return redirect(url_for('core.root'))
 
     if is_operator() and not is_office_operator(office.id):
         flash('Error: operators are not allowed to access the page ', 'danger')
@@ -424,7 +397,7 @@ def task_a(o_id):
     if form.validate_on_submit():
         if data.Task.query.filter_by(name=form.name.data).first() is not None:
             flash('Error: name is used by another one, choose another name', 'danger')
-            return redirect(url_for('manage_app.task_a', o_id=o_id))
+            return redirect(url_for('manage_app.task_a', o_id=office.id))
 
         task = data.Task(form.name.data)
         db.session.add(task)
@@ -435,26 +408,24 @@ def task_a(o_id):
             db.session.commit()
 
         initial_ticket = data.Serial.query.filter_by(task_id=task.id,
-                                                     office_id=o_id,
+                                                     office_id=office.id,
                                                      number=100)\
                                           .first()
 
         if not initial_ticket:
-            db.session.add(data.Serial(
-                office_id=task.offices[0].id,
-                task_id=task.id,
-                p=True
-            ))
+            db.session.add(data.Serial(office_id=task.offices[0].id,
+                                       task_id=task.id,
+                                       p=True))
             db.session.commit()
 
         flash('Notice: New task been added.', 'info')
-        return redirect(url_for('manage_app.offices', o_id=o_id))
+        return redirect(url_for('manage_app.offices', o_id=office.id))
     return render_template('task_add.html', form=form,
                            offices=data.Office.query,
-                           serial=data.Serial.query.filter(data.Serial.number != 100),
+                           serial=data.Serial.all_clean(),
                            tasks=data.Task.query,
                            operators=data.Operators.query,
                            navbar='#snb1', common=False,
-                           dropdown='#dropdown-lvl' + str(o_id),
-                           hash='#t3' + str(o_id),
+                           dropdown='#dropdown-lvl' + str(office.id),
+                           hash='#t3' + str(office.id),
                            page_title='Add new task')

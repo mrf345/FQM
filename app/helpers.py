@@ -262,6 +262,45 @@ def reject_setting(setting, status):
     return wrapper
 
 
+def get_or_reject(**models):
+    '''Get list of database records from a list or flash message.
+
+    Parameters
+    ----------
+    models : list
+        list of SQLAlchemy models to get from.
+    '''
+    def wrapper(function):
+        @wraps(function)
+        def decorator(*args, **kwargs):
+            with current_app.app_context():
+                new_kwargs = {}
+
+                for kwarg, model in models.items():
+                    record = model.get(kwargs.get(kwarg))
+                    column_name = getattr(model, '__tablename__', ' ')[:-1]
+
+                    if not record:
+                        flash('Error: wrong entry, something went wrong', 'danger')
+                        return redirect(url_for('core.root'))
+
+                    if column_name == 'serial':
+                        column_name = 'ticket'
+
+                    new_kwargs[column_name] = record
+
+                for kwarg, value in kwargs.items():
+                    if kwarg not in new_kwargs and kwarg not in models:
+                        new_kwargs[kwarg] = value
+
+                if len(kwargs.keys()) != len(new_kwargs.keys()):
+                    raise AttributeError('Modules list mismatch arguments.')
+
+                return function(*args, **new_kwargs)
+        return decorator
+    return wrapper
+
+
 def decode_links(function):
     ''' Decorator to `urllib.parse.unquote` string arguments.
 
