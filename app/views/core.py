@@ -11,7 +11,7 @@ from app.middleware import db, gtranslator
 from app.utils import log_error
 from app.helpers import (reject_no_offices, reject_operator, is_operator, reject_not_admin,
                          is_office_operator, is_common_task_operator, decode_links,
-                         reject_setting)
+                         reject_setting, get_or_reject)
 
 
 core = Blueprint('core', __name__)
@@ -61,11 +61,11 @@ def root(n=None):
 @core.route('/serial/<int:t_id>', methods=['POST', 'GET'], defaults={'office_id': None})
 @core.route('/serial/<int:t_id>/<int:office_id>', methods=['GET', 'POST'])
 @reject_setting('single_row', True)
-def serial(t_id, office_id=None):
+@get_or_reject(t_id=data.Task)
+def serial(task, office_id=None):
     ''' generate a new ticket and print it. '''
     windows = os.name == 'nt'
     form = forms.Touch_name(session.get('lang'))
-    task = data.Task.get(t_id)
     office = data.Office.get(office_id)
     touch_screen_stings = data.Touch_store.get()
     ticket_settings = data.Printer.get()
@@ -73,10 +73,6 @@ def serial(t_id, office_id=None):
     printed = not touch_screen_stings.n
     numeric_ticket_form = ticket_settings.value == 2
     name_or_number = form.name.data or None
-
-    if not task:
-        flash('Error: wrong entry, something went wrong', 'danger')
-        return redirect(url_for('core.root'))
 
     # NOTE: if it is registered ticket, will display the form
     if not form.validate_on_submit() and not printed:
@@ -137,14 +133,14 @@ def serial(t_id, office_id=None):
 
 @core.route('/serial_r/<int:o_id>')
 @login_required
-def serial_r(o_id):
+@get_or_reject(o_id=data.Office)
+def serial_r(office):
     ''' reset by removing tickets of a given office. '''
-    office = data.Office.get(o_id)
     single_row = data.Settings.get().single_row
     office_redirection = url_for('manage_app.all_offices')\
-        if single_row else url_for('manage_app.offices', o_id=o_id)
+        if single_row else url_for('manage_app.offices', o_id=office.id)
 
-    if (is_operator() and not is_office_operator(o_id)) and not single_row:
+    if (is_operator() and not is_office_operator(office.id)) and not single_row:
         flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
 
@@ -181,14 +177,9 @@ def serial_ra():
 @core.route('/serial_rt/<int:t_id>/<int:ofc_id>')
 @login_required
 @reject_setting('single_row', True)
-def serial_rt(t_id, ofc_id=None):
+@get_or_reject(t_id=data.Task)
+def serial_rt(task, ofc_id=None):
     ''' reset a given task by removing its tickets. '''
-    task = data.Task.get(t_id)
-
-    if not task:
-        flash('Error: No tasks exist to be resetted', 'danger')
-        return redirect(url_for('manage_app.all_offices'))
-
     if is_operator() and not is_common_task_operator(task.id):
         flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
@@ -200,12 +191,12 @@ def serial_rt(t_id, ofc_id=None):
 
     if not tickets.first():
         flash('Error: the task is already resetted', 'danger')
-        return redirect(url_for('manage_app.task', o_id=t_id, ofc_id=ofc_id))
+        return redirect(url_for('manage_app.task', o_id=task.id, ofc_id=ofc_id))
 
     tickets.delete()
     db.session.commit()
     flash('Error: the task is already resetted', 'info')
-    return redirect(url_for('manage_app.task', o_id=t_id, ofc_id=ofc_id))
+    return redirect(url_for('manage_app.task', o_id=task.id, ofc_id=ofc_id))
 
 
 @core.route('/pull', defaults={'o_id': None, 'ofc_id': None})
@@ -306,13 +297,9 @@ def pull_unordered(ticket_id, redirect_to, office_id=None):
 @login_required
 @decode_links
 @reject_setting('single_row', True)
-def on_hold(ticket_id, redirect_to):
-    ticket = data.Serial.query.filter_by(id=ticket_id).first()
+@get_or_reject(ticket_id=data.Serial)
+def on_hold(ticket, redirect_to):
     strict_pulling = data.Settings.get().strict_pulling
-
-    if not ticket:
-        flash('Error: wrong entry, something went wrong', 'danger')
-        return redirect(url_for('core.root'))
 
     if is_operator() and not (is_office_operator(ticket.office_id)
                               if strict_pulling else

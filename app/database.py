@@ -155,7 +155,7 @@ class Task(db.Model, Mixin):
 
         db.session.commit()
 
-class Serial(db.Model, TicketsMixin):
+class Serial(db.Model, TicketsMixin, Mixin):
     __tablename__ = "serials"
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.Integer)
@@ -194,6 +194,10 @@ class Serial(db.Model, TicketsMixin):
     @property
     def puller_name(self):
         return User.get(self.pulledBy).name
+
+    @classmethod
+    def all_clean(cls):
+        return cls.query.filter(cls.number != 100)
 
     @classmethod
     def all_office_tickets(cls, office_id):

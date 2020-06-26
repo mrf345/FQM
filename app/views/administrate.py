@@ -7,7 +7,8 @@ import app.database as data
 from app.middleware import db, login_manager
 import app.forms as forms
 from app.utils import absolute_path, get_module_columns, get_module_values
-from app.helpers import reject_not_god, reject_not_admin, reject_god, is_operator, is_office_operator
+from app.helpers import (reject_not_god, reject_not_admin, reject_god, is_operator, is_office_operator,
+                         get_or_reject)
 
 
 administrate = Blueprint('administrate', __name__)
@@ -116,20 +117,15 @@ def users():
 
 @administrate.route('/operators/<int:t_id>', methods=['GET', 'POST'])
 @login_required
-def operators(t_id):
+@get_or_reject(t_id=data.Office)
+def operators(office):
     ''' to list operators of an office '''
-    office = data.Office.query.filter_by(id=t_id).first()
-
-    if office is None:
-        flash('Error: wrong entry, something went wrong', 'danger')
-        return redirect(url_for('root'))
-
     if is_operator() and not is_office_operator(office.id):
         flash('Error: only administrator can access the page', 'danger')
         return redirect(url_for('root'))
 
     page = request.args.get('page', 1, type=int)
-    pagination = data.Operators.query.filter_by(office_id=t_id)\
+    pagination = data.Operators.query.filter_by(office_id=office.id)\
                                      .paginate(page, per_page=10, error_out=False)
 
     return render_template('operators.html',
@@ -143,8 +139,8 @@ def operators(t_id):
                            tasks=data.Task.query,
                            operators=data.Operators.query,
                            navbar='#snb1',
-                           dropdown='#dropdown-lvl' + str(t_id),
-                           hash='#to' + str(t_id))
+                           dropdown='#dropdown-lvl' + str(office.id),
+                           hash='#to' + str(office.id))
 
 
 @administrate.route('/user_a', methods=['GET', 'POST'])
@@ -185,14 +181,10 @@ def user_a():
 @administrate.route('/user_u/<int:u_id>', methods=['GET', 'POST'])
 @login_required
 @reject_not_admin
-def user_u(u_id):
+@get_or_reject(u_id=data.User)
+def user_u(user):
     ''' to update user '''
     form = forms.User_a(session.get('lang'))
-    user = data.User.query.filter_by(id=u_id).first()
-
-    if user is None:
-        flash('Error: user selected does not exist, something wrong !', 'danger')
-        return redirect(url_for('core.root'))
 
     if user.id == 1:
         return reject_god(lambda: None)()
@@ -211,10 +203,8 @@ def user_u(u_id):
             operator = data.Operators.get(user.id)
 
             if not operator:
-                db.session.add(data.Operators(
-                    user.id,
-                    form.offices.data
-                ))
+                db.session.add(data.Operators(user.id,
+                                              form.offices.data))
             else:
                 operator.office_id = form.offices.data
         else:
@@ -244,14 +234,9 @@ def user_u(u_id):
 @administrate.route('/user_d/<int:u_id>')
 @login_required
 @reject_not_admin
-def user_d(u_id):
+@get_or_reject(u_id=data.User)
+def user_d(user):
     ''' to delete user '''
-    user = data.User.query.filter_by(id=u_id).first()
-
-    if user is None:
-        flash('Error: user selected does not exist, something wrong !', 'danger')
-        return redirect(url_for('core.root'))
-
     if user.id == 1:
         return reject_god(lambda: None)()
 
