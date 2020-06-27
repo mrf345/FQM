@@ -2,6 +2,8 @@ from time import sleep
 from importlib import import_module
 from threading import Thread
 
+from app.utils import create_aliternative_db
+
 
 class Task:
     ''' A base for tasks and mainly an alternative to a QThread, to use when PyQt is not used. '''
@@ -33,14 +35,26 @@ class Task:
         self.thread = Thread(target=self.run)
         self.thread.start()
 
-    def execution_loop(self):
+    def execution_loop(self, bundle_db=False):
         def wrapper(todo):
             while not self.cut_circut:
+                args = ()
+
+                if bundle_db:
+                    args = create_aliternative_db(self.app.config.get('DB_NAME'))
+
                 self.spinned = False
                 with self.app.app_context():
-                    todo()
+                    todo(*args)
                 self.spinned = True
                 self.spinned_once = True
+
+                if bundle_db:
+                    session, db, eng = args
+
+                    session.close()
+                    eng.dispose()
+
                 self.sleep()
 
         return wrapper
