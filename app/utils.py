@@ -260,7 +260,7 @@ def create_aliternative_db(db_name=None):
     except Exception as e:
         log_error(e)
 
-    return session, classes
+    return session, classes, engine
 
 
 def get_with_alias(db_name=None):
@@ -279,7 +279,7 @@ def get_with_alias(db_name=None):
     )('office', 'ticket', 'task')
 
     try:
-        session, db = create_aliternative_db(db_name)
+        session, db, eng = create_aliternative_db(db_name)
         alias = session.query(data.Aliases).first()
     except Exception:
         pass
