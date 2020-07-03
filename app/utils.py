@@ -251,7 +251,7 @@ def create_aliternative_db(db_name=None):
     try:
         db_path = absolute_path(db_name or DATABASE_FILE)
         base = automap_base()
-        engine = create_engine(f'sqlite:///{db_path}')
+        engine = create_engine(f'sqlite:///{db_path}?check_same_thread=False')
 
         base.prepare(engine, reflect=True)
 
@@ -280,7 +280,7 @@ def get_with_alias(db_name=None):
 
     try:
         session, db, eng = create_aliternative_db(db_name)
-        alias = session.query(data.Aliases).first()
+        alias = session.query(db.aliases).first()
     except Exception:
         pass
 

@@ -50,7 +50,7 @@ def c():
                   'WTF_CSRF_ENABLED': False,
                   'TESTING': True,
                   'DB_NAME': DB_NAME,
-                  'SQLALCHEMY_DATABASE_URI': f'sqlite:///{DB_PATH}'}
+                  'SQLALCHEMY_DATABASE_URI': f'sqlite:///{DB_PATH}?check_same_thread=False'}
     db_fd, app_config['DATABASE'] = tempfile.mkstemp()
     app = bundle_app(app_config)
 
