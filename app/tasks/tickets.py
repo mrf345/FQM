@@ -45,7 +45,7 @@ class CacheTicketsAnnouncements(Task):
         with self.app.app_context():
             office = ticket.office
             prefix = office.prefix if show_prefix else ''
-            office_text = f'{prefix}{office.name}'
+            office_text = f'{prefix}{getattr(office, "name", "")}'
             tts_text = self.tts_texts\
                            .get(language, {})\
                            .get('message')
@@ -56,22 +56,20 @@ class CacheTicketsAnnouncements(Task):
             return f'{ticket.display_text}{tts_text}{office_text}'
 
     def run(self):
-        @self.execution_loop(bundle_db=True)
-        def main(session, db, eng):
-            display_settings = session.query(Display_store).first()
+        @self.execution_loop()
+        def main():
+            display_settings = Display_store.get()
 
             if display_settings.announce != 'false':
-                aliases = Aliases.query.first()
+                aliases = Aliases.get()
                 languages = display_settings.announce.split(',')
-                tickets_to_remove = session.query(Serial)\
-                                           .filter(Serial.p == True,
-                                                   Serial.number.in_(self.cached))
-                tickets_to_cache = session.query(Serial)\
-                                          .filter(Serial.p == False,
-                                                  Serial.number != 100,
-                                                  not_(Serial.number.in_(self.cached)))\
-                                          .order_by(Serial.timestamp)\
-                                          .limit(self.limit)
+                tickets_to_remove = Serial.query.filter(Serial.p == True,
+                                                        Serial.number.in_(self.cached))
+                tickets_to_cache = Serial.query.filter(Serial.p == False,
+                                                       Serial.number != 100,
+                                                       not_(Serial.number.in_(self.cached)))\
+                                               .order_by(Serial.timestamp)\
+                                               .limit(self.limit)
 
                 @self.none_blocking_loop(tickets_to_cache)
                 def cache_tickets(ticket):
@@ -87,7 +85,7 @@ class CacheTicketsAnnouncements(Task):
                                                                    display_settings.prefix))
                             successes.append(language)
                         except Exception as exception:
-                            log_error(exception, quit=self.quiet)
+                            log_error(exception, quiet=self.quiet)
 
                     if successes:
                         self.cached.append(ticket.number)
