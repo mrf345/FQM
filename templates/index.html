@@ -18,12 +18,12 @@
             href="{{ url_for('static', filename='images/favicon.ico') }}"
         >
         <link href="{{ url_for('static', filename='css/gfonts.css') }}" rel="stylesheet">
-        {{ cssify('static/css/main.less') }}
-        {{ cssify('static/css/spacing.less') }}
+        <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/spacing.css') }}" rel="stylesheet">
         <script src="{{ url_for('static', filename='backstrap/jquery.min.js') }}"></script>
         <script src="{{ url_for('static', filename='jquery-ui.min.js') }}"></script>
         <script src="{{ url_for('static', filename='backstrap/js/bootstrap.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='wallpapers.js') }}"></script>
+        <script src="{{ url_for('static', filename='wallpapers.min.js') }}"></script>
         {{ datepicker.loader() }}
         {{ beloadingNotifier(version, beload=False, release=translate("You are using an older version of FQM, a newer release is available on fqms.github.io", 'en', [defLang]), firefox=translate("You are not using Firefox browser, which this project is designed and most suited for.", 'en', [defLang])) }}
         <script type="text/javascript">
