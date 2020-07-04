@@ -10,7 +10,6 @@ from flask_qrcode import QRcode
 from flask_datepicker import datepicker
 from flask_colorpicker import colorpicker
 from flask_fontpicker import fontpicker
-from flask_less import lessc
 from flask_minify import minify
 from sqlalchemy.exc import OperationalError
 
@@ -56,12 +55,10 @@ def create_app(config={}):
     db.init_app(app)
     migrate.init_app(app, db=db)
     datepicker(app, local=['static/css/jquery-ui.min.css', 'static/jquery-ui.min.js'])
-    colorpicker(app, local=['static/css/spectrum.css', 'static/spectrum.js'])
-    fontpicker(app, local=['static/jquery-ui.min.js', 'static/css/jquery-ui.min.css', 'static/webfont.js',
-                           'static/webfont.select.js', 'static/css/webfont.select.css'])
-    lessc(app)
-    minify(app, js=True, caching_limit=3, fail_safe=True,
-           bypass=['/touch/<int:a>', '/serial/<int:t_id>', '/display'])
+    colorpicker(app, local=['static/css/spectrum.css', 'static/spectrum.min.js'])
+    fontpicker(app, local=['static/jquery-ui.min.js', 'static/css/jquery-ui.min.css', 'static/webfont.min.js',
+                           'static/webfont.select.min.js', 'static/css/webfont.select.css'])
+    minify(app, js=True, cssless=True, caching_limit=3, fail_safe=True, bypass=['.min.*'])
     gTTs.init_app(app)
     gtranslator.init_app(app)
 
