@@ -7,5 +7,4 @@ from app.utils import absolute_path
 
 @pytest.mark.usefixtures('c')
 def test_upgrading_database(c):
-    with c.application.app_context():
-        assert database_upgrade(directory=absolute_path(MIGRATION_FOLDER)) is None
+    assert database_upgrade(directory=absolute_path(MIGRATION_FOLDER)) is None

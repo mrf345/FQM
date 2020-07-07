@@ -92,12 +92,11 @@ def test_update_user(c):
 
 @pytest.mark.usefixtures('c')
 def test_update_operator(c):
-    with c.application.app_context():
-        office = choice(Office.query.all())
-        new_office = choice(Office.query.all())
+    office = choice(Office.query.all())
+    new_office = choice(Office.query.all())
 
-        while new_office == office:
-            new_office = choice(Office.query.all())
+    while new_office == office:
+        new_office = choice(Office.query.all())
 
     name = f'{uuid4()}'.replace('-', '')
     password = 'password'
@@ -120,8 +119,7 @@ def test_update_operator(c):
 
 @pytest.mark.usefixtures('c')
 def test_delete_user(c):
-    with c.application.app_context():
-        user = User.query.filter(User.id != 1).first()
+    user = User.query.filter(User.id != 1).first()
 
     response = c.get(f'/user_d/{user.id}', follow_redirects=True)
 
@@ -131,9 +129,8 @@ def test_delete_user(c):
 
 @pytest.mark.usefixtures('c')
 def test_delete_all_users_and_operators(c):
-    with c.application.app_context():
-        users_length_before = User.query.count()
-        operators_length_before = Operators.query.count()
+    users_length_before = User.query.count()
+    operators_length_before = Operators.query.count()
 
     response = c.get(f'/user_da', follow_redirects=True)
 
@@ -151,9 +148,8 @@ def test_delete_all_users_and_operators(c):
 
 @pytest.mark.usefixtures('c')
 def test_csv_export(c):
-    with c.application.app_context():
-        header = get_module_columns(User)
-        rows = get_module_values(User)
+    header = get_module_columns(User)
+    rows = get_module_values(User)
 
     response = c.post('/csv', data={
         'table': 'User', 'headers': 1, 'delimiter': 0
@@ -170,9 +166,8 @@ def test_csv_export(c):
 
 @pytest.mark.usefixtures('c')
 def test_csv_export_headers_disabled_and_tabs(c):
-    with c.application.app_context():
-        header = get_module_columns(User)
-        rows = get_module_values(User)
+    header = get_module_columns(User)
+    rows = get_module_values(User)
 
     response = c.post('/csv', data={
         'table': 'User', 'headers': 0, 'delimiter': 1

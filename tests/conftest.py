@@ -1,2 +1,2 @@
 import pytest  # noqa
-from .common import c  # noqa
+from . import c  # noqa
