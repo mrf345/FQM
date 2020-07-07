@@ -54,11 +54,9 @@ def test_ticket_printed(c, monkeypatch):
         product)])
     monkeypatch.setattr(usb.core, 'find', mock_usb_find)
 
-    with c.application.app_context():
-        # NOTE: set ticket setting to printed
-        touch_screen_settings = Touch_store.get()
-        touch_screen_settings.n = False
-        db.session.commit()
+    touch_screen_settings = Touch_store.get()
+    touch_screen_settings.n = False
+    db.session.commit()
 
     printer_value = 1
     kind = 2  # NOTE: Printed
@@ -98,11 +96,9 @@ def test_ticket_printed_windows(c, monkeypatch):
     monkeypatch.setattr(app.views.customize, 'os', mock_os)
     monkeypatch.setattr(app.forms, 'name', 'nt')
 
-    with c.application.app_context():
-        # NOTE: set ticket setting to printed
-        touch_screen_settings = Touch_store.get()
-        touch_screen_settings.n = False
-        db.session.commit()
+    touch_screen_settings = Touch_store.get()
+    touch_screen_settings.n = False
+    db.session.commit()
 
     printer_value = 1
     kind = 2  # NOTE: Printed
@@ -142,13 +138,11 @@ def test_ticket_printed_lp(c, monkeypatch):
     monkeypatch.setattr(app.views.customize, 'os', mock_os)
     monkeypatch.setattr(app.forms, 'name', 'nt')
 
-    with c.application.app_context():
-        # NOTE: set ticket setting to printed
-        settings = Settings.get()
-        touch_screen_settings = Touch_store.get()
-        touch_screen_settings.n = False
-        settings.lp_printing = True
-        db.session.commit()
+    settings = Settings.get()
+    touch_screen_settings = Touch_store.get()
+    touch_screen_settings.n = False
+    settings.lp_printing = True
+    db.session.commit()
 
     printer_value = 1
     kind = 2  # NOTE: Printed
@@ -180,19 +174,15 @@ def test_video(c):
     controls = 2
     mute = 2
     enable = 1
-    video_id = 0
 
-    with c.application.app_context():
-        slides_settings = Slides_c.get()
-        slides_settings.status = False
-        video_settings = Vid.get()
-        video_settings.enabled = True
-        video = Media(True, name=name)
-
-        db.session.add(video)
-        db.session.commit()
-
-        video_id = video.id
+    slides_settings = Slides_c.get()
+    slides_settings.status = False
+    video_settings = Vid.get()
+    video_settings.enabled = True
+    video = Media(True, name=name)
+    db.session.add(video)
+    db.session.commit()
+    video_id = video.id
 
     response = c.post('/video', data={
         'video': video_id,
@@ -214,13 +204,11 @@ def test_video(c):
 
 @pytest.mark.usefixtures('c')
 def test_slideshow(c):
-    with c.application.app_context():
-        slides_settings = Slides_c.get()
-        slides_settings.status = True
-        video_settings = Vid.get()
-        video_settings.enabled = False
-
-        db.session.commit()
+    slides_settings = Slides_c.get()
+    slides_settings.status = True
+    video_settings = Vid.get()
+    video_settings.enabled = False
+    db.session.commit()
 
     response = c.get('/slideshow', follow_redirects=True)
     page_content = response.data.decode('utf-8')
@@ -232,13 +220,11 @@ def test_slideshow(c):
 
 @pytest.mark.usefixtures('c')
 def test_add_slide(c):
-    with c.application.app_context():
-        slides_settings = Slides_c.get()
-        slides_settings.status = True
-        video_settings = Vid.get()
-        video_settings.enabled = False
-
-        db.session.commit()
+    slides_settings = Slides_c.get()
+    slides_settings.status = True
+    video_settings = Vid.get()
+    video_settings.enabled = False
+    db.session.commit()
 
     properties = {'title': 'testing_title',
                   'hsize': '150%',
@@ -260,19 +246,14 @@ def test_add_slide(c):
 
 @pytest.mark.usefixtures('c')
 def test_add_slide_image(c):
-    background_id = 0
-
-    with c.application.app_context():
-        slides_settings = Slides_c.get()
-        slides_settings.status = True
-        video_settings = Vid.get()
-        video_settings.enabled = False
-        background = Media(img=True, name='testing.jpg')
-
-        db.session.add(background)
-        db.session.commit()
-
-        background_id = background.id
+    slides_settings = Slides_c.get()
+    slides_settings.status = True
+    video_settings = Vid.get()
+    video_settings.enabled = False
+    background = Media(img=True, name='testing.jpg')
+    db.session.add(background)
+    db.session.commit()
+    background_id = background.id
 
     properties = {'title': 'testing_title',
                   'hsize': '150%',
@@ -298,11 +279,9 @@ def test_add_slide_image(c):
 
 @pytest.mark.usefixtures('c')
 def test_update_slide(c):
-    with c.application.app_context():
-        slides_settings = Slides_c.get()
-        slides_settings.status = True
-
-        db.session.commit()
+    slides_settings = Slides_c.get()
+    slides_settings.status = True
+    db.session.commit()
 
     rotation = '3000'
     navigation = 2
@@ -324,11 +303,7 @@ def test_update_slide(c):
 
 @pytest.mark.usefixtures('c')
 def test_remove_slide(c):
-    slide = None
-
-    with c.application.app_context():
-        slide = Slides.get()
-
+    slide = Slides.get()
     response = c.get(f'/slide_r/{slide.id}', follow_redirects=True)
 
     assert response.status == '200 OK'
@@ -367,15 +342,10 @@ def test_multimedia_wrong_extension(c):
 
 @pytest.mark.usefixtures('c')
 def test_delete_multimedia(c):
-    media_id = 0
-
-    with c.application.app_context():
-        media = Media(True, False, False, False, 'testing.mp3')
-
-        db.session.add(media)
-        db.session.commit()
-
-        media_id = media.id
+    media = Media(True, False, False, False, 'testing.mp3')
+    db.session.add(media)
+    db.session.commit()
+    media_id = media.id
 
     response = c.get(f'/multi_del/{media_id}', follow_redirects=True)
 

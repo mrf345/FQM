@@ -1,20 +1,19 @@
 import pytest
 
-from .common import TEST_REPEATS
+from . import TEST_REPEATS
 from app.database import Task, Settings, Serial, Office
 from app.settings import single_row
 
 
 @pytest.mark.usefixtures('c')
 def test_single_row_restrictions_enabled(c):
-    with c.application.app_context():
-        task = Task.get()
-        office = task.offices[0]
+    task = Task.get()
+    office = task.offices[0]
 
-        if not Settings.get().single_row:
-            c.get('/settings/single_row', follow_redirects=True)
+    if not Settings.get().single_row:
+        c.get('/settings/single_row', follow_redirects=True)
 
-        assert Settings.get().single_row is True
+    assert Settings.get().single_row is True
 
     message = f'flag setting single_row must be disabled'
     contains_message = lambda p: message in c\
@@ -39,14 +38,13 @@ def test_single_row_restrictions_enabled(c):
 
 @pytest.mark.usefixtures('c')
 def test_single_row_restrictions_disabled(c):
-    with c.application.app_context():
-        task = Task.get()
-        office = task.offices[0]
+    task = Task.get()
+    office = task.offices[0]
 
-        if Settings.get().single_row:
-            c.get('/settings/single_row', follow_redirects=True)
+    if Settings.get().single_row:
+        c.get('/settings/single_row', follow_redirects=True)
 
-        assert Settings.get().single_row is False
+    assert Settings.get().single_row is False
 
     message = f'flag setting single_row must be disabled'
     contains_message = lambda p: message in c\
@@ -70,17 +68,16 @@ def test_single_row_restrictions_disabled(c):
 @pytest.mark.parametrize('_', range(TEST_REPEATS))
 @pytest.mark.usefixtures('c')
 def test_single_row_pulling(_, c):
-    with c.application.app_context():
-        if not Settings.get().single_row:
-            c.get('/settings/single_row', follow_redirects=True)
+    if not Settings.get().single_row:
+        c.get('/settings/single_row', follow_redirects=True)
 
-        assert Settings.get().single_row is True
+    assert Settings.get().single_row is True
 
-        office = Office.get(0)
-        tickets_length = office.tickets.count()
-        last_number = getattr(office.tickets.order_by(Serial.timestamp.desc()).first(),
-                              'number',
-                              100)
+    office = Office.get(0)
+    tickets_length = office.tickets.count()
+    last_number = getattr(office.tickets.order_by(Serial.timestamp.desc()).first(),
+                          'number',
+                          100)
 
     response = c.get(f'/pull', follow_redirects=True)
 
@@ -92,34 +89,33 @@ def test_single_row_pulling(_, c):
 
 @pytest.mark.usefixtures('c')
 def test_single_row_switch_handler(c):
-    with c.application.app_context():
-        single_row(True)
+    single_row(True)
 
-        assert Office.get(0) is not None
-        assert [Task.get(0)] == Office.get(0).tasks
+    assert Office.get(0) is not None
+    assert [Task.get(0)] == Office.get(0).tasks
 
-        single_row(False)
+    single_row(False)
 
-        assert Office.get(0) is None
+    assert Office.get(0) is None
 
 
 @pytest.mark.parametrize('_', range(TEST_REPEATS))
 @pytest.mark.usefixtures('c')
 def test_single_row_feed(_, c):
-    with c.application.app_context():
-        if not Settings.get().single_row:
-            c.get('/settings/single_row', follow_redirects=True)
+    if not Settings.get().single_row:
+        c.get('/settings/single_row', follow_redirects=True)
 
-        assert Settings.get().single_row is True
-        c.get(f'/pull', follow_redirects=True)
+    assert Settings.get().single_row is True
 
-        current_ticket = Serial.get_last_pulled_ticket(0)
+    c.get(f'/pull', follow_redirects=True)
 
+    current_ticket = Serial.get_last_pulled_ticket(0)
     expected_parameters = {
         f'w{_index + 1}': f'{_index + 1}. {number}'
         for _index, number in enumerate(range(current_ticket.number + 1,
                                               current_ticket.number + 9))}
-    feed = c.get('/feed').json
+
+    response = c.get('/feed')
 
     for key, value in expected_parameters.items():
-        assert feed.get(key) == value
+        assert response.json.get(key) == value
