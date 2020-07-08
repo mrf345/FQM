@@ -315,6 +315,26 @@ def convert_to_int_or_hex(value):
             pass
 
 
+def is_iterable(arg):
+    ''' Check if passed argument is iterable.
+
+    Parameters
+    ----------
+    arg : any
+        argument to check if it's iterable
+
+    Returns
+    -------
+    bool
+        if iterable
+    '''
+    try:
+        for i in arg:
+            return True
+    except Exception:
+        return False
+
+
 def create_default_records():
     ''' create database necessary records, if not existing. '''
     tables = [data.Display_store, data.Touch_store, data.Slides_c,
