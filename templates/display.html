@@ -28,6 +28,7 @@
 	})
 
 	function play (files) {
+		$('video').prop('muted', true)
 		if (waitForEnding) Player.playAfter(files)
 		else {
 			Player.files = files
@@ -35,6 +36,7 @@
 		}
 	}
 
+	Player.doAfter(function() { $('video').prop('muted', false) })
 	reloadIf(window.location.href, refreshRate)
 	$.getJSON("{{ url_for('static', filename='tts.json') }}")
 		.then(function(j) {
