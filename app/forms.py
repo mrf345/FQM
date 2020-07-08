@@ -351,6 +351,7 @@ class Offices_a(FlaskForm):
 
 class Task_a(FlaskForm):
     name = StringField()
+    hidden = BooleanField()
     submit = SubmitField("Add")
     # Stupid workaround to avoid unbound field error
     for i in range(0, 1000):
@@ -359,9 +360,11 @@ class Task_a(FlaskForm):
     def __init__(self, defLang='en', common=False, *args, **kwargs):
         super(Task_a, self).__init__(*args, **kwargs)
         self.name.label = gtranslator.translate("Enter unique title for the task : ", 'en', [defLang])
-        self.name.validators = [InputRequired
-        (gtranslator.translate("Required not less than 5 nor more than 300 letters", 'en', [defLang])), 
-        Length(5, 300)]
+        self.name.validators = [
+            InputRequired(
+                gtranslator.translate("Required not less than 5 nor more than 300 letters", 'en', [defLang])),
+            Length(5, 300)]
+        self.hidden.label = gtranslator.translate("Hide this task :", 'en', [defLang])
         if common:
             for office in data.Office.query.all():
                 self['check%i' % office.id].label = '%s %i:' % (

@@ -1254,6 +1254,13 @@
         "en": "Hide prefix office letter:",
         "it": "Nascondi la lettera dell'ufficio prefisso:"
     },
+    "Hide this task :": {
+        "ar": "\u0625\u062e\u0641\u0627\u0621 \u0647\u0630\u0647 \u0627\u0644\u0645\u0647\u0645\u0629:",
+        "en": "Hide this task :",
+        "es": "Ocultar esta tarea:",
+        "fr": "Masquer cette t\u00e2che:",
+        "it": "Nascondere questo compito:"
+    },
     "ID . Name": {
         "ar": "\u0647\u0648\u064a\u0629 \u0634\u062e\u0635\u064a\u0629 . \u0627\u0633\u0645",
         "en": "ID . Name",

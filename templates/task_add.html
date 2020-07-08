@@ -29,6 +29,7 @@
 			</p>
 			<hr class='mb-4'>
 			{{ render_field(form.name, class="form-control") }}
+			{{ render_field(form.hidden, class="form-control") }}
 			{% if common %}
 			<p class="h4 text-center text-muted ar2 pt-2 pb-1">
 				| {{ translate("Select the offices to add the common task to :", 'en', [defLang]) }} |
