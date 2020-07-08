@@ -432,18 +432,19 @@ def test_pull_tickets_from_common_task(_, c):
 @pytest.mark.parametrize('_', range(TEST_REPEATS))
 @pytest.mark.usefixtures('c')
 def test_pull_common_task_strict_pulling(_, c):
-    ticket_to_be_pulled = None
-    tickets = Serial.query.order_by(Serial.number)\
-                          .filter(Serial.number != 100, Serial.p != True)\
-                          .all()
+    def getter():
+        tickets = Serial.query.order_by(Serial.number)\
+                              .filter(Serial.number != 100, Serial.p != True)\
+                              .all()
 
-    for ticket in tickets:
-        task = Task.get(ticket.task_id)
-        office = Office.get(ticket.office_id)
+        for ticket in tickets:
+            task = Task.get(ticket.task_id)
+            office = Office.get(ticket.office_id)
 
-        if task.common:
-            ticket_to_be_pulled = ticket
-            break
+            if task.common:
+                return ticket, office, task
+
+    ticket_to_be_pulled, office, task = do_until_truthy(fill_tickets, getter)
 
     response = c.get(f'/pull/{task.id}/{office.id}', follow_redirects=True)
     pulled_ticket = Serial.query.filter_by(number=ticket_to_be_pulled.number,

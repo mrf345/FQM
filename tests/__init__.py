@@ -9,7 +9,7 @@ from app.middleware import db
 from app.database import (User, Operators, Office, Task, Serial, Media, Touch_store,
                           Display_store, Vid, Slides_c, Slides, Aliases, Printer,
                           Settings)
-from app.utils import absolute_path
+from app.utils import absolute_path, is_iterable
 from app.tasks import stop_tasks
 
 
@@ -186,7 +186,7 @@ def get_first_office_with_tickets(client):
 def do_until_truthy(todo, getter):
     value = getter()
 
-    while not value:
+    while not (all(value) if is_iterable(value) else value):
         todo()
         value = getter()
 
