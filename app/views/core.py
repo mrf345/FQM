@@ -83,6 +83,10 @@ def serial(task, office_id=None):
                                dire='multimedia/', alias=data.Aliases.query.first(),
                                office_id=office_id)
 
+    # NOTE: Ensure registered ticket number doesn't start with 0, for TTS sanity
+    while name_or_number and name_or_number.startswith('0'):
+        name_or_number = name_or_number[1:]
+
     # NOTE: Incrementing the ticket number from the last generated ticket globally
     next_number = data.Serial.query.order_by(data.Serial.number.desc())\
                                    .first().number + 1

@@ -45,6 +45,28 @@ def test_new_registered_ticket(c):
 
 
 @pytest.mark.usefixtures('c')
+def test_new_noisy_registered_ticket(c):
+    touch_screen_settings = Touch_store.query.first()
+    touch_screen_settings.n = True
+    db.session.commit()
+
+    task = choice(Task.query.all())
+    last_ticket = Serial.query.filter_by(task_id=task.id)\
+                              .order_by(Serial.number.desc()).first()
+
+    name = '0002020000'
+    response = c.post(f'/serial/{task.id}', data={
+        'name': name
+    }, follow_redirects=True)
+    new_ticket = Serial.query.filter_by(task_id=task.id)\
+                             .order_by(Serial.number.desc()).first()
+
+    assert response.status == '200 OK'
+    assert last_ticket.number != new_ticket.number
+    assert new_ticket.name == name[3:]
+
+
+@pytest.mark.usefixtures('c')
 def test_new_printed_ticket(c, monkeypatch):
     last_ticket = None
     mock_printer = MagicMock()
