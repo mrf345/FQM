@@ -11,6 +11,7 @@
 <script src="{{ url_for('static', filename='extFunctions.js') }}" type='text/javascript'></script>
 <script type='text/javascript'>
 	var announcement_texts = undefined
+	var singleRowQueuing = !!"{% if settings.single_row %}on{% endif %}"
 	var audioNotification = "{{'/static/multimedia/'+ts.audio}}"
 	var playAudioNotification = '{{ ts.audio}}' != 'false'
 	var playAnnouncements = '{{ ts.announce }}' !== 'false'
@@ -59,7 +60,10 @@
 				if (playAnnouncements) {
 					$.when.apply($, languages.map(function(language, index) {
 						var message = announcement_texts[language].message
-						var link = '/gtts/' + language + '/' + data.cot + message + data.con
+						var link = '/gtts/' + language + '/'
+
+						if (singleRowQueuing) link += data.cot
+						else link += data.cot + message + data.con
 
 						return $.get(link).then(function(json) { return json.mp3 })
 					}))

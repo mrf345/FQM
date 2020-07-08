@@ -1,7 +1,7 @@
 from sqlalchemy.sql import not_
 
 from app.tasks.base import Task
-from app.database import Serial, Display_store, Aliases
+from app.database import Serial, Display_store, Aliases, Settings
 from app.middleware import gTTs
 from app.utils import log_error
 from app.helpers import get_tts_safely
@@ -43,17 +43,23 @@ class CacheTicketsAnnouncements(Task):
             String of formated text-to-speech text ready to use.
         '''
         with self.app.app_context():
-            office = ticket.office
-            prefix = office.prefix if show_prefix else ''
-            office_text = f'{prefix}{getattr(office, "name", "")}'
-            tts_text = self.tts_texts\
-                           .get(language, {})\
-                           .get('message')
+            single_row_queuing = Settings.get().single_row
+            office_text = ''
+            tts_text = ''
 
-            if language.startswith('en'):
-                tts_text = tts_text.format(aliases.office)
+            if not single_row_queuing:
+                office = ticket.office
+                prefix = office.prefix if show_prefix else ''
+                office_text = f'{prefix}{getattr(office, "name", "")}'
+                tts_text = self.tts_texts\
+                               .get(language, {})\
+                               .get('message')
 
-            return f'{ticket.display_text}{tts_text}{office_text}'
+                if language.startswith('en'):
+                    tts_text = tts_text.format(aliases.office)
+
+            return ticket.display_text if single_row_queuing\
+                else f'{ticket.display_text}{tts_text}{office_text}'
 
     def run(self):
         @self.execution_loop()
