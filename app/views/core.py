@@ -402,8 +402,9 @@ def touch(a, office_id=None):
     touch_screen_stings = data.Touch_store.query.first()
     numeric_ticket_form = data.Printer.query.first().value == 2
     aliases_settings = data.Aliases.query.first()
-    tasks = data.Task.query.order_by(data.Task.timestamp)
     office = data.Office.get(office_id)
+    tasks = data.Task.query.filter_by(hidden=False)\
+                           .order_by(data.Task.timestamp)
 
     if office:
         tasks = tasks.filter(data.Task.offices.contains(office))

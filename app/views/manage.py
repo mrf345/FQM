@@ -251,6 +251,7 @@ def task(task, ofc_id):
 
         task = data.Task.get(task.id)
         task.name = form.name.data
+        task.hidden = form.hidden.data
 
         if task.common:
             checked_offices = [o for o in data.Office.query.all() if form[f'check{o.id}'].data]
@@ -274,6 +275,7 @@ def task(task, ofc_id):
 
     if not form.errors:
         form.name.data = task.name
+        form.hidden.data = task.hidden
 
         for office in task.offices:
             form[f'check{office.id}'].data = True
@@ -341,7 +343,7 @@ def common_task_a():
     form = forms.Task_a(session.get('lang'), True)
 
     if form.validate_on_submit():
-        task = data.Task(form.name.data)
+        task = data.Task(form.name.data, form.hidden.data)
 
         if data.Task.query.filter_by(name=form.name.data).first() is not None:
             flash('Error: name is used by another one, choose another name', 'danger')
@@ -399,7 +401,7 @@ def task_a(office):
             flash('Error: name is used by another one, choose another name', 'danger')
             return redirect(url_for('manage_app.task_a', o_id=office.id))
 
-        task = data.Task(form.name.data)
+        task = data.Task(form.name.data, form.hidden.data)
         db.session.add(task)
         db.session.commit()
 

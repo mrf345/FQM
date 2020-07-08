@@ -123,9 +123,11 @@ class Task(db.Model, Mixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(300))
     timestamp = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
+    hidden = db.Column(db.Boolean, default=False, nullable=True)
 
-    def __init__(self, name='Generic'):
+    def __init__(self, name='Generic', hidden=False):
         self.name = name
+        self.hidden = hidden
 
     @property
     def common(self):
