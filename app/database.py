@@ -54,7 +54,7 @@ class TicketsMixin:
 class Office(db.Model, Mixin):
     __tablename__ = "offices"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Integer, unique=True)
+    name = db.Column(db.String(300), unique=True)
     timestamp = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
     prefix = db.Column(db.String(2))
     operators = db.relationship('Operators', backref='operators')
@@ -84,7 +84,7 @@ class Office(db.Model, Mixin):
         name = 0
 
         while not name:
-            temp_name = randint(1, 1000)
+            temp_name = str(randint(1, 1000))
             office = cls.query.filter_by(name=temp_name).first()
 
             if not office:
@@ -116,6 +116,11 @@ class Office(db.Model, Mixin):
 
         db.session.delete(self)
         db.session.commit()
+
+    def is_valid_new_name(self, name):
+        return bool(self.query.filter(Office.name == name,
+                                      Office.id != self.id
+                                      ).first())
 
 
 class Task(db.Model, Mixin):

@@ -335,6 +335,31 @@ def is_iterable(arg):
         return False
 
 
+def remove_string_noise(string, condition, getter):
+    '''remove noise from the start of a given string.
+
+    Parameters
+    ----------
+    string : str
+        string to remove its starting noise.
+    condition : function(new_string)
+        function to determine if subtracting from strign should continue.
+    getter : function(string) -> new_string:
+        function to parse new string if condition is met.
+
+    Returns
+    -------
+    strgin
+        clear of noise string.
+    '''
+    clean_string = string
+
+    while clean_string and condition(clean_string):
+        clean_string = getter(clean_string)
+
+    return clean_string
+
+
 def create_default_records():
     ''' create database necessary records, if not existing. '''
     tables = [data.Display_store, data.Touch_store, data.Slides_c,

@@ -5,7 +5,7 @@ from flask_login import current_user, login_required
 import app.forms as forms
 import app.database as data
 from app.middleware import db
-from app.utils import ids
+from app.utils import ids, remove_string_noise
 from app.helpers import (reject_operator, reject_no_offices, is_operator, is_office_operator,
                          is_common_task_operator, reject_setting, get_or_reject)
 
@@ -78,15 +78,16 @@ def offices(office):
     tickets = data.Serial.all_office_tickets(office.id)
     last_ticket_pulled = tickets.filter_by(p=True).first()
     pagination = tickets.paginate(page, per_page=10, error_out=False)
+    office_name = remove_string_noise(form.name.data or '',
+                                      lambda s: s.startswith('0'),
+                                      lambda s: s[1:]) or None
 
     if form.validate_on_submit():
-        # NOTE: Check if the office's name is already used
-        for matching_office in data.Office.query.filter_by(name=form.name.data):
-            if matching_office.id != office.id:
-                flash('Error: name is used by another one, choose another name', 'danger')
-                return redirect(url_for('manage_app.offices', o_id=office.id))
+        if not office.is_valid_new_name(office_name):
+            flash('Error: name is used by another one, choose another name', 'danger')
+            return redirect(url_for('manage_app.offices', o_id=office.id))
 
-        office.name = form.name.data
+        office.name = office_name
         office.prefix = form.prefix.data.upper()
         db.session.commit()
         flash('Notice: office has been updated. ', 'info')
@@ -121,13 +122,16 @@ def offices(office):
 def office_a():
     ''' add an office. '''
     form = forms.Offices_a(defLang=session.get('lang'))
+    office_name = remove_string_noise(form.name.data or '',
+                                      lambda s: s.startswith('0'),
+                                      lambda s: s[1:]) or None
 
     if form.validate_on_submit():
         if data.Office.query.filter_by(name=form.name.data).first():
             flash('Error: name is used by another one, choose another name', 'danger')
             return redirect(url_for('manage_app.all_offices'))
 
-        db.session.add(data.Office(form.name.data, form.prefix.data.upper()))
+        db.session.add(data.Office(office_name, form.prefix.data.upper()))
         db.session.commit()
         flash('Notice: new office been added . ', 'info')
         return redirect(url_for('manage_app.all_offices'))

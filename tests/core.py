@@ -340,8 +340,15 @@ def test_reset_office(c):
 def test_reset_task(c):
     task = Task.query.first()
     office = choice(task.offices)
-    tickets = Serial.query.filter_by(office_id=office.id, task_id=task.id)\
-                          .all()
+
+    def getter():
+        tickets = Serial.query.filter_by(office_id=office.id,
+                                         task_id=task.id)\
+                              .all()
+
+        return len(tickets) > 1 and tickets
+
+    tickets = do_until_truthy(fill_tickets, getter)
 
     response = c.get(f'/serial_rt/{task.id}/{office.id}', follow_redirects=True)
 
