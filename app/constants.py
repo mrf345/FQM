@@ -1,5 +1,5 @@
 # Current FQM Version
-VERSION = "0.8 beta"
+VERSION = "0.8.1 beta"
 
 SUPPORTED_LANGUAGES = {
     # NOTE: The officially supported languages.
