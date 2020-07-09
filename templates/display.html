@@ -61,13 +61,17 @@
 			if (announcement_texts) {
 				if (playAnnouncements) {
 					$.when.apply($, languages.map(function(language, index) {
+						var promise = $.Deferred()
 						var message = announcement_texts[language].message
 						var link = '/gtts/' + language + '/'
 
 						if (singleRowQueuing) link += data.cot
 						else link += data.cot + message + data.con
 
-						return $.get(link).then(function(json) { return json.mp3 })
+						if (!data.con || !data.cot) promise.reject()
+						else $.get(link).then(function(json) { promise.resolve(json.mp3) })
+
+						return promise
 					}))
 					.then(function() {
 						var files = $.makeArray(arguments).sort()
