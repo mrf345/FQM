@@ -320,15 +320,18 @@ class Slide_c(FlaskForm):
 
 
 class Offices_a(FlaskForm):
-    name = IntegerField()
+    name = StringField()
     prefix = SelectField()
     submit = SubmitField("Add")
 
     def __init__(self, upd=None, uid=None, defLang='en', *args, **kwargs):
         super(Offices_a, self).__init__(*args, **kwargs)
-        self.name.label = gtranslator.translate("Enter a unique office number : ", 'en', [defLang])
-        self.name.validators = [NumberRange(min=1, max=9999, 
-        message=gtranslator.translate("Only allowed range of numbers 1-9999", 'en', [defLang]))]
+        self.name.label = gtranslator.translate("Enter a unique office name : ", 'en', [defLang])
+        self.name.validators = [
+            InputRequired(gtranslator.translate(
+                "Required not less than 5 nor more than 300 letters",
+                'en',
+                [defLang])), Length(3, 300)]
         self.prefix.label = gtranslator.translate("Select unique prefix for the office : ", 'en', [defLang])
         self.prefix.validators = [InputRequired(gtranslator.translate("You must choose unique prefix", 'en', [defLang]))]
         self.submit.label = gtranslator.translate("Add office", 'en', [defLang])
@@ -367,7 +370,7 @@ class Task_a(FlaskForm):
         self.hidden.label = gtranslator.translate("Hide this task :", 'en', [defLang])
         if common:
             for office in data.Office.query.all():
-                self['check%i' % office.id].label = '%s %i:' % (
+                self['check%i' % office.id].label = '%s %s:' % (
                     gtranslator.translate("Office", 'en', [defLang]), office.name)
 
 
@@ -462,7 +465,7 @@ class Multimedia(FlaskForm):
 # Add name to ticket form
 
 class Touch_name(FlaskForm):
-    name = StringField(" ")
+    name = StringField()
     submit = SubmitField("Register")
 
     def __init__(self, defLang='en', *args, **kwargs):

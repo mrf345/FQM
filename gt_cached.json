@@ -739,12 +739,12 @@
         "fr": "Entrez un titre:",
         "it": "Inserisci un titolo:"
     },
-    "Enter a unique office number : ": {
-        "ar": "\u0623\u062f\u062e\u0644 \u0631\u0642\u0645 \u0645\u0643\u062a\u0628 \u0641\u0631\u064a\u062f:",
-        "en": "Enter a unique office number :",
-        "es": "Ingrese un n\u00famero de oficina \u00fanico:",
-        "fr": "Entrez un num\u00e9ro de bureau unique:",
-        "it": "Inserisci un numero di ufficio unico:"
+    "Enter a unique office name : ": {
+        "ar": "\u0625\u062f\u062e\u0627\u0644 \u0627\u0633\u0645 \u0627\u0644\u0645\u0643\u062a\u0628 \u0641\u0631\u064a\u062f\u0629 \u0645\u0646 \u0646\u0648\u0639\u0647\u0627:",
+        "en": "Enter a unique office name :",
+        "es": "Introduzca un nombre de la oficina \u00fanico:",
+        "fr": "Entrez un nom de bureau unique:",
+        "it": "Inserire un nome ufficio unico:"
     },
     "Enter a unique user name : ": {
         "ar": "\u0623\u062f\u062e\u0644 \u0627\u0633\u0645 \u0645\u0633\u062a\u062e\u062f\u0645 \u0641\u0631\u064a\u062f:",
@@ -1950,13 +1950,6 @@
         "fr": "Une fois",
         "it": "Una volta"
     },
-    "Only allowed range of numbers 1-9999": {
-        "ar": "\u064a\u0633\u0645\u062d \u0641\u0642\u0637 \u0645\u062c\u0645\u0648\u0639\u0629 \u0645\u0646 \u0627\u0644\u0623\u0631\u0642\u0627\u0645 1-9999",
-        "en": "Only allowed range of numbers 1-9999",
-        "es": "Solo rango permitido de n\u00fameros 1-9999",
-        "fr": "Plage de nombres autoris\u00e9e seulement 1-9999",
-        "it": "Intervallo di numeri consentiti 1-9999"
-    },
     "Only media files type allowed to be uploaded are": {
         "ar": "\u0641\u0642\u0637 \u0646\u0648\u0639 \u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0648\u0633\u0627\u0626\u0637 \u0627\u0644\u0645\u0633\u0645\u0648\u062d \u0628\u062a\u062d\u0645\u064a\u0644\u0647\u0627 \u0647\u064a",
         "en": "Only media files type allowed to be uploaded are",
@@ -2008,6 +2001,9 @@
     },
     "Please, enter the ID number to be registered along with your ticket": {
         "en": "Please, enter the ID number to be registered along with your ticket"
+    },
+    "Please, enter the Number to be registered along with your ticket": {
+        "en": "Please, enter the Number to be registered along with your ticket"
     },
     "Please, enter the name to be registered along with your ticket": {
         "ar": "\u0645\u0646 \u0641\u0636\u0644\u0643 \u060c \u0623\u062f\u062e\u0644 \u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0630\u064a \u0633\u064a\u062a\u0645 \u062a\u0633\u062c\u064a\u0644\u0647 \u0645\u0639 \u062a\u0630\u0643\u0631\u062a\u0643",

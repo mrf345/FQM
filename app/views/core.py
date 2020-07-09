@@ -8,7 +8,7 @@ import app.database as data
 import app.settings as settings_handlers
 from app.printer import assign, printit, printit_ar, print_ticket_cli, print_ticket_cli_ar
 from app.middleware import db, gtranslator
-from app.utils import log_error
+from app.utils import log_error, remove_string_noise
 from app.helpers import (reject_no_offices, reject_operator, is_operator, reject_not_admin,
                          is_office_operator, is_common_task_operator, decode_links,
                          reject_setting, get_or_reject)
@@ -72,7 +72,9 @@ def serial(task, office_id=None):
     settings = data.Settings.get()
     printed = not touch_screen_stings.n
     numeric_ticket_form = ticket_settings.value == 2
-    name_or_number = form.name.data or None
+    name_or_number = remove_string_noise(form.name.data or '',
+                                         lambda s: s.startswith('0'),
+                                         lambda s: s[1:]) or None
 
     # NOTE: if it is registered ticket, will display the form
     if not form.validate_on_submit() and not printed:
@@ -82,10 +84,6 @@ def serial(task, office_id=None):
                                page_title='Touch Screen - Enter name ', form=form,
                                dire='multimedia/', alias=data.Aliases.query.first(),
                                office_id=office_id)
-
-    # NOTE: Ensure registered ticket number doesn't start with 0, for TTS sanity
-    while name_or_number and name_or_number.startswith('0'):
-        name_or_number = name_or_number[1:]
 
     # NOTE: Incrementing the ticket number from the last generated ticket globally
     next_number = data.Serial.query.order_by(data.Serial.number.desc())\

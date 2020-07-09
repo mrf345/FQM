@@ -26,4 +26,3 @@ def upgrade():
 def downgrade():
     with op.batch_alter_table('displays') as batch:
         batch.drop_column('wait_for_announcement')
-
