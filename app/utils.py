@@ -1,4 +1,5 @@
 import os
+import sys
 from collections import namedtuple
 from uuid import uuid4
 from traceback import TracebackException
@@ -63,8 +64,9 @@ def absolute_path(relative_path):
         Absolute path from `relative_path`
     '''
     delimiter = '\\' if os.name == 'nt' else '/'
-    base_path = os.path.abspath('.')
     clean_path = relative_path
+    base_path = os.path.dirname(sys.executable)\
+        if getattr(sys, 'frozen', False) else os.path.abspath('.')
 
     if clean_path.startswith(delimiter):
         clean_path = clean_path[len(delimiter):]
