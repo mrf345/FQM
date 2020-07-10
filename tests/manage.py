@@ -130,15 +130,16 @@ def test_search(c):
 def test_update_office(c):
     office = choice(Office.query.all())
     office_name = office.name
-    updated_office_name = 9999
+    updated_office_name = 'updated999'
 
     response = c.post(f'/offices/{office.id}', data={
-        'name': updated_office_name
+        'name': updated_office_name,
+        'prefix': office.prefix
     }, follow_redirects=True)
 
     assert response.status == '200 OK'
     assert office_name != updated_office_name
-    assert Office.get(office.id).name == office_name
+    assert Office.get(office.id).name == updated_office_name
 
 
 @pytest.mark.usefixtures('c')

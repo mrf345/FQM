@@ -87,6 +87,7 @@ def offices(office):
             flash('Error: name is used by another one, choose another name', 'danger')
             return redirect(url_for('manage_app.offices', o_id=office.id))
 
+        office = data.Office.get(office.id)  # NOTE: DB session is lost
         office.name = office_name
         office.prefix = form.prefix.data.upper()
         db.session.commit()

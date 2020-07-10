@@ -329,7 +329,7 @@ class Offices_a(FlaskForm):
         self.name.label = gtranslator.translate("Enter a unique office name : ", 'en', [defLang])
         self.name.validators = [
             InputRequired(gtranslator.translate(
-                "Required not less than 5 nor more than 300 letters",
+                "Required not less than 3 nor more than 300 letters",
                 'en',
                 [defLang])), Length(3, 300)]
         self.prefix.label = gtranslator.translate("Select unique prefix for the office : ", 'en', [defLang])
@@ -341,12 +341,14 @@ class Offices_a(FlaskForm):
                    ('P', 'P'), ('Q', 'Q'), ('R', 'R'), ('S', 'S'), ('T', 'T'),
                    ('U', 'U'), ('V', 'V'), ('W', 'W'), ('X', 'X'),
                    ('Y', 'Y'), ('Z', 'Z')]
-        upd = upd
+
         for v in data.Office.query.order_by(data.Office.timestamp):
             if (v.prefix, v.prefix) in prefixs:
                 prefixs.remove((v.prefix, v.prefix))
-        if upd is not None:
+
+        if upd and upd not in prefixs:
             prefixs.append((upd, upd))
+
         self.prefix.choices = prefixs
 
 

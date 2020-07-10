@@ -118,9 +118,9 @@ class Office(db.Model, Mixin):
         db.session.commit()
 
     def is_valid_new_name(self, name):
-        return bool(self.query.filter(Office.name == name,
-                                      Office.id != self.id
-                                      ).first())
+        return not self.query.filter(Office.name == name,
+                                     Office.id != self.id
+                                     ).first()
 
 
 class Task(db.Model, Mixin):
