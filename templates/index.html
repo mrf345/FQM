@@ -57,7 +57,7 @@
     </head>
 
     <body>
-        {% from "_helpers.html" import render_field %}
+        {% from "_helpers.html" import render_field with context %}
         <noscript>
             <style>html{display:none;}</style>
             <meta http-equiv="refresh" content="0.0;url=/nojs/0">
@@ -169,8 +169,8 @@
         		            {{ form.csrf_token }}
                             {% if dpass %}
                             <p class="text-center text-danger h3 ar2 mb-10">
-                                {{ translate('The default account', 'en', [defLang]) }} <br />
-                                <u class="ar1">User: Admin , Password: admin</u>
+                                {{ translate('The default account', 'en', [defLang]) }} <br /><br />
+                                <b class="ar1">User: Admin , Password: admin</b>
                             </p>
                             {% if ar %}
                             {% else %}

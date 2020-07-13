@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block page_content %}
-{% from "_helpers.html" import render_field %}
+{% from "_helpers.html" import render_field with context %}
 {% from "_modals.html" import qrModal %}
 <div class="col-md-12">
     <form method="POST" enctype="multipart/form-data">

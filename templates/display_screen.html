@@ -45,7 +45,7 @@
 {% endblock %}
 
 {% block page_content %}
-{% from "_helpers.html" import render_field %}
+{% from "_helpers.html" import render_field, render_errors with context %}
 {% from "_uniqueness.html" import unique_btns %}
 <div class="col-md-12">
     <form method="POST" enctype="multipart/form-data" class='disciple'>
@@ -288,18 +288,7 @@
 				<p class="pb-1"></p>
 				{{ render_field(form.always_show_ticket_number, class="form-control") }}
                 <p class="pb-3"></p>
-		        {% if form.errors %}
-		        <div class="well">
-		                <h4 class="text-center text-warning">- {{ translate('Errors', 'en', [defLang]) }} :</h4>
-		                <ol class="text-center h4 text-danger ar2">
-			                {% for field_name, field_errors in form.errors|dictsort if field_errors %}
-			                {% for error in field_errors %}
-			                <li class="ar1">{{ form[field_name].name }}: {{ error }}</li>
-			                {% endfor %}
-			                {% endfor %}
-                        </ol>
-                </div>
-                {% endif %}
+		        {{ render_errors(form.errors) }}
                 <p class="pb-4"></p>
 		        {{ unique_btns(translate('Previous', 'en', [defLang]), translate('Apply', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
                 <p class="pt-4"></p>

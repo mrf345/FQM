@@ -25,7 +25,7 @@ reloadIf('/touch/0')
 {% endblock %}
 
 {% block page_content %}
-{% from "_helpers.html" import render_field %}
+{% from "_helpers.html" import render_field with context %}
 {% from "_footers.html" import touchFooter %}
 <style>
  body {

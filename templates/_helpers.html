@@ -12,9 +12,25 @@
 	{% if field.errors %}
 	<ul class="errors well">
 	    {% for error in field.errors %}
-	    <li class="text-center text-danger mt-1 mb-1 h4 ar1">{{ error }}</li>
+	    <li class="text-center text-danger mt-1 mb-1 h4 ar1">{{ translate(error, 'en', [defLang]) }}</li>
 	    {% endfor %}
 	</ul>
 	{% endif %}
     </dd>
+{% endmacro %}
+
+
+{% macro render_errors(errors) %}
+	{% if errors %}
+	<div class="well mt-2 mb-2">
+		<h4 class="text-center text-warning ar1">- {{ translate('Errors', 'en', [defLang]) }} :</h4>
+		<ol class="text-center h4 text-danger ar2">
+			{% for field_name, field_errors in form.errors|dictsort if field_errors %}
+			{% for error in field_errors %}
+			<li class="ar1">{{ form[field_name].name }}: {{ translate(error, 'en', [defLang]) }}</li>
+			{% endfor %}
+			{% endfor %}
+		</ol>
+	</div>
+	{% endif %}
 {% endmacro %}

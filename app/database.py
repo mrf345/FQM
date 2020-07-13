@@ -5,7 +5,7 @@ from datetime import datetime
 from random import randint
 
 from app.middleware import db
-from app.constants import USER_ROLES, DEFAULT_PASSWORD
+from app.constants import USER_ROLES, DEFAULT_PASSWORD, PREFIXES
 
 mtasks = db.Table(
     'mtasks',
@@ -66,18 +66,23 @@ class Office(db.Model, Mixin):
         self.prefix = prefix or self.get_first_available_prefix()
 
     @classmethod
+    def get_all_used_prefixes(cls):
+        return [o.prefix for o in cls.query.all()]
+
+    @classmethod
+    def get_all_available_prefixes(cls):
+        used_prefixes = cls.get_all_used_prefixes()
+
+        return [p for p in PREFIXES if p not in used_prefixes]
+
+    @classmethod
     def get_first_available_prefix(cls):
-        letters = list(reversed(list(map(lambda i: chr(i),
-                                         range(97, 123)))))
-        prefix = None
+        available_prefixes = cls.get_all_available_prefixes()
 
-        while letters and not prefix:
-            match_letter = letters.pop()
+        if not available_prefixes:
+            raise AssertionError('No prefixes left!')
 
-            if not cls.query.filter_by(prefix=match_letter).first():
-                prefix = match_letter
-
-        return prefix and prefix.upper()
+        return available_prefixes[0]
 
     @classmethod
     def get_generic_available_name(cls):
@@ -646,6 +651,17 @@ class Media(db.Model, Mixin):
                 Touch_store.akey == self.id)).first()
         ])
 
+    @classmethod
+    def get_all_images(cls):
+        return cls.query.filter_by(img=True).all()
+
+    @classmethod
+    def get_all_audios(cls):
+        return cls.query.filter_by(audio=True).all()
+
+    @classmethod
+    def get_all_videos(cls):
+        return cls.query.filter_by(vid=True).all()
 
 class Vid(db.Model, Mixin):
     __tablename__ = "vids"
