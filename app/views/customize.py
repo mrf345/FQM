@@ -1,17 +1,18 @@
 import os
-from flask import url_for, flash, request, render_template, redirect
-from flask import Blueprint, session
+from flask import url_for, flash, request, render_template, redirect, Blueprint
 from flask_login import login_required
 from werkzeug import secure_filename
 
-import app.forms as forms
 import app.database as data
 from app.middleware import db, files
+from app.forms.customize import (DisplayScreenForm, TouchScreenForm, TicketForm,
+                                 AliasForm, VideoForm, MultimediaForm, SlideAddForm,
+                                 SlideSettingsForm)
 from app.printer import get_printers_cli, get_printers_usb
 from app.utils import absolute_path, getFolderSize, convert_to_int_or_hex
 from app.constants import SUPPORTED_MEDIA_FILES
-from app.helpers import (reject_not_admin, get_tts_safely, reject_slides_enabled,
-                         reject_videos_enabled)
+from app.helpers import (reject_not_admin, reject_slides_enabled, reject_videos_enabled,
+                         get_tts_safely)
 
 
 cust_app = Blueprint('cust_app', __name__)
@@ -40,11 +41,11 @@ def ticket():
     touch_screen_settings = data.Touch_store.get()
     printers = get_printers_cli(windows=windows, unix=not windows)\
         if windows or settings.lp_printing else get_printers_usb()
-    form = forms.Printer_f(printers,
-                           settings.lp_printing,
-                           session.get('lang'))
+    form = TicketForm(printers, settings.lp_printing)
 
     if form.validate_on_submit():
+        printer = data.Printer.get()  # NOTE: sessions's lost
+
         if form.kind.data == 1:  # Rigestered
             printer.value = form.value.data
             printer.active = False
@@ -106,7 +107,7 @@ def ticket():
 @reject_slides_enabled
 def video():
     ''' view of video customization for display '''
-    form = forms.Video(session.get('lang'))
+    form = VideoForm()
     display_screen_settings = data.Display_store.query.first()
     video = data.Vid.get()
 
@@ -180,7 +181,7 @@ def slideshow():
 @reject_videos_enabled
 def slide_a():
     ''' adding a slide '''
-    form = forms.Slide_a(session.get('lang'))
+    form = SlideAddForm()
 
     if form.validate_on_submit():
         background = form.background.data
@@ -230,7 +231,7 @@ def slide_a():
 @reject_videos_enabled
 def slide_c():
     ''' updating a slide '''
-    form = forms.Slide_c(session.get('lang'))
+    form = SlideSettingsForm()
     sc = data.Slides_c.get()
 
     if form.validate_on_submit():
@@ -295,7 +296,7 @@ def multimedia(aa):
     files_limit_indicator = 300
     folder_size_limit_indicator = 2000
     media_path = absolute_path('static/multimedia')
-    form = forms.Multimedia(session.get('lang'))
+    form = MultimediaForm()
     medias = data.Media.query
     page = request.args.get('page', 1, type=int)
     pagination = data.Media.query.paginate(page,
@@ -393,8 +394,8 @@ def multi_del(f_id):
 @reject_not_admin
 def displayscreen_c(stab):
     ''' view for display screen customization '''
-    form = forms.Display_c(session.get('lang'))
-    tts = get_tts_safely()
+    form = DisplayScreenForm()
+    text_to_speech = get_tts_safely()
 
     if stab not in range(1, 9):
         flash('Error: wrong entry, something went wrong', 'danger')
@@ -451,7 +452,7 @@ def displayscreen_c(stab):
             db.session.commit()
             touch_s.akey = form.naudio.data
 
-        enabled_tts = [s for s in tts.keys() if form[f'check{s}'].data]
+        enabled_tts = [s for s in text_to_speech.keys() if form[f'check{s}'].data]
         touch_s.announce = ','.join(enabled_tts) if enabled_tts else 'false'
 
         db.session.add(touch_s)
@@ -511,14 +512,14 @@ def displayscreen_c(stab):
                            dropdown='#dropdown-lvl2',
                            vtrue=data.Vid.query.first().enable,
                            strue=data.Slides_c.query.first().status,
-                           tts=tts)
+                           tts=text_to_speech)
 
 
 @cust_app.route('/touchscreen_c/<int:stab>', methods=['POST', 'GET'])
 @reject_not_admin
 def touchscreen_c(stab):
     ''' view for touch screen customization '''
-    form = forms.Touch_c(defLang=session.get('lang'))
+    form = TouchScreenForm()
 
     if stab not in range(0, 6):
         flash('Error: wrong entry, something went wrong', 'danger')
@@ -611,7 +612,7 @@ def touchscreen_c(stab):
 @reject_not_admin
 def alias():
     ''' view for aliases customization '''
-    form = forms.Alias(session.get('lang'))
+    form = AliasForm()
     aliases = data.Aliases.get()
 
     if form.validate_on_submit():
