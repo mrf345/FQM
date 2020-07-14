@@ -3,12 +3,12 @@ from sys import platform
 from flask import url_for, flash, render_template, redirect, session, jsonify, Blueprint
 from flask_login import current_user, login_required, login_user
 
+import app.forms as forms
 import app.database as data
 import app.settings as settings_handlers
 from app.printer import assign, printit, printit_ar, print_ticket_cli, print_ticket_cli_ar
 from app.middleware import db, gtranslator
 from app.utils import log_error, remove_string_noise
-from app.forms.core import LoginForm, TouchSubmitForm
 from app.helpers import (reject_no_offices, reject_operator, is_operator, reject_not_admin,
                          is_office_operator, is_common_task_operator, decode_links,
                          reject_setting, get_or_reject)
@@ -21,7 +21,7 @@ core = Blueprint('core', __name__)
 @core.route('/log/<n>', methods=['GET', 'POST'])
 def root(n=None):
     ''' welcome view and login. '''
-    form = LoginForm()
+    form = forms.Login(session.get('lang'))
     has_default_password = data.User.has_default_password()
     wrong_credentials = n == 'a'
     should_redirect = n == 'b'
@@ -65,8 +65,7 @@ def root(n=None):
 def serial(task, office_id=None):
     ''' generate a new ticket and print it. '''
     windows = os.name == 'nt'
-    form = TouchSubmitForm()
-    task = data.Task.get(task.id)
+    form = forms.Touch_name(session.get('lang'))
     office = data.Office.get(office_id)
     touch_screen_stings = data.Touch_store.get()
     ticket_settings = data.Printer.get()
@@ -140,7 +139,6 @@ def serial(task, office_id=None):
 def serial_r(office):
     ''' reset by removing tickets of a given office. '''
     single_row = data.Settings.get().single_row
-    office = data.Office.get(office.id)
     office_redirection = url_for('manage_app.all_offices')\
         if single_row else url_for('manage_app.offices', o_id=office.id)
 
@@ -188,7 +186,6 @@ def serial_rt(task, ofc_id=None):
         flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
 
-    task = data.Task.get(task.id)
     tickets = task.tickets
 
     if ofc_id:
@@ -304,7 +301,6 @@ def pull_unordered(ticket_id, redirect_to, office_id=None):
 @reject_setting('single_row', True)
 @get_or_reject(ticket_id=data.Serial)
 def on_hold(ticket, redirect_to):
-    ticket = data.Serial.get(ticket.id)
     strict_pulling = data.Settings.get().strict_pulling
 
     if is_operator() and not (is_office_operator(ticket.office_id)
@@ -404,7 +400,7 @@ def display(office_id=None):
 @reject_setting('single_row', True)
 def touch(a, office_id=None):
     ''' touch screen view. '''
-    form = TouchSubmitForm()
+    form = forms.Touch_name_ar() if session.get('lang') == 'AR' else forms.Touch_name()
     touch_screen_stings = data.Touch_store.query.first()
     numeric_ticket_form = data.Printer.query.first().value == 2
     aliases_settings = data.Aliases.query.first()
