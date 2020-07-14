@@ -1,12 +1,13 @@
-from flask import url_for, flash, request, render_template, redirect, Blueprint
+from flask import url_for, flash, request, render_template, redirect
+from flask import Blueprint, session
 from flask_login import current_user, login_required
 
+import app.forms as forms
 import app.database as data
 from app.middleware import db
 from app.utils import ids, remove_string_noise
 from app.helpers import (reject_operator, reject_no_offices, is_operator, is_office_operator,
                          is_common_task_operator, reject_setting, get_or_reject)
-from app.forms.manage import OfficeForm, TaskForm, SearchForm
 
 
 manage_app = Blueprint('manage_app', __name__)
@@ -72,7 +73,7 @@ def offices(office):
         flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
 
-    form = OfficeForm(current_prefix=office.prefix)
+    form = forms.Offices_a(upd=office.prefix, defLang=session.get('lang'))
     page = request.args.get('page', 1, type=int)
     tickets = data.Serial.all_office_tickets(office.id)
     last_ticket_pulled = tickets.filter_by(p=True).first()
@@ -121,7 +122,7 @@ def offices(office):
 @reject_setting('single_row', True)
 def office_a():
     ''' add an office. '''
-    form = OfficeForm()
+    form = forms.Offices_a(defLang=session.get('lang'))
     office_name = remove_string_noise(form.name.data or '',
                                       lambda s: s.startswith('0'),
                                       lambda s: s[1:]) or None
@@ -189,7 +190,7 @@ def search():
     ''' search for tickets. '''
     search_kwargs = {}
     first_time = not bool(request.args.get('page', default=0, type=int))
-    form = SearchForm() if first_time else search.form
+    form = forms.Search_s(session.get('lang')) if first_time else search.form
     base_template_arguments = dict(form=form, page_title='Tickets search', offices=data.Office.query,
                                    tasks=data.Task.query, users=data.User.query, len=len,
                                    operators=data.Operators.query, navbar='#snb1', hash='#da1',
@@ -237,12 +238,12 @@ def search():
 @get_or_reject(o_id=data.Task)
 def task(task, ofc_id):
     ''' view specific task. '''
+    form = forms.Task_a(session.get('lang'), task.common)
+
     if is_operator() and not is_common_task_operator(task.id):
         flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
 
-    task = data.Task.get(task.id)  # NOTE: session's lost
-    form = TaskForm(common=task.common)
     page = request.args.get('page', 1, type=int)
     tickets = data.Serial.all_task_tickets(ofc_id, task.id)
     last_ticket_pulled = tickets.filter_by(p=True).first()
@@ -344,7 +345,7 @@ def task_d(task, ofc_id):
 @reject_setting('single_row', True)
 def common_task_a():
     ''' to add a common task '''
-    form = TaskForm(common=True)
+    form = forms.Task_a(session.get('lang'), True)
 
     if form.validate_on_submit():
         task = data.Task(form.name.data, form.hidden.data)
@@ -394,7 +395,7 @@ def common_task_a():
 @get_or_reject(o_id=data.Office)
 def task_a(office):
     ''' to add a task '''
-    form = TaskForm()
+    form = forms.Task_a(session.get('lang'))
 
     if is_operator() and not is_office_operator(office.id):
         flash('Error: operators are not allowed to access the page ', 'danger')
