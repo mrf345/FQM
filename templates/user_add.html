@@ -6,7 +6,7 @@
 {% block title %} FQM - {{ page_title  }} {% endblock %}
 
 {% block page_content %}
-{% from "_helpers.html" import render_field %}
+{% from "_helpers.html" import render_field with context %}
 <script type='text/javascript'>
 $(document).ready(function () {
 	// adding hidden user roles reminders instead

@@ -29,7 +29,7 @@ $(document).ready(function () {
 {% endblock %}
 
 {% block page_content %}
-{% from "_helpers.html" import render_field %}
+{% from "_helpers.html" import render_field with context %}
 {%- from "auto_reload.html" import auto_reloader with context %}
 {% from "_modals.html" import confirmModal, qrModal %}
 {% from "_footers.html" import panelFooter, spacer %}

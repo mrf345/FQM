@@ -42,7 +42,7 @@ $(document).ready( function () {
 {% endblock %}
 
 {% block page_content %}
-{% from "_helpers.html" import render_field %}
+{% from "_helpers.html" import render_field, render_errors with context %}
 {% from "_uniqueness.html" import unique_btns %}
 {% from "_modals.html" import qrModal %}
 <div class="col-md-12">
@@ -181,18 +181,7 @@ $(document).ready( function () {
                     <p class="pt-2"></p>
                     {{ form.bcolor(class_="sp") }}
                 </center> 
-                {% if form.errors %}
-                <div class="well mt-2 mb-2">
-                    <h3 class="text-center text-warning">- {{ translate('Errors', 'en', [defLang]) }} :</h3>
-                    <ol class="text-center ar2 h4 text-danger">
-                    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
-                        {% for error in field_errors %}
-                            <li>{{ form[field_name].name }}: {{ error }}</li>
-                        {% endfor %}
-                    {% endfor %}
-                    </ol>
-                </div>
-                {% endif %}
+                {{ render_errors(form.errors) }}
                 <p class="pt-5"></p>
                 {{ unique_btns(translate('Previous', 'en', [defLang]), translate('Apply', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
                 <p class="pb-3"></p>

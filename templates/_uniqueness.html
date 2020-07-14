@@ -23,7 +23,7 @@
             if (data === 'next' || data === 'back') $('#ds' + (unique.turn === -1 && data === 'back' ? unique.s_length  : unique.turn + 1)).addClass('active')
             else $('#ds' + (data + 1)).addClass('active')
         })
-        {% if errors %} setTimeout(function () { unique.goto(unique.s_length - 1) }, 1000) {% endif %}
+        {% if errors %} setTimeout(function () { if (unique.turn != (unique.s_length - 1)) unique.goto(unique.s_length - 1) }, 1000) {% endif %}
     })
 </script>
 {% endmacro %}

@@ -57,7 +57,7 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block page_content %}
-{% from "_helpers.html" import render_field %}
+{% from "_helpers.html" import render_field with context %}
 {% from "_modals.html" import qrModal, confirmModal %}
 {% from "_footers.html" import panelFooter, spacer %}
 <div class="col-md-12">

@@ -6,7 +6,6 @@ from collections import namedtuple
 
 import app.printer
 import app.views.customize
-import app.forms
 from app.middleware import db
 from app.helpers import get_tts_safely
 from app.database import (Touch_store, Display_store, Printer, Slides_c,
@@ -94,7 +93,7 @@ def test_ticket_printed_windows(c, monkeypatch):
     mock_os.name = 'nt'
     monkeypatch.setattr(app.printer, 'execute', mock_execute)
     monkeypatch.setattr(app.views.customize, 'os', mock_os)
-    monkeypatch.setattr(app.forms, 'name', 'nt')
+    monkeypatch.setattr(app.forms.customize, 'os', mock_os)
 
     touch_screen_settings = Touch_store.get()
     touch_screen_settings.n = False
@@ -132,11 +131,9 @@ def test_ticket_printed_lp(c, monkeypatch):
     printers = [f'{name} description stuff testing',
                 f'{secondName} description stuff testing']
     mock_execute = MagicMock(return_value=printers)
-    mock_os = MagicMock()
-    mock_os.name = 'linux'
     monkeypatch.setattr(app.printer, 'execute', mock_execute)
-    monkeypatch.setattr(app.views.customize, 'os', mock_os)
-    monkeypatch.setattr(app.forms, 'name', 'nt')
+    monkeypatch.setattr(app.views.customize, 'os', MagicMock(name='linux'))
+    monkeypatch.setattr(app.forms.customize, 'os', MagicMock(name='nt'))
 
     settings = Settings.get()
     touch_screen_settings = Touch_store.get()
@@ -356,7 +353,6 @@ def test_delete_multimedia(c):
 
 @pytest.mark.usefixtures('c')
 def test_display_screen_customization(c):
-    tts = get_tts_safely()
     properties = {
         'title': 'testing',
         'hsize': '500%',
@@ -382,7 +378,7 @@ def test_display_screen_customization(c):
         'always_show_ticket_number': True,
         'bgcolor': 'testing'
     }
-    data = {f'check{s}': True for s in tts.keys()}
+    data = {f'check{s}': True for s in get_tts_safely().keys()}
     data.update({'display': 1,
                  'background': 0,
                  'naudio': 0,

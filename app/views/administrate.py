@@ -5,8 +5,9 @@ from datetime import datetime
 
 import app.database as data
 from app.middleware import db, login_manager
-import app.forms as forms
 from app.utils import absolute_path, get_module_columns, get_module_values
+from app.forms.adminstrate import AdminForm, UserForm, CSVForm
+from app.forms.constents import EXPORT_DELIMETERS, EXPORT_TABLES
 from app.helpers import (reject_not_god, reject_not_admin, reject_god, is_operator, is_office_operator,
                          get_or_reject)
 
@@ -43,7 +44,7 @@ def unauthorized_callback():
 @reject_not_god
 def admin_u():
     ''' updating main admin account password '''
-    form = forms.U_admin(session.get('lang'))
+    form = AdminForm()
     admin = data.User.get(1)
 
     if form.validate_on_submit():
@@ -64,10 +65,10 @@ def admin_u():
 @reject_not_admin
 def csv():
     ''' to export tables to `.csv` file '''
-    form = forms.CSV(session.get('lang'))
+    form = CSVForm()
 
     if form.validate_on_submit():
-        tabels = [t[0] for t in forms.export_tabels]
+        tabels = [t[0] for t in EXPORT_TABLES]
 
         if form.table.data not in tabels:
             flash('Error: wrong entry, something went wrong', 'danger')
@@ -75,15 +76,13 @@ def csv():
 
         module = getattr(data, form.table.data, None)
         csv_path = absolute_path(f'csv_{form.table.data}.csv')
-        delimiter = forms.export_delimiters[form.delimiter.data]
+        delimiter = EXPORT_DELIMETERS[form.delimiter.data]
 
         with open(csv_path, 'w+') as csv_file:
             fields = get_module_columns(module)
             csv_buffer = DictWriter(csv_file, delimiter=delimiter, fieldnames=fields)
-            rows = [
-                {fields[i]: value for i, value in enumerate(values)}
-                for values in get_module_values(module)
-            ]
+            rows = [{fields[i]: value for i, value in enumerate(values)}
+                    for values in get_module_values(module)]
 
             form.headers.data and csv_buffer.writeheader()
             csv_buffer.writerows(rows)
@@ -148,7 +147,7 @@ def operators(office):
 @reject_not_admin
 def user_a():
     ''' to add a user '''
-    form = forms.User_a(session.get('lang'))
+    form = UserForm()
 
     if form.validate_on_submit():
         if data.User.query.filter_by(name=form.name.data).first() is not None:
@@ -159,13 +158,10 @@ def user_a():
         db.session.add(data.User(form.name.data, form.password.data, form.role.data))
         db.session.commit()
 
-        # Fix: multiple operators for office
-        # adding user to Operators list
         if form.role.data == 3:
             db.session.add(data.Operators(
                 data.User.query.filter_by(name=form.name.data).first().id,
-                form.offices.data
-            ))
+                form.offices.data))
             db.session.commit()
 
         flash('Notice: user has been added .', 'info')
@@ -184,12 +180,13 @@ def user_a():
 @get_or_reject(u_id=data.User)
 def user_u(user):
     ''' to update user '''
-    form = forms.User_a(session.get('lang'))
-
     if user.id == 1:
         return reject_god(lambda: None)()
 
+    form = UserForm()
+
     if form.validate_on_submit():
+        user = data.User.get(user.id)  # NOTE: session lost
         user.name = form.name.data
         user.password = form.password.data
         user.role_id = form.role.data

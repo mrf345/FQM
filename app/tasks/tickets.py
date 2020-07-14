@@ -24,7 +24,6 @@ class CacheTicketsAnnouncements(Task):
         self.interval = interval
         self.limit = limit
         self.cached = []
-        self.tts_texts = get_tts_safely()
 
     def format_announcement_text(self, ticket, aliases, language, show_prefix):
         ''' Helper to format text-to-speech text.
@@ -51,9 +50,8 @@ class CacheTicketsAnnouncements(Task):
                 office = ticket.office
                 prefix = office.prefix if show_prefix else ''
                 office_text = f'{prefix}{getattr(office, "name", "")}'
-                tts_text = self.tts_texts\
-                               .get(language, {})\
-                               .get('message')
+                tts_text = get_tts_safely().get(language, {})\
+                                           .get('message')
 
                 if language.startswith('en'):
                     tts_text = tts_text.format(aliases.office)

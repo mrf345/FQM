@@ -40,3 +40,5 @@ DEFAULT_USER = 'Admin'
 
 MIGRATION_FOLDER = 'migrations'
 DATABASE_FILE = 'data.sqlite'
+
+PREFIXES = [p for p in list(map(lambda i: chr(i).upper(), range(97, 123)))]
