@@ -259,12 +259,14 @@ class TicketForm(LocalizedForm):
 
 
 class AliasForm(LocalizedForm):
-    office = StringField('Enter alias for office : ')
-    task = StringField('Enter alias for task : ')
-    ticket = StringField('Enter alias for ticket : ')
-    name = StringField('Enter alias for name : ')
-    number = StringField('Enter alias for number : ')
-
-    for p in [office, task, ticket, name, number]:
-        p.validators = [InputRequired('Alias must be at least of 2 and at most 10 letters'),
-                        Length(2, 10)]
+    _message = 'Alias must be at least of 2 and at most 10 letters'
+    office = StringField('Enter alias for office : ',
+                         validators=[InputRequired(_message), Length(2, 10)])
+    task = StringField('Enter alias for task : ',
+                       validators=[InputRequired(_message), Length(2, 10)])
+    ticket = StringField('Enter alias for ticket : ',
+                         validators=[InputRequired(_message), Length(2, 10)])
+    name = StringField('Enter alias for name : ',
+                       validators=[InputRequired(_message), Length(2, 10)])
+    number = StringField('Enter alias for number : ',
+                         validators=[InputRequired(_message), Length(2, 10)])
