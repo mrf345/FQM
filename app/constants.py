@@ -1,5 +1,10 @@
+import os
+
 # Current FQM Version
-VERSION = "0.8.1 beta"
+VERSION = open(os.path.join(os.path.dirname(__file__), 'VERSION'))\
+    .read()\
+    .replace('\n', '')\
+    .replace('\t', '')
 
 SUPPORTED_LANGUAGES = {
     # NOTE: The officially supported languages.
