@@ -25,14 +25,17 @@
 		repeat_whole: repeatType === 'whole',
 		repeat_each: repeatType === 'each',
 		auto_start: true,
+		autoplay_warning: playAudioNotification || playAnnouncements,
 	})
 
 	function play (files) {
-		$('video').prop('muted', true)
-		if (waitForEnding) Player.playAfter(files)
-		else {
-			Player.files = files
-			Player.load()
+		if (files.length) {
+			$('video').prop('muted', true)
+			if (waitForEnding) Player.playAfter(files)
+			else {
+				Player.files = files
+				Player.load()
+			}
 		}
 	}
 
