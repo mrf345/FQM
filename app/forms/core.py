@@ -16,7 +16,7 @@ class LoginForm(LocalizedForm):
 
 
 class TouchSubmitForm(LocalizedForm):
-    name = StringField('Required not less than 5 nor more than 300 letters',
+    name = StringField('',
                        validators=[InputRequired('Required not less than 3 nor more than 300 letters'),
                                    Length(3, 500)])
     submit = SubmitField('Register')
