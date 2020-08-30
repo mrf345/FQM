@@ -1,10 +1,5 @@
-import os
+from app.env_vars import VERSION  # noqa
 
-# Current FQM Version
-VERSION = open(os.path.join(os.path.dirname(__file__), 'VERSION'))\
-    .read()\
-    .replace('\n', '')\
-    .replace('\t', '')
 
 SUPPORTED_LANGUAGES = {
     # NOTE: The officially supported languages.

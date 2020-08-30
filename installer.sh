@@ -20,6 +20,9 @@ then
 fi
 
 
+source ./app/env_vars.py
+
+
 if [ "$1" == "--install" ]
 then
   if [ -f requirements/dev.txt ]
@@ -60,8 +63,7 @@ then
     echo $error1
     exit 0
   fi
-  version=`python -c "from app.constants import VERSION; print(VERSION)"`
-  echo "##### Running FQM $version #####"
+  echo "##### Running FQM $VERSION #####"
   if [ -f run.py ]
   then
     python run.py "${@:2}"
