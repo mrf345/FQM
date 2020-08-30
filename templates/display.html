@@ -69,7 +69,9 @@
 						else link += data.cot + message + data.con
 
 						if (!data.con || !data.cot) promise.reject()
-						else $.get(link).then(function(json) { promise.resolve(json.mp3) })
+						else $.get(link)
+							.then(function(json) { promise.resolve(json.mp3) })
+							.fail(function(e) { promise.reject(e) })
 
 						return promise
 					}))
