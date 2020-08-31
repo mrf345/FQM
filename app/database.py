@@ -151,6 +151,10 @@ class Task(db.Model, Mixin):
             if task.common:
                 return task
 
+    @classmethod
+    def in_offices(cls, office_id):
+        return cls.query.filter(cls.offices.contains(Office.get(office_id)))
+
     def least_tickets_office(self):
         self.offices.sort(key=lambda o: Serial.query.filter_by(office_id=o.id).count())
         return self.offices[0]
