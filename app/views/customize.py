@@ -49,6 +49,7 @@ def ticket():
         if form.kind.data == 1:  # Rigestered
             printer.value = form.value.data
             printer.active = False
+            touch_screen_settings = data.Touch_store.get()  # NOTE: sessions's lost
             touch_screen_settings.n = True
         else:  # Printed
             printer_id = form.printers.data
@@ -76,6 +77,7 @@ def ticket():
             printer.langu = form.langu.data
             printer.value = form.value.data
             printer.scale = form.scale.data
+            touch_screen_settings = data.Touch_store.get()  # NOTE: sessions's lost
             touch_screen_settings.n = False
 
         db.session.commit()
@@ -92,7 +94,9 @@ def ticket():
             form.printers.data = printer.name or ''
         else:
             form.printers.data = f'{printer.vendor}_{printer.product}'
-            form.printers.data += f'_{printer.in_ep}_{printer.out_ep}'
+
+            if printer.in_ep and printer.out_ep:
+                form.printers.data += f'_{printer.in_ep}_{printer.out_ep}'
 
     return render_template('ticket.html', navbar='#snb2',
                            page_title='Tickets',
