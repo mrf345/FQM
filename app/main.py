@@ -190,6 +190,7 @@ def bundle_app(config={}):
                     defLang=session.get('lang'), getattr=getattr, settings=Settings.get(), Serial=Serial,
                     checkId=lambda id, records: id in [i.id for i in records], offices=Office.query.all(),
                     moment_wrapper=moment_wrapper, current_path=quote(request.path, safe=''),
-                    windows=os.name == 'nt', unix=os.name != 'nt')
+                    windows=os.name == 'nt', unix=os.name != 'nt', next=next, it=iter,
+                    setattr=lambda *args, **kwargs: setattr(*args, **kwargs) or '')
 
     return app
