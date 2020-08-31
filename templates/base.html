@@ -35,13 +35,16 @@
         {{ beloadingNotifier(version, beload=False, release=translate("You are using an older version of FQM, a newer release is available on fqms.github.io", 'en', [defLang]), firefox=translate("You are not using Firefox browser, which this project is designed and most suited for.", 'en', [defLang]), notifier=notifications) }}
         <script type="text/javascript">
             window.onload = function () {
-                {% if dropdown %} $("{{ dropdown }}").collapse('show') {% endif %} // sidebar collapse for all
-                {% if hash %} $("{{ hash }}").addClass('active') {% endif %} // activating item regardless of uniqueness activation
-                {% if navbar %} $("{{ navbar }}").addClass("active") {% endif %} // activating navbar category
-                {% if getattr(current_user, 'role_id', None) == 3 %}
-                    $('#cls').collapse('show')
-                    $('#dropdown-lvl{{ ooid }}').collapse('show')
-                {% endif %}
+                try {
+                    {% if dropdown %} $("{{ dropdown }}").collapse('show') {% endif %} // sidebar collapse for all
+                    {% if hash %} $("{{ hash }}").addClass('active') {% endif %} // activating item regardless of uniqueness activation
+                    {% if navbar %} $("{{ navbar }}").addClass("active") {% endif %} // activating navbar category
+                    {% if getattr(current_user, 'role_id', None) == 3 %}
+                        $('#cls').collapse('show')
+                        $('#dropdown-lvl{{ ooid }}').collapse('show')
+                    {% endif %}
+                } catch(err) { console.log(err) }
+
                 if (!sessionStorage.toClear) {
                     localStorage.redWallIndex = undefined
                     sessionStorage.toClear = 'yes'
