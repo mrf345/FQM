@@ -1,11 +1,13 @@
 from flask_login import UserMixin, current_user
+from flask_sqlalchemy import BaseQuery
 from sqlalchemy.sql import and_, or_
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from random import randint
 
 from app.middleware import db
-from app.constants import USER_ROLES, DEFAULT_PASSWORD, PREFIXES
+from app.constants import (USER_ROLES, DEFAULT_PASSWORD, PREFIXES, TICKET_WAITING,
+                           TICKET_PROCESSED, TICKET_UNATTENDED)
 
 mtasks = db.Table(
     'mtasks',
@@ -167,8 +169,28 @@ class Task(db.Model, Mixin):
 
         db.session.commit()
 
+
+class SerialQuery(BaseQuery):
+    @property
+    def processed(self):
+        return self.filter_by(p=True)
+
+    @property
+    def unattended(self):
+        return self.filter_by(p=True, status=TICKET_UNATTENDED)
+
+    @property
+    def waiting(self):
+        return self.filter_by(p=False)
+
+
 class Serial(db.Model, TicketsMixin, Mixin):
     __tablename__ = "serials"
+    query_class = SerialQuery
+    STATUS_WAITING = TICKET_WAITING
+    STATUS_PROCESSED = TICKET_PROCESSED
+    STATUS_UNATTENDED = TICKET_UNATTENDED
+
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.Integer)
     timestamp = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
@@ -181,19 +203,20 @@ class Serial(db.Model, TicketsMixin, Mixin):
     # Fix: adding pulled by feature to tickets
     pulledBy = db.Column(db.Integer)
     on_hold = db.Column(db.Boolean, default=False)
+    status = db.Column(db.String(10), default=TICKET_PROCESSED)
     office_id = db.Column(db.Integer, db.ForeignKey('offices.id'))
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
 
-    def __init__(self, number=100, office_id=1, task_id=1,
-    name=None, n=False, p=False, pulledBy=0):
+    def __init__(self, number=100, office_id=1, task_id=1, name=None,
+                 n=False, p=False, pulledBy=0, status=TICKET_WAITING):
         self.number = number
         self.office_id = office_id
         self.task_id = task_id
         self.name = name
         self.n = n
-        # fixing mass use tickets multi operators conflict
         self.p = p
         self.pulledBy = pulledBy
+        self.status = status
 
     @property
     def task(self):
@@ -324,6 +347,7 @@ class Serial(db.Model, TicketsMixin, Mixin):
         self.pdt = datetime.utcnow()
         self.pulledBy = getattr(current_user, 'id', None)
         self.office_id = office_id
+        self.status = TICKET_PROCESSED
 
         db.session.add(self)
         db.session.commit()
