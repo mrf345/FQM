@@ -6,6 +6,7 @@ from uuid import uuid4
 from . import TEST_PREFIX, get_first_office_with_tickets
 from app.database import Task, Office, Serial
 from app.utils import ids
+from app.constants import TICKET_UNATTENDED
 
 
 @pytest.mark.usefixtures('c')
@@ -233,3 +234,21 @@ def test_update_common_task_offices(c):
 
         assert ticket is not None
         assert ticket.office_id != unchecked_office.id
+
+
+@pytest.mark.usefixtures('c')
+def test_update_ticket(c):
+    ticket = Serial.get()
+
+    if not ticket.p:
+        ticket.pull(ticket.office.id)
+
+    assert ticket.status != TICKET_UNATTENDED
+
+    c.post(f'/serial_u/{ticket.id}/testing', data={
+        'value': ticket.name,
+        'printed': not ticket.n,
+        'status': TICKET_UNATTENDED
+    })
+
+    assert Serial.get(ticket.id).status == TICKET_UNATTENDED
