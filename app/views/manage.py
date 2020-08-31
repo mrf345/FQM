@@ -30,7 +30,7 @@ def manage():
                            serial=data.Serial.all_clean(),
                            offices=data.Office.query,
                            operators=data.Operators.query,
-                           tasks=data.Task.query)
+                           tasks=data.Task)
 
 
 @manage_app.route('/all_offices')
@@ -55,7 +55,7 @@ def all_offices():
                            page_title='All Offices',
                            serial=data.Serial.all_clean(),
                            offices=data.Office.query,
-                           tasks=data.Task.query,
+                           tasks=data.Task,
                            users=data.User.query,
                            operators=data.Operators.query,
                            navbar='#snb1',
@@ -110,7 +110,7 @@ def offices(office):
                            len=len,
                            serial=tickets,
                            offices=data.Office.query,
-                           tasks=data.Task.query,
+                           tasks=data.Task,
                            users=data.User.query,
                            operators=data.Operators.query,
                            navbar='#snb1',
@@ -145,7 +145,7 @@ def office_a():
                            form=form,
                            page_title='Adding new office',
                            offices=data.Office.query,
-                           tasks=data.Task.query,
+                           tasks=data.Task,
                            operators=data.Operators.query,
                            navbar='#snb1',
                            hash='#da3',
@@ -196,7 +196,7 @@ def search():
     first_time = not bool(request.args.get('page', default=0, type=int))
     form = SearchForm() if first_time else search.form
     base_template_arguments = dict(form=form, page_title='Tickets search', offices=data.Office.query,
-                                   tasks=data.Task.query, users=data.User.query, len=len,
+                                   tasks=data.Task, users=data.User.query, len=len,
                                    operators=data.Operators.query, navbar='#snb1', hash='#da1',
                                    serial=data.Serial.query.filter(data.Serial.number != 100))
 
@@ -305,7 +305,7 @@ def task(task, ofc_id):
                            common=task.common,
                            len=len,
                            offices=data.Office.query,
-                           tasks=data.Task.query,
+                           tasks=data.Task,
                            users=data.User.query,
                            operators=data.Operators.query,
                            task=task,
@@ -388,7 +388,7 @@ def common_task_a():
     return render_template('task_add.html', form=form,
                            offices=data.Office.query,
                            serial=data.Serial.all_clean(),
-                           tasks=data.Task.query,
+                           tasks=data.Task,
                            operators=data.Operators.query,
                            navbar='#snb1', common=True,
                            page_title='Add a common task',
@@ -436,7 +436,7 @@ def task_a(office):
     return render_template('task_add.html', form=form,
                            offices=data.Office.query,
                            serial=data.Serial.all_clean(),
-                           tasks=data.Task.query,
+                           tasks=data.Task,
                            operators=data.Operators.query,
                            navbar='#snb1', common=False,
                            dropdown='#dropdown-lvl' + str(office.id),

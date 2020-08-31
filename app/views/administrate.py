@@ -135,7 +135,7 @@ def operators(office):
                            usersp=pagination.items,
                            serial=data.Serial.query,
                            users=data.User.query,
-                           tasks=data.Task.query,
+                           tasks=data.Task,
                            operators=data.Operators.query,
                            navbar='#snb1',
                            dropdown='#dropdown-lvl' + str(office.id),
