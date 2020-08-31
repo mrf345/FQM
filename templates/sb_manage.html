@@ -72,7 +72,7 @@
 			<li class="panel panel-default da{{ office.id+3 }} {% if ar %} ar1 {% endif %}" id="dropdown">
 			    <a data-toggle="collapse" href="#dropdown-lvl{{ office.id }}">
 				<span class="fa fa-desktop"></span>
-				{{ office.id }}.{{ translate('Office', 'en', [defLang]) }}  {{ office.prefix }}{{ office.name }}
+				{{ loop.index }}.{{ translate('Office', 'en', [defLang]) }}  {{ office.prefix }}{{ office.name }}
 				<span class="caret"></span>
 				<!-- To solve counting all the common and non-common tasks tickets -->
 				{% set total_tickets = Serial.all_office_tickets(office.id).filter_by(p=False).count() %}
@@ -117,11 +117,10 @@
 						{{ translate('Add new task', 'en', [defLang]) }}
 					    </a>
 					</li>
-					{% for task in tasks %}
-					{% if checkId(office.id, task.offices) %}
+					{% for task in tasks.in_offices(office.id) %}
 					<li id="tt{{office.id }}{{ task.id }}" >
 					    <a href="{{ url_for('manage_app.task', o_id=task.id, ofc_id=office.id) }}">
-						{{ task.id }}.  {{ task.name }}
+						{{ loop.index }}.  {{ task.name }}
 					    </a>
 					</li>
 					<!-- Pull is shifted to here -->
@@ -137,7 +136,6 @@
 								{% endif %}
 						</a>
 					</li>
-					{% endif %}
 					{% endfor %}
 				    </ul>
 				</div>
