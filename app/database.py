@@ -551,6 +551,7 @@ class Display_store(db.Model, Mixin):
     prefix = db.Column(db.Boolean, default=False)
     always_show_ticket_number = db.Column(db.Boolean, default=False)
     wait_for_announcement = db.Column(db.Boolean)
+    hide_ticket_index = db.Column(db.Boolean)
     # adding repeat announcement value
     r_announcement = db.Column(db.Boolean)
     akey = db.Column(db.Integer, db.ForeignKey("media.id",
@@ -573,7 +574,8 @@ class Display_store(db.Model, Mixin):
                  sfont="Amiri", mduration="3000", rrate="2000",
                  announce="en-us", ikey=4, vkey=None, akey=None,
                  anr=2, anrt="each", bgcolor="rgb(0,0,0)", tmp=1,
-                 wait_for_announcement=True):
+                 wait_for_announcement=True,
+                 hide_ticket_index=False):
         self.id = 0
         self.tfont = tfont
         self.hfont = hfont
@@ -606,6 +608,7 @@ class Display_store(db.Model, Mixin):
         self.vkey = vkey
         self.akey = akey
         self.wait_for_announcement = wait_for_announcement
+        self.hide_ticket_index = hide_ticket_index
 
 
 # -- Slides storage table

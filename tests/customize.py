@@ -382,7 +382,8 @@ def test_display_screen_customization(c):
         'repeats': '2',
         'prefix': True,
         'always_show_ticket_number': True,
-        'bgcolor': 'testing'
+        'bgcolor': 'testing',
+        'hide_ticket_index': True
     }
     data = {f'check{s}': True for s in get_tts_safely().keys()}
     data.update({'display': 1,

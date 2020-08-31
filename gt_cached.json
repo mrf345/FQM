@@ -83,6 +83,13 @@
         "fr": "5 fois",
         "it": "5 volte"
     },
+    "6 times": {
+        "ar": "6 \u0645\u0631\u0627\u062a",
+        "en": "6 times",
+        "es": "6 veces",
+        "fr": "6 fois",
+        "it": "6 volte"
+    },
     "7 times": {
         "ar": "7 \u0645\u0631\u0627\u062a",
         "en": "7 times",
@@ -1273,6 +1280,13 @@
         "es": "Ocultar esta tarea:",
         "fr": "Masquer cette t\u00e2che:",
         "it": "Nascondere questo compito:"
+    },
+    "Hide ticket index number:": {
+        "ar": "\u0625\u062e\u0641\u0627\u0621 \u0627\u0644\u0631\u0642\u0645 \u0627\u0644\u0642\u064a\u0627\u0633\u064a \u062a\u0630\u0643\u0631\u0629:",
+        "en": "Hide ticket index number:",
+        "es": "Ocultar n\u00famero de \u00edndice de entradas:",
+        "fr": "Cacher num\u00e9ro d'index de billets:",
+        "it": "Nascondi numero indice del biglietto:"
     },
     "ID . Name": {
         "ar": "\u0647\u0648\u064a\u0629 \u0634\u062e\u0635\u064a\u0629 . \u0627\u0633\u0645",
@@ -3692,6 +3706,13 @@
         "es": "elegir la fuente del ticket del t\u00edtulo principal:",
         "fr": "choisissez la police de titre de titre principal:",
         "it": "scegli il carattere del biglietto principale:"
+    },
+    "choose main heading ticket font size :": {
+        "ar": "\u0627\u062e\u062a\u064a\u0627\u0631 \u0627\u0644\u0631\u0626\u064a\u0633\u064a\u0629 \u062d\u062c\u0645 \u062a\u0630\u0643\u0631\u0629 \u0639\u0646\u0648\u0627\u0646 \u0627\u0644\u062e\u0637:",
+        "en": "choose main heading ticket font size :",
+        "es": "elegir el tama\u00f1o de la fuente principal de entradas t\u00edtulo:",
+        "fr": "choisir la taille principale de police billet intitul\u00e9:",
+        "it": "sceglie il formato principale del carattere intestazione biglietto:"
     },
     "choose main heading ticket font size : ": {
         "ar": "\u0627\u062e\u062a\u0631 \u062d\u062c\u0645 \u062e\u0637 \u062a\u0630\u0643\u0631\u0629 \u0627\u0644\u0639\u0646\u0648\u0627\u0646 \u0627\u0644\u0631\u0626\u064a\u0633\u064a:",

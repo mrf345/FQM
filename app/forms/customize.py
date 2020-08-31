@@ -122,6 +122,7 @@ class DisplayScreenForm(LocalizedForm):
     prefix = BooleanField('Attach prefix office letter: ')
     always_show_ticket_number = BooleanField('Always show ticket number: ')
     wait_for_announcement = BooleanField('Wait for announcement to finish:')
+    hide_ticket_index = BooleanField('Hide ticket index number:')
     submit = SubmitField('Apply')
 
     for shortcode in get_tts_safely().keys():
