@@ -42,3 +42,6 @@ MIGRATION_FOLDER = 'migrations'
 DATABASE_FILE = 'data.sqlite'
 
 PREFIXES = [p for p in list(map(lambda i: chr(i).upper(), range(97, 123)))]
+
+TICKET_STATUSES = ['Waiting', 'Processed', 'Unattended']
+TICKET_WAITING, TICKET_PROCESSED, TICKET_UNATTENDED = TICKET_STATUSES

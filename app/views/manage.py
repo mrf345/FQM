@@ -5,8 +5,9 @@ import app.database as data
 from app.middleware import db
 from app.utils import ids, remove_string_noise
 from app.helpers import (reject_operator, reject_no_offices, is_operator, is_office_operator,
-                         is_common_task_operator, reject_setting, get_or_reject)
-from app.forms.manage import OfficeForm, TaskForm, SearchForm
+                         is_common_task_operator, reject_setting, get_or_reject, decode_links)
+from app.forms.manage import OfficeForm, TaskForm, SearchForm, ProcessedTicketForm
+from app.constants import TICKET_WAITING
 
 
 manage_app = Blueprint('manage_app', __name__)
@@ -45,6 +46,7 @@ def all_offices():
     last_ticket_office = last_ticket_pulled and data.Office.query\
                                                     .filter_by(id=last_ticket_pulled.office_id)\
                                                     .first()
+    tickets_form = ProcessedTicketForm()
 
     return render_template('all_offices.html',
                            officesp=pagination.items,
@@ -59,7 +61,8 @@ def all_offices():
                            navbar='#snb1',
                            hash='#da2',
                            last_ticket_pulled=last_ticket_pulled,
-                           last_ticket_office=last_ticket_office)
+                           last_ticket_office=last_ticket_office,
+                           tickets_form=tickets_form)
 
 
 @manage_app.route('/offices/<int:o_id>', methods=['GET', 'POST'])
@@ -73,6 +76,7 @@ def offices(office):
         return redirect(url_for('core.root'))
 
     form = OfficeForm(current_prefix=office.prefix)
+    tickets_form = ProcessedTicketForm()
     page = request.args.get('page', 1, type=int)
     tickets = data.Serial.all_office_tickets(office.id)
     last_ticket_pulled = tickets.filter_by(p=True).first()
@@ -112,7 +116,8 @@ def offices(office):
                            navbar='#snb1',
                            dropdown='#dropdown-lvl' + str(office.id),
                            hash='#t1' + str(office.id),
-                           last_ticket_pulled=last_ticket_pulled)
+                           last_ticket_pulled=last_ticket_pulled,
+                           tickets_form=tickets_form)
 
 
 @manage_app.route('/office_a', methods=['GET', 'POST'])
@@ -243,6 +248,7 @@ def task(task, ofc_id):
 
     task = data.Task.get(task.id)  # NOTE: session's lost
     form = TaskForm(common=task.common)
+    tickets_form = ProcessedTicketForm()
     page = request.args.get('page', 1, type=int)
     tickets = data.Serial.all_task_tickets(ofc_id, task.id)
     last_ticket_pulled = tickets.filter_by(p=True).first()
@@ -308,7 +314,8 @@ def task(task, ofc_id):
                            hash='#tt%i%i' % (ofc_id, task.id),
                            last_ticket_pulled=last_ticket_pulled,
                            edit_task=len(task.offices) == 1 or not is_operator(),
-                           office=data.Office.get(ofc_id))
+                           office=data.Office.get(ofc_id),
+                           tickets_form=tickets_form)
 
 
 @manage_app.route('/task_d/<int:t_id>', defaults={'ofc_id': None})
@@ -435,3 +442,34 @@ def task_a(office):
                            dropdown='#dropdown-lvl' + str(office.id),
                            hash='#t3' + str(office.id),
                            page_title='Add new task')
+
+
+@manage_app.route('/serial_u/<int:ticket_id>/<redirect_to>', methods=['POST'], defaults={'o_id': None})
+@manage_app.route('/serial_u/<int:ticket_id>/<redirect_to>/<int:o_id>', methods=['POST'])
+@login_required
+@decode_links
+def serial_u(ticket_id, redirect_to, o_id=None):
+    ''' to update ticket details '''
+    if is_operator() and not is_office_operator(o_id):
+        flash('Error: operators are not allowed to access the page ', 'danger')
+        return redirect(url_for('core.root'))
+
+    form = ProcessedTicketForm()
+    ticket = data.Serial.get(ticket_id)
+
+    if not ticket:
+        flash('Error: wrong entry, something went wrong', 'danger')
+        return redirect(redirect_to)
+
+    if form.validate_on_submit():
+        ticket.name = form.value.data or ''
+        ticket.n = not form.printed.data
+        ticket.status = form.status.data
+
+        if ticket.status == TICKET_WAITING:
+            ticket.p = False
+
+        db.session.commit()
+
+    flash('Notice: Ticket details updated successfully', 'info')
+    return redirect(redirect_to)

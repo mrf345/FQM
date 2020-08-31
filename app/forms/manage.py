@@ -3,6 +3,7 @@ from wtforms.validators import InputRequired, Length, Optional
 
 from app.forms.base import LocalizedForm
 from app.database import Office
+from app.constants import TICKET_STATUSES
 
 
 class OfficeForm(LocalizedForm):
@@ -56,3 +57,13 @@ class SearchForm(LocalizedForm):
             prefix_choices.append((office.id, f'{office.prefix} {office.name}'))
 
         self.tl.choices = prefix_choices
+
+
+class ProcessedTicketForm(LocalizedForm):
+    printed = BooleanField('Printied ticket :',
+                           validators=[InputRequired('')])
+    value = StringField('Registered ticket value :')
+    status = SelectField('Select ticket current status :',
+                         coerce=str,
+                         choices=[(s, s) for s in TICKET_STATUSES],
+                         validators=[InputRequired('You must chose a ticket status')])
