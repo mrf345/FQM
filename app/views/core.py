@@ -323,22 +323,26 @@ def on_hold(ticket, redirect_to):
 def feed(office_id=None):
     ''' stream list of waiting tickets and current ticket. '''
     single_row = data.Settings.get().single_row
+    hide_ticket_index = data.Display_store.get().hide_ticket_index
     current_ticket = data.Serial.get_last_pulled_ticket(office_id)
     empty_text = gtranslator.translate('Empty', dest=[session.get('lang')])
     current_ticket_text = current_ticket and current_ticket.display_text or empty_text
     current_ticket_office_name = current_ticket and current_ticket.office.display_text or empty_text
     current_ticket_task_name = current_ticket and current_ticket.task.name or empty_text
 
+    def _resolve_ticket_index(_index):
+        return '' if hide_ticket_index else f'{_index + 1}. '
+
     if single_row:
         waiting_list_parameters = {
-            f'w{_index + 1}': f'{_index + 1}. {number}'
+            f'w{_index + 1}': f'{_resolve_ticket_index(_index)}{number}'
             for _index, number in enumerate(range(getattr(current_ticket, 'number', 1) + 1,
                                                   getattr(current_ticket, 'number', 1) + 10))}
     else:
         waiting_tickets = (data.Serial.get_waiting_list_tickets(office_id) + ([None] * 9))[:9]
         waiting_list_parameters = {
             f'w{_index + 1}':
-            f'{_index + 1}. {ticket.display_text}' if ticket else empty_text
+            f'{_resolve_ticket_index(_index)}{ticket.display_text}' if ticket else empty_text
             for _index, ticket in enumerate(waiting_tickets)}
 
     # NOTE: Ensure `waiting_list_parameters` last value is as distinct as the `current_ticket`

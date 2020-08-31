@@ -195,7 +195,8 @@
 		        <hr>
 		        {{ render_field(form.ssize, class="form-control") }}
 		        {{ render_field(form.scolor, class="sp") }}
-		        {{ render_field(form.sfont, class="form-control") }}
+				{{ render_field(form.sfont, class="form-control") }}
+				{{ render_field(form.hide_ticket_index, class="form-control") }}
                 <p class="pb-9"></p>
                 {{ unique_btns(translate('Previous', 'en', [defLang]), translate('Apply', 'en', [defLang]), translate('Next', 'en', [defLang])) }}
                 <p class="pb-3"></p>
