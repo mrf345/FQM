@@ -1,0 +1,64 @@
+
+{% macro ticket_color(ticket) %}
+{% if ticket.on_hold %} text-muted
+{% elif ticket.status == ticket.STATUS_UNATTENDED %} text-warning
+{% elif ticket.p %} text-primary 
+{% else %} text-danger {% endif %}
+{% endmacro %}
+
+
+{% macro ticket_actions(ticket) %}
+<!-- Expects to be defined: translate(), current_path -->
+{% if not ticket.p %}
+    <a href="{{ url_for('core.on_hold', ticket_id=ticket.id, redirect_to=current_path) }}"
+       data-toggle="tooltip" title="{{ translate('On-Hold', 'en', [defLang]) }}"
+    >
+          <span class="mr-1 fa fa-{% if ticket.on_hold %}unlock text-primary{% else %}lock text-danger{% endif %}"></span>
+    </a>
+    <a onclick="$('#ticket{{ ticket.id }}').modal()" data-toggle="tooltip" title="{{ translate('Update', 'en', [defLang]) }}">
+        <span class="mr-1 fa fa-pencil text-warning"></span>
+    </a>
+    {% if not ticket.on_hold %}
+    <a href="{{ url_for('core.pull_unordered', ticket_id=ticket.id, redirect_to=current_path) }}"
+       data-toggle="tooltip" title="{{ translate('Pull', 'en', [defLang]) }}"
+    >
+          <span class="fa fa-minus text-primary"></span>
+    </a>
+    {% endif %}
+{% else %}
+    <a onclick="$('#ticket{{ ticket.id }}').modal()" data-toggle="tooltip" title="{{ translate('Update', 'en', [defLang]) }}">
+        <span class="mr-1 fa fa-pencil text-warning"></span>
+    </a>
+{% endif %}
+{% endmacro %}
+
+
+{% macro processed_ticket_modal(form, ticket, office_id=None) %}
+    <!-- Receives [ProcessedTicketForm(), Serial(), 1...] -->
+    <!-- Expects to be defined: translate(), defLang, render_field(), current_path -->
+    {{ setattr(form.value, 'data', ticket.name) }}
+    {{ setattr(form.status, 'data', ticket.status or ticket.STATUS_PROCESSED) }}
+    {{ setattr(form.printed, 'data', not ticket.n) }}
+    <div class="modal fade" id="ticket{{ ticket.id }}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST" enctype="multipart/form-data" action="{{ url_for('manage_app.serial_u', ticket_id=ticket.id, redirect_to=current_path, o_id=office_id) }}">
+                    {{ form.csrf_token }}
+                    <div class="modal-header">
+                        <button type="button" class="close btn-danger" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title ar1 text-center">{{ translate('Update ticket', 'en', [defLang]) }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{ brp*2 }}{{ render_field(form.value, class="form-control") }}{{ brp }}
+                        {{ render_field(form.status, class="form-control") }}{{ brp }}
+                        {{ render_field(form.printed, class="form-control") }}{{ brp*2 }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="close btn-danger pull-left" data-dismiss="modal">{{ translate('Close', 'en', [defLang]) }}</button>
+                        <button type="submit" class="close btn btn-md btn-primary">{{ translate('Update', 'en', [defLang]) }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endmacro %}

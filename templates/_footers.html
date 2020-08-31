@@ -1,21 +1,40 @@
-{% macro panelFooter(theModal=[],tri=False, toWarn=None) %}
+{% macro panelFooter(theModal=[],tri=False, toWarn=None, toGreen=None) %}
+    <!-- FIXME: Replace all panelFooter instances with the panel_footer, and remove it. -->
     <!-- Receives [[['title', numbers()],..],..] -->
     {% for theRows in theModal%}
     <div class="row rmCurs">
         {% for theRow in theRows %}
-        {% if ar %}
-        {% else %}
         <div class="col-xs-12 {% if tri %} col-sm-4 {% else %} col-sm-6 {% endif %} h4 ar2 pb-1">
             {{theRow[0]}} : <br /><br />
-            <span class="label {% if theRow[0] == toWarn %} label-danger {% else %} label-info {% endif %}">
+            <span class="label label-{% if theRow[0] == toWarn %}danger{% elif theRow[0] == toGreen %}success{% else %}info{% endif %}">
                 <i> {{ theRow[1] }} </i>
             </span>
         </div>
-        {% endif %}
         {% endfor %}
     </div>
     {% endfor %}
 {% endmacro %}
+
+
+{% macro panel_footer(rows) %}
+    {% for row in rows %}
+    <div class="row rmCurs">
+        {% for col in row %}
+        {% set label = next(col, 'Label') %}
+        {% set value = next(col, 'Value') %}
+        {% set css_class = next(col, 'info') %}
+
+        <div class="col-xs-12 {% if row|length > 2 %} col-sm-4 {% else %} col-sm-6 {% endif %} h4 ar2 pb-1">
+            {{ translate(label, 'en', [defLang]) }}{{ brp*2 }}
+            <span class="label label-{{ css_class }}">
+                <i> {{ value }} </i>
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+{% endmacro %}
+
 
 {% macro spacer(theModal=[]) %}
     <!-- Receives ['message', number()] -->
