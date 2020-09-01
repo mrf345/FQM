@@ -339,6 +339,28 @@ class Serial(db.Model, TicketsMixin, Mixin):
                               .limit(limit)\
                               .all()
 
+    @classmethod
+    def get_processed_tickets(cls, office_id=None, limit=9, offset=0):
+        '''get list of last processed tickets.
+
+        Parameters
+        ----------
+        office_id : int, optional
+            office id to filter tickets for, by default None
+        limit : int, optional
+            limit the list of ticket to it, by default 9
+        '''
+        processed_tickets = cls.query.filter(cls.p == True,
+                                             cls.number != 100)
+
+        if office_id:
+            processed_tickets = processed_tickets.filter(cls.office_id == office_id)
+
+        return processed_tickets.order_by(cls.pdt.desc())\
+                                .limit(limit)\
+                                .offset(offset)\
+                                .all()
+
     def pull(self, office_id):
         ''' Mark a ticket as pulled and do the dues.
 

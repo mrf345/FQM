@@ -322,8 +322,8 @@ def on_hold(ticket, redirect_to):
 @core.route('/feed/<int:office_id>')
 def feed(office_id=None):
     ''' stream list of waiting tickets and current ticket. '''
+    display_settings = data.Display_store.get()
     single_row = data.Settings.get().single_row
-    hide_ticket_index = data.Display_store.get().hide_ticket_index
     current_ticket = data.Serial.get_last_pulled_ticket(office_id)
     empty_text = gtranslator.translate('Empty', dest=[session.get('lang')])
     current_ticket_text = current_ticket and current_ticket.display_text or empty_text
@@ -331,31 +331,39 @@ def feed(office_id=None):
     current_ticket_task_name = current_ticket and current_ticket.task.name or empty_text
 
     def _resolve_ticket_index(_index):
-        return '' if hide_ticket_index else f'{_index + 1}. '
+        return '' if display_settings.hide_ticket_index else f'{_index + 1}. '
 
     if single_row:
-        waiting_list_parameters = {
+        tickets_parameters = {
             f'w{_index + 1}': f'{_resolve_ticket_index(_index)}{number}'
             for _index, number in enumerate(range(getattr(current_ticket, 'number', 1) + 1,
                                                   getattr(current_ticket, 'number', 1) + 10))}
     else:
         waiting_tickets = (data.Serial.get_waiting_list_tickets(office_id) + ([None] * 9))[:9]
-        waiting_list_parameters = {
+        tickets_parameters = {
             f'w{_index + 1}':
             f'{_resolve_ticket_index(_index)}{ticket.display_text}' if ticket else empty_text
             for _index, ticket in enumerate(waiting_tickets)}
 
-    # NOTE: Ensure `waiting_list_parameters` last value is as distinct as the `current_ticket`
+    # NOTE: Add last 10 processed tickets, for supported template.
+    if display_settings.tmp == 3:
+        processed_tickets = (data.Serial.get_processed_tickets(office_id, offset=1) + ([None] * 9))[:9]
+        tickets_parameters.update({
+            f'p{_index + 1}':
+            f'{_resolve_ticket_index(_index)}{ticket.display_text}' if ticket else empty_text
+            for _index, ticket in enumerate(processed_tickets)})
+
+    # NOTE: Ensure `tickets_parameters` last value is as distinct as the `current_ticket`
     # To fix `uniqueness` not picking up the change in passed waiting list
-    waiting_list_parameters[f'w{len(waiting_list_parameters)}'] = (current_ticket.name
-                                                                   if current_ticket.n else
-                                                                   current_ticket.number
-                                                                   ) if current_ticket else empty_text
+    tickets_parameters[f'w{len(tickets_parameters)}'] = (current_ticket.name
+                                                         if current_ticket.n else
+                                                         current_ticket.number
+                                                         ) if current_ticket else empty_text
 
     return jsonify(con=current_ticket_office_name,
                    cot=current_ticket_text,
                    cott=current_ticket_task_name,
-                   **waiting_list_parameters)
+                   **tickets_parameters)
 
 
 @core.route('/set_repeat_announcement/<int:status>')
