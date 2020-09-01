@@ -28,9 +28,10 @@
             '.tobc',
             ["{{ url_for('static', filename='images/map2.jpg') }}",
             "{{ url_for('static', filename='images/map5.jpg') }}",
-            "{{ url_for('static', filename='images/map6.jpg') }}"],
+			"{{ url_for('static', filename='images/map6.jpg') }}",
+			"{{ url_for('static', filename='images/map7.jpg') }}"],
             function (position) {
-                if (position === '1' || position === '2') $('.warn').removeClass('hide')
+                if (['1', '2', '3'].indexOf(position) != -1) $('.warn').removeClass('hide')
                 else $('.warn').addClass('hide')
             }
         )
