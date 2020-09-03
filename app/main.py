@@ -23,7 +23,7 @@ from app.utils import absolute_path, log_error, create_default_records
 from app.database import Settings, Serial, Office
 from app.tasks import start_tasks
 from app.constants import (SUPPORTED_LANGUAGES, SUPPORTED_MEDIA_FILES, VERSION, MIGRATION_FOLDER,
-                           DATABASE_FILE)
+                           DATABASE_FILE, SECRET_KEY)
 
 
 def create_app(config={}):
@@ -44,7 +44,7 @@ def create_app(config={}):
     # app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024 # Remove Upload limit. FIX ISSUE
     app.config['UPLOADED_FILES_DEST'] = absolute_path('static/multimedia')
     app.config['UPLOADED_FILES_ALLOW'] = reduce(lambda sum, group: sum + group, SUPPORTED_MEDIA_FILES)
-    app.config['SECRET_KEY'] = os.urandom(24)
+    app.config['SECRET_KEY'] = SECRET_KEY
     app.config.update(config)
 
     # Initiating extensions before registering blueprints
@@ -58,9 +58,13 @@ def create_app(config={}):
     colorpicker(app, local=['static/css/spectrum.css', 'static/spectrum.min.js'])
     fontpicker(app, local=['static/jquery-ui.min.js', 'static/css/jquery-ui.min.css', 'static/webfont.min.js',
                            'static/webfont.select.min.js', 'static/css/webfont.select.css'])
-    minify(app, js=True, cssless=True, caching_limit=3, fail_safe=True, bypass=['.min.*'])
     gTTs.init_app(app)
     gtranslator.init_app(app)
+
+    if app.config.get('GUNICORN', False):
+        gtranslator.readonly = True
+    else:
+        minify(app, js=True, cssless=True, caching_limit=3, fail_safe=True, bypass=['.min.*'])
 
     # Register blueprints
     app.register_blueprint(administrate)
@@ -101,7 +105,11 @@ def bundle_app(config={}):
     # NOTE: avoid creating or interacting with the database during migration
     if not app.config.get('MIGRATION', False):
         create_db(app)
-        start_tasks(app)
+
+        if not app.config.get('GUNICORN', False):
+            # FIXME: Tasks are disabled when `GUNICORN` is running. We should implement a new
+            # tasks module with celery that works seemlessly alongside gunicorn.
+            start_tasks(app)
 
     if os.name != 'nt':
         # !!! it did not work creates no back-end available error !!!
