@@ -75,7 +75,9 @@ class Task:
     def sleep(self, duration=0):
         self.none_blocking_loop(range(duration or self.interval))(lambda _: sleep(1))
 
-    def log(self, message):
-        # FIXME: Use a proper logger to integrate with the ongoing one
+    def log(self, message, error=False):
         if not self.quiet:
-            print(message)
+            if error:
+                self.app.logger.exception(message)
+            else:
+                self.app.logger.info(message)
