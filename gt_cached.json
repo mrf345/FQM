@@ -658,8 +658,11 @@
         "it": "Visualizza tutti i biglietti esistenti da tutti gli uffici in ordine decrescente dal pi\u00f9 recente al pi\u00f9 vecchio, e fornisce all'amministratore e agli operatori autorizzati le opzioni di ripristino a zero o l'eliminazione corretta di tutti gli uffici. Oltre a pochi indicatori e contatori che visualizzano il numero di uffici, biglietti totali, elaborati e in attesa di conseguenza."
     },
     "Do not assign video": {
+        "ar": "\u0647\u0644 \u0627\u0644\u0641\u064a\u062f\u064a\u0648 \u0639\u062f\u0645 \u062a\u0639\u064a\u064a\u0646",
         "en": "Do not assign video",
-        "fr": "Ne vid\u00e9o pas assign"
+        "es": "Hacer v\u00eddeo no asignar",
+        "fr": "Ne vid\u00e9o pas assign",
+        "it": "Fare video non assegnazione"
     },
     "Duration": {
         "ar": "\u0627\u0644\u0645\u062f\u0629 \u0627\u0644\u0632\u0645\u0646\u064a\u0629",
@@ -1220,6 +1223,13 @@
         "es": "Cuarta vez",
         "fr": "Quatre fois",
         "it": "Quattro volte"
+    },
+    "Fourth Template": {
+        "ar": "\u0642\u0627\u0644\u0628 \u0627\u0644\u0631\u0627\u0628\u0639",
+        "en": "Fourth Template",
+        "es": "cuarta Plantilla",
+        "fr": "quatri\u00e8me mod\u00e8le",
+        "it": "quarto Template"
     },
     "French": {
         "ar": "\u0641\u0631\u0646\u0633\u064a",
@@ -2713,6 +2723,20 @@
         "fr": "le serveur <u> fonctionne </u> <br> sur : ",
         "it": "il server <u>\u00e8 in esecuzione</u> <br> su : "
     },
+    "Set ticket": {
+        "ar": "\u0645\u062c\u0645\u0648\u0639\u0629 \u062a\u0630\u0643\u0631\u0629",
+        "en": "Set ticket",
+        "es": "conjunto de entradas",
+        "fr": "billet Set",
+        "it": "set di biglietti"
+    },
+    "Set video": {
+        "ar": "\u0645\u062c\u0645\u0648\u0639\u0629 \u0627\u0644\u0641\u064a\u062f\u064a\u0648",
+        "en": "Set video",
+        "es": "conjunto de v\u00eddeo",
+        "fr": "Set vid\u00e9o",
+        "it": "set video"
+    },
     "Settings": {
         "ar": "\u0625\u0639\u062f\u0627\u062f\u0627\u062a",
         "en": "Settings",
@@ -3177,6 +3201,13 @@
         "es": "Actualizar",
         "fr": "Mettre \u00e0 jour",
         "it": "Aggiornare"
+    },
+    "Update Admin": {
+        "ar": "\u062a\u062d\u062f\u064a\u062b \u0627\u0644\u0627\u062f\u0627\u0631\u064a\u0629",
+        "en": "Update Admin",
+        "es": "actualizaci\u00f3n de administraci\u00f3n",
+        "fr": "Mise \u00e0 jour Administrateur",
+        "it": "Aggiornamento Admin"
     },
     "Update admin password": {
         "ar": "\u062a\u062d\u062f\u064a\u062b \u0643\u0644\u0645\u0629 \u0645\u0631\u0648\u0631 \u0627\u0644\u0645\u0633\u0624\u0648\u0644",
