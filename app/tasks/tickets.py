@@ -90,6 +90,7 @@ class CacheTicketsAnnouncements(Task):
                             successes.append(language)
                         except Exception as exception:
                             log_error(exception, quiet=self.quiet)
+                            self.log(exception, error=True)
 
                     if successes:
                         self.cached.append(ticket.number)

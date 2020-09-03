@@ -16,4 +16,4 @@ login_manager = LoginManager()
 login_manager.login_view = "login"
 files = UploadSet('files', ALL)
 gtranslator = translator(cache=True, skip_app=True, fail_safe=True)
-gTTs = gtts(route=True, failsafe=True)
+gTTs = gtts(route=True, failsafe=True, logging=False)
