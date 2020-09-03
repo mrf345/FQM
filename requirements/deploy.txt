@@ -17,8 +17,8 @@ Flask-Bootstrap==3.3.7.1
 Flask-Colorpicker==0.9
 Flask-Datepicker==0.8
 Flask-Fontpicker==0.2
-Flask-Googletrans==0.10
-Flask-gTTS==0.17
+Flask-Googletrans==0.11
+Flask-gTTS==0.18
 Flask-Login==0.4.0
 Flask-Mail==0.9.1
 Flask-Minify==0.25
