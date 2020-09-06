@@ -59,9 +59,8 @@ class TaskBase:
                 self.spinned_once = True
 
             if task_settings.time:
-                print(f'{task_settings.time.hour}:{task_settings.time.minute}')
                 job = getattr(schedule.every(), task_settings.every)\
-                    .at(f'{task_settings.time.hour}:{task_settings.time.minute}')\
+                    .at(task_settings.time.strftime('%H:%M'))\
                     .do(_doer)
             else:
                 job = getattr(schedule.every(), task_settings.every).do(_doer)
