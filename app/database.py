@@ -4,6 +4,7 @@ from sqlalchemy.sql import and_, or_
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from random import randint
+from time import time as current_time
 
 from app.middleware import db
 from app.constants import (USER_ROLES, DEFAULT_PASSWORD, PREFIXES, TICKET_WAITING,
@@ -17,11 +18,14 @@ mtasks = db.Table(
 
 class Mixin:
     @classmethod
-    def get(cls, id=False):
-        if id is False:
+    def get(cls, id=False, **kwargs):
+        if id is False and not kwargs:
             return cls.query.first()
 
-        return cls.query.filter_by(id=id).first()
+        if id:
+            kwargs['id'] = id
+
+        return cls.query.filter_by(**kwargs).first()
 
     @classmethod
     def create_generic(cls, **kwargs):
@@ -384,6 +388,21 @@ class Serial(db.Model, TicketsMixin, Mixin):
 
         db.session.add(self)
         db.session.commit()
+
+
+class BackgroundTask(db.Model, Mixin):
+    __tablename__ = 'background_tasks'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True)
+    enabled = db.Column(db.Boolean, default=False)
+    every = db.Column(db.String(10))
+    time = db.Column(db.Time, nullable=True)
+
+    def __init__(self, name, enabled=False, every=None, time=None):
+        self.name = name
+        self.enabled = enabled
+        self.every = every
+        self.time = time
 
 
 class Operators(db.Model, Mixin):
