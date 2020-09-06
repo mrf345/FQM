@@ -14,7 +14,18 @@
 {{ super() }}
 <script>
 $(document).ready(function () {
-  
+  var timeOptions = "{{ time_options|safe }}".split(',')
+
+  function handler() {
+    if (timeOptions.indexOf($('.deleteCheckTime').val()) == -1) {
+      $('.deleteHideTime').addClass('hide')
+    } else {
+      $('.deleteHideTime').removeClass('hide')
+    }
+  }
+
+  handler()
+  $('.deleteCheckTime').change(handler)
 })
 </script>
 {% endblock %}
@@ -42,8 +53,8 @@ $(document).ready(function () {
           {{ render_field(form.cache_tts_every, class="form-control") }}
           <hr />
           {{ render_field(form.delete_tickets_enabled, class="form-control") }}
-          {{ render_field(form.delete_tickets_every, class="form-control") }}
-          {{ render_field(form.delete_tickets_time, class="form-control") }}
+          {{ render_field(form.delete_tickets_every, class="form-control deleteCheckTime") }}
+          <div class="deleteHideTime">{{ render_field(form.delete_tickets_time, class="form-control") }}</div>
 		    <center>
           <p class="pt-5"></p>
           <button class="btn btn-md btn-danger" type="submit">{{ translate('Update', 'en', [defLang]) }}</button>

@@ -5,6 +5,7 @@ from werkzeug import secure_filename
 
 import app.database as data
 from app.middleware import db, files
+from app.forms.constents import EVERY_TIME_OPTIONS
 from app.forms.customize import (DisplayScreenForm, TouchScreenForm, TicketForm,
                                  AliasForm, VideoForm, MultimediaForm, SlideAddForm,
                                  SlideSettingsForm, BackgroundTasksForms)
@@ -659,12 +660,16 @@ def background_tasks():
     cache_tts = data.BackgroundTask.get(name='CacheTicketsAnnouncements')
     delete_tickets = data.BackgroundTask.get(name='DeleteTickets')
 
+    def _resolve_time(every, time):
+        return time if every in EVERY_TIME_OPTIONS else None
+
     if form.validate_on_submit():
         cache_tts.enabled = form.cache_tts_enabled.data
         cache_tts.every = form.cache_tts_every.data
         delete_tickets.enabled = form.delete_tickets_enabled.data
         delete_tickets.every = form.delete_tickets_every.data
-        delete_tickets.time = form.delete_tickets_time.data
+        delete_tickets.time = _resolve_time(delete_tickets.every,
+                                            form.delete_tickets_time.data)
 
         db.session.commit()
         stop_tasks()
@@ -685,4 +690,5 @@ def background_tasks():
                            form=form,
                            hash='#da9',
                            vtrue=data.Vid.get().enable,
-                           strue=data.Slides_c.get().status)
+                           strue=data.Slides_c.get().status,
+                           time_options=','.join(EVERY_TIME_OPTIONS))
