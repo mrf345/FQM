@@ -4,7 +4,6 @@ from sqlalchemy.sql import and_, or_
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from random import randint
-from time import time as current_time
 
 from app.middleware import db
 from app.constants import (USER_ROLES, DEFAULT_PASSWORD, PREFIXES, TICKET_WAITING,
@@ -19,6 +18,10 @@ mtasks = db.Table(
 class Mixin:
     @classmethod
     def get(cls, id=False, **kwargs):
+        if id is None:
+            # NOTE: depericated, but can awaken mighty dragons!
+            return None
+
         if id is False and not kwargs:
             return cls.query.first()
 
