@@ -468,20 +468,15 @@ def test_background_tasks_cache_tts(c, await_task, monkeypatch):
     }, follow_redirects=True)
     task = get_task(task_name)
     task_settings = BackgroundTask.get(name=task_name)
-    first_ticket = Serial.query.filter_by(p=False).first()
 
     assert response.status == '200 OK'
     assert task_settings.enabled == task_enabled
     assert task_settings.every == task_every
     assert task is not None
-    assert first_ticket is not None
     await_task(task)
     assert mock_gTTs.say.called is True
-    assert mock_gTTs.say.call_count == 16
 
 
-# FIXME: edge case when time is below 1:1
-# FIXME: edge if `every` not `week` or `day` time should be set to `None`
 @pytest.mark.usefixtures('c')
 @pytest.mark.usefixtures('await_task')
 def test_background_tasks_delete_tickets(c, await_task):
