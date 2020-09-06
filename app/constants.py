@@ -1,4 +1,5 @@
 import os
+
 from app.env_vars import VERSION  # noqa
 
 
@@ -48,3 +49,9 @@ TICKET_STATUSES = ['Waiting', 'Processed', 'Unattended']
 TICKET_WAITING, TICKET_PROCESSED, TICKET_UNATTENDED = TICKET_STATUSES
 
 SECRET_KEY = os.environ.get('SECRET_KEY', os.urandom(24))
+
+
+BACKGROUNDTASKS_DEFAULTS = {
+    'CacheTicketsAnnouncements': {'enabled': True, 'every': 'second'},
+    'DeleteTickets': {'enabled': False, 'every': 'hour'}
+}
