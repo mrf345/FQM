@@ -53,9 +53,7 @@ def c():
                   'SQLALCHEMY_DATABASE_URI': f'sqlite:///{DB_PATH}?check_same_thread=False'}
     app = bundle_app(app_config)
 
-    # FIXME: Tasks are not integration tested yet.
     stop_tasks()
-
     with app.test_client() as client:
         with app.app_context():
             db.create_all()
