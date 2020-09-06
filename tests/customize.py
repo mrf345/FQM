@@ -3,7 +3,6 @@ import io
 import usb.core
 from unittest.mock import MagicMock
 from collections import namedtuple
-from time import sleep
 
 import app.printer
 import app.views.customize
@@ -13,7 +12,7 @@ from app.helpers import get_tts_safely
 from app.database import (Touch_store, Display_store, Printer, Slides_c,
                           Vid, Media, Slides, Aliases, Settings, BackgroundTask,
                           Serial)
-from app.tasks import get_task, stop_tasks
+from app.tasks import get_task
 
 
 @pytest.mark.usefixtures('c')
