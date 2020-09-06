@@ -1,13 +1,13 @@
 from sqlalchemy.sql import not_
 
-from app.tasks.base import Task
+from app.tasks.base import TaskBase
 from app.database import Serial, Display_store, Aliases, Settings
 from app.middleware import gTTs
 from app.utils import log_error
 from app.helpers import get_tts_safely
 
 
-class CacheTicketsAnnouncements(Task):
+class CacheTicketsAnnouncements(TaskBase):
     def __init__(self, app, interval=5, limit=30):
         ''' Task to cache tickets text-to-speech announcement audio files.
 

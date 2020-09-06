@@ -105,11 +105,7 @@ def bundle_app(config={}):
     # NOTE: avoid creating or interacting with the database during migration
     if not app.config.get('MIGRATION', False):
         create_db(app)
-
-        if not app.config.get('GUNICORN', False):
-            # FIXME: Tasks are disabled when `GUNICORN` is running. We should implement a new
-            # tasks module with celery that works seemlessly alongside gunicorn.
-            start_tasks(app)
+        start_tasks(app)
 
     if os.name != 'nt':
         # !!! it did not work creates no back-end available error !!!
