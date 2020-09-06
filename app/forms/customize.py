@@ -1,14 +1,15 @@
 import os
 from functools import reduce
-from wtforms.validators import InputRequired, Length
+from wtforms.validators import InputRequired, Length, Optional
 from flask_wtf.file import FileAllowed
 from wtforms import StringField, SelectField, SubmitField, BooleanField, TextAreaField, FileField
+from wtforms_components import TimeField
 
 from app.forms.base import LocalizedForm
 from app.forms.constents import (FONT_SIZES, BTN_COLORS, DURATIONS, TOUCH_TEMPLATES, DISPLAY_TEMPLATES,
                                  ANNOUNCEMENT_REPEATS, ANNOUNCEMENT_REPEAT_TYPE, VISUAL_EFFECTS,
                                  VISUAL_EFFECT_REPEATS, BOOLEAN_SELECT_1, TICKET_TYPES,
-                                 TICKET_REGISTERED_TYPES, SLIDE_EFFECTS, SLIDE_DURATIONS)
+                                 TICKET_REGISTERED_TYPES, SLIDE_EFFECTS, SLIDE_DURATIONS, EVERY_OPTIONS)
 from app.database import Media
 from app.constants import SUPPORTED_MEDIA_FILES, SUPPORTED_LANGUAGES, PRINTED_TICKET_SCALES
 from app.helpers import get_tts_safely
@@ -271,3 +272,18 @@ class AliasForm(LocalizedForm):
                        validators=[InputRequired(_message), Length(2, 10)])
     number = StringField('Enter alias for number : ',
                          validators=[InputRequired(_message), Length(2, 10)])
+
+
+class BackgroundTasksForms(LocalizedForm):
+    _every_message = 'Time range to repeat the task within :'
+    _time_message = 'Specific time to execute the task in :'
+    cache_tts_enabled = BooleanField('Enable caching text-to-speech announcements :')
+    cache_tts_every = SelectField(_every_message,
+                                  coerce=str,
+                                  choices=[(o, o) for o in EVERY_OPTIONS])
+    delete_tickets_enabled = BooleanField('Enable deleting tickets :')
+    delete_tickets_every = SelectField(_every_message,
+                                       coerce=str,
+                                       choices=[(o, o) for o in EVERY_OPTIONS])
+    delete_tickets_time = TimeField(_time_message,
+                                    validators=[Optional()])
