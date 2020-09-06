@@ -15,6 +15,7 @@ class TaskBase:
         self.interval = 5
         self.spinned = False
         self.spinned_once = False
+        self.dead = False
 
     @property
     def quiet(self):
@@ -58,6 +59,7 @@ class TaskBase:
                 self.spinned_once = True
 
             if task_settings.time:
+                print(f'{task_settings.time.hour}:{task_settings.time.minute}')
                 job = getattr(schedule.every(), task_settings.every)\
                     .at(f'{task_settings.time.hour}:{task_settings.time.minute}')\
                     .do(_doer)
@@ -69,6 +71,8 @@ class TaskBase:
                 self.sleep()
 
             schedule.cancel_job(job)
+
+            self.dead = True
 
         return wrapper
 
