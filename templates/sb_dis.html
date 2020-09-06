@@ -130,20 +130,25 @@
       </li>
       {% endif %}
       <li id="da7" {% if ar %} class="ar1" {% endif %}>
-			    <a href="{{ url_for('cust_app.ticket') }}">
-				<span class="fa fa-print"></span>
-                {{ translate('Tickets', 'en', [defLang]) }}
-			    </a>
-			</li>
-			<li id="da8" >
-				<a href="{{ url_for('cust_app.alias') }}">
-				<span class="fa fa-comments-o"></span>
-				{{ translate('Aliases', 'en', [defLang]) }}
-				</a>
-			</li>
+			<a href="{{ url_for('cust_app.ticket') }}">
+			<span class="fa fa-print"></span>
+            {{ translate('Tickets', 'en', [defLang]) }}
+			</a>
+		</li>
+		<li id="da8" >
+			<a href="{{ url_for('cust_app.alias') }}">
+			<span class="fa fa-comments-o"></span>
+			{{ translate('Aliases', 'en', [defLang]) }}
+			</a>
+		</li>
+		<li id="da9" >
+			<a href="{{ url_for('cust_app.background_tasks') }}">
+		  <span class="fa fa-cog"></span>
+		  {{ translate('Background tasks', 'en', [defLang]) }}
+			</a>
+		</li>
 		</div><!-- /.navbar-collapse -->
 	    </nav>
-
 	</div>
     </div>
 </div>
