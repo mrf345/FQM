@@ -14,7 +14,8 @@ from flask import current_app
 
 import app.database as data
 from app.middleware import db
-from app.constants import DEFAULT_PASSWORD, DEFAULT_USER, DATABASE_FILE
+from app.constants import (DEFAULT_PASSWORD, DEFAULT_USER, DATABASE_FILE,
+                           BACKGROUNDTASKS_DEFAULTS)
 
 
 def execute(command, parser=None, encoding='utf-8'):
@@ -362,6 +363,21 @@ def remove_string_noise(string, condition, getter):
     return clean_string
 
 
+def find(getter, to_iter):
+    '''Find an item in an iterable.
+
+    Parameters
+    ----------
+    getter : callable
+        function to find an item by.
+    to_iter : iterable
+        iterable to find an item within.
+    '''
+    for i in to_iter:
+        if getter(i):
+            return i
+
+
 def create_default_records():
     ''' create database necessary records, if not existing. '''
     tables = [data.Display_store, data.Touch_store, data.Slides_c,
@@ -380,6 +396,13 @@ def create_default_records():
                                  password=DEFAULT_PASSWORD,
                                  role_id=1))
         db.session.commit()
+
+    for task, settings in BACKGROUNDTASKS_DEFAULTS.items():
+        task_settings = data.BackgroundTask.get(name=task)
+
+        if not task_settings:
+            db.session.add(data.BackgroundTask(task, **settings))
+            db.session.commit()
 
 
 def getFolderSize(folder, safely=False):
