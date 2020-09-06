@@ -74,6 +74,6 @@ webencodings==0.5.1
 Werkzeug==0.15.5
 Whoosh==2.7.4
 WTForms==2.1
-WTForms-Components==0.10.3
+WTForms-Components==0.10.4
 xxhash==1.4.3
 schedule==0.6.0
