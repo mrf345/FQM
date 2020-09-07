@@ -25,7 +25,7 @@ class Mixin:
         if id is False and not kwargs:
             return cls.query.first()
 
-        if id:
+        if id is not False and id is not None:
             kwargs['id'] = id
 
         return cls.query.filter_by(**kwargs).first()
