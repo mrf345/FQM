@@ -44,3 +44,6 @@ SLIDE_EFFECTS = [('fade', 'Fade effect'), ('slide', 'Slide effect')]
 SLIDE_DURATIONS = [('1000', 'Every second'), ('3000', 'Every three seconds'),
                    ('5000', 'Every five seconds'), ('8000', 'Every eight seconds'),
                    ('60000', 'Every minute'), ('false', 'Disable rotation')]
+
+EVERY_TIME_OPTIONS = ['day', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'sunday']
+EVERY_OPTIONS = ['second', 'minute', 'hour', 'week'] + EVERY_TIME_OPTIONS

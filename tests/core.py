@@ -405,12 +405,8 @@ def test_pull_tickets_from_all(_, c):
     assert response.status == '200 OK'
     assert ticket_to_be_pulled is not None
     assert ticket_to_be_pulled.p is False
-    assert Serial.query.filter_by(number=ticket_to_be_pulled.number,
-                                  office_id=ticket_to_be_pulled.office_id,
-                                  task_id=ticket_to_be_pulled.task_id,
-                                  p=True)\
-                       .order_by(Serial.number)\
-                       .first() is not None
+    assert Serial.get(ticket_to_be_pulled.id).number == ticket_to_be_pulled.number
+    assert Serial.get(ticket_to_be_pulled.id).p is True
 
 
 @pytest.mark.parametrize('_', range(TEST_REPEATS))

@@ -80,11 +80,12 @@ def test_single_row_pulling(_, c):
                           100)
 
     response = c.get(f'/pull', follow_redirects=True)
+    pulled_ticket = Office.get(0).tickets.order_by(Serial.timestamp.desc()).first()
 
     assert response.status == '200 OK'
     assert Office.get(0).tickets.count() - 1 == tickets_length
-    assert Office.get(0).tickets.first().number - 1 == last_number
-    assert Office.get(0).tickets.first().p is True
+    assert pulled_ticket.number - 1 == last_number
+    assert pulled_ticket.p is True
 
 
 @pytest.mark.usefixtures('c')

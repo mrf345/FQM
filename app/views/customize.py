@@ -5,14 +5,16 @@ from werkzeug import secure_filename
 
 import app.database as data
 from app.middleware import db, files
+from app.forms.constents import EVERY_TIME_OPTIONS
 from app.forms.customize import (DisplayScreenForm, TouchScreenForm, TicketForm,
                                  AliasForm, VideoForm, MultimediaForm, SlideAddForm,
-                                 SlideSettingsForm)
+                                 SlideSettingsForm, BackgroundTasksForms)
 from app.printer import get_printers_cli, get_printers_usb
 from app.utils import absolute_path, getFolderSize, convert_to_int_or_hex
 from app.constants import SUPPORTED_MEDIA_FILES
 from app.helpers import (reject_not_admin, reject_slides_enabled, reject_videos_enabled,
                          get_tts_safely)
+from app.tasks import start_tasks, stop_tasks
 
 
 cust_app = Blueprint('cust_app', __name__)
@@ -647,3 +649,46 @@ def alias():
                            hash='#da8',
                            vtrue=data.Vid.get().enable,
                            strue=data.Slides_c.get().status)
+
+
+@cust_app.route('/background_tasks', methods=['GET', 'POST'])
+@login_required
+@reject_not_admin
+def background_tasks():
+    ''' view for background tasks customization '''
+    form = BackgroundTasksForms()
+    cache_tts = data.BackgroundTask.get(name='CacheTicketsAnnouncements')
+    delete_tickets = data.BackgroundTask.get(name='DeleteTickets')
+
+    def _resolve_time(every, time):
+        return time if every in EVERY_TIME_OPTIONS else None
+
+    if form.validate_on_submit():
+        cache_tts.enabled = form.cache_tts_enabled.data
+        cache_tts.every = form.cache_tts_every.data
+        delete_tickets.enabled = form.delete_tickets_enabled.data
+        delete_tickets.every = form.delete_tickets_every.data
+        delete_tickets.time = _resolve_time(delete_tickets.every,
+                                            form.delete_tickets_time.data)
+
+        db.session.commit()
+        stop_tasks()
+        start_tasks()
+        flash('Notice: background tasks got updated successfully.', 'info')
+        return redirect(url_for('cust_app.background_tasks'))
+
+    if not form.errors:
+        form.cache_tts_enabled.data = cache_tts.enabled
+        form.cache_tts_every.data = cache_tts.every
+        form.delete_tickets_enabled.data = delete_tickets.enabled
+        form.delete_tickets_every.data = delete_tickets.every
+        form.delete_tickets_time.data = delete_tickets.time
+
+    return render_template('background_tasks.html',
+                           page_title='Background Tasks',
+                           navbar='#snb2',
+                           form=form,
+                           hash='#da9',
+                           vtrue=data.Vid.get().enable,
+                           strue=data.Slides_c.get().status,
+                           time_options=','.join(EVERY_TIME_OPTIONS))

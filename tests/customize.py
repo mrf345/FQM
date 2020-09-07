@@ -6,10 +6,13 @@ from collections import namedtuple
 
 import app.printer
 import app.views.customize
+import app.tasks.cache_tickets_tts
 from app.middleware import db
 from app.helpers import get_tts_safely
 from app.database import (Touch_store, Display_store, Printer, Slides_c,
-                          Vid, Media, Slides, Aliases, Settings)
+                          Vid, Media, Slides, Aliases, Settings, BackgroundTask,
+                          Serial)
+from app.tasks import get_task
 
 
 @pytest.mark.usefixtures('c')
@@ -444,3 +447,57 @@ def test_aliases(c):
     assert response.status == '200 OK'
     for key, value in data.items():
         assert getattr(Aliases.get(), key, None) == value
+
+
+@pytest.mark.usefixtures('c')
+@pytest.mark.usefixtures('await_task')
+def test_background_tasks_cache_tts(c, await_task, monkeypatch):
+    mock_gTTs = MagicMock()
+    monkeypatch.setattr(app.tasks.cache_tickets_tts, 'gTTs', mock_gTTs)
+    task_name = 'CacheTicketsAnnouncements'
+    task_enabled = True
+    task_every = 'second'
+
+    response = c.post('/background_tasks', data={
+        'cache_tts_enabled': task_enabled,
+        'cache_tts_every': task_every,
+        'delete_tickets_enabled': False,
+        'delete_tickets_every': 'day',
+        'delete_tickets_time': '12:12'
+    }, follow_redirects=True)
+    task = get_task(task_name)
+    task_settings = BackgroundTask.get(name=task_name)
+
+    assert response.status == '200 OK'
+    assert task_settings.enabled == task_enabled
+    assert task_settings.every == task_every
+    assert task is not None
+    await_task(task)
+    assert mock_gTTs.say.called is True
+
+
+@pytest.mark.usefixtures('c')
+@pytest.mark.usefixtures('await_task')
+def test_background_tasks_delete_tickets(c, await_task):
+    task_name = 'DeleteTickets'
+    task_enabled = True
+    task_every = 'second'
+    task_time = None
+
+    response = c.post('/background_tasks', data={
+        'cache_tts_enabled': False,
+        'cache_tts_every': 'second',
+        'delete_tickets_enabled': task_enabled,
+        'delete_tickets_every': task_every,
+        'delete_tickets_time': task_time
+    }, follow_redirects=True)
+    task = get_task(task_name)
+    task_settings = BackgroundTask.get(name=task_name)
+
+    assert response.status == '200 OK'
+    assert task_settings.enabled == task_enabled
+    assert task_settings.every == task_every
+    assert task_settings.time is None
+    assert task is not None
+    await_task(task)
+    assert Serial.all_clean().count() == 0

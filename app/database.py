@@ -17,11 +17,18 @@ mtasks = db.Table(
 
 class Mixin:
     @classmethod
-    def get(cls, id=False):
-        if id is False:
+    def get(cls, id=False, **kwargs):
+        if id is None:
+            # NOTE: depericated, but can awaken mighty dragons!
+            return None
+
+        if id is False and not kwargs:
             return cls.query.first()
 
-        return cls.query.filter_by(id=id).first()
+        if id is not False and id is not None:
+            kwargs['id'] = id
+
+        return cls.query.filter_by(**kwargs).first()
 
     @classmethod
     def create_generic(cls, **kwargs):
@@ -384,6 +391,21 @@ class Serial(db.Model, TicketsMixin, Mixin):
 
         db.session.add(self)
         db.session.commit()
+
+
+class BackgroundTask(db.Model, Mixin):
+    __tablename__ = 'background_tasks'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True)
+    enabled = db.Column(db.Boolean, default=False)
+    every = db.Column(db.String(10))
+    time = db.Column(db.Time, nullable=True)
+
+    def __init__(self, name, enabled=False, every=None, time=None):
+        self.name = name
+        self.enabled = enabled
+        self.every = every
+        self.time = time
 
 
 class Operators(db.Model, Mixin):

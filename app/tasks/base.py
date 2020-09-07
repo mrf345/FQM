@@ -1,11 +1,12 @@
+import schedule
 from time import sleep
 from importlib import import_module
 from threading import Thread
 
-from app.utils import create_aliternative_db
+from app.database import BackgroundTask
 
 
-class Task:
+class TaskBase:
     ''' A base for tasks and mainly an alternative to a QThread, to use when PyQt is not used. '''
     def __init__(self, app):
         self.thread = None
@@ -14,10 +15,17 @@ class Task:
         self.interval = 5
         self.spinned = False
         self.spinned_once = False
+        self.dead = False
 
     @property
     def quiet(self):
         return self.app.config.get('QUIET', False)
+
+    @property
+    def settings(self):
+        ''' Get the task settings, or fallback to defaults. '''
+        with self.app.app_context():
+            return BackgroundTask.get(name=self.__class__.__name__)
 
     def init(self):
         if not self.app.config.get('CLI_OR_DEPLOY', True):
@@ -35,27 +43,35 @@ class Task:
         self.thread = Thread(target=self.run)
         self.thread.start()
 
-    def execution_loop(self, bundle_db=False):
+    def execution_loop(self):
         def wrapper(todo):
-            while not self.cut_circut:
-                args = ()
+            args, kwargs = (), {}
+            task_settings = self.settings
+            job = None
 
-                if bundle_db:
-                    args = create_aliternative_db(self.app.config.get('DB_NAME'))
-
+            def _doer():
                 self.spinned = False
+
                 with self.app.app_context():
-                    todo(*args)
+                    todo(*args, **kwargs)
+
                 self.spinned = True
                 self.spinned_once = True
 
-                if bundle_db:
-                    session, db, eng = args
+            if task_settings.time:
+                job = getattr(schedule.every(), task_settings.every)\
+                    .at(task_settings.time.strftime('%H:%M'))\
+                    .do(_doer)
+            else:
+                job = getattr(schedule.every(), task_settings.every).do(_doer)
 
-                    session.close()
-                    eng.dispose()
-
+            while not self.cut_circut:
+                schedule.run_pending()
                 self.sleep()
+
+            schedule.cancel_job(job)
+
+            self.dead = True
 
         return wrapper
 
