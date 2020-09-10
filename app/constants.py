@@ -20,11 +20,15 @@ SUPPORTED_MEDIA_FILES = [
      'webm', 'WEBM', 'mkv', 'MKV']  # Video
 ]
 
+
+USER_ROLE_ADMIN = 1
+USER_ROLE_MONITOR = 2
+USER_ROLE_OPERATOR = 3
 USER_ROLES = {
     # NOTE: User roles keyed with their ids.
-    1: 'Administrator',
-    2: 'Monitor',
-    3: 'Operator'
+    USER_ROLE_ADMIN: 'Administrator',
+    USER_ROLE_MONITOR: 'Monitor',
+    USER_ROLE_OPERATOR: 'Operator'
 }
 
 PRINTED_TICKET_MAXIMUM_HEIGH_OR_WIDTH = 8

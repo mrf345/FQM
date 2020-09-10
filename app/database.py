@@ -4,10 +4,11 @@ from sqlalchemy.sql import and_, or_
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from random import randint
+from uuid import uuid4
 
 from app.middleware import db
 from app.constants import (USER_ROLES, DEFAULT_PASSWORD, PREFIXES, TICKET_WAITING,
-                           TICKET_PROCESSED, TICKET_UNATTENDED)
+                           TICKET_PROCESSED, TICKET_UNATTENDED, USER_ROLE_ADMIN)
 
 mtasks = db.Table(
     'mtasks',
@@ -469,6 +470,32 @@ class Roles(db.Model):
             if not existing:
                 db.session.add(Roles(id=_id, name=name))
         db.session.commit()
+
+
+class AuthTokens(db.Model, Mixin):
+    __tablename__ = 'auth_tokens'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    description = db.Column(db.String(300), nullable=True)
+    token = db.Column(db.String(32), unique=True)
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+
+    def __init__(self, name, description=None):
+        self.name = name
+        self.description = description
+        self.token = self.get_unique_token()
+        # NOTE: defaulting role to Adminstator, most likely in the future
+        # we would want this to be customizeable, with varied API permissions.
+        self.role_id = USER_ROLE_ADMIN
+
+    @classmethod
+    def get_unique_token(cls):
+        token = f'{uuid4().replace("-", "")}'
+
+        while cls.get(token=token):
+            token = f'{uuid4().replace("-", "")}'
+
+        return token
 
 
 class Printer(db.Model, Mixin):

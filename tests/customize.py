@@ -10,9 +10,7 @@ import app.tasks.cache_tickets_tts
 from app.middleware import db
 from app.helpers import get_tts_safely
 from app.database import (Touch_store, Display_store, Printer, Slides_c,
-                          Vid, Media, Slides, Aliases, Settings, BackgroundTask,
-                          Serial)
-from app.tasks import get_task
+                          Vid, Media, Slides, Aliases, Settings, Serial)
 
 
 @pytest.mark.usefixtures('c')
@@ -449,12 +447,10 @@ def test_aliases(c):
         assert getattr(Aliases.get(), key, None) == value
 
 
-@pytest.mark.usefixtures('c')
-@pytest.mark.usefixtures('await_task')
-def test_background_tasks_cache_tts(c, await_task, monkeypatch):
+@pytest.mark.usefixtures('c', 'get_bg_task')
+def test_background_tasks_cache_tts(c, get_bg_task, monkeypatch):
     mock_gTTs = MagicMock()
     monkeypatch.setattr(app.tasks.cache_tickets_tts, 'gTTs', mock_gTTs)
-    task_name = 'CacheTicketsAnnouncements'
     task_enabled = True
     task_every = 'second'
 
@@ -465,21 +461,17 @@ def test_background_tasks_cache_tts(c, await_task, monkeypatch):
         'delete_tickets_every': 'day',
         'delete_tickets_time': '12:12'
     }, follow_redirects=True)
-    task = get_task(task_name)
-    task_settings = BackgroundTask.get(name=task_name)
+    task = get_bg_task('CacheTicketsAnnouncements')
 
     assert response.status == '200 OK'
-    assert task_settings.enabled == task_enabled
-    assert task_settings.every == task_every
-    assert task is not None
-    await_task(task)
+    assert task.settings.enabled == task_enabled
+    assert task.settings.every == task_every
+    assert task.settings.time is None
     assert mock_gTTs.say.called is True
 
 
-@pytest.mark.usefixtures('c')
-@pytest.mark.usefixtures('await_task')
-def test_background_tasks_delete_tickets(c, await_task):
-    task_name = 'DeleteTickets'
+@pytest.mark.usefixtures('c', 'get_bg_task')
+def test_background_tasks_delete_tickets(c, get_bg_task):
     task_enabled = True
     task_every = 'second'
     task_time = None
@@ -491,13 +483,10 @@ def test_background_tasks_delete_tickets(c, await_task):
         'delete_tickets_every': task_every,
         'delete_tickets_time': task_time
     }, follow_redirects=True)
-    task = get_task(task_name)
-    task_settings = BackgroundTask.get(name=task_name)
+    task = get_bg_task('DeleteTickets')
 
     assert response.status == '200 OK'
-    assert task_settings.enabled == task_enabled
-    assert task_settings.every == task_every
-    assert task_settings.time is None
-    assert task is not None
-    await_task(task)
+    assert task.settings.enabled == task_enabled
+    assert task.settings.every == task_every
+    assert task.settings.time is None
     assert Serial.all_clean().count() == 0

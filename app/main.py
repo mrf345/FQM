@@ -22,6 +22,7 @@ from app.views.manage import manage_app
 from app.utils import absolute_path, log_error, create_default_records
 from app.database import Settings, Serial, Office
 from app.tasks import start_tasks
+from app.api.setup import setup_api
 from app.constants import (SUPPORTED_LANGUAGES, SUPPORTED_MEDIA_FILES, VERSION, MIGRATION_FOLDER,
                            DATABASE_FILE, SECRET_KEY)
 
@@ -47,6 +48,7 @@ def create_app(config={}):
     app.config['UPLOADED_FILES_DEST'] = absolute_path('static/multimedia')
     app.config['UPLOADED_FILES_ALLOW'] = reduce(lambda sum, group: sum + group, SUPPORTED_MEDIA_FILES)
     app.config['SECRET_KEY'] = SECRET_KEY
+    app.config['RESTX_VALIDATE'] = True
     app.config.update(config)
 
     # Initiating extensions before registering blueprints
@@ -66,13 +68,15 @@ def create_app(config={}):
     if app.config.get('GUNICORN', False):
         gtranslator.readonly = True
     else:
-        minify(app, js=True, cssless=True, caching_limit=3, fail_safe=True, bypass=['.min.*'])
+        minify(app, js=True, cssless=True, caching_limit=3, fail_safe=True,
+               bypass=['.min.*', 'restx_doc.static'])
 
     # Register blueprints
     app.register_blueprint(administrate)
     app.register_blueprint(core)
     app.register_blueprint(cust_app)
     app.register_blueprint(manage_app)
+    app.register_blueprint(setup_api(), url_prefix='/api/v1')
     app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
     return app
