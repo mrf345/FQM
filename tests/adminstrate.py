@@ -2,7 +2,7 @@ import pytest
 from uuid import uuid4
 from random import choice
 
-from app.database import User, Office, Operators
+from app.database import User, Office, Operators, AuthTokens
 from app.utils import get_module_columns, get_module_values
 
 
@@ -180,3 +180,65 @@ def test_csv_export_headers_disabled_and_tabs(c):
 
     for row in map('\t'.join, rows):
         assert row == content.pop(0)
+
+
+@pytest.mark.usefixtures('c')
+def test_list_auth_tokens(c):
+    response = c.get('/auth_tokens', follow_redirects=True)
+    content = response.data.decode('utf-8')
+
+    assert response.status == '200 OK'
+
+    for t in AuthTokens.query:
+        assert f'<strong>{t.id}. {t.name}</strong>' in content
+        assert t.token in content
+        assert (t.description or 'Empty') in content
+
+
+@pytest.mark.usefixtures('c')
+def test_add_auth_tokens(c):
+    token_name = 'testing token'
+    token_description = 'testing description'
+
+    response = c.post('/auth_tokens_a', data={
+        'name': token_name,
+        'description': token_description
+    }, follow_redirects=True)
+
+    assert response.status == '200 OK'
+    assert AuthTokens.get(name=token_name) is not None
+    assert AuthTokens.get(description=token_description) is not None
+
+
+@pytest.mark.usefixtures('c')
+def test_update_auth_tokens(c):
+    token = AuthTokens.get()
+    token_name = 'new testing name'
+    token_description = 'new testing description'
+
+    response = c.post(f'/auth_tokens_u/{token.id}', data={
+        'name': token_name,
+        'description': token_description
+    }, follow_redirects=True)
+
+    assert response.status == '200 OK'
+    assert AuthTokens.get(token.id).name == token_name
+    assert AuthTokens.get(token.id).description == token_description
+
+
+@pytest.mark.usefixtures('c')
+def test_delete_auth_token(c):
+    token = AuthTokens.get()
+
+    response = c.get(f'/auth_tokens_d/{token.id}', follow_redirects=True)
+
+    assert response.status == '200 OK'
+    assert AuthTokens.get(token.id) is None
+
+
+@pytest.mark.usefixtures('c')
+def test_delete_all_auth_tokens(c):
+    response = c.get('/auth_tokens_da', follow_redirects=True)
+
+    assert response.status == '200 OK'
+    assert AuthTokens.get() is None

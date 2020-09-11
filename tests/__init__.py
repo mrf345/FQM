@@ -8,7 +8,7 @@ from app.main import bundle_app
 from app.middleware import db
 from app.database import (User, Operators, Office, Task, Serial, Media, Touch_store,
                           Display_store, Vid, Slides_c, Slides, Aliases, Printer,
-                          Settings)
+                          Settings, AuthTokens)
 from app.utils import absolute_path, is_iterable
 from app.tasks import stop_tasks
 
@@ -30,7 +30,7 @@ NAMES = ('Aaron Enlightened', 'Abbott Father', 'Abel Breath', 'Abner Father',
 TEST_PREFIX = 'Z'
 PREFIXES = [p for p in list(map(lambda i: chr(i).upper(), range(97, 123))) if p != TEST_PREFIX]
 
-MODULES = [Serial, User, Operators, Task, Office, Media, Slides]
+MODULES = [Serial, User, Operators, Task, Office, Media, Slides, AuthTokens]
 DEFAULT_MODULES = [Touch_store, Display_store, Vid, Slides_c, Aliases, Printer, Settings]
 DB_NAME = 'testing.sqlite'
 DB_PATH = absolute_path(DB_NAME)
@@ -64,6 +64,7 @@ def c():
             fill_users()
             fill_tickets()
             fill_slides()
+            fill_tokens()
             yield client
 
     before_exit()
@@ -164,6 +165,13 @@ def fill_slides(entry_number=ENTRY_NUMBER):
         slide.bname = f'{i}_testing.ext'
 
         db.session.add(slide)
+
+    db.session.commit()
+
+
+def fill_tokens(entry_number=ENTRY_NUMBER):
+    for i in range(entry_number):
+        db.session.add(AuthTokens(choice(NAMES)))
 
     db.session.commit()
 
