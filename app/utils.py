@@ -10,7 +10,7 @@ from netifaces import interfaces, ifaddresses
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
-from flask import current_app
+from flask import current_app, Flask
 
 import app.database as data
 from app.middleware import db
@@ -376,6 +376,25 @@ def find(getter, to_iter):
     for i in to_iter:
         if getter(i):
             return i
+
+
+def get_bp_endpoints(blueprint):
+    '''Get blueprint endpoints.
+
+    Parameters
+    ----------
+    blueprint : Flask.Blueprint
+
+    Returns
+    -------
+    List
+        Blueprint list of endpoints.
+    '''
+    temp_app = Flask(__name__)
+
+    temp_app.register_blueprint(blueprint)
+
+    return [str(p) for p in temp_app.url_map.iter_rules()]
 
 
 def create_default_records():
