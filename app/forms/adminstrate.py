@@ -1,4 +1,4 @@
-from wtforms import StringField, SubmitField, PasswordField, SelectField
+from wtforms import StringField, SubmitField, PasswordField, SelectField, TextAreaField
 from wtforms.validators import InputRequired, Length, Optional
 
 from app.forms.base import LocalizedForm
@@ -54,3 +54,11 @@ class AdminForm(LocalizedForm):
                              validators=[InputRequired('Password must be at least of 5 and at most 15 letters'),
                                          Length(5, 15)])
     submit = SubmitField('Update Admin')
+
+
+class AuthTokensForm(LocalizedForm):
+    name = StringField('Enter token name : ',
+                       validators=[InputRequired('Required not less than 1 nor more than 100 letters'),
+                                   Length(1, 100)])
+    description = TextAreaField('Enter token description : ', validators=[Optional()])
+    token = StringField('Authentication Token : ', validators=[Optional()])
