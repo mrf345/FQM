@@ -490,10 +490,10 @@ class AuthTokens(db.Model, Mixin):
 
     @classmethod
     def get_unique_token(cls):
-        token = f'{uuid4().replace("-", "")}'
+        token = f'{uuid4()}'.replace('-', '')
 
         while cls.get(token=token):
-            token = f'{uuid4().replace("-", "")}'
+            token = f'{uuid4()}'.replace('-', '')
 
         return token
 
