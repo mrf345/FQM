@@ -8,6 +8,9 @@ from app.api.constants import AUTH_HEADER_KEY
 
 
 def token_required(function):
+    # FIXME: This a basic approach to verifying tokens, that's insecure especially
+    # without HTTPS, this needs to be replaced with a login based authentication
+    # and expiraing temporary tokens rather than constant ones, for better security.
     @wraps(function)
     def decorator(*args, **kwargs):
         token = request.headers.get(AUTH_HEADER_KEY)
