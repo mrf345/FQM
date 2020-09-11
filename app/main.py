@@ -19,7 +19,7 @@ from app.views.administrate import administrate
 from app.views.core import core
 from app.views.customize import cust_app
 from app.views.manage import manage_app
-from app.utils import absolute_path, log_error, create_default_records
+from app.utils import absolute_path, log_error, create_default_records, get_bp_endpoints
 from app.database import Settings, Serial, Office
 from app.tasks import start_tasks
 from app.api.setup import setup_api
@@ -48,7 +48,7 @@ def create_app(config={}):
     app.config['UPLOADED_FILES_DEST'] = absolute_path('static/multimedia')
     app.config['UPLOADED_FILES_ALLOW'] = reduce(lambda sum, group: sum + group, SUPPORTED_MEDIA_FILES)
     app.config['SECRET_KEY'] = SECRET_KEY
-    app.config['RESTX_VALIDATE'] = True
+    app.config['RESTX_VALIDATE'] = False
     app.config.update(config)
 
     # Initiating extensions before registering blueprints
@@ -190,17 +190,13 @@ def bundle_app(config={}):
     def inject_vars():
         ''' Injecting default variables to all templates. '''
         ar = session.get('lang') == 'AR'  # adding language support var
+        path = request.path or ''
 
-        # modifying side bar spacing for specific paths
-        path = request.path
-        admin_routes = ['/users', '/user_a', '/admin_u', '/user_u', '/csv', '/settings']
-        admin_route = any([path in admin_routes, path[:7] in admin_routes, path[:5] in admin_routes])
-
-        return dict(path=path, adme=admin_route, brp=Markup('<br>'), ar=ar, version=VERSION, str=str,
-                    defLang=session.get('lang'), getattr=getattr, settings=Settings.get(), Serial=Serial,
+        return dict(brp=Markup('<br>'), ar=ar, version=VERSION, str=str, defLang=session.get('lang'),
+                    getattr=getattr, settings=Settings.get(), Serial=Serial, next=next, it=iter,
                     checkId=lambda id, records: id in [i.id for i in records], offices=Office.query.all(),
-                    moment_wrapper=moment_wrapper, current_path=quote(request.path, safe=''),
-                    windows=os.name == 'nt', unix=os.name != 'nt', next=next, it=iter,
-                    setattr=lambda *args, **kwargs: setattr(*args, **kwargs) or '')
+                    moment_wrapper=moment_wrapper, current_path=quote(path, safe=''), windows=os.name == 'nt',
+                    unix=os.name != 'nt', setattr=lambda *args, **kwargs: setattr(*args, **kwargs) or '',
+                    adme=path in get_bp_endpoints(administrate))
 
     return app
