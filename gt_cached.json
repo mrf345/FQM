@@ -125,6 +125,20 @@
         "fr": "Un morceau sonore qui sera jou\u00e9 chaque fois que le ticket client a \u00e9t\u00e9 tir\u00e9. Ainsi qu'une annonce texte-discours qui sera jou\u00e9e dans la langue s\u00e9lectionn\u00e9e",
         "it": "Una melodia che verr\u00e0 riprodotta ogni volta che viene estratto il ticket del cliente. Cos\u00ec come un annuncio di sintesi vocale che verr\u00e0 riprodotto nella lingua selezionata"
     },
+    "API": {
+        "ar": "API",
+        "en": "API",
+        "es": "API",
+        "fr": "API",
+        "it": "API"
+    },
+    "API documentation": {
+        "ar": "\u0648\u062b\u0627\u0626\u0642 API",
+        "en": "API documentation",
+        "es": "documentaci\u00f3n de la API",
+        "fr": "documentation de l'API",
+        "it": "documentazione API"
+    },
     "About FQM": {
         "ar": "\u0639\u0646 \u0627\u0644\u0646\u0638\u0627\u0645",
         "en": "About FQM",
@@ -201,6 +215,13 @@
         "es": "Agregar tarea",
         "fr": "Ajouter une t\u00e2che",
         "it": "Aggiungi attivit\u00e0"
+    },
+    "Add token": {
+        "ar": "\u0625\u0636\u0627\u0641\u0629 \u0631\u0645\u0632",
+        "en": "Add token",
+        "es": "A\u00f1adir s\u00edmbolo",
+        "fr": "Ajouter jeton",
+        "it": "Aggiungere Token"
     },
     "Add user": {
         "ar": "\u0625\u0636\u0627\u0641\u0629 \u0645\u0633\u062a\u062e\u062f\u0645",
@@ -370,6 +391,20 @@
         "fr": "Fichier audio",
         "it": "File audio"
     },
+    "Authentication Token : ": {
+        "ar": "\u0627\u0644\u0645\u0635\u0627\u062f\u0642\u0629 \u0631\u0645\u0632:",
+        "en": "Authentication Token :",
+        "es": "Token de autenticaci\u00f3n:",
+        "fr": "Jeton d'authentification:",
+        "it": "Autenticazione token:"
+    },
+    "Authentication tokens": {
+        "ar": "\u0627\u0644\u0631\u0645\u0648\u0632 \u0645\u0635\u0627\u062f\u0642\u0629",
+        "en": "Authentication tokens",
+        "es": "tokens de autenticaci\u00f3n",
+        "fr": "jetons d'authentification",
+        "it": "token di autenticazione"
+    },
     "Auto reload": {
         "ar": "\u0625\u0639\u0627\u062f\u0629 \u062a\u062d\u0645\u064a\u0644 \u062a\u0644\u0642\u0627\u0626\u064a",
         "en": "Auto reload",
@@ -520,6 +555,13 @@
         "fr": "Termin\u00e9",
         "it": "Completato"
     },
+    "Copy token": {
+        "ar": "\u0646\u0633\u062e\u0629 \u0631\u0645\u0632\u064a\u0629",
+        "en": "Copy token",
+        "es": "token de copia",
+        "fr": "jeton de copie",
+        "it": "Copia Token"
+    },
     "Created": {
         "ar": "\u062e\u0644\u0642\u062a",
         "en": "Created",
@@ -601,6 +643,13 @@
         "es": "Eliminar todos",
         "fr": "Supprimer tout",
         "it": "Cancella tutto"
+    },
+    "Description": {
+        "ar": "\u0648\u0635\u0641",
+        "en": "Description",
+        "es": "Descripci\u00f3n",
+        "fr": "La description",
+        "it": "Descrizione"
     },
     "Disable": {
         "ar": "\u062a\u0639\u0637\u064a\u0644",
@@ -884,6 +933,20 @@
         "fr": "Entrer le mot de passe :",
         "it": "Inserire la password :"
     },
+    "Enter token description : ": {
+        "ar": "\u0623\u062f\u062e\u0644 \u0648\u0635\u0641 \u0631\u0645\u0632\u064a:",
+        "en": "Enter token description :",
+        "es": "Rellena el texto del token:",
+        "fr": "Saisir le jeton:",
+        "it": "Inserisci descrizione token:"
+    },
+    "Enter token name : ": {
+        "ar": "\u0623\u062f\u062e\u0644 \u0627\u0633\u0645 \u0631\u0645\u0632\u064a:",
+        "en": "Enter token name :",
+        "es": "Introduce el nombre del token:",
+        "fr": "Entrez le nom symbolique:",
+        "it": "Inserisci il nome del token:"
+    },
     "Enter unique title for the task : ": {
         "ar": "\u0623\u062f\u062e\u0644 \u0639\u0646\u0648\u0627\u0646\u064b\u0627 \u0641\u0631\u064a\u062f\u064b\u0627 \u0644\u0644\u0645\u0647\u0645\u0629:",
         "en": "Enter unique title for the task :",
@@ -947,6 +1010,13 @@
     },
     "Error: flag setting single_row must be enabled": {
         "en": "Error: flag setting single_row must be enabled"
+    },
+    "Error: invalid authentication token data.": {
+        "ar": "\u062e\u0637\u0623: \u0627\u0644\u0645\u0635\u0627\u062f\u0642\u0629 \u063a\u064a\u0631 \u0635\u0627\u0644\u062d\u0629 \u0627\u0644\u0628\u064a\u0627\u0646\u0627\u062a \u0631\u0645\u0632\u064a\u0629.",
+        "en": "Error: invalid authentication token data.",
+        "es": "Error: la autenticaci\u00f3n no v\u00e1lida testigo de datos.",
+        "fr": "Erreur: donn\u00e9es jeton d'authentification non valide.",
+        "it": "Errore: l'autenticazione non validi i dati token."
     },
     "Error: login is required to access the page": {
         "ar": "\u062e\u0637\u0623: \u0645\u0637\u0644\u0648\u0628 \u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062f\u062e\u0648\u0644 \u0644\u0644\u0648\u0635\u0648\u0644 \u0625\u0644\u0649 \u0627\u0644\u0635\u0641\u062d\u0629",
@@ -1375,6 +1445,27 @@
         "fr": "En attente",
         "it": "In attesa"
     },
+    "Info: authentication token is deleted.": {
+        "ar": "\u0645\u0639\u0644\u0648\u0645\u0627\u062a: \u064a\u062a\u0645 \u062d\u0630\u0641 \u0631\u0645\u0632 \u0627\u0644\u0645\u0635\u0627\u062f\u0642\u0629.",
+        "en": "Info: authentication token is deleted.",
+        "es": "Info: Se suprime el token de autenticaci\u00f3n.",
+        "fr": "Info: jeton d'authentification est supprim\u00e9.",
+        "it": "Info: token di autenticazione viene eliminato."
+    },
+    "Info: authentication token is updated.": {
+        "ar": "\u0645\u0639\u0644\u0648\u0645\u0627\u062a: \u064a\u062a\u0645 \u062a\u062d\u062f\u064a\u062b \u0631\u0645\u0632 \u0627\u0644\u0645\u0635\u0627\u062f\u0642\u0629.",
+        "en": "Info: authentication token is updated.",
+        "es": "Info: token de autenticaci\u00f3n se actualiza.",
+        "fr": "Info: jeton d'authentification est mis \u00e0 jour.",
+        "it": "Info: token di autenticazione viene aggiornato."
+    },
+    "Info: authentication tokens are deleted.": {
+        "ar": "\u0645\u0639\u0644\u0648\u0645\u0627\u062a: \u064a\u062a\u0645 \u062d\u0630\u0641 \u0627\u0644\u0631\u0645\u0648\u0632 \u0627\u0644\u0645\u0635\u0627\u062f\u0642\u0629.",
+        "en": "Info: authentication tokens are deleted.",
+        "es": "Informaci\u00f3n: se eliminan los tokens de autenticaci\u00f3n.",
+        "fr": "Info: jetons d'authentification sont supprim\u00e9s.",
+        "it": "Info: token di autenticazione vengono cancellati."
+    },
     "Inserisci un titolo:": {
         "en": "Inserisci un titolo:",
         "it": "Inserisci un titolo:"
@@ -1567,6 +1658,13 @@
         "es": "No",
         "fr": "Non",
         "it": "No"
+    },
+    "No authentication tokens exist yet to display": {
+        "ar": "\u0644\u0627 \u062a\u0648\u062c\u062f \u0627\u0644\u0631\u0645\u0648\u0632 \u0627\u0644\u0645\u0635\u0627\u062f\u0642\u0629 \u0628\u0639\u062f \u0639\u0644\u0649 \u0639\u0631\u0636",
+        "en": "No authentication tokens exist yet to display",
+        "es": "sin embargo, no existen tokens de autenticaci\u00f3n para mostrar",
+        "fr": "Aucun jeton d'authentification existent encore pour afficher",
+        "it": "Nessun token di autenticazione esiste ancora da visualizzare"
     },
     "No multimedia files exist to display": {
         "ar": "\u0644\u0627 \u062a\u0648\u062c\u062f \u0645\u0644\u0641\u0627\u062a \u0648\u0633\u0627\u0626\u0637 \u0645\u062a\u0639\u062f\u062f\u0629 \u0644\u0639\u0631\u0636\u0647\u0627",
@@ -1761,6 +1859,13 @@
     },
     "Notice: a common task has been added.": {
         "en": "Notice: a common task has been added."
+    },
+    "Notice: a new authentication token is added.": {
+        "ar": "\u0625\u0634\u0639\u0627\u0631: \u0645\u0635\u0627\u062f\u0642\u0629 \u062c\u062f\u064a\u062f\u0629 \u0631\u0645\u0632 \u064a\u0636\u0627\u0641.",
+        "en": "Notice: a new authentication token is added.",
+        "es": "Aviso: un nuevo token de autenticaci\u00f3n se a\u00f1ade.",
+        "fr": "Remarque: une nouvelle authentification par jeton est ajout\u00e9.",
+        "it": "Avviso: un nuovo token di autenticazione viene aggiunto."
     },
     "Notice: admin password has been updated.": {
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u062a\u0645 \u062a\u062d\u062f\u064a\u062b \u0643\u0644\u0645\u0629 \u0645\u0631\u0648\u0631 \u0627\u0644\u0645\u0633\u0624\u0648\u0644.",
@@ -3181,6 +3286,13 @@
         "fr": "Pour s\u00e9lectionner un arri\u00e8re-plan sur quel contenu de diapositive afficher",
         "it": "Per selezionare uno sfondo in cui visualizzare il contenuto della diapositiva"
     },
+    "Token": {
+        "ar": "\u0631\u0645\u0632",
+        "en": "Token",
+        "es": "Simb\u00f3lico",
+        "fr": "Jeton",
+        "it": "Gettone"
+    },
     "Total size": {
         "ar": "\u0627\u0644\u062d\u062c\u0645 \u0627\u0644\u0625\u062c\u0645\u0627\u0644\u064a",
         "en": "Total size",
@@ -3299,6 +3411,13 @@
         "es": "billete de actualizaci\u00f3n",
         "fr": "billet de mise \u00e0 jour",
         "it": "biglietto di Aggiornamento"
+    },
+    "Update token": {
+        "ar": "\u062a\u062d\u062f\u064a\u062b \u0631\u0645\u0632",
+        "en": "Update token",
+        "es": "token de actualizaci\u00f3n",
+        "fr": "jeton de mise \u00e0 jour",
+        "it": "Aggiornamento Token"
     },
     "Update user": {
         "ar": "\u062a\u062d\u062f\u064a\u062b \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645",
@@ -3522,6 +3641,13 @@
         "fr": "Attention: Supprimer la t\u00e2che",
         "it": "Avviso: elimina attivit\u00e0"
     },
+    "Warning : Delete token": {
+        "ar": "\u062a\u062d\u0630\u064a\u0631: \u0631\u0645\u0632 \u0627\u0644\u062d\u0630\u0641",
+        "en": "Warning : Delete token",
+        "es": "Advertencia: token Eliminar",
+        "fr": "Attention: jeton Supprimer",
+        "it": "Attenzione: Token Delete"
+    },
     "Warning : Delete user": {
         "ar": "\u062a\u062d\u0630\u064a\u0631: \u062d\u0630\u0641 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645",
         "en": "Warning : Delete user",
@@ -3619,6 +3745,13 @@
         "fr": "Vous essayez de supprimer un utilisateur qui ne sera pas r\u00e9cup\u00e9rable, \u00cates-vous s\u00fbr de cela?",
         "it": "Stai tentando di eliminare un utente che non sar\u00e0 recuperabile, ne sei sicuro?"
     },
+    "You are attempting to delete all authentication tokens. that will not be retrievable, Are you sure of that ?": {
+        "ar": "\u0625\u0646\u0643 \u062a\u062d\u0627\u0648\u0644 \u062d\u0630\u0641 \u0643\u0644 \u0627\u0644\u0631\u0645\u0648\u0632 \u0627\u0644\u0645\u0635\u0627\u062f\u0642\u0629. \u0644\u0646 \u064a\u0643\u0648\u0646 \u0627\u0633\u062a\u0631\u062c\u0627\u0639\u0647\u0627\u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
+        "en": "You are attempting to delete all authentication tokens. that will not be retrievable, Are you sure of that ?",
+        "es": "Usted est\u00e1 intentando eliminar todos los tokens de autenticaci\u00f3n. que no ser\u00e1 recuperable, \u00bfEst\u00e1s seguro de eso?",
+        "fr": "Vous essayez de supprimer tous les jetons d'authentification. ce ne sera pas r\u00e9cup\u00e9rable, Etes-vous s\u00fbr de cela?",
+        "it": "Si sta tentando di eliminare tutti i token di autenticazione. che non sar\u00e0 recuperabile, Sei sicuro di questo?"
+    },
     "You are attempting to delete all multimedia files which will not be retrievable , Are you sure of that ?": {
         "ar": "\u0623\u0646\u062a \u062a\u062d\u0627\u0648\u0644 \u062d\u0630\u0641 \u062c\u0645\u064a\u0639 \u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0648\u0633\u0627\u0626\u0637 \u0627\u0644\u0645\u062a\u0639\u062f\u062f\u0629 \u0627\u0644\u062a\u064a \u0644\u0646 \u062a\u0643\u0648\u0646 \u0642\u0627\u0628\u0644\u0629 \u0644\u0644\u0625\u0633\u062a\u0631\u062c\u0627\u0639 \u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
         "en": "You are attempting to delete all multimedia files which will not be retrievable , Are you sure of that ?",
@@ -3639,6 +3772,13 @@
         "es": "Est\u00e1 intentando eliminar todos los usuarios excepto Admin. eso no ser\u00e1 recuperable, \u00bfest\u00e1s seguro de eso?",
         "fr": "Vous essayez de supprimer tous les utilisateurs sauf Admin. ce ne sera pas r\u00e9cup\u00e9rable, \u00cates-vous s\u00fbr de cela?",
         "it": "Stai tentando di eliminare tutti gli utenti tranne l'amministratore. che non sar\u00e0 recuperabile, ne sei sicuro?"
+    },
+    "You are attempting to delete an authentication token which will not be retrievable , Are you sure of that ?": {
+        "ar": "\u0625\u0646\u0643 \u062a\u062d\u0627\u0648\u0644 \u062d\u0630\u0641 \u0645\u0635\u0627\u062f\u0642\u0629 \u0633\u0648\u0641 \u0627\u0644\u0645\u0646\u0648\u0627\u0644 \u0627\u0644\u0630\u064a \u0644\u0627 \u064a\u0643\u0648\u0646 \u0642\u0627\u0628\u0644\u0627 \u0644\u0644\u0627\u0633\u062a\u0631\u062c\u0627\u0639\u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
+        "en": "You are attempting to delete an authentication token which will not be retrievable , Are you sure of that ?",
+        "es": "Est\u00e1 intentando eliminar un token de autenticaci\u00f3n que no ser\u00e1 recuperable, \u00bfEst\u00e1s seguro de eso?",
+        "fr": "Vous essayez de supprimer un jeton d'authentification qui ne sera pas r\u00e9cup\u00e9rable, Etes-vous s\u00fbr de cela?",
+        "it": "Si sta tentando di eliminare un token di autenticazione che non sar\u00e0 recuperabile, Sei sicuro di questo?"
     },
     "You are attempting to delete an office with its all tickets which will not be retrievable , Are you sure of that ?": {
         "ar": "\u0623\u0646\u062a \u062a\u062d\u0627\u0648\u0644 \u062d\u0630\u0641 \u0645\u0643\u062a\u0628 \u0628\u0647 \u062c\u0645\u064a\u0639 \u062a\u0630\u0627\u0643\u0631\u0647 \u0627\u0644\u062a\u064a \u0644\u0646 \u062a\u0643\u0648\u0646 \u0642\u0627\u0628\u0644\u0629 \u0644\u0644\u0625\u0633\u062a\u0631\u062c\u0627\u0639 \u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
