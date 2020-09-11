@@ -119,7 +119,7 @@
     				                        <span class="fa fa-user"></span>
     				                        {{ translate('Add user', 'en', [defLang]) }}
                                         </a>
-    			                    </li>
+                                    </li>
                                     <li class="dropdown-header">( {{ translate('Database', 'en', [defLang]) }} )</li>
                                     <li>
                                         <a href="{{ url_for('administrate.csv') }}">
@@ -127,6 +127,19 @@
                                             {{ translate('Export ', 'en', [defLang]) }} CSV
                                         </a>
                                     </li>
+                                    <li class="dropdown-header">( {{ translate('API', 'en', [defLang]) }} )</li>
+    			                    <li>
+    				                    <a href="/api/v1" target="_blank">
+    				                        <span class="fa fa-external-link"></span>
+    				                        {{ translate('API documentation', 'en', [defLang]) }}
+                                        </a>
+    			                    </li>
+    			                    <li>
+    				                    <a href="{{ url_for('administrate.auth_tokens') }}">
+    				                        <span class="fa fa-key"></span>
+    				                        {{ translate('Authentication tokens', 'en', [defLang]) }}
+                                        </a>
+    			                    </li>
                                     {% if current_user.id == 1 %}
                                     <li class="dropdown-header">( {{ translate('Flag Settings', 'en', [defLang]) }} )</li>
                                     <li>
