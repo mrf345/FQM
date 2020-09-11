@@ -1,0 +1,34 @@
+{% macro auth_tokens_modal(form, token=None) %}
+<!-- Receives [AuthTokensForm(), Serial(), 1...] -->
+<!-- Expects to be defined: translate(), defLang, render_field() -->
+{{ setattr(form.name, 'data', token.name if token else '') }}
+{{ setattr(form.description, 'data', token.description if token else '') }}
+{{ setattr(form.token, 'data', token.token if token else '') }}
+{% set wording = 'Update' if token else 'Add' %}
+{% set endpoint = url_for('administrate.auth_tokens_u', t_id=token.id) if token else url_for('administrate.auth_tokens_a') %}
+
+<div class="modal fade" id="token{{ wording }}{{ token and token.id or '' }}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" enctype="multipart/form-data" action="{{ endpoint }}">
+                {{ form.csrf_token }}
+                <div class="modal-header">
+                    <button type="button" class="close btn-danger" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title ar1 text-center">{{ translate(wording + ' token', 'en', [defLang]) }}</h4>
+                </div>
+                <div class="modal-body">
+                    {{ brp*2 }}{{ render_field(form.name, class="form-control") }}{{ brp }}
+                    {{ render_field(form.description, class="form-control") }}{{ brp }}
+                    {% if update %}
+                    {{ render_field(form.token, class="form-control disabled") }}{{ brp*2 }}
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="close btn-danger pull-left" data-dismiss="modal">{{ translate('Close', 'en', [defLang]) }}</button>
+                    <button type="submit" class="close btn btn-md btn-primary">{{ translate(wording, 'en', [defLang]) }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endmacro %}

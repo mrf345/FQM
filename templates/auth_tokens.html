@@ -1,0 +1,98 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+{% extends "base.html" %}
+{% block title %} FQM - {{ page_title  }} {% endblock %}
+{% import "_macros.html" as macros %}
+
+
+{% block page_content %}
+{% from "_helpers.html" import render_field with context %}
+{% from "_modals.html" import confirmModal %}
+{% from "_footers.html" import spacer, panelFooter %}
+{% from "_admin.html" import auth_tokens_modal with context %}
+<script src="{{ url_for('static', filename='extFunctions.js') }}" type='text/javascript'></script>
+<div class="col-xs-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+	    	<h3 class="text text-center">
+        		<strong>{{ translate('Authentication tokens', 'en', [defLang]) }}</strong>
+      		</h3>
+	    	<div class="row">
+				<div class="col-md-12 text-center">
+		    		<div class="btn-group-justified">
+          				<a href="#" data-toggle="modal" data-target="#tokenAdd" class="btn btn-primary">
+    			    		<span class="fa fa-plus"></span>
+    						<strong> {{ translate('Add token', 'en', [defLang]) }} </strong>
+    					</a>
+			    		<a data-toggle="modal" data-target="#dall" class="btn btn-danger ">
+			      			<span class="fa fa-trash"></span>
+			      			<strong> {{ translate('Delete all', 'en', [defLang]) }} </strong>
+			    		</a>
+		    		</div>
+				</div>
+	    	</div>
+		</div>
+        <div class="panel-body">
+	    	<div class="row text-center h3 text-muted hidden-xs ar2">
+				<div class="col-sm-2">
+				    ({{ translate('ID . Name', 'en', [defLang]) }})
+				</div>
+				<div class="col-sm-4">
+				    ({{ translate('Token', 'en', [defLang]) }})
+				</div>
+				<div class="col-sm-4">
+				    ({{ translate('Description', 'en', [defLang]) }})
+				</div>
+				<div class="col-sm-2">
+				    ({{ translate('Actions', 'en', [defLang]) }})
+				</div>
+	    	</div>
+	    	{% if tokens|length %}
+	    	{% for t in tokens %}
+	    	<div class="row well h4 ar1 text-center text-primary">
+				<div class="col-xs-12 col-sm-2">
+			    	<strong>{{ t.id }}. {{ t.name }}</strong>
+				</div>
+				<div class="col-xs-12 col-sm-4 ar1">
+		    		{{ t.token }}
+				</div>
+				<div class="col-xs-12 col-sm-4">
+				    {{ t.description or translate('Empty', 'en', [defLang]) }}
+				</div>
+				<div class="col-xs-12 col-sm-2 ">
+					<a href="#" onclick="copyToClipboard('{{ t.token }}')"
+						data-toggle="tooltip" title="{{ translate('Copy token', 'en', [defLang]) }}"
+					>
+        				<span class="fa fa-clipboard text-primary"></span>
+        			</a>
+		    		<a href="#" data-toggle="modal" data-target="#tokenUpdate{{ t.id }}"
+						data-toggle="tooltip" title="{{ translate('Update', 'en', [defLang]) }}"
+					>
+          				<span class="fa fa-pencil text-primary"></span>
+        			</a>
+		    		<a href="#" data-toggle="modal" data-target="#dell{{ t.id }}"
+						data-toggle="tooltip" title="{{ translate('Delete', 'en', [defLang]) }}"
+					>
+        				<span class="fa fa-trash text-warning"></span>
+        			</a>
+				</div>
+			</div>
+			{{ auth_tokens_modal(form, t) }}
+			{{ confirmModal([['dell' + str(t.id), translate('Warning : Delete token', 'en', [defLang]), translate("You are attempting to delete an authentication token which will not be retrievable , Are you sure of that ?", 'en', [defLang]), url_for('administrate.auth_tokens_d', t_id=t.id)]], yes=translate('Yes', 'en', [defLang]), no=translate('No', 'en', [defLang])) }}
+	    	{% endfor %}
+			{% endif %}
+			{{ spacer([translate('No authentication tokens exist yet to display', 'en', [defLang]), tokens|length]) }}
+		</div>
+        <div class="panel-footer text-center">
+	    	<div class="row text-center">
+				{{ macros.pagination_widget(pagination, '.users') }}
+	    	</div>
+        </div>
+    </div>
+</div>
+
+{{ auth_tokens_modal(form) }}
+{{ confirmModal([['dall', translate('Warning : Delete all', 'en', [defLang]), translate("You are attempting to delete all authentication tokens. that will not be retrievable, Are you sure of that ?", 'en', [defLang]), url_for('administrate.auth_tokens_da')]], yes=translate('Yes', 'en', [defLang]), no=translate('No', 'en', [defLang])) }}
+{% endblock %}
