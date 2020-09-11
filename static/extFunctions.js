@@ -42,3 +42,18 @@ var announce = function () {
         resp.status ? flashMsg('info') : flashMsg('danger')
     })
 }
+
+
+var copyToClipboard = function (text) {
+    // copy `text` to clipboard
+    var tempInput = document.createElement('input')
+
+    tempInput.display = 'none;'
+    tempInput.value = text
+
+    document.body.appendChild(tempInput)
+    tempInput.select()
+    tempInput.setSelectionRange(0, 99999)
+    document.execCommand('copy')
+    document.body.removeChild(tempInput)
+}
