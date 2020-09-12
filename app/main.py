@@ -48,7 +48,7 @@ def create_app(config={}):
     app.config['UPLOADED_FILES_DEST'] = absolute_path('static/multimedia')
     app.config['UPLOADED_FILES_ALLOW'] = reduce(lambda sum, group: sum + group, SUPPORTED_MEDIA_FILES)
     app.config['SECRET_KEY'] = SECRET_KEY
-    app.config['RESTX_VALIDATE'] = False
+    app.config['RESTX_VALIDATE'] = True
     app.config.update(config)
 
     # Initiating extensions before registering blueprints
