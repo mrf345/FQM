@@ -67,8 +67,6 @@ def c():
             fill_tokens()
             yield client
 
-    before_exit()
-
 
 def teardown_tables(modules):
     if modules:

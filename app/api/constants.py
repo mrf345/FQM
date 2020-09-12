@@ -1,1 +1,2 @@
 AUTH_HEADER_KEY = 'Authorization'
+LIMIT_PER_CHUNK = 30

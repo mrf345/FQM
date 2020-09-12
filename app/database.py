@@ -1,3 +1,4 @@
+import os
 from flask_login import UserMixin, current_user
 from flask_sqlalchemy import BaseQuery
 from sqlalchemy.sql import and_, or_
@@ -369,7 +370,108 @@ class Serial(db.Model, TicketsMixin, Mixin):
                                 .offset(offset)\
                                 .all()
 
-    def pull(self, office_id):
+    @classmethod
+    def get_next_ticket(cls, task_id=None, office_id=None):
+        strict_pulling = Settings.get().strict_pulling
+        single_row = Settings.get().single_row
+        task = Task.get(0 if single_row else task_id)
+        office = Office.get(0 if single_row else office_id)
+        global_pull = not bool(task_id and office_id)
+
+        next_tickets = Serial.query.filter(Serial.number != 100,
+                                           Serial.p != True,
+                                           Serial.on_hold == False)
+        next_ticket = None
+
+        if not global_pull:
+            next_ticket = next_tickets.filter(Serial.task_id == task.id)
+
+            if strict_pulling:
+                next_ticket = next_ticket.filter(Serial.office_id == office.id)
+
+        next_ticket = (next_tickets if global_pull else next_ticket)\
+            .order_by(Serial.timestamp)\
+            .first()
+
+        if single_row:
+            current_ticket = office.tickets\
+                                   .order_by(Serial.timestamp.desc())\
+                                   .first()
+            next_ticket = Serial(number=getattr(current_ticket, 'number', 100) + 1,
+                                 office_id=office.id,
+                                 task_id=task.id)
+
+            db.session.add(next_ticket)
+            db.session.commit()
+
+        return next_ticket
+
+    @classmethod
+    def create_new_ticket(cls, task, office=None, name_or_number=None):
+        '''Create a new registered or printed ticket.
+
+        Parameters
+        ----------
+        task: Task instance
+            task to link the ticket to.
+        office: Office instance
+            office to link the ticket to, default is None.
+        name_or_number: str
+            ticket's name or number value.
+
+        Returns
+        -------
+        Serial, exception
+            a new ticket printed or registered ticket.
+        '''
+        from app.printer import assign, printit, printit_ar, print_ticket_cli, print_ticket_cli_ar
+
+        windows = os.name == 'nt'
+        touch_screen_stings = Touch_store.get()
+        ticket_settings = Printer.get()
+        settings = Settings.get()
+        printed = not touch_screen_stings.n
+        next_number = cls.query.order_by(cls.number.desc()).first().number + 1
+        office = office or task.least_tickets_office()
+        ticket, exception = None, None
+
+        if printed:
+            current_ticket = getattr(Serial.all_office_tickets(office.id).first(), 'number', None)
+            common_arguments = (f'{office.prefix}.{next_number}',
+                                f'{office.prefix}{office.name}',
+                                Serial.all_office_tickets(office.id).count(),
+                                task.name,
+                                f'{office.prefix}.{current_ticket}')
+
+            try:
+                if windows or settings.lp_printing:
+                    (print_ticket_cli_ar
+                     if ticket_settings.langu == 'ar' else
+                     print_ticket_cli)(ticket_settings.name,
+                                       *common_arguments,
+                                       language=ticket_settings.langu,
+                                       windows=windows,
+                                       unix=not windows)
+                else:
+                    printer = assign(ticket_settings.vendor, ticket_settings.product,
+                                     ticket_settings.in_ep, ticket_settings.out_ep)
+                    (printit_ar if ticket_settings.langu == 'ar' else printit)(printer,
+                                                                               *common_arguments,
+                                                                               lang=ticket_settings.langu,
+                                                                               scale=ticket_settings.scale)
+            except Exception as e:
+                exception = e
+
+        if not exception:
+            ticket = Serial(number=next_number, office_id=office.id, task_id=task.id,
+                            name=name_or_number, n=not printed)
+
+            db.session.add(ticket)
+            db.session.commit()
+
+        return ticket, exception
+
+    def pull(self, office_id=None, puller_id=None):
         ''' Mark a ticket as pulled and do the dues.
 
         Parameters
@@ -379,9 +481,11 @@ class Serial(db.Model, TicketsMixin, Mixin):
         '''
         self.p = True
         self.pdt = datetime.utcnow()
-        self.pulledBy = getattr(current_user, 'id', None)
-        self.office_id = office_id
+        self.pulledBy = puller_id or getattr(current_user, 'id', None)
         self.status = TICKET_PROCESSED
+
+        if office_id:
+            self.office_id = office_id
 
         db.session.add(self)
         db.session.commit()

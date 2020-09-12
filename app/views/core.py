@@ -5,7 +5,6 @@ from flask_login import current_user, login_required, login_user
 
 import app.database as data
 import app.settings as settings_handlers
-from app.printer import assign, printit, printit_ar, print_ticket_cli, print_ticket_cli_ar
 from app.middleware import db, gtranslator
 from app.utils import log_error, remove_string_noise
 from app.forms.core import LoginForm, TouchSubmitForm
@@ -70,7 +69,6 @@ def serial(task, office_id=None):
     office = data.Office.get(office_id)
     touch_screen_stings = data.Touch_store.get()
     ticket_settings = data.Printer.get()
-    settings = data.Settings.get()
     printed = not touch_screen_stings.n
     numeric_ticket_form = ticket_settings.value == 2
     name_or_number = remove_string_noise(form.name.data or '',
@@ -86,51 +84,23 @@ def serial(task, office_id=None):
                                dire='multimedia/', alias=data.Aliases.query.first(),
                                office_id=office_id)
 
-    # NOTE: Incrementing the ticket number from the last generated ticket globally
-    next_number = data.Serial.query.order_by(data.Serial.number.desc())\
-                                   .first().number + 1
-    office = office or task.least_tickets_office()
+    new_ticket, exception = data.Serial.create_new_ticket(task,
+                                                          office,
+                                                          name_or_number)
 
-    if printed:
-        current_ticket = getattr(data.Serial.all_office_tickets(office.id).first(), 'number', None)
-        common_arguments = (f'{office.prefix}.{next_number}',
-                            f'{office.prefix}{office.name}',
-                            data.Serial.all_office_tickets(office.id).count(),
-                            task.name,
-                            f'{office.prefix}.{current_ticket}')
+    if exception:
+        flash('Error: you must have available printer, to use printed', 'danger')
+        flash('Notice: make sure that printer is properly connected', 'info')
 
-        try:
-            if windows or settings.lp_printing:
-                (print_ticket_cli_ar
-                 if ticket_settings.langu == 'ar' else
-                 print_ticket_cli)(ticket_settings.name,
-                                   *common_arguments,
-                                   language=ticket_settings.langu,
-                                   windows=windows,
-                                   unix=not windows)
-            else:
-                printer = assign(ticket_settings.vendor, ticket_settings.product,
-                                 ticket_settings.in_ep, ticket_settings.out_ep)
-                (printit_ar if ticket_settings.langu == 'ar' else printit)(printer,
-                                                                           *common_arguments,
-                                                                           lang=ticket_settings.langu,
-                                                                           scale=ticket_settings.scale)
-        except Exception as exception:
-            flash('Error: you must have available printer, to use printed', 'danger')
-            flash('Notice: make sure that printer is properly connected', 'info')
+        if windows:
+            flash('Notice: Make sure to make the printer shared on the local network', 'info')
+        elif 'linux' in platform:
+            flash('Notice: Make sure to execute the command `sudo gpasswd -a $(users) lp` and '
+                  'reboot the system', 'info')
 
-            if windows:
-                flash('Notice: Make sure to make the printer shared on the local network', 'info')
-            elif 'linux' in platform:
-                flash('Notice: Make sure to execute the command `sudo gpasswd -a $(users) lp` and '
-                      'reboot the system', 'info')
+        log_error(exception)
+        return redirect(url_for('core.root'))
 
-            log_error(exception)
-            return redirect(url_for('core.root'))
-
-    db.session.add(data.Serial(number=next_number, office_id=office.id, task_id=task.id,
-                               name=name_or_number, n=not printed))
-    db.session.commit()
     return redirect(url_for('core.touch', a=1, office_id=office_id))
 
 
@@ -235,40 +205,14 @@ def pull(o_id=None, ofc_id=None):
                                   is_common_task_operator(task.id)):
             return operators_not_allowed()
 
-    next_tickets = data.Serial.query.filter(data.Serial.number != 100,
-                                            data.Serial.p != True,
-                                            data.Serial.on_hold == False)
-    next_ticket = None
-
-    if not global_pull:
-        next_ticket = next_tickets.filter(data.Serial.task_id == task.id)
-
-        if strict_pulling:
-            next_ticket = next_ticket.filter(data.Serial.office_id == office.id)
-
-    next_ticket = (next_tickets if global_pull else next_ticket)\
-        .order_by(data.Serial.timestamp)\
-        .first()
-
-    if single_row:
-        current_ticket = office.tickets\
-                               .order_by(data.Serial.timestamp.desc())\
-                               .first()
-        next_ticket = data.Serial(number=getattr(current_ticket, 'number', 100) + 1,
-                                  office_id=office.id,
-                                  task_id=task.id)
-
-        db.session.add(next_ticket)
-        db.session.commit()
+    next_ticket = data.Serial.get_next_ticket(task_id=o_id,
+                                              office_id=ofc_id)
 
     if not next_ticket:
         flash('Error: no tickets left to pull from ..', 'danger')
         return general_redirection
 
-    office = office or data.Office.get(next_ticket.office_id)
-    task = task or data.Task.get(next_ticket.task_id)
-
-    next_ticket.pull(office.id)
+    next_ticket.pull(office and office.id or next_ticket.office_id)
     flash('Notice: Ticket has been pulled ..', 'info')
     return general_redirection
 
