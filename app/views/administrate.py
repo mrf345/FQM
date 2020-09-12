@@ -6,7 +6,7 @@ from datetime import datetime
 import app.database as data
 from app.middleware import db, login_manager
 from app.utils import absolute_path, get_module_columns, get_module_values
-from app.forms.adminstrate import AdminForm, UserForm, CSVForm
+from app.forms.adminstrate import AdminForm, UserForm, CSVForm, AuthTokensForm
 from app.forms.constents import EXPORT_DELIMETERS, EXPORT_TABLES
 from app.helpers import (reject_not_god, reject_not_admin, reject_god, is_operator, is_office_operator,
                          get_or_reject)
@@ -276,3 +276,84 @@ def logout():
     logout_user()
     flash('Notice: logout is done.', 'info')
     return redirect(url_for('core.root'))
+
+
+@administrate.route('/auth_tokens')
+@login_required
+@reject_not_admin
+def auth_tokens():
+    ''' list authentication tokens. '''
+    page = request.args.get('page', 1, type=int)
+    pagination = data.AuthTokens.query\
+                                .paginate(page, per_page=10, error_out=False)
+
+    return render_template('auth_tokens.html',
+                           form=AuthTokensForm(),
+                           navbar='#snb3',
+                           page_title='Authentication tokens',
+                           tokens=pagination.items,
+                           pagination=pagination)
+
+
+@administrate.route('/auth_tokens_a', methods=['POST'])
+@login_required
+@reject_not_admin
+def auth_tokens_a():
+    ''' add authentication token. '''
+    form = AuthTokensForm()
+
+    if form.validate_on_submit():
+        token = data.AuthTokens(form.name.data,
+                                form.description.data)
+
+        db.session.add(token)
+        db.session.commit()
+        flash('Notice: a new authentication token is added.', 'info')
+    else:
+        flash('Error: invalid authentication token data.', 'danger')
+
+    return redirect(url_for('administrate.auth_tokens'))
+
+
+@administrate.route('/auth_tokens_u/<int:t_id>', methods=['POST'])
+@login_required
+@reject_not_admin
+@get_or_reject(t_id=data.AuthTokens)
+def auth_tokens_u(auth_token):
+    ''' update authentication token. '''
+    form = AuthTokensForm()
+
+    if form.validate_on_submit():
+        auth_token = data.AuthTokens.get(auth_token.id)
+        auth_token.name = form.name.data
+        auth_token.description = form.description.data
+
+        db.session.commit()
+        flash('Info: authentication token is updated.', 'info')
+    else:
+        flash('Error: invalid authentication token data.', 'danger')
+
+    return redirect(url_for('administrate.auth_tokens'))
+
+
+@administrate.route('/auth_tokens_d/<int:t_id>')
+@login_required
+@reject_not_admin
+@get_or_reject(t_id=data.AuthTokens)
+def auth_tokens_d(auth_token=None):
+    ''' delete authentication token. '''
+    db.session.delete(auth_token)
+    db.session.commit()
+    flash('Info: authentication token is deleted.', 'info')
+    return redirect(url_for('administrate.auth_tokens'))
+
+
+@administrate.route('/auth_tokens_da')
+@login_required
+@reject_not_admin
+def auth_tokens_da():
+    ''' delete all authentication token. '''
+    data.AuthTokens.query.delete()
+    db.session.commit()
+    flash('Info: authentication tokens are deleted.', 'info')
+    return redirect(url_for('administrate.auth_tokens'))
