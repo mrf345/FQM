@@ -3,7 +3,7 @@ from random import choice
 from sqlalchemy.sql.expression import func
 from uuid import uuid4
 
-from . import TEST_PREFIX, get_first_office_with_tickets
+from .. import TEST_PREFIX, get_first_office_with_tickets
 from app.database import Task, Office, Serial
 from app.utils import ids
 from app.constants import TICKET_UNATTENDED

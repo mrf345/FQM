@@ -6,7 +6,8 @@ from unittest.mock import MagicMock
 
 import app.views.core
 import app.printer
-from . import NAMES, TEST_REPEATS, fill_tickets, do_until_truthy
+import app.database
+from .. import NAMES, TEST_REPEATS, fill_tickets, do_until_truthy
 from app.middleware import db
 from app.utils import absolute_path
 from app.database import (Task, Office, Serial, Settings, Touch_store, Display_store,
@@ -112,7 +113,7 @@ def test_new_printed_ticket_windows(c, monkeypatch):
     mock_os = MagicMock()
     mock_os.name = 'nt'
     mock_system = MagicMock()
-    monkeypatch.setattr(app.views.core, 'os', mock_os)
+    monkeypatch.setattr(app.database, 'os', mock_os)
     monkeypatch.setattr(app.printer, 'name', 'nt')
     monkeypatch.setattr(app.printer, 'uuid', mock_uuid)
     monkeypatch.setattr(app.printer, 'system', mock_system)
@@ -230,7 +231,7 @@ def test_new_printed_ticket_windows_arabic(c, monkeypatch):
     mock_os = MagicMock()
     mock_os.name = 'nt'
     mock_system = MagicMock()
-    monkeypatch.setattr(app.views.core, 'os', mock_os)
+    monkeypatch.setattr(app.database, 'os', mock_os)
     monkeypatch.setattr(app.printer, 'name', 'nt')
     monkeypatch.setattr(app.printer, 'uuid', mock_uuid)
     monkeypatch.setattr(app.printer, 'system', mock_system)
@@ -439,12 +440,7 @@ def test_pull_tickets_from_common_task(_, c):
                             .first())
 
     response = c.get(f'/pull/{task.id}/{office.id}', follow_redirects=True)
-    pulled_ticket = Serial.query.filter_by(number=ticket_to_be_pulled.number,
-                                           office_id=office.id,
-                                           task_id=task.id,
-                                           p=True)\
-                                .order_by(Serial.number)\
-                                .first()
+    pulled_ticket = Serial.get(ticket_to_be_pulled.id)
 
     assert response.status == '200 OK'
     assert ticket_to_be_pulled is not None
