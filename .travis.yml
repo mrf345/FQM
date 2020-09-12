@@ -6,6 +6,6 @@ python:
 install:
   - pip install -r requirements/test.txt
 
-script: flake8 app/**/** tests/** && pytest -vv tests/* --cov=./app
+script: flake8 app/**/**/** tests/**/**/** && pytest -vv tests/*/* --cov=./app
 after_success:
   - coveralls

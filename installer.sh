@@ -75,11 +75,12 @@ then
   if [ -d installiation/ ]
   then
     source installiation/bin/activate
+    rm -rf tests/__pycache__/
     if [ -z "$2" ]
     then
-      python -m flake8 app/**/** tests/** && python -m pytest --count=2 -vv tests/* --cov=./app
+      python -m flake8 app/**/**/** tests/**/**/** && python -m pytest --count=2 -vv tests/*/* --cov=./app
     else
-      python -m flake8 app/**/** tests/** && python -m pytest --count=$2 -vv tests/* --cov=./app
+      python -m flake8 app/**/**/** tests/**/**/** && python -m pytest --count=$2 -vv tests/*/* --cov=./app
     fi
   else
     echo $error1
