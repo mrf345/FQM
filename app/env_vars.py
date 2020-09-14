@@ -1,1 +1,1 @@
-VERSION='0.8.1 beta'  # noqa
+VERSION='0.9 beta'  # noqa
