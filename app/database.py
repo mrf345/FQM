@@ -248,13 +248,15 @@ class Serial(db.Model, TicketsMixin, Mixin):
         return cls.query.filter(cls.number != 100)
 
     @classmethod
-    def all_office_tickets(cls, office_id):
+    def all_office_tickets(cls, office_id, desc=True):
         ''' get tickets of the common task from other offices.
 
         Parameters
         ----------
             office_id: int
                 id of the office to retreive tickets for.
+            desc: bool
+                if return it in desending oreder, default is True.
 
         Returns
         -------
@@ -274,7 +276,8 @@ class Serial(db.Model, TicketsMixin, Mixin):
                     all_tickets = all_tickets.union(other_office_tickets)
 
         return all_tickets.filter(Serial.number != 100)\
-                          .order_by(Serial.p, Serial.timestamp.desc())
+                          .order_by(Serial.p,
+                                    Serial.timestamp.desc() if desc else Serial.timestamp)
 
     @classmethod
     def all_task_tickets(cls, office_id, task_id):
@@ -436,10 +439,11 @@ class Serial(db.Model, TicketsMixin, Mixin):
         ticket, exception = None, None
 
         if printed:
-            current_ticket = getattr(Serial.all_office_tickets(office.id).first(), 'number', None)
+            tickets = Serial.all_office_tickets(office.id, desc=False)
+            current_ticket = getattr(tickets.first(), 'number', None)
             common_arguments = (f'{office.prefix}.{next_number}',
                                 f'{office.prefix}{office.name}',
-                                Serial.all_office_tickets(office.id).count(),
+                                tickets.count(),
                                 task.name,
                                 f'{office.prefix}.{current_ticket}')
 
@@ -625,6 +629,7 @@ class Printer(db.Model, Mixin):
         self.value = value
         self.scale = scale
         self.name = name
+        self.langu = langu
 
 
 # 00 Configuration Tabels 00 #
@@ -900,7 +905,7 @@ class Aliases(db.Model, Mixin):
     name = db.Column(db.String(100))
     number = db.Column(db.String(100))
 
-    def __init__(self, office="office", task="task", ticket="ticket", name="name",
+    def __init__(self, office="Office", task="Task", ticket="Ticket", name="name",
                  number="number"):
         self.id = 0
         self.office = office

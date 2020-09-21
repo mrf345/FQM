@@ -7,11 +7,12 @@ from unittest.mock import MagicMock
 import app.views.core
 import app.printer
 import app.database
+import app.utils
 from .. import NAMES, TEST_REPEATS, fill_tickets, do_until_truthy
 from app.middleware import db
 from app.utils import absolute_path
 from app.database import (Task, Office, Serial, Settings, Touch_store, Display_store,
-                          Printer)
+                          Printer, Aliases)
 
 
 @pytest.mark.usefixtures('c')
@@ -92,6 +93,10 @@ def test_new_printed_ticket(c, monkeypatch):
     }, follow_redirects=True)
     new_ticket = Serial.query.filter_by(task_id=task.id)\
                              .order_by(Serial.number.desc()).first()
+    office = new_ticket.office
+    tickets = Serial.all_office_tickets(office.id, desc=False)\
+                    .filter(Serial.number != new_ticket.number)
+    cur_ticket = tickets.first()
 
     assert response.status == '200 OK'
     assert last_ticket.number != new_ticket.number
@@ -100,6 +105,64 @@ def test_new_printed_ticket(c, monkeypatch):
     assert mock_printer().set.call_count == 7
     mock_printer().set.assert_called_with(align='left', height=1, width=1)
     mock_printer().cut.assert_called_once()
+    mock_printer().text.assert_any_call(f'\nOffice : {office.prefix}{office.name}\n')
+    mock_printer().text.assert_any_call(f'\n{office.prefix}.{new_ticket.number}\n')
+    mock_printer().text.assert_any_call(f'\nCurrent ticket : {office.prefix}.{cur_ticket.number}\n')
+    mock_printer().text.assert_any_call(f'\nTickets ahead : {tickets.count()}\n')
+    mock_printer().text.assert_any_call(f'\nTask : {new_ticket.task.name}\n')
+
+
+@pytest.mark.usefixtures('c')
+def test_new_printed_ticket_with_aliases(c, monkeypatch):
+    last_ticket = None
+    mock_printer = MagicMock()
+    monkeypatch.setattr(escpos.printer, 'Usb', mock_printer)
+
+    # NOTE: set ticket setting to printed
+    printer_settings = Printer.get()
+    touch_screen_settings = Touch_store.get()
+    touch_screen_settings.n = False
+    printer_settings.vendor = 150
+    printer_settings.product = 3
+    printer_settings.in_ep = 170
+    printer_settings.out_ep = 170
+    # NOTE: setting aliases
+    office_alt = 'Department'
+    task_alt = 'Mission'
+    ticket_alt = 'Token'
+    aliases = Aliases.get()
+    aliases.office = office_alt
+    aliases.task = task_alt
+    aliases.ticket = ticket_alt
+    db.session.commit()
+    task = choice(Task.query.all())
+    last_ticket = Serial.query.filter_by(task_id=task.id)\
+                              .order_by(Serial.number.desc()).first()
+
+    name = 'TESTING PRINTED TICKET'
+    response = c.post(f'/serial/{task.id}', data={
+        'name': name
+    }, follow_redirects=True)
+    new_ticket = Serial.query.filter_by(task_id=task.id)\
+                             .order_by(Serial.number.desc()).first()
+    office = new_ticket.office
+    tickets = Serial.all_office_tickets(office.id, desc=False)\
+                    .filter(Serial.number != new_ticket.number)
+    cur_ticket = tickets.first()
+
+    assert response.status == '200 OK'
+    assert last_ticket.number != new_ticket.number
+    assert new_ticket.name == name
+    assert mock_printer().text.call_count == 12
+    assert mock_printer().set.call_count == 7
+    mock_printer().set.assert_called_with(align='left', height=1, width=1)
+    mock_printer().cut.assert_called_once()
+    mock_printer().text.assert_any_call(f'\n{office_alt} : {office.prefix}{office.name}\n')
+    mock_printer().text.assert_any_call(f'\n{office.prefix}.{new_ticket.number}\n')
+    mock_printer().text.assert_any_call(f'\n{ticket_alt}s ahead : {tickets.count()}\n')
+    mock_printer().text.assert_any_call(f'\n{task_alt} : {new_ticket.task.name}\n')
+    mock_printer().text.assert_any_call(
+        f'\nCurrent {ticket_alt.lower()} : {office.prefix}.{cur_ticket and cur_ticket.number}\n')
 
 
 @pytest.mark.usefixtures('c')

@@ -160,6 +160,11 @@ def get_translation(text, language):
 def printit(printer, ticket, office, tnumber,
             task, cticket, site='https://fqms.github.io', lang='en',
             scale=1):
+    office_header = get_translation('\nOffice : ', lang)
+    task_header = get_translation('\nTask : ', lang)
+    cur_ticket_header = get_translation('\nCurrent ticket : ', lang)
+    ahead_header = get_translation('\nTickets ahead : ', lang)
+
     printer.set(align='center', **get_font_height_width('logo', scale))
     printer.text("FQM\n")
     printer.set(align='center', **get_font_height_width('regular', scale))
@@ -173,13 +178,10 @@ def printit(printer, ticket, office, tnumber,
     printer.set(align='center', **get_font_height_width('spacer', scale))
     printer.text("\n" + '-' * 15 + "\n")
     printer.set(align='left', **get_font_height_width('regular', scale))
-    printer.text(f'\n{get_translation("Office : ", lang)}{office}\n')
-    printer.text(f'\n{get_translation("Current ticket : ", lang)}{cticket}\n')
-    printer.text(f'\n{get_translation("Tickets ahead : ", lang)}{tnumber}\n')
-    try:
-        printer.text(f'\n{get_translation("Task : ", lang)}{task}\n')
-    except Exception:
-        pass
+    printer.text(f'{office_header}{office}\n')
+    printer.text(f'{cur_ticket_header}{cticket}\n')
+    printer.text(f'{ahead_header}{tnumber}\n')
+    printer.text(f'{task_header}{task}\n')
     printer.text(f'{get_translation("Time : ", lang)}{datetime.now().__str__()[:-7]}\n')
     printer.cut()
     return printer
