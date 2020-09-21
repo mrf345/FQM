@@ -7,15 +7,11 @@ from datetime import datetime
 from random import randint
 from socket import socket, AF_INET, SOCK_STREAM
 from netifaces import interfaces, ifaddresses
-from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine
 from flask import current_app, Flask
 
 import app.database as data
 from app.middleware import db
-from app.constants import (DEFAULT_PASSWORD, DEFAULT_USER, DATABASE_FILE,
-                           BACKGROUNDTASKS_DEFAULTS)
+from app.constants import (DEFAULT_PASSWORD, DEFAULT_USER, BACKGROUNDTASKS_DEFAULTS)
 
 
 def execute(command, parser=None, encoding='utf-8'):
@@ -236,36 +232,6 @@ def get_random_available_port(ip):
     return available_port
 
 
-def create_aliternative_db(db_name=None):
-    ''' Utility to create an alternative database SQLAlchemy session.
-
-    Parameters
-    ----------
-        db_name: name of the database file.
-
-    Returns
-    -------
-        session: SQLAlchemy Session
-        classes SQLAlchemy Base.classes
-    '''
-    session = None
-    classes = None
-
-    try:
-        db_path = absolute_path(db_name or DATABASE_FILE)
-        base = automap_base()
-        engine = create_engine(f'sqlite:///{db_path}?check_same_thread=False')
-
-        base.prepare(engine, reflect=True)
-
-        session = Session(engine)
-        classes = base.classes
-    except Exception as e:
-        log_error(e)
-
-    return session, classes, engine
-
-
 def get_with_alias(db_name=None):
     ''' Resolve querying aliases without app_context in languages.
 
@@ -279,18 +245,18 @@ def get_with_alias(db_name=None):
     '''
     alias = namedtuple(
         'alias', ['office', 'ticket', 'task']
-    )('office', 'ticket', 'task')
+    )('Office', 'Ticket', 'Task')
 
     try:
-        session, db, eng = create_aliternative_db(db_name)
-        alias = session.query(db.aliases).first()
-    except Exception:
-        pass
+        with current_app.app_context():
+            alias = data.Aliases.get()
+    except Exception as e:
+        log_error(e)
 
     return {
         'Version ': 'Version ',
         '\nOffice : ': '\n' + alias.office + ' : ',
-        '\nCurrent ticket : ': '\nCurrent ' + alias.ticket + ' : ',
+        '\nCurrent ticket : ': '\nCurrent ' + alias.ticket.lower() + ' : ',
         '\nTickets ahead : ': '\n' + alias.ticket + 's ahead : ',
         '\nTask : ': '\n' + alias.task + ' : ',
         '\nTime : ': '\nTime : '
