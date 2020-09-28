@@ -3,8 +3,8 @@
 </p>
 
 <p align='center'>
-<a href='https://travis-ci.org/mrf345/FQM'>
-  <img src='https://travis-ci.org/mrf345/FQM.svg?branch=master'>
+<a href='https://travis-ci.com/mrf345/FQM'>
+  <img src='https://travis-ci.com/mrf345/FQM.svg?branch=master'>
 </a>
 <a href='https://github.com/mrf345/FQM/releases'>
   <img src='https://img.shields.io/github/v/release/mrf345/FQM.svg' alt='release'>
