@@ -209,7 +209,7 @@ def test_update_common_task_offices(c):
     unchecked_office = task.offices[0]
     checked_office = task.offices[1]
     unchecked_office_tickets_numbers = [
-        ticket.number for ticket in Serial.query.filter_by(
+        ticket.number for ticket in Serial.all_clean().filter_by(
             task_id=task.id, office_id=unchecked_office.id
         )]
     old_name = task.name
@@ -224,7 +224,7 @@ def test_update_common_task_offices(c):
 
     assert Task.query.filter_by(name=old_name).first() is None
     assert updated_task is not None
-    assert len(task.offices) > len(updated_task.offices)
+    assert len(task.offices) >= len(updated_task.offices)
     assert checked_office.id in ids(updated_task.offices)
     assert unchecked_office.id not in ids(updated_task.offices)
 
