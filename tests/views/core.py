@@ -107,9 +107,10 @@ def test_new_printed_ticket(c, monkeypatch):
     mock_printer().cut.assert_called_once()
     mock_printer().text.assert_any_call(f'\nOffice : {office.prefix}{office.name}\n')
     mock_printer().text.assert_any_call(f'\n{office.prefix}.{new_ticket.number}\n')
-    mock_printer().text.assert_any_call(f'\nCurrent ticket : {office.prefix}.{cur_ticket.number}\n')
     mock_printer().text.assert_any_call(f'\nTickets ahead : {tickets.count()}\n')
     mock_printer().text.assert_any_call(f'\nTask : {new_ticket.task.name}\n')
+    mock_printer().text.assert_any_call(
+        f'\nCurrent ticket : {office.prefix}.{cur_ticket and cur_ticket.number}\n')
 
 
 @pytest.mark.usefixtures('c')
