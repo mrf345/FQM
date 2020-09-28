@@ -54,11 +54,12 @@ class GetOrRejectMixin:
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        if not self.slug and self.kwarg:
+            self.slug = self.kwarg.split('_')[0]
+
         if not self.gor_message and self.slug:
             self.gor_message = f'{self.slug.title()} not found'
-
-        if self.kwarg and not self.slug:
-            self.slug = self.kwarg.split('_')[0]
 
         if self.module and self.kwarg:
             for gor_method in self.gor_methods:

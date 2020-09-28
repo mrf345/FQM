@@ -9,6 +9,16 @@ BASE = '/api/v1/tickets'
 
 
 @pytest.mark.usefixtures('c')
+def test_unauthorized_request(c):
+    response = c.get(BASE,
+                     follow_redirects=True,
+                     headers={'Authorization': 'wrong token'})
+
+    assert response.status == '401 UNAUTHORIZED'
+    assert response.json.get('message') == 'Authentication is required'
+
+
+@pytest.mark.usefixtures('c')
 def test_list_tickets(c):
     auth_token = AuthTokens.get()
     response = c.get(BASE,
@@ -35,6 +45,16 @@ def test_get_ticket(c):
     assert response.status == '200 OK'
     assert Serial.get(response.json.get('id')).id == ticket.id
     assert all(p in response.json for p in get_module_columns(Serial)) is True
+
+
+@pytest.mark.usefixtures('c')
+def test_get_wrong_ticket(c):
+    auth_token = AuthTokens.get()
+    response = c.get(f'{BASE}/9191919',
+                     follow_redirects=True,
+                     headers={'Authorization': auth_token.token})
+
+    assert response.status == '404 NOT FOUND'
 
 
 @pytest.mark.usefixtures('c')
