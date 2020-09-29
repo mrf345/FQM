@@ -15,11 +15,11 @@ def setup_tickets_endpoint():
                              description='Endpoint to handle tickets CRUD operations.')
 
     @endpoint.route('/')
+    @endpoint.doc(security='apiKey')
     class ListDeleteAndCreateTickets(TokenRequiredMixin, Resource):
         @endpoint.marshal_list_with(TicketSerializer)
         @endpoint.param('processed', 'get only processed tickets, by default False.')
         @endpoint.param('chunk', f'dividing tickets into chunks of {LIMIT_PER_CHUNK}, default is 1.')
-        @endpoint.doc(security='apiKey')
         def get(self):
             ''' Get list of tickets. '''
             chunk = request.args.get('chunk', 1, type=int)
@@ -33,16 +33,8 @@ def setup_tickets_endpoint():
                                     per_page=LIMIT_PER_CHUNK,
                                     error_out=False).items, HTTPStatus.OK
 
-        @endpoint.doc(security='apiKey')
-        def delete(self):
-            ''' Delete all tickets. '''
-            Serial.all_clean().delete()
-            db.session.commit()
-            return '', HTTPStatus.NO_CONTENT
-
         @endpoint.marshal_with(TicketSerializer)
         @endpoint.expect(TicketSerializer)
-        @endpoint.doc(security='apiKey')
         def post(self):
             ''' Generate a new ticket. '''
             registered = api.payload.get('n', False)
@@ -66,20 +58,25 @@ def setup_tickets_endpoint():
 
             return ticket, HTTPStatus.OK
 
+        def delete(self):
+            ''' Delete all tickets. '''
+            Serial.all_clean().delete()
+            db.session.commit()
+            return '', HTTPStatus.NO_CONTENT
+
     @endpoint.route('/<int:ticket_id>')
+    @endpoint.doc(security='apiKey')
     class GetAndUpdateTicket(TokenRequiredMixin, GetOrRejectMixin, Resource):
         module = Serial
         kwarg = 'ticket_id'
 
         @endpoint.marshal_with(TicketSerializer)
-        @endpoint.doc(security='apiKey')
         def get(self, ticket_id):
             ''' Get a specific ticket. '''
             return self.ticket, HTTPStatus.OK
 
         @endpoint.marshal_with(TicketSerializer)
         @endpoint.expect(TicketSerializer)
-        @endpoint.doc(security='apiKey')
         def put(self, ticket_id):
             ''' Update a specific ticket. '''
             api.payload.pop('id', '')
@@ -87,7 +84,6 @@ def setup_tickets_endpoint():
             db.session.commit()
             return self.ticket, HTTPStatus.OK
 
-        @endpoint.doc(security='apiKey')
         def delete(self, ticket_id):
             ''' Delete a specific ticket. '''
             db.session.delete(self.ticket)
@@ -95,11 +91,11 @@ def setup_tickets_endpoint():
             return '', HTTPStatus.NO_CONTENT
 
     @endpoint.route('/pull')
+    @endpoint.doc(security='apiKey')
     class PullTicket(TokenRequiredMixin, Resource):
         @endpoint.marshal_with(TicketSerializer)
         @endpoint.param('ticket_id', 'to pull a specific ticket with, by default None.')
         @endpoint.param('office_id', 'to pull a specific ticket from, by default None.')
-        @endpoint.doc(security='apiKey')
         def get(self):
             ''' Pull a ticket from the waiting list. '''
             ticket_id = request.args.get('ticket_id', None, type=int)
