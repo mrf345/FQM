@@ -20,9 +20,10 @@ class DeleteTickets(TaskBase):
     def run(self):
         @self.execution_loop()
         def main():
-            tickets = Serial.query.filter(Serial.number != 100)
+            tickets = Serial.all_clean()
+            number_of_tickets = tickets.count()
 
-            if tickets.count():
+            if number_of_tickets:
                 tickets.delete()
                 db.session.commit()
-                self.log('DeleteTickets(Task): All tickets deleted.')
+                self.log(f'DeleteTickets(Task): {number_of_tickets} deleted.')
