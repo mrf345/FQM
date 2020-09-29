@@ -14,10 +14,10 @@ def setup_tasks_endpoint():
                              description='Endpoint to handle tasks CRUD operations.')
 
     @endpoint.route('/')
+    @endpoint.doc(security='apiKey')
     class ListTasks(TokenRequiredMixin, Resource):
         @endpoint.marshal_list_with(TaskSerializer)
         @endpoint.param('chunk', f'dividing tasks into chunks of {LIMIT_PER_CHUNK}, default is 1.')
-        @endpoint.doc(security='apiKey')
         def get(self):
             ''' Get list of tasks. '''
             chunk = request.args.get('chunk', 1, type=int)
