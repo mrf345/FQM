@@ -66,9 +66,9 @@ var AutoReloader = function autoReloader (options) {
     if ($(returning.options.identifier).length <= 0 && returning.options.auto_start === 'false') throw new Error('auto_reloader(options) can not find any elements with identifier')
   // Setup directions
     $(returning.options.identifier).click(function (event) {
-      if (sessionStorage.active === undefined) start(); else stop() // start or stop if clicked
+      if (localStorage.active === undefined) start(); else stop() // start or stop if clicked
     })
-    if (sessionStorage.active !== undefined || returning.options.auto_start === 'true') start() // start if not first time
+    if (localStorage.active !== undefined || returning.options.auto_start === 'true') start() // start if not first time
   }
 
 // Starter and Stopper
@@ -76,9 +76,9 @@ var AutoReloader = function autoReloader (options) {
   // global name to access from events
   var start = function start () {
     // starting the auto reload, changing style
-    if (sessionStorage.active !== undefined) {
+    if (localStorage.active !== undefined) {
       returning.set_style(false)
-      if (returning.options.remember_position) $(window).scrollTop(sessionStorage.position) // to remember position
+      if (returning.options.remember_position) $(window).scrollTop(localStorage.position) // to remember position
       if (returning.options.fix_rotation) returning.check_screen() // to watch out for screen size change
       returning.reload() // timeout to reload
     } else {
@@ -96,19 +96,19 @@ var AutoReloader = function autoReloader (options) {
       })
     }
     // clearing up the storage
-    sessionStorage.clear()
+    localStorage.clear()
   }
 
 // When Started
 
   returning.reload = function reload (duration) {
-    duration = duration || sessionStorage.duration || returning.options.duration
+    duration = duration || localStorage.duration || returning.options.duration
     // setting timeout to reload
     // clearing timeouts before loading
     returning.defaults.sleeps.push(
       setTimeout(function () {
-        sessionStorage.position = $(window).scrollTop() // getting screen position
-        sessionStorage.active = 'true' // to indeicate not a first time
+        localStorage.position = $(window).scrollTop() // getting screen position
+        localStorage.active = 'true' // to indeicate not a first time
         location.reload()
       }, duration)
     )
@@ -139,12 +139,12 @@ var AutoReloader = function autoReloader (options) {
       $(returning.options.identifier + '> span').addClass(returning.options.add_classes_span[i])
     }
     if ($(returning.options.identifier).attr('style') !== undefined && notactive) {
-      sessionStorage.style = $(returning.options.identifier).attr('style') // storing style
+      localStorage.style = $(returning.options.identifier).attr('style') // storing style
       $(returning.options.identifier).attr(
-        'style', sessionStorage.style + ';' + returning.options.add_style
+        'style', localStorage.style + ';' + returning.options.add_style
       ) // adding style to existing one
     } else {
-      if (sessionStorage.style !== undefined) $(returning.options.identifier).attr('style', sessionStorage.style + ';' + returning.options.add_style)
+      if (localStorage.style !== undefined) $(returning.options.identifier).attr('style', localStorage.style + ';' + returning.options.add_style)
       else $(returning.options.identifier).attr('style', returning.options.add_style)
     }
   }
@@ -163,9 +163,9 @@ var AutoReloader = function autoReloader (options) {
         $(returning.options.identifier + ' > span').removeClass(returning.options.add_classes_span[i])
       }
     }
-    if (sessionStorage.style !== undefined) {
-      $(returning.options.identifier).attr('style', sessionStorage.style)
-      sessionStorage.style = false
+    if (localStorage.style !== undefined) {
+      $(returning.options.identifier).attr('style', localStorage.style)
+      localStorage.style = false
     } else { // if style not stored and equal to iserted style, will be emptied
       if ($(returning.options.identifier).attr('style') === returning.options.add_style) {
         $(returning.options.identifier).attr('style', '')
@@ -184,7 +184,7 @@ var AskReloader = function ask (msg) {
   // to prompt user to set new duration
   var newDuration = window.prompt(
     msg,
-    sessionStorage.duration / 1000 || defaultDuration / 1000
+    localStorage.duration / 1000 || defaultDuration / 1000
   )
-  sessionStorage.duration = newDuration > 0 ? newDuration * 1000 : sessionStorage.duration ? sessionStorage.duration : defaultDuration
+  localStorage.duration = newDuration > 0 ? newDuration * 1000 : localStorage.duration ? localStorage.duration : defaultDuration
 }
