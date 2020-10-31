@@ -9,7 +9,9 @@ from uuid import uuid4
 
 from app.middleware import db
 from app.constants import (USER_ROLES, DEFAULT_PASSWORD, PREFIXES, TICKET_WAITING,
-                           TICKET_PROCESSED, TICKET_UNATTENDED, USER_ROLE_ADMIN)
+                           TICKET_PROCESSED, TICKET_UNATTENDED, USER_ROLE_ADMIN,
+                           TICKET_ORDER_NEWEST, TICKET_ORDER_NEWEST_PROCESSED,
+                           TICKET_ORDER_OLDEST, TICKET_ORDER_OLDEST_PROCESSED)
 
 mtasks = db.Table(
     'mtasks',
@@ -220,6 +222,11 @@ class Serial(db.Model, TicketsMixin, Mixin):
     office_id = db.Column(db.Integer, db.ForeignKey('offices.id'))
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
 
+    ORDERS = {TICKET_ORDER_NEWEST_PROCESSED: [p, timestamp.desc()],
+              TICKET_ORDER_NEWEST: [timestamp.desc()],
+              TICKET_ORDER_OLDEST_PROCESSED: [p, timestamp],
+              TICKET_ORDER_OLDEST: [timestamp]}
+
     def __init__(self, number=100, office_id=1, task_id=1, name=None,
                  n=False, p=False, pulledBy=0, status=TICKET_WAITING):
         self.number = number
@@ -248,7 +255,7 @@ class Serial(db.Model, TicketsMixin, Mixin):
         return cls.query.filter(cls.number != 100)
 
     @classmethod
-    def all_office_tickets(cls, office_id, desc=True):
+    def all_office_tickets(cls, office_id, desc=True, order=True):
         ''' get tickets of the common task from other offices.
 
         Parameters
@@ -275,12 +282,17 @@ class Serial(db.Model, TicketsMixin, Mixin):
                 if other_office_tickets.count():
                     all_tickets = all_tickets.union(other_office_tickets)
 
-        return all_tickets.filter(Serial.number != 100)\
-                          .order_by(Serial.p,
-                                    Serial.timestamp.desc() if desc else Serial.timestamp)
+        all_tickets = all_tickets.filter(Serial.number != 100)
+
+        if order:
+            all_tickets = all_tickets.order_by(
+                Serial.p,
+                Serial.timestamp.desc() if desc else Serial.timestamp)
+
+        return all_tickets
 
     @classmethod
-    def all_task_tickets(cls, office_id, task_id):
+    def all_task_tickets(cls, office_id, task_id, order=True):
         ''' get tickets related to a given task and office.
 
         Parameters
@@ -300,9 +312,13 @@ class Serial(db.Model, TicketsMixin, Mixin):
         if not strict_pulling:
             filter_parameters.pop('office_id')
 
-        return cls.query.filter_by(**filter_parameters)\
-                        .filter(cls.number != 100)\
-                        .order_by(cls.p, cls.timestamp.desc())
+        tickets = cls.query.filter_by(**filter_parameters)\
+                           .filter(cls.number != 100)\
+
+        if order:
+            return tickets.order_by(cls.p, cls.timestamp.desc())
+
+        return tickets
 
     @classmethod
     def get_last_pulled_ticket(cls, office_id=None):
