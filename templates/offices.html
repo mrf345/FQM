@@ -34,7 +34,7 @@ $(document).ready(function () {
 {% from "_modals.html" import confirmModal, qrModal %}
 {%- from "_helpers.html" import render_field with context %}
 {%- from "_footers.html" import panel_footer, spacer with context %}
-{%- from "_tickets.html" import ticket_color, ticket_actions, processed_ticket_modal with context %}
+{%- from "_tickets.html" import ticket_color, ticket_actions, processed_ticket_modal, ticket_orders with context %}
 <div class="col-md-12">
     <div class="panel panel-primary">
         <div class="panel-heading">
@@ -53,7 +53,8 @@ $(document).ready(function () {
 						<strong>{{ translate('Office', 'en', [defLang]) }} : {{ offices.filter_by(id=o_id).first().name }}</strong>
 		    		</h2>
 				</div>
-	    	</div>
+			</div>
+			<div class='row text-center ar2'>{{ ticket_orders() }} </div>
 	    	<div class="row text-center text-muted h4 ar2">
 				<div class="col-sm-10 col-sm-offset-1 col-lg-offset-1 col-md-3 well">
 					{{ translate('Prefix', 'en', [defLang]) }} : <u>{{ offices.filter_by(id=o_id).first().prefix }}</u>
@@ -146,7 +147,7 @@ $(document).ready(function () {
 			])}}
 			<div class="row text-center">
 		    	<div class="pagination">
-					{{ macros.pagination_widget(pagination, '.offices', o_id=o_id) }}
+					{{ macros.pagination_widget(pagination, '.offices', o_id=o_id, order_by=order_by) }}
 		    	</div>
 			</div>
 	    </div>

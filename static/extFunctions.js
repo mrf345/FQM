@@ -57,3 +57,14 @@ var copyToClipboard = function (text) {
     document.execCommand('copy')
     document.body.removeChild(tempInput)
 }
+
+
+var updateUrlParamAndNavigate = function(param, value) {
+    var url = new URL(location)
+    var searchParams = new URLSearchParams(url.search)
+
+    searchParams.set(param, value)
+
+    url.search = searchParams.toString()
+    window.location.href = url.toString()
+}

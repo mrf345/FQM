@@ -2,11 +2,12 @@ import os
 import json
 from urllib.parse import unquote
 from functools import wraps
-from flask import current_app, flash, redirect, url_for
+from flask import current_app, flash, redirect, url_for, request
 from flask_login import current_user
 
 import app.database as data
 from app.utils import absolute_path, log_error
+from app.constants import TICKET_ORDER_NEWEST_PROCESSED
 
 
 def is_god():
@@ -316,6 +317,34 @@ def decode_links(function):
         return function(*clean_args, **clean_kwargs)
 
     return decorated
+
+
+def ticket_orders(function):
+    ''' Decorator to get and pass ticket orders.
+
+    Parameters
+    ----------
+    function : callable
+
+    Returns
+    -------
+    callable
+        decorated function
+    '''
+    @wraps(function)
+    def decorator(*args, **kwargs):
+        with current_app.app_context():
+            order_by = request.args.get('order_by',
+                                        TICKET_ORDER_NEWEST_PROCESSED)
+            orders = list(data.Serial.ORDERS.keys())
+
+            return function(*args,
+                            **{**kwargs,
+                               'order_by': order_by,
+                               'order_kwargs': {'order_by': order_by,
+                                                'orders': orders}})
+
+    return decorator
 
 
 def get_tts_safely():
