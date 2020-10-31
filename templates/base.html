@@ -78,7 +78,9 @@
             <meta http-equiv="refresh" content="0.0;url=/nojs/0">
         </noscript>
         <div class="widw">
-            <center><img class="img-responsive mb-1"  style="width: 30%;" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo"></center>
+            {% if settings.visual_effects %}
+                <center><img class="img-responsive mb-1"  style="width: 30%;" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo"></center>
+            {% endif %}
             <nav class="navbar navbar-inverse">
     	        <div class="container-fluid">
     	            <div class="navbar-header">
@@ -318,6 +320,7 @@
             <div class="col-md-{% if adme %}12{% else %}10{% endif %} content mb-1">
     	        {% block page_content %} {% endblock %}
             </div>
+            {% if settings.visual_effects %}
             <footer class="pull-left footer widw mt-3">
     	        <div class="row mt-1">
     	            <div class="col-xs-8 col-md-3 col-xs-offset-2 col-md-offset-2 pb-1">
@@ -373,6 +376,7 @@
     	            </div>
     	        </div>
             </footer>
+            {% endif %}
         </div>
         {% from '_modals.html' import qrModal %}
         {{ qrModal([['touch_qr', translate('QR code touch screen', 'en', [defLang]), qrcode(url_for('core.touch', a=0, _external=True))],
