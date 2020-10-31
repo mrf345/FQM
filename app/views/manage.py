@@ -5,7 +5,8 @@ import app.database as data
 from app.middleware import db
 from app.utils import ids, remove_string_noise
 from app.helpers import (reject_operator, reject_no_offices, is_operator, is_office_operator,
-                         is_common_task_operator, reject_setting, get_or_reject, decode_links)
+                         is_common_task_operator, reject_setting, get_or_reject, decode_links,
+                         ticket_orders)
 from app.forms.manage import OfficeForm, TaskForm, SearchForm, ProcessedTicketForm
 from app.constants import TICKET_WAITING
 
@@ -36,11 +37,12 @@ def manage():
 @manage_app.route('/all_offices')
 @login_required
 @reject_operator
-def all_offices():
+@ticket_orders
+def all_offices(order_by, order_kwargs):
     ''' lists all offices. '''
     page = request.args.get('page', 1, type=int)
-    tickets = data.Serial.query.filter(data.Serial.number != 100)\
-                               .order_by(data.Serial.p, data.Serial.timestamp.desc())
+    tickets = data.Serial.all_clean()\
+                         .order_by(*data.Serial.ORDERS.get(order_by, []))
     pagination = tickets.paginate(page, per_page=10, error_out=False)
     last_ticket_pulled = tickets.filter_by(p=True).first()
     last_ticket_office = last_ticket_pulled and data.Office.query\
@@ -62,14 +64,16 @@ def all_offices():
                            hash='#da2',
                            last_ticket_pulled=last_ticket_pulled,
                            last_ticket_office=last_ticket_office,
-                           tickets_form=tickets_form)
+                           tickets_form=tickets_form,
+                           **order_kwargs)
 
 
 @manage_app.route('/offices/<int:o_id>', methods=['GET', 'POST'])
 @login_required
+@ticket_orders
 @reject_setting('single_row', True)
 @get_or_reject(o_id=data.Office)
-def offices(office):
+def offices(office, order_by, order_kwargs):
     ''' view and update an office. '''
     if is_operator() and not is_office_operator(office.id):
         flash('Error: operators are not allowed to access the page ', 'danger')
@@ -78,8 +82,11 @@ def offices(office):
     form = OfficeForm(current_prefix=office.prefix)
     tickets_form = ProcessedTicketForm()
     page = request.args.get('page', 1, type=int)
-    tickets = data.Serial.all_office_tickets(office.id)
-    last_ticket_pulled = tickets.filter_by(p=True).first()
+    last_ticket_pulled = data.Serial.all_office_tickets(office.id)\
+                                    .filter_by(p=True)\
+                                    .first()
+    tickets = data.Serial.all_office_tickets(office.id, order=False)\
+                         .order_by(*data.Serial.ORDERS.get(order_by, []))
     pagination = tickets.paginate(page, per_page=10, error_out=False)
     office_name = remove_string_noise(form.name.data or '',
                                       lambda s: s.startswith('0'),
@@ -117,7 +124,8 @@ def offices(office):
                            dropdown='#dropdown-lvl' + str(office.id),
                            hash='#t1' + str(office.id),
                            last_ticket_pulled=last_ticket_pulled,
-                           tickets_form=tickets_form)
+                           tickets_form=tickets_form,
+                           **order_kwargs)
 
 
 @manage_app.route('/office_a', methods=['GET', 'POST'])
@@ -238,9 +246,10 @@ def search():
 @manage_app.route('/task/<int:o_id>', methods=['POST', 'GET'], defaults={'ofc_id': None})
 @manage_app.route('/task/<int:o_id>/<int:ofc_id>', methods=['POST', 'GET'])
 @login_required
+@ticket_orders
 @reject_setting('single_row', True)
 @get_or_reject(o_id=data.Task)
-def task(task, ofc_id):
+def task(task, ofc_id, order_by, order_kwargs):
     ''' view specific task. '''
     if is_operator() and not is_common_task_operator(task.id):
         flash('Error: operators are not allowed to access the page ', 'danger')
@@ -250,8 +259,11 @@ def task(task, ofc_id):
     form = TaskForm(common=task.common)
     tickets_form = ProcessedTicketForm()
     page = request.args.get('page', 1, type=int)
-    tickets = data.Serial.all_task_tickets(ofc_id, task.id)
-    last_ticket_pulled = tickets.filter_by(p=True).first()
+    tickets = data.Serial.all_task_tickets(ofc_id, task.id, order=False)\
+                         .order_by(*data.Serial.ORDERS.get(order_by, []))
+    last_ticket_pulled = data.Serial.all_task_tickets(ofc_id, task.id)\
+                                    .filter_by(p=True)\
+                                    .first()
     pagination = tickets.paginate(page, per_page=10, error_out=False)
 
     if form.validate_on_submit():
@@ -315,7 +327,8 @@ def task(task, ofc_id):
                            last_ticket_pulled=last_ticket_pulled,
                            edit_task=len(task.offices) == 1 or not is_operator(),
                            office=data.Office.get(ofc_id),
-                           tickets_form=tickets_form)
+                           tickets_form=tickets_form,
+                           **order_kwargs)
 
 
 @manage_app.route('/task_d/<int:t_id>', defaults={'ofc_id': None})
