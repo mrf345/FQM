@@ -3,7 +3,7 @@ appdirs==1.4.3
 arabic-reshaper==2.0.8
 argcomplete==1.8.2
 beautifulsoup4==4.6.0
-bleach==3.1.4
+bleach==3.3.0
 blinker==1.4
 bs4==0.0.1
 certifi==2017.7.27.1
