@@ -132,7 +132,6 @@ class MainWindow(QWidget):
 
     def get_translation(self, text):
         current_language = list(self.languages.keys())[self.languages_list.currentIndex()]
-        print(current_language)
         return gtranslator.translate(text, dest=[current_language])
 
     def current_language(self):
