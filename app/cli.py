@@ -49,7 +49,7 @@ def interface(cli, quiet, reset, ip, port):
     elif reset:
         with app.app_context():
             User.reset_default_password()
-            click.echo('Admmin password got resetted.')
+            click.echo('Admmin password was reset.')
     else:
         try:
             app.config['CLI_OR_DEPLOY'] = False

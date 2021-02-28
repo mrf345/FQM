@@ -246,8 +246,8 @@ class MainWindow(QWidget):
 
         QMessageBox.information(
             self,
-            self.get_translation('x'),
-            self.get_translation('Admin password got resetted successfully.'),
+            self.get_translation('Password reset'),
+            self.get_translation('Admin password was reset successfully.'),
             QMessageBox.Ok)
 
     def set_about(self, icon, global_layout):
