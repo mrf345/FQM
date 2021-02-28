@@ -7,14 +7,16 @@ from app.main import bundle_app
 from app.utils import get_accessible_ips, get_random_available_port, log_error
 from app.constants import VERSION
 from app.tasks import stop_tasks
+from app.database import User
 
 
 @click.command()
 @click.option('--cli', is_flag=True, default=False, help='To use commandline interface instead of GUI.')
 @click.option('--quiet', is_flag=True, default=False, help='To silence web server logs.')
+@click.option('--reset', is_flag=True, default=False, help='Reset admin default password.')
 @click.option('--ip', default=None, help='IP address to stream the service on.')
 @click.option('--port', default=None, help='Port to stream the service through.')
-def interface(cli, quiet, ip, port):
+def interface(cli, quiet, reset, ip, port):
     ''' FQM command-line interface (CLI):
 
     * if `--cli` is not used, initializing GUI will be attempted.\n
@@ -22,6 +24,11 @@ def interface(cli, quiet, ip, port):
     * If no `port` is passed it will default to a random port.\n
     '''
     app = bundle_app()
+
+    if reset:
+        with app.app_context():
+            User.reset_default_password()
+            click.echo('Admmin password got resetted.')
 
     def start_cli():
         alt_ip = ip or get_accessible_ips()[0][1]

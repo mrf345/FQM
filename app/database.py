@@ -575,6 +575,12 @@ class User(UserMixin, db.Model, Mixin):
     def has_default_password(cls):
         return cls.query.filter_by(id=1).first().verify_password(DEFAULT_PASSWORD)
 
+    @classmethod
+    def reset_default_password(cls):
+        admin = cls.get(id=1)
+        admin.password_hash = generate_password_hash(DEFAULT_PASSWORD)
+        db.session.commit()
+
 
 class Roles(db.Model):
     __tablename__ = "roles"
