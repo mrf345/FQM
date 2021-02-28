@@ -11,6 +11,7 @@ from app.utils import absolute_path, solve_path, get_accessible_ips, get_random_
 from app.middleware import gtranslator
 from app.constants import SUPPORTED_LANGUAGES, VERSION
 from app.tasks import stop_tasks
+from app.database import User
 
 
 class RunnerThread(QThread):
@@ -110,6 +111,8 @@ class MainWindow(QWidget):
         self.start_button.setToolTip(self.get_translation('Start the server'))
         self.stop_button.setText(self.get_translation('Stop'))
         self.stop_button.setToolTip(self.get_translation('Stop the server'))
+        self.reset_button.setText(self.get_translation('Reset admin password'))
+        self.reset_button.setToolTip(self.get_translation('Reset admin password'))
         self.select_ip.setToolTip(self.get_translation(
             'Select network interface with IP, so the server runs on it'))
         self.select_port.setToolTip(self.get_translation(
@@ -163,7 +166,9 @@ class MainWindow(QWidget):
         return [self.select_port.currentText(), self.select_ip.currentText()]
 
     def set_start_and_stop(self, global_layout):
-        horizontal_layout = QHBoxLayout()
+        grid = QVBoxLayout()
+        row_1 = QHBoxLayout()
+        row_2 = QHBoxLayout()
         self.start_button = QPushButton('Start', self)
         self.start_button.clicked.connect(self.start_server)
         self.start_button.setFont(self.fonts)
@@ -171,13 +176,18 @@ class MainWindow(QWidget):
         self.stop_button = QPushButton('Stop', self)
         self.stop_button.clicked.connect(self.stop_server)
         self.stop_button.setIcon(QIcon(absolute_path(solve_path('static/images/pause.png'))))
+        self.reset_button = QPushButton(self.get_translation('Reset admin password'))
+        self.reset_button.clicked.connect(self.reset_admin_pass)
         self.start_button.setToolTip(self.get_translation('Start the server'))
         self.stop_button.setToolTip(self.get_translation('Stop the server'))
         self.stop_button.setEnabled(False)
         self.stop_button.setFont(self.fonts)
-        horizontal_layout.addWidget(self.start_button)
-        horizontal_layout.addWidget(self.stop_button)
-        global_layout.addLayout(horizontal_layout)
+        row_1.addWidget(self.start_button)
+        row_1.addWidget(self.stop_button)
+        row_2.addWidget(self.reset_button)
+        grid.addLayout(row_1)
+        grid.addLayout(row_2)
+        global_layout.addLayout(grid)
 
     def start_server(self):
         current = self.select_ips_ports_change()
@@ -187,6 +197,7 @@ class MainWindow(QWidget):
             try:
                 self.Processport = current[0]
                 self.start_button.setEnabled(False)
+                self.reset_button.setEnabled(False)
                 self.stop_button.setEnabled(True)
                 self.select_ip.setEnabled(False)
                 self.select_port.setEnabled(False)
@@ -215,6 +226,7 @@ class MainWindow(QWidget):
                     self.Process.stop()
                 self.start_button.setEnabled(True)
                 self.stop_button.setEnabled(False)
+                self.reset_button.setEnabled(True)
                 self.select_ip.setEnabled(True)
                 self.select_port.setEnabled(True)
                 self.status_label.setText(self.get_translation('Server is <u> Not running </u> <br>'))
@@ -227,6 +239,16 @@ class MainWindow(QWidget):
                 self.before_exit()
         else:
             self.before_exit()
+
+    def reset_admin_pass(self):
+        with self.app.app_context():
+            User.reset_default_password()
+
+        QMessageBox.information(
+            self,
+            self.get_translation('Password reset'),
+            self.get_translation('Admin password was reset successfully.'),
+            QMessageBox.Ok)
 
     def set_about(self, icon, global_layout):
         def show_about():
