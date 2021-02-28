@@ -25,11 +25,6 @@ def interface(cli, quiet, reset, ip, port):
     '''
     app = bundle_app()
 
-    if reset:
-        with app.app_context():
-            User.reset_default_password()
-            click.echo('Admmin password got resetted.')
-
     def start_cli():
         alt_ip = ip or get_accessible_ips()[0][1]
         alt_port = port or get_random_available_port(alt_ip)
@@ -51,6 +46,10 @@ def interface(cli, quiet, reset, ip, port):
 
     if cli:
         start_cli()
+    elif reset:
+        with app.app_context():
+            User.reset_default_password()
+            click.echo('Admmin password got resetted.')
     else:
         try:
             app.config['CLI_OR_DEPLOY'] = False
@@ -65,3 +64,5 @@ def interface(cli, quiet, reset, ip, port):
                 log_error(e, quiet=quiet)
 
             start_cli()
+
+    stop_tasks()
