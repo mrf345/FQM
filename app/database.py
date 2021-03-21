@@ -471,14 +471,18 @@ class Serial(db.Model, TicketsMixin, Mixin):
                                        *common_arguments,
                                        language=ticket_settings.langu,
                                        windows=windows,
-                                       unix=not windows)
+                                       unix=not windows,
+                                       header=ticket_settings.header or '',
+                                       sub=ticket_settings.sub or '')
                 else:
                     printer = assign(ticket_settings.vendor, ticket_settings.product,
                                      ticket_settings.in_ep, ticket_settings.out_ep)
                     (printit_ar if ticket_settings.langu == 'ar' else printit)(printer,
                                                                                *common_arguments,
                                                                                lang=ticket_settings.langu,
-                                                                               scale=ticket_settings.scale)
+                                                                               scale=ticket_settings.scale,
+                                                                               site=ticket_settings.sub or '',
+                                                                               header=ticket_settings.header or '')
             except Exception as e:
                 exception = e
 
@@ -640,9 +644,11 @@ class Printer(db.Model, Mixin):
     value = db.Column(db.Integer)
     scale = db.Column(db.Integer, default=1)
     name = db.Column(db.String(100), nullable=True)
+    header = db.Column(db.String(50), nullable=True)
+    sub = db.Column(db.String(100), nullable=True)
 
     def __init__(self, vendor=0, product=0, in_ep=None, out_ep=None, active=False,
-                 langu='en', value=1, scale=1, name=None):
+                 langu='en', value=1, scale=1, name=None, header=None, sub=None):
         self.vendor = vendor
         self.product = product
         self.in_ep = in_ep
@@ -652,6 +658,8 @@ class Printer(db.Model, Mixin):
         self.scale = scale
         self.name = name
         self.langu = langu
+        self.header = header
+        self.sub = sub
 
 
 # 00 Configuration Tabels 00 #

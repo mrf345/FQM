@@ -82,6 +82,8 @@ def test_new_printed_ticket(c, monkeypatch):
     printer_settings.product = 3
     printer_settings.in_ep = 170
     printer_settings.out_ep = 170
+    header = printer_settings.header = 'testing header'
+    sub = printer_settings.sub = 'testing sub-header'
     db.session.commit()
     task = choice(Task.query.all())
     last_ticket = Serial.query.filter_by(task_id=task.id)\
@@ -105,6 +107,8 @@ def test_new_printed_ticket(c, monkeypatch):
     assert mock_printer().set.call_count == 7
     mock_printer().set.assert_called_with(align='left', height=1, width=1)
     mock_printer().cut.assert_called_once()
+    mock_printer().text.assert_any_call(f'{header}\n')
+    mock_printer().text.assert_any_call(f'\n{sub}\n')
     mock_printer().text.assert_any_call(f'\nOffice : {office.prefix}{office.name}\n')
     mock_printer().text.assert_any_call(f'\n{office.prefix}.{new_ticket.number}\n')
     mock_printer().text.assert_any_call(f'\nTickets ahead : {tickets.count()}\n')
@@ -251,7 +255,15 @@ def test_new_printed_ticket_arabic(c, monkeypatch):
     last_ticket = None
     mock_printer = MagicMock()
     image_path = os.path.join(os.getcwd(), 'dummy.jpg')
+    mock_pil = MagicMock()
+    mock_pil.truetype().getsize.return_value = (0, 0)
+    mock_pos = MagicMock()
+    mock_pos().output = b''
     monkeypatch.setattr(escpos.printer, 'Usb', mock_printer)
+    monkeypatch.setattr(app.printer, 'ImageDraw', mock_pil)
+    monkeypatch.setattr(app.printer, 'Image', mock_pil)
+    monkeypatch.setattr(app.printer, 'ImageFont', mock_pil)
+    monkeypatch.setattr(app.printer, 'Dummy', mock_pos)
 
     printer_settings = Printer.get()
     touch_screen_settings = Touch_store.get()
@@ -295,10 +307,18 @@ def test_new_printed_ticket_windows_arabic(c, monkeypatch):
     mock_os = MagicMock()
     mock_os.name = 'nt'
     mock_system = MagicMock()
+    mock_pil = MagicMock()
+    mock_pil.truetype().getsize.return_value = (0, 0)
+    mock_pos = MagicMock()
+    mock_pos().output = b''
     monkeypatch.setattr(app.database, 'os', mock_os)
     monkeypatch.setattr(app.printer, 'name', 'nt')
     monkeypatch.setattr(app.printer, 'uuid', mock_uuid)
     monkeypatch.setattr(app.printer, 'system', mock_system)
+    monkeypatch.setattr(app.printer, 'ImageDraw', mock_pil)
+    monkeypatch.setattr(app.printer, 'Image', mock_pil)
+    monkeypatch.setattr(app.printer, 'ImageFont', mock_pil)
+    monkeypatch.setattr(app.printer, 'Dummy', mock_pos)
 
     printer_settings = Printer.get()
     touch_screen_settings = Touch_store.get()
@@ -335,10 +355,18 @@ def test_new_printed_ticket_lp_arabic(c, monkeypatch):
     mock_os = MagicMock()
     mock_os.name = 'linux'
     mock_system = MagicMock()
+    mock_pil = MagicMock()
+    mock_pil.truetype().getsize.return_value = (0, 0)
+    mock_pos = MagicMock()
+    mock_pos().output = b''
     monkeypatch.setattr(app.views.core, 'os', mock_os)
     monkeypatch.setattr(app.printer, 'name', 'linux')
     monkeypatch.setattr(app.printer, 'uuid', mock_uuid)
     monkeypatch.setattr(app.printer, 'system', mock_system)
+    monkeypatch.setattr(app.printer, 'ImageDraw', mock_pil)
+    monkeypatch.setattr(app.printer, 'Image', mock_pil)
+    monkeypatch.setattr(app.printer, 'ImageFont', mock_pil)
+    monkeypatch.setattr(app.printer, 'Dummy', mock_pos)
 
     settings = Settings.get()
     printer_settings = Printer.get()
