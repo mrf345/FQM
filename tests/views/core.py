@@ -251,7 +251,15 @@ def test_new_printed_ticket_arabic(c, monkeypatch):
     last_ticket = None
     mock_printer = MagicMock()
     image_path = os.path.join(os.getcwd(), 'dummy.jpg')
+    mock_pil = MagicMock()
+    mock_pil.truetype().getsize.return_value = (0, 0)
+    mock_pos = MagicMock()
+    mock_pos().output = b''
     monkeypatch.setattr(escpos.printer, 'Usb', mock_printer)
+    monkeypatch.setattr(app.printer, 'ImageDraw', mock_pil)
+    monkeypatch.setattr(app.printer, 'Image', mock_pil)
+    monkeypatch.setattr(app.printer, 'ImageFont', mock_pil)
+    monkeypatch.setattr(app.printer, 'Dummy', mock_pos)
 
     printer_settings = Printer.get()
     touch_screen_settings = Touch_store.get()
@@ -295,10 +303,18 @@ def test_new_printed_ticket_windows_arabic(c, monkeypatch):
     mock_os = MagicMock()
     mock_os.name = 'nt'
     mock_system = MagicMock()
+    mock_pil = MagicMock()
+    mock_pil.truetype().getsize.return_value = (0, 0)
+    mock_pos = MagicMock()
+    mock_pos().output = b''
     monkeypatch.setattr(app.database, 'os', mock_os)
     monkeypatch.setattr(app.printer, 'name', 'nt')
     monkeypatch.setattr(app.printer, 'uuid', mock_uuid)
     monkeypatch.setattr(app.printer, 'system', mock_system)
+    monkeypatch.setattr(app.printer, 'ImageDraw', mock_pil)
+    monkeypatch.setattr(app.printer, 'Image', mock_pil)
+    monkeypatch.setattr(app.printer, 'ImageFont', mock_pil)
+    monkeypatch.setattr(app.printer, 'Dummy', mock_pos)
 
     printer_settings = Printer.get()
     touch_screen_settings = Touch_store.get()
@@ -335,10 +351,18 @@ def test_new_printed_ticket_lp_arabic(c, monkeypatch):
     mock_os = MagicMock()
     mock_os.name = 'linux'
     mock_system = MagicMock()
+    mock_pil = MagicMock()
+    mock_pil.truetype().getsize.return_value = (0, 0)
+    mock_pos = MagicMock()
+    mock_pos().output = b''
     monkeypatch.setattr(app.views.core, 'os', mock_os)
     monkeypatch.setattr(app.printer, 'name', 'linux')
     monkeypatch.setattr(app.printer, 'uuid', mock_uuid)
     monkeypatch.setattr(app.printer, 'system', mock_system)
+    monkeypatch.setattr(app.printer, 'ImageDraw', mock_pil)
+    monkeypatch.setattr(app.printer, 'Image', mock_pil)
+    monkeypatch.setattr(app.printer, 'ImageFont', mock_pil)
+    monkeypatch.setattr(app.printer, 'Dummy', mock_pos)
 
     settings = Settings.get()
     printer_settings = Printer.get()
