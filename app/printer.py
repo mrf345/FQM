@@ -159,18 +159,18 @@ def get_translation(text, language):
 
 def printit(printer, ticket, office, tnumber,
             task, cticket, site='https://fqms.github.io', lang='en',
-            scale=1):
+            scale=1, header='FQM'):
     office_header = get_translation('\nOffice : ', lang)
     task_header = get_translation('\nTask : ', lang)
     cur_ticket_header = get_translation('\nCurrent ticket : ', lang)
     ahead_header = get_translation('\nTickets ahead : ', lang)
 
     printer.set(align='center', **get_font_height_width('logo', scale))
-    printer.text("FQM\n")
+    printer.text(f"{header}\n")
     printer.set(align='center', **get_font_height_width('regular', scale))
     printer.text(get_translation('Version ', lang) + VERSION)
     printer.set('center', 'a', 'u', **get_font_height_width('regular', scale))
-    printer.text("\n" + site + "\n")
+    printer.text(f"\n{site}\n")
     printer.set(align='center', **get_font_height_width('spacer', scale))
     printer.text("\n" + '-' * 15 + "\n")
     printer.set(align='center', **get_font_height_width('large', scale))
@@ -188,7 +188,8 @@ def printit(printer, ticket, office, tnumber,
 
 
 def print_ticket_cli(printer, ticket, office, tickets_ahead, task, current_ticket,
-                     host='localhost', language='en', scale=1, windows=False, unix=False):
+                     host='localhost', language='en', scale=1, windows=False, unix=False,
+                     header='', sub=''):
     '''Print a ticket through the Command-Line interface.
 
     Parameters
@@ -215,9 +216,14 @@ def print_ticket_cli(printer, ticket, office, tickets_ahead, task, current_ticke
         if printing on Windows, by default False
     unix : bool, optional
         if printing on Unix-like, by default False
+    header: str, optional
+        passes the ticket's text header
+    sub: str, optional
+        passes the ticket's sub text header
     '''
     ticket_content = printit(Dummy(), ticket, office, tickets_ahead, task,
-                             current_ticket, lang=language, scale=scale).output
+                             current_ticket, lang=language, scale=scale,
+                             header=header, site=sub).output
     file_path = path.join(getcwd(),
                           f'{uuid.uuid4()}'.replace('-', '') + '.txt')
 

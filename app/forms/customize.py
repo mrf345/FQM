@@ -236,6 +236,8 @@ class TicketForm(LocalizedForm):
                            choices=[('00', 'No printers were found')])
     scale = SelectField('Select font scaling measurement for printed tickets :',
                         coerce=int)
+    header = StringField('Enter a text header : ')
+    sub = StringField('Enter a text sub-header : ')
     submit = SubmitField('Set ticket')
 
     def __init__(self, inspected_printers_from_view, lp_printing, *args, **kwargs):

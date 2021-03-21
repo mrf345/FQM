@@ -61,6 +61,9 @@ def ticket():
                       'danger')
                 return redirect(url_for('cust_app.ticket'))
 
+            printer.header = form.header.data
+            printer.sub = form.sub.data
+
             if windows or settings.lp_printing:
                 printer.name = printer_id
             else:
@@ -91,6 +94,8 @@ def ticket():
         form.langu.data = printer.langu
         form.value.data = printer.value
         form.scale.data = printer.scale
+        form.header.data = printer.header
+        form.sub.data = printer.sub
 
         if windows or settings.lp_printing:
             form.printers.data = printer.name or ''
