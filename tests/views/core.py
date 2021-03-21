@@ -82,6 +82,8 @@ def test_new_printed_ticket(c, monkeypatch):
     printer_settings.product = 3
     printer_settings.in_ep = 170
     printer_settings.out_ep = 170
+    header = printer_settings.header = 'testing header'
+    sub = printer_settings.sub = 'testing sub-header'
     db.session.commit()
     task = choice(Task.query.all())
     last_ticket = Serial.query.filter_by(task_id=task.id)\
@@ -105,6 +107,8 @@ def test_new_printed_ticket(c, monkeypatch):
     assert mock_printer().set.call_count == 7
     mock_printer().set.assert_called_with(align='left', height=1, width=1)
     mock_printer().cut.assert_called_once()
+    mock_printer().text.assert_any_call(f'{header}\n')
+    mock_printer().text.assert_any_call(f'\n{sub}\n')
     mock_printer().text.assert_any_call(f'\nOffice : {office.prefix}{office.name}\n')
     mock_printer().text.assert_any_call(f'\n{office.prefix}.{new_ticket.number}\n')
     mock_printer().text.assert_any_call(f'\nTickets ahead : {tickets.count()}\n')
