@@ -52,7 +52,7 @@ MarkupSafe==1.1.1
 mccabe==0.6.1
 netifaces==0.10.6
 olefile==0.44
-Pillow==7.1.2
+Pillow==8.1.1
 ply==3.11
 Pygments==2.5.2
 pyserial==3.4
