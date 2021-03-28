@@ -42,7 +42,7 @@ idna==2.5
 infinity==1.4
 intervals==0.8.0
 itsdangerous==0.24
-Jinja2==2.10.1
+Jinja2==2.11.3
 jsmin==2.2.2
 Mako==1.0.7
 Markdown==2.6.9
