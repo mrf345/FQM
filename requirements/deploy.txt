@@ -54,7 +54,7 @@ netifaces==0.10.6
 olefile==0.44
 Pillow==8.1.1
 ply==3.11
-Pygments==2.5.2
+Pygments==2.7.4
 pyserial==3.4
 python-bidi==0.4.0
 python-dateutil==2.6.1
