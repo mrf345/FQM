@@ -107,6 +107,7 @@ installiation/
 
 # database
 data.sqlite
+*.backup
 
 # autogenrated files
 *.mp3
