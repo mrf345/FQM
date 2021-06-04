@@ -2,6 +2,7 @@ import os
 import copy
 import pytest
 import atexit
+import shutil
 from random import choice, randint
 
 from app.main import bundle_app
@@ -38,41 +39,23 @@ TEST_REPEATS = 3
 ENTRY_NUMBER = 4
 
 
-@atexit.register
-def before_exit():
-    os.path.isfile(DB_PATH) and os.remove(DB_PATH)
-    os.path.isfile(absolute_path('errors.log')) and os.remove(absolute_path('errors.log'))
-
-
-@pytest.fixture
-def c():
-    app_config = {'LOGIN_DISABLED': True,
-                  'WTF_CSRF_ENABLED': False,
-                  'TESTING': True,
-                  'DB_NAME': DB_NAME,
-                  'SQLALCHEMY_DATABASE_URI': f'sqlite:///{DB_PATH}?check_same_thread=False'}
-    app = bundle_app(app_config)
-
-    stop_tasks()
-    with app.test_client() as client:
-        with app.app_context():
-            db.create_all()
-            teardown_tables(copy.copy(MODULES))
-            recreate_defaults(DEFAULT_MODULES)
-            fill_offices()
-            fill_tasks()
-            fill_users()
-            fill_tickets()
-            fill_slides()
-            fill_tokens()
-            yield client
-
-
 def teardown_tables(modules):
     if modules:
         modules.pop().query.delete()
         db.session.commit()
         return teardown_tables(modules)
+
+
+def setup_data():
+    db.create_all()
+    teardown_tables(copy.copy(MODULES))
+    recreate_defaults(DEFAULT_MODULES)
+    fill_offices()
+    fill_tasks()
+    fill_users()
+    fill_tickets()
+    fill_slides()
+    fill_tokens()    
 
 
 def recreate_defaults(models):
@@ -195,3 +178,33 @@ def do_until_truthy(todo, getter):
         value = getter()
 
     return value
+
+
+@atexit.register
+def before_exit():
+    os.path.isfile(DB_PATH) and os.remove(DB_PATH)
+    os.path.isfile(absolute_path('errors.log')) and os.remove(absolute_path('errors.log'))
+
+
+@pytest.fixture
+def c():
+    dump_db = f'{DB_PATH}.backup'
+    dump_exists = os.path.isfile(dump_db)
+
+    if dump_exists:
+        shutil.copyfile(dump_db, DB_PATH)
+
+    app_config = {'LOGIN_DISABLED': True,
+                  'WTF_CSRF_ENABLED': False,
+                  'TESTING': True,
+                  'DB_NAME': DB_NAME,
+                  'SQLALCHEMY_DATABASE_URI': f'sqlite:///{DB_PATH}?check_same_thread=False'}
+    app = bundle_app(app_config)
+
+    stop_tasks()
+    with app.test_client() as client:
+        with app.app_context():
+            if not dump_exists:
+                setup_data()
+                shutil.copyfile(DB_PATH, dump_db)
+            yield client
