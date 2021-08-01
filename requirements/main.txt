@@ -35,7 +35,7 @@ future==0.16.0
 gevent==20.6.2
 googletrans==2.4.0
 greenlet==0.4.16
-gTTS==2.2.2
+gTTS==2.2.3
 html5lib==0.999999999
 htmlmin==0.1.12
 idna==2.5
