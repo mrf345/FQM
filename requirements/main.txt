@@ -50,7 +50,7 @@ MarkupSafe==1.1.1
 mccabe==0.6.1
 netifaces==0.10.6
 olefile==0.44
-Pillow==8.1.1
+Pillow==8.3.2
 ply==3.11
 Pygments==2.7.4
 PyQt5==5.13.2
