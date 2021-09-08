@@ -30,7 +30,7 @@ Flask-Uploads==0.2.1
 Flask-WhooshAlchemy==0.56
 Flask-WTF==0.14.2
 Flask-Migrate==2.5.2
-flask-restx==0.2.0
+flask-restx==0.5.1
 future==0.16.0
 gevent==20.6.2
 googletrans==2.4.0
