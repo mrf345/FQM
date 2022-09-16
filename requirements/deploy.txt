@@ -46,7 +46,7 @@ itsdangerous==0.24
 Jinja2==2.11.3
 jsmin==2.2.2
 lesscpy==0.13.0
-Mako==1.0.7
+Mako==1.2.2
 Markdown==2.6.9
 MarkupSafe==1.1.1
 mccabe==0.6.1
