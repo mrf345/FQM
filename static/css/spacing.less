@@ -1,0 +1,40 @@
+// Compatible with lessc 2.7.3 (Less Compiler)
+
+@cPercent: 10;
+
+.loopIt(@ele, @pos, @times) when (@times > 0) {
+    .loopIt(@ele, @pos, @times - 1);
+    &-@{times} {
+        @{ele}-@{pos}: percentage(@times / 100);
+    }
+}
+
+.p {
+    &t {
+        .loopIt(padding, top, @cPercent)
+    }
+    &b {
+        .loopIt(padding, bottom, @cPercent)
+    }
+    &l {
+        .loopIt(padding, left, @cPercent)
+    }
+    &r {
+        .loopIt(padding, right, @cPercent)
+    }
+}
+
+.m {
+    &t {
+        .loopIt(margin, top, @cPercent)
+    }
+    &b {
+        .loopIt(margin, bottom, @cPercent)
+    }
+    &l {
+        .loopIt(margin, left, @cPercent)
+    }
+    &r {
+        .loopIt(margin, right, @cPercent)
+    }
+}

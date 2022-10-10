@@ -10,8 +10,12 @@ from flask_qrcode import QRcode
 from flask_datepicker import datepicker
 from flask_colorpicker import colorpicker
 from flask_fontpicker import fontpicker
-from flask_minify import minify
 from sqlalchemy.exc import OperationalError
+from app.helpers import (get_all_offices_cached,
+                         get_number_of_active_tickets_cached,
+                         get_number_of_active_tickets_office_cached,
+                         get_number_of_active_tickets_task_cached,
+                         get_settings_cached)
 
 from app.middleware import db, login_manager, files, gtranslator, gTTs, migrate
 from app.printer import get_printers_usb
@@ -19,10 +23,12 @@ from app.views.administrate import administrate
 from app.views.core import core
 from app.views.customize import cust_app
 from app.views.manage import manage_app
-from app.utils import absolute_path, log_error, create_default_records, get_bp_endpoints
-from app.database import Settings, Serial, Office
+from app.utils import (absolute_path, log_error, create_default_records, get_bp_endpoints,
+                       in_records)
+from app.database import Serial
 from app.tasks import start_tasks
 from app.api.setup import setup_api
+from app.events import setup_events
 from app.constants import (SUPPORTED_LANGUAGES, SUPPORTED_MEDIA_FILES, VERSION, MIGRATION_FOLDER,
                            DATABASE_FILE, SECRET_KEY)
 
@@ -36,7 +42,7 @@ def create_app(config={}):
             app with settings and blueprints loadeds.
     '''
     app = Flask(__name__, static_folder=absolute_path('static'), template_folder=absolute_path('templates'))
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI',
                                                            (f'sqlite:///{absolute_path(DATABASE_FILE)}'
                                                             '?check_same_thread=False'))
@@ -64,12 +70,7 @@ def create_app(config={}):
                            'static/webfont.select.min.js', 'static/css/webfont.select.css'])
     gTTs.init_app(app)
     gtranslator.init_app(app)
-
-    if app.config.get('GUNICORN', False):
-        gtranslator.readonly = True
-    else:
-        minify(app, js=True, cssless=True, caching_limit=3, fail_safe=True,
-               bypass=['.min.*', 'restx_doc.static'])
+    gtranslator.readonly = True
 
     # Register blueprints
     app.register_blueprint(administrate)
@@ -111,6 +112,7 @@ def bundle_app(config={}):
     # NOTE: avoid creating or interacting with the database during migration
     if not app.config.get('MIGRATION', False):
         create_db(app)
+        setup_events(db)
         start_tasks(app)
 
     if os.name != 'nt':
@@ -192,11 +194,28 @@ def bundle_app(config={}):
         ar = session.get('lang') == 'AR'  # adding language support var
         path = request.path or ''
 
-        return dict(brp=Markup('<br>'), ar=ar, version=VERSION, str=str, defLang=session.get('lang'),
-                    getattr=getattr, settings=Settings.get(), Serial=Serial, next=next, it=iter,
-                    checkId=lambda id, records: id in [i.id for i in records], offices=Office.query.all(),
-                    moment_wrapper=moment_wrapper, current_path=quote(path, safe=''), windows=os.name == 'nt',
-                    unix=os.name != 'nt', setattr=lambda *args, **kwargs: setattr(*args, **kwargs) or '',
-                    adme=path in get_bp_endpoints(administrate))
+        return dict(
+            brp=Markup('<br>'),
+            ar=ar,
+            version=VERSION,
+            str=str,
+            defLang=session.get('lang'),
+            getattr=getattr,
+            settings=get_settings_cached(),
+            Serial=Serial,
+            active_tickets=get_number_of_active_tickets_cached(),
+            get_active_tickets_office=get_number_of_active_tickets_office_cached,
+            get_active_tickets_task=get_number_of_active_tickets_task_cached,
+            next=next,
+            it=iter,
+            checkId=in_records,
+            offices=get_all_offices_cached(),
+            moment_wrapper=moment_wrapper,
+            current_path=quote(path, safe=''),
+            windows=os.name == 'nt',
+            unix=os.name != 'nt',
+            setattr=lambda *args, **kwargs: setattr(*args, **kwargs) or '',
+            adme=path in get_bp_endpoints(administrate),
+        )
 
     return app

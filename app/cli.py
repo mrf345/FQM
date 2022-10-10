@@ -1,6 +1,5 @@
 import sys
 import click
-from gevent import monkey, pywsgi
 from importlib import import_module
 
 from app.main import bundle_app
@@ -23,6 +22,12 @@ def interface(cli, quiet, reset, ip, port):
     * If no `ip` is passed it will default to `127.0.0.1`.\n
     * If no `port` is passed it will default to a random port.\n
     '''
+    if reset:
+        with bundle_app({'MIGRATION': True}).app_context():
+            User.reset_default_password()
+            click.echo('Admin password reset successfully')
+        return
+
     app = bundle_app()
 
     def start_cli():
@@ -31,30 +36,28 @@ def interface(cli, quiet, reset, ip, port):
         app.config['LOCALADDR'] = alt_ip
         app.config['CLI_OR_DEPLOY'] = True
         app.config['QUIET'] = quiet
+        app.config['SERVER_NAME'] = f'{alt_ip}:{alt_port}'
 
         click.echo(click.style(f'FQM {VERSION} is running on http://{alt_ip}:{alt_port}', bold=True, fg='green'))
         click.echo('')
         click.echo(click.style('Press Control-c to stop', blink=True, fg='black', bg='white'))
 
         try:
+            from gevent import monkey, pywsgi
             monkey.patch_socket()
             pywsgi.WSGIServer((str(alt_ip), int(alt_port)),
-                              app,
-                              log=None if quiet else 'default').serve_forever()
+                             app,
+                             log=None if quiet else 'default').serve_forever()
         except KeyboardInterrupt:
             stop_tasks()
 
     if cli:
         start_cli()
-    elif reset:
-        with app.app_context():
-            User.reset_default_password()
-            click.echo('Admmin password was reset.')
     else:
-        try:
+        try:            
             app.config['CLI_OR_DEPLOY'] = False
             gui_process = import_module('PyQt5.QtWidgets').QApplication(sys.argv)
-            window = import_module('app.gui').MainWindow(app)  # NOTE: has to be decleared in a var to work properly
+            window = import_module('app.gui').MainWindow(app)  # NOTE: has to be declared in a var to work properly
 
             import_module('PyQt5.QtCore').QCoreApplication.processEvents()
             gui_process.exec_()

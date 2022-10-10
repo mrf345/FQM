@@ -863,6 +863,12 @@
         "fr": "Entrez un sous-titre:",
         "it": "Inserisci un sottotitolo:"
     },
+    "Enter a text header : ": {
+        "en": "Enter a text header : "
+    },
+    "Enter a text sub-header : ": {
+        "en": "Enter a text sub-header : "
+    },
     "Enter a title :": {
         "ar": "\u0623\u062f\u062e\u0644 \u0627\u0644\u0639\u0646\u0648\u0627\u0646:",
         "en": "Enter a title :",
@@ -1783,6 +1789,9 @@
     "Not a valid choice": {
         "en": "Not a valid choice"
     },
+    "Not a valid choice.": {
+        "en": "Not a valid choice."
+    },
     "Not used": {
         "ar": "\u063a\u064a\u0631 \u0645\u0633\u062a\u0639\u0645\u0644",
         "en": "Not used",
@@ -2559,6 +2568,9 @@
         "fr": "R\u00e9p\u00e9ter l'annonce",
         "it": "Ripeti l'annuncio"
     },
+    "Required not less than 3 nor more than 300 letters": {
+        "en": "Required not less than 3 nor more than 300 letters"
+    },
     "Required not less than 5 nor more than 200 letters": {
         "ar": "\u0645\u0637\u0644\u0648\u0628 \u0644\u0627 \u064a\u0642\u0644 \u0639\u0646 5 \u0648\u0644\u0627 \u064a\u0632\u064a\u062f \u0639\u0646 200 \u062d\u0631\u0641",
         "en": "Required not less than 5 nor more than 200 letters",
@@ -2579,6 +2591,12 @@
         "es": "Reiniciar",
         "fr": "R\u00e9initialiser",
         "it": "Reset"
+    },
+    "Reset admin password": {
+        "ar": "Reset admin password",
+        "en": "Reset admin password",
+        "es": "Reset admin password",
+        "fr": "Reset admin password"
     },
     "Reset all": {
         "ar": "\u0625\u0639\u0627\u062f\u0629 \u0636\u0628\u0637 \u0627\u0644\u062c\u0645\u064a\u0639",

@@ -1,0 +1,31 @@
+name: Build
+on:
+  push:
+  schedule:
+    # runs a new build everyday
+    - cron: 0 0 * * SAT
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ['3.8', '3.9']
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: '**/requirements/test.txt'
+      - name: Install dependencies
+        run: pip install -r requirements/test.txt
+      - name: Style check
+        run: |
+          python -m flake8 app/**/**/** tests/**/**/**
+      - name: Tests
+        run: |
+          python -m pytest -vv tests/*/* --cov=./app

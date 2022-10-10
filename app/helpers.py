@@ -2,12 +2,56 @@ import os
 import json
 from urllib.parse import unquote
 from functools import wraps
+
 from flask import current_app, flash, redirect, url_for, request
 from flask_login import current_user
+from flask import jsonify
 
 import app.database as data
 from app.utils import absolute_path, log_error
 from app.constants import TICKET_ORDER_NEWEST_PROCESSED
+from app.cache import cache_call
+
+
+class CacheStateDecoratorBase:
+    def __init__(self, wrapped):
+        self._wrapped = wrapped
+        self.state = {}
+        self._responses = {}
+
+    def __call__(self, *args, **kwargs):
+        key = (str(args), str(kwargs))
+        resp  = self._responses.get(key)
+        state = self.state.get(key)
+
+        if resp is not None and self.use_cached_state(state):
+            return resp
+
+        new_state = self._wrapped(*args, **kwargs)
+        self.state[key] = new_state
+        self._responses[key] = resp = self.create_response(new_state)
+
+        return resp
+
+    def create_response(self, state):
+        pass
+
+    def use_cached_state(self, state):
+        pass
+
+    def clear_cache(self):
+        self.state.clear()
+        self._responses.clear()
+
+
+class RepeatAnnounceDecorator(CacheStateDecoratorBase):
+    key = ('()', '{}')
+
+    def create_response(self, state):
+        return jsonify(state)
+
+    def use_cached_state(self, state):
+        return not all(state.values())
 
 
 def is_god():
@@ -372,3 +416,32 @@ def get_tts_safely():
                                       'message': ' , please proceed to the {} number : '}})
 
     return tts_content
+
+
+@cache_call(None)
+def get_all_offices_cached():
+    return data.Office.query.all()
+
+@cache_call(None)
+def get_settings_cached():
+    return data.Settings.get()
+
+@cache_call(None)
+def get_number_of_active_tickets_cached():
+    return data.Serial.query.filter_by(p=False).count()
+
+@cache_call(None)
+def get_number_of_active_tickets_office_cached(*args, **kwargs):
+    return (
+        data.Serial.all_office_tickets(*args, **kwargs)
+        .filter_by(p=False)
+        .count()
+    )
+
+@cache_call(None)
+def get_number_of_active_tickets_task_cached(*args, **kwargs):
+    return (
+        data.Serial.all_task_tickets(*args, **kwargs)
+        .filter_by(p=False)
+        .count()
+    )

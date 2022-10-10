@@ -12,6 +12,7 @@ from app.database import (User, Operators, Office, Task, Serial, Media, Touch_st
                           Settings, AuthTokens)
 from app.utils import absolute_path, is_iterable
 from app.tasks import stop_tasks
+from app.views.core import touch
 
 
 NAMES = ('Aaron Enlightened', 'Abbott Father', 'Abel Breath', 'Abner Father',
@@ -180,6 +181,10 @@ def do_until_truthy(todo, getter):
     return value
 
 
+def clear_cache():
+    touch.cache_clear()
+
+
 @atexit.register
 def before_exit():
     os.path.isfile(DB_PATH) and os.remove(DB_PATH)
@@ -202,6 +207,7 @@ def c():
     app = bundle_app(app_config)
 
     stop_tasks()
+    clear_cache()
     with app.test_client() as client:
         with app.app_context():
             if not dump_exists:

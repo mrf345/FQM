@@ -443,7 +443,7 @@ class Serial(db.Model, TicketsMixin, Mixin):
         Serial, exception
             a new ticket printed or registered ticket.
         '''
-        from app.printer import assign, printit, printit_ar, print_ticket_cli, print_ticket_cli_ar
+        from app.printer import PrintedTicket
 
         windows = os.name == 'nt'
         touch_screen_stings = Touch_store.get()
@@ -457,32 +457,20 @@ class Serial(db.Model, TicketsMixin, Mixin):
         if printed:
             tickets = Serial.all_office_tickets(office.id, desc=False)
             current_ticket = getattr(tickets.first(), 'number', None)
-            common_arguments = (f'{office.prefix}.{next_number}',
-                                f'{office.prefix}{office.name}',
-                                tickets.count(),
-                                task.name,
-                                f'{office.prefix}.{current_ticket}')
 
             try:
-                if windows or settings.lp_printing:
-                    (print_ticket_cli_ar
-                     if ticket_settings.langu == 'ar' else
-                     print_ticket_cli)(ticket_settings.name,
-                                       *common_arguments,
-                                       language=ticket_settings.langu,
-                                       windows=windows,
-                                       unix=not windows,
-                                       header=ticket_settings.header or '',
-                                       sub=ticket_settings.sub or '')
-                else:
-                    printer = assign(ticket_settings.vendor, ticket_settings.product,
-                                     ticket_settings.in_ep, ticket_settings.out_ep)
-                    (printit_ar if ticket_settings.langu == 'ar' else printit)(printer,
-                                                                               *common_arguments,
-                                                                               lang=ticket_settings.langu,
-                                                                               scale=ticket_settings.scale,
-                                                                               site=ticket_settings.sub or '',
-                                                                               header=ticket_settings.header or '')
+                PrintedTicket(
+                    ticket_settings=ticket_settings,
+                    ticket=f'{office.prefix}.{next_number}',
+                    office=f'{office.prefix}{office.name}',
+                    tickets_ahead=tickets.count(),
+                    task=task.name,
+                    current_ticket=f'{office.prefix}.{current_ticket}',
+                    language=ticket_settings.langu,
+                    main_header=ticket_settings.header or None,
+                    sub_header=ticket_settings.sub or None,
+                    is_network_printer=settings.lp_printing,
+                ).print()
             except Exception as e:
                 exception = e
 

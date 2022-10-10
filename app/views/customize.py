@@ -1,7 +1,8 @@
 import os
 from flask import url_for, flash, request, render_template, redirect, Blueprint
 from flask_login import login_required
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
+
 
 import app.database as data
 from app.middleware import db, files
@@ -10,6 +11,7 @@ from app.forms.customize import (DisplayScreenForm, TouchScreenForm, TicketForm,
                                  AliasForm, VideoForm, MultimediaForm, SlideAddForm,
                                  SlideSettingsForm, BackgroundTasksForms)
 from app.printer import get_printers_cli, get_printers_usb
+from app.tasks.celery import CeleryTasks
 from app.utils import absolute_path, getFolderSize, convert_to_int_or_hex
 from app.constants import SUPPORTED_MEDIA_FILES
 from app.helpers import (reject_not_admin, reject_slides_enabled, reject_videos_enabled,
@@ -599,7 +601,7 @@ def touchscreen_c(stab):
         form.mfont.data = touch_s.mfont
         form.message.data = touch_s.message
 
-        if touch_s.bgcolor[:3] == 'rgb':
+        if (touch_s.bgcolor or '')[:3] == 'rgb':
             form.bcolor.data = touch_s.bgcolor
             form.background.data = 00
         else:
@@ -677,8 +679,14 @@ def background_tasks():
                                             form.delete_tickets_time.data)
 
         db.session.commit()
-        stop_tasks()
-        start_tasks()
+
+        if os.environ.get('DOCKER'):
+            CeleryTasks._runner.stop()
+            CeleryTasks._runner.apply_async()            
+        else:
+            stop_tasks()
+            start_tasks()
+
         flash('Notice: background tasks got updated successfully.', 'info')
         return redirect(url_for('cust_app.background_tasks'))
 

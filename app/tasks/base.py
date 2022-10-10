@@ -11,7 +11,7 @@ class TaskBase:
     def __init__(self, app):
         self.thread = None
         self.app = app
-        self.cut_circut = False
+        self.cut_circuit = False
         self.interval = 5
         self.spinned = False
         self.spinned_once = False
@@ -65,7 +65,7 @@ class TaskBase:
             else:
                 job = getattr(schedule.every(), task_settings.every).do(_doer)
 
-            while not self.cut_circut:
+            while not self.cut_circuit:
                 schedule.run_pending()
                 self.sleep()
 
@@ -78,7 +78,7 @@ class TaskBase:
     def none_blocking_loop(self, iterator=[]):
         def wrapper(todo):
             for i in iterator:
-                if self.cut_circut:
+                if self.cut_circuit:
                     break
 
                 todo(i)
@@ -86,7 +86,7 @@ class TaskBase:
         return wrapper
 
     def stop(self):
-        self.cut_circut = True
+        self.cut_circuit = True
 
     def sleep(self, duration=0):
         self.none_blocking_loop(range(duration or self.interval))(lambda _: sleep(1))

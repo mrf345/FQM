@@ -26,7 +26,7 @@
 				{{ translate('All tickets', 'en', [defLang]) }}
 					{% if not settings.single_row %}
 					<span class="badge pull-right">
-						{{ Serial.query.filter_by(p=False).count() }}
+						{{ active_tickets }}
 					</span>
 					{% endif %}
 			    </a>
@@ -35,9 +35,9 @@
 				<a href="{{ url_for('core.pull') }}">
 						<span class="fa fa-{% if settings.single_row %}plus{% else %}minus{% endif %}"></span>
 						{{ translate('Generate a ticket' if settings.single_row else 'Pull a ticket', 'en', [defLang]) }}
-						{% if Serial.query.filter_by(p=False).count() >= 1 %}
+						{% if active_tickets >= 1 %}
 						<span class="badge pull-right">
-							{{ Serial.query.filter_by(p=False).count() }}
+							{{ active_tickets }}
 						</span>
 						{% endif %}
 				</a>
@@ -75,7 +75,7 @@
 				{{ loop.index }}.{{ translate('Office', 'en', [defLang]) }}  {{ office.prefix }}{{ office.name }}
 				<span class="caret"></span>
 				<!-- To solve counting all the common and non-common tasks tickets -->
-				{% set total_tickets = Serial.all_office_tickets(office.id).filter_by(p=False).count() %}
+				{% set total_tickets = get_active_tickets_office(office.id) %}
 				{% if total_tickets > 0 %}
 				<span class="badge pull-right">
 					{{ total_tickets }}
@@ -92,14 +92,12 @@
 						{{ translate('All tickets', 'en', [defLang]) }}
 					    </a>
 					</li>
-					{% if getattr(current_user, 'role_id', None) == 3 %}
 					<li id="tr{{ office.id }}" >
-						<a onclick="announce()">
+						<a onclick="announce('{{ office.id }}')">
 						<span class="glyphicon glyphicon-refresh"></span>
 						{{ translate('Repeat announcement', 'en', [defLang]) }}
 						</a>
 					</li>
-					{% endif %}
 					<li  id="to{{ office.id }}" >
 						<a href="{{ url_for('administrate.operators', t_id=office.id) }}">
 						<span class="fa fa-user"></span>
@@ -128,7 +126,7 @@
 						<a href="{{ url_for('core.pull', o_id=task.id, ofc_id=office.id) }}">
 								<span class="fa fa-minus"></span>
 								{{ translate('Pull a ticket', 'en', [defLang]) }}
-								{% set task_tickets = Serial.all_task_tickets(office.id, task.id).filter_by(p=False).count() %}
+								{% set task_tickets = get_active_tickets_task(office.id, task.id) %}
 								{% if task_tickets >= 1 %}
 								<span class="badge pull-right">
 									{{ task_tickets }}

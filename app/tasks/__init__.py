@@ -1,3 +1,5 @@
+import os
+
 from app.utils import find
 from app.tasks.cache_tickets_tts import CacheTicketsAnnouncements
 from app.tasks.delete_tickets import DeleteTickets
@@ -23,12 +25,12 @@ def start_tasks(app=None, tasks=TASKS):
     else:
         app = start_tasks.__dict__['APP']
 
-    if app.config.get('GUNICORN', False) or app.config.get('MIGRATION', False):
+    if app.config.get('MIGRATION') or os.environ.get('DOCKER'):
         # FIXME: Tasks are disabled when `GUNICORN` is running. We should implement
         # a new tasks module with celery that works seemlessly alongside gunicorn.
         return THREADS
 
-    for task in tasks:
+    for task in tasks:            
         if task.__name__ not in THREADS:
             new_thread = task(app)
 

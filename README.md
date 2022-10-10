@@ -44,12 +44,12 @@ You can find an executable that's suitable to your OS from :
 
 #### - From the source:
 
-- Make sure to install and use **Python 3.7** or **3.8**
+- Make sure to install and use **Python 3.8** or **3.9**
 - Execute the following commands in a terminal window:
 
 1. `git clone https://github.com/mrf345/FQM.git`
 2. `cd FQM`
-3. `python -m pip install -r requirements/deploy.txt`
+3. `python -m pip install -r requirements/legacy.txt`
 4. `python run.py --cli`
 
 - To checkout the supported command-line options `python run.py --help`:
