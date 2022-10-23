@@ -20,9 +20,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: 'pip'
-          cache-dependency-path: '**/requirements/test.txt'
+          cache-dependency-path: '**/requirements/test-legacy.txt'
       - name: Install dependencies
-        run: pip install -r requirements/test.txt
+        run: pip install -r requirements/test-legacy.txt
       - name: Style check
         run: |
           python -m flake8 app/**/**/** tests/**/**/**
