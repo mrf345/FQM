@@ -18,7 +18,7 @@ jobs:
         run: pip install -r requirements/test.txt
       - name: Set coverage percentage
         run: |
-          echo "COVERAGE=$(pytest | awk '$1 == "TOTAL" {print $NF+0}')%" >> $GITHUB_ENV
+          echo "COVERAGE=$(pytest --verbose --cov=app | awk '$1 == "TOTAL" {print $NF+0}')%" >> $GITHUB_ENV
           REF=${{ github.ref }}
           IFS='/' read -ra PATHS <<< "$REF"
           BRANCH_NAME="${PATHS[1]}_${PATHS[2]}"
