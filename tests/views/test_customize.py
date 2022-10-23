@@ -1,3 +1,4 @@
+import os
 import pytest
 import io
 import usb.core
@@ -82,7 +83,7 @@ def test_ticket_printed(c, monkeypatch):
     assert Printer.get().out_ep == out_ep
     assert Printer.get().vendor == vendor
     assert Printer.get().product == product
-    assert f'value={printers}' in page_content
+    assert f'value="{printers}"' in page_content
     assert mock_usb_find.call_count == 2
 
 
@@ -122,7 +123,7 @@ def test_ticket_printed_windows(c, monkeypatch):
     assert Printer.get().langu == lang
     assert Printer.get().scale == scale
     assert Printer.get().name == name
-    assert f'value={name}' in page_content
+    assert f'value="{name}"' in page_content
     assert mock_execute.call_count == 2
     mock_execute.assert_called_with('wmic printer get sharename',
                                     parser='\n',
@@ -166,7 +167,7 @@ def test_ticket_printed_lp(c, monkeypatch):
     assert Printer.get().langu == lang
     assert Printer.get().scale == scale
     assert Printer.get().name == secondName
-    assert f'value={secondName}' in page_content
+    assert f'value="{secondName}"' in page_content
     assert mock_execute.call_count == 2
     mock_execute.assert_called_with('lpstat -a', parser='\n')
 
@@ -447,6 +448,10 @@ def test_aliases(c):
         assert getattr(Aliases.get(), key, None) == value
 
 
+@pytest.mark.skipif(
+    bool(os.getenv('DOCKER')),
+    reason='Not supported in docker setup',
+)
 @pytest.mark.usefixtures('c', 'get_bg_task')
 def test_background_tasks_cache_tts(c, get_bg_task, monkeypatch):
     mock_gTTs = MagicMock()
@@ -470,6 +475,10 @@ def test_background_tasks_cache_tts(c, get_bg_task, monkeypatch):
     assert mock_gTTs.say.called is True
 
 
+@pytest.mark.skipif(
+    bool(os.getenv('DOCKER')),
+    reason='Not supported in docker setup',
+)
 @pytest.mark.usefixtures('c', 'get_bg_task')
 def test_background_tasks_delete_tickets(c, get_bg_task):
     task_enabled = True

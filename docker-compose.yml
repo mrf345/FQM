@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    command: tail -F app/__init__.py
+    restart: on-failure
+    ports:
+      - 5050:5050
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+    # devices:
+    # - /dev/bus/usb/003/008:/dev/bus/usb/003/008
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:6-alpine
+
+  celery_worker:
+    build: .
+    command: celery -A app.celery worker --loglevel=info
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env
+    depends_on:
+      - app
+      - redis

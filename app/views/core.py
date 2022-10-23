@@ -1,19 +1,94 @@
+import functools
 import os
+import pickle
 from sys import platform
+from uuid import uuid4
 from flask import url_for, flash, render_template, redirect, session, jsonify, Blueprint
 from flask_login import current_user, login_required, login_user
 
 import app.database as data
 import app.settings as settings_handlers
-from app.middleware import db, gtranslator
+from app.middleware import db, gtranslator, redis
 from app.utils import log_error, remove_string_noise
 from app.forms.core import LoginForm, TouchSubmitForm
 from app.helpers import (reject_no_offices, reject_operator, is_operator, reject_not_admin,
                          is_office_operator, is_common_task_operator, decode_links,
                          reject_setting, get_or_reject)
+from app.cache import cache_call
 
 
 core = Blueprint('core', __name__)
+
+
+class SharedAnnouncementDecorator:
+    def __init__(self, wrapped):
+        self._wrapped = wrapped
+        self.__name__ = wrapped.__name__
+        self.__state = {}
+
+    def __call__(self, *args, **kwargs):
+        return self._wrapper(*args, **kwargs)
+
+    def get_state(self):
+        if os.environ.get('DOCKER'):
+            state = redis.get(self.__name__)
+            return state and pickle.loads(state)
+        else:
+            return self.__state
+
+    def set_state(self, state):
+        if os.environ.get('DOCKER'):
+            return redis.set(self.__name__, pickle.dumps(state))
+        else:
+            self.__state = state
+            return self.__state
+
+    def cache_clear(self):
+        if os.environ.get('DOCKER'):
+            redis.delete(self.__name__)
+        else:
+            self.__state.clear()
+
+    def set(self, office_id, status):
+        state = self.get_state() or {}
+        state[office_id] = status
+        state.setdefault('ids', {})[office_id] = uuid4()
+        self.set_state(state)
+
+    def get(self, office_id):
+        return (self.get_state() or {}).get(office_id)
+
+    def get_id(self, office_id):
+        return (self.get_state() or {}).get('ids', {}).get(office_id)
+
+    def _wrapper(self, *args, **kwargs):
+        pre_state = state = self.get_state()
+
+        if state is None:
+            state = self._get_default_state()
+
+        office_id = kwargs.get('office_id')
+        resp = self._wrapped(*args, **kwargs)
+
+        if state.get(office_id):
+            state[office_id] = False
+
+        if state != pre_state:
+            self.set_state(state)
+
+        return resp
+
+    def _get_default_state(self):
+        state = {}
+
+        for o in data.Office.query.all():
+            if o.id not in state:
+                state[o.id] = False
+
+        if None not in state:
+            state[None] = False
+
+        return state
 
 
 @core.route('/', methods=['GET', 'POST'], defaults={'n': None})
@@ -183,14 +258,15 @@ def pull(o_id=None, ofc_id=None):
         flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
 
-    strict_pulling = data.Settings.get().strict_pulling
-    single_row = data.Settings.get().single_row
+    settings = data.Settings.get()
+    strict_pulling = settings.strict_pulling
+    single_row = settings.single_row
     task = data.Task.get(0 if single_row else o_id)
     office = data.Office.get(0 if single_row else ofc_id)
     global_pull = not bool(o_id and ofc_id)
-    general_redirection = redirect(url_for('manage_app.all_offices')
-                                   if global_pull or single_row else
-                                   url_for('manage_app.task', ofc_id=ofc_id, o_id=o_id))
+    redirection_url = (url_for('manage_app.all_offices')
+                       if global_pull or single_row else
+                       url_for('manage_app.task', ofc_id=ofc_id, o_id=o_id))
 
     if global_pull:
         if not single_row and is_operator():
@@ -210,11 +286,11 @@ def pull(o_id=None, ofc_id=None):
 
     if not next_ticket:
         flash('Error: no tickets left to pull from ..', 'danger')
-        return general_redirection
+        return redirect(redirection_url)
 
     next_ticket.pull(office and office.id or next_ticket.office_id)
     flash('Notice: Ticket has been pulled ..', 'info')
-    return general_redirection
+    return redirect(redirection_url)
 
 
 @core.route('/pull_unordered/<ticket_id>/<redirect_to>', defaults={'office_id': None})
@@ -264,6 +340,7 @@ def on_hold(ticket, redirect_to):
 
 @core.route('/feed', defaults={'office_id': None})
 @core.route('/feed/<int:office_id>')
+@cache_call('json')
 def feed(office_id=None):
     ''' stream list of waiting tickets and current ticket. '''
     display_settings = data.Display_store.get()
@@ -310,32 +387,30 @@ def feed(office_id=None):
                    **tickets_parameters)
 
 
-@core.route('/set_repeat_announcement/<int:status>')
-@login_required
-def set_repeat_announcement(status):
-    ''' set repeat TTS announcement status. '''
-    display_settings = data.Display_store.get()
-    display_settings.r_announcement = bool(status)
-    db.session.commit()
-
-    return jsonify(status=bool(status))
-
-
-@core.route('/repeat_announcement')
-def repeat_announcement():
+@core.route('/repeat_announcement', defaults={'office_id': None})
+@core.route('/repeat_announcement/<int:office_id>')
+@SharedAnnouncementDecorator
+def repeat_announcement(office_id=None):
     ''' get repeat TTS announcement. '''
-    display_settings = data.Display_store.get()
-    status = display_settings.r_announcement
+    return jsonify(
+        status=repeat_announcement.get(office_id),
+        id=repeat_announcement.get_id(office_id),
+    )
 
-    if status:
-        display_settings.r_announcement = False
-        db.session.commit()
 
-    return jsonify(status=status)
+@core.route('/set_repeat_announcement/<int:status>', defaults={'office_id': None})
+@core.route('/set_repeat_announcement/<int:status>/<int:office_id>')
+@login_required
+def set_repeat_announcement(status, office_id=None):
+    ''' set repeat TTS announcement status. '''
+    active = bool(status)
+    repeat_announcement.set(office_id, active)
+    return jsonify(status=active)
 
 
 @core.route('/display', defaults={'office_id': None})
 @core.route('/display/<int:office_id>')
+@cache_call()
 def display(office_id=None):
     ''' display screen view. '''
     display_settings = data.Display_store.query.first()
@@ -352,11 +427,12 @@ def display(office_id=None):
                            slides=data.Slides.query, tv=display_settings.tmp,
                            page_title='Display Screen', anr=display_settings.anr,
                            alias=aliases_settings, vid=video_settings,
-                           feed_url=feed_url)
+                           feed_url=feed_url, office_id=office_id)
 
 
 @core.route('/touch/<int:a>', defaults={'office_id': None})
 @core.route('/touch/<int:a>/<int:office_id>')
+@cache_call()
 @reject_setting('single_row', True)
 def touch(a, office_id=None):
     ''' touch screen view. '''

@@ -36,9 +36,13 @@ var flashMsg = function (cate) {
     $('.postFlash > .alert-' + cate).removeClass('hide')
 }
 
-var announce = function () {
-    // to $.post for repeating announcement and displaying flash message for success or failure
-    $.get('/set_repeat_announcement/1', function (resp) {
+var announce = function (officeId) {
+    // to $.get for repeating announcement and displaying flash message for success or failure
+    var url = '/set_repeat_announcement/1';
+
+    if (officeId !== undefined) url += '/' + officeId
+
+    $.get(url, function (resp) {
         resp.status ? flashMsg('info') : flashMsg('danger')
     })
 }

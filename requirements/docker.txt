@@ -1,0 +1,3 @@
+-r main.txt
+gunicorn==20.1.0
+redis==4.3.4

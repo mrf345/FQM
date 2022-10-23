@@ -91,11 +91,13 @@
 								</ol>
 								<div class="carousel-inner">
 				    				<div class="item active">
+										{% if mfile.bname  %}
 										{% if mfile.bname[:3]=="rgb" %}
 										<span class="img-responsive" style="background: {{ mfile.bname }};height: 400px; width: 1000px">
 										</span>
 										{% else %}
 										<img src="{{ url_for('static', filename='multimedia/'+mfile.bname) }}" class="img-responsive">
+										{% endif %}
 										{% endif %}
 										<div class="carousel-caption">
 					    					<h2 style="color: {{ mfile.hcolor }}; font-family: {{ mfile.hfont }}; size: {{ mfile.hsize }}; background: {{ mfile.hbg }};">{{ mfile.title }}</h2>
@@ -149,10 +151,12 @@
 		    		<div class="carousel-inner">
 						{% for m in mmm %}
 						<div class="item {% if m.id == mmm.first().id %} active {% endif %}">
+							{% if m.bname %}
 							{% if m.bname[:3]=="rgb" %}
 							<span class="img-responsive" style="background: {{ m.bname }}; height: 600px; width: 1300p"></span>
 							{% else %}
 							<img style="height: 600px; width: 1300p" src="{{ url_for('static', filename='multimedia/'+m.bname) }}" alt="Slide {{ m.id }}" style="width:100%;" class="img-responsive">
+							{% endif %}
 							{% endif %}
 							<div class="carousel-caption">
 			    				<h2 style="color: {{ m.hcolor }}; font-family: {{ m.hfont }} ; size: {{ m.hsize }}; background: {{ m.hbg }};">{{ m.title }}</h2>

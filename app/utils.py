@@ -1,12 +1,18 @@
 import os
 import sys
+import functools
+import socket
+from itertools import product, tee
+from concurrent.futures import ProcessPoolExecutor, wait
+
 from collections import namedtuple
 from uuid import uuid4
 from traceback import TracebackException
 from datetime import datetime
 from random import randint
 from socket import socket, AF_INET, SOCK_STREAM
-from netifaces import interfaces, ifaddresses
+
+from ifaddr import get_adapters
 from flask import current_app, Flask
 
 import app.database as data
@@ -62,8 +68,11 @@ def absolute_path(relative_path):
     '''
     delimiter = '\\' if os.name == 'nt' else '/'
     clean_path = relative_path
-    base_path = os.path.dirname(sys.executable)\
-        if getattr(sys, 'frozen', False) else os.path.abspath('.')
+    base_path = os.getcwd()
+    relative_file_path = os.path.dirname(sys.argv[0])
+
+    if relative_file_path and '__compiled__' in globals():
+        base_path = os.path.join(base_path, relative_file_path)
 
     if clean_path.startswith(delimiter):
         clean_path = clean_path[len(delimiter):]
@@ -169,19 +178,12 @@ def get_accessible_ips():
     -------
         List of accessible ips and the interface name `(interface, ip)`
     '''
-    returned_list = []
-
-    for interface in interfaces():
-        try:
-            returned_list.append((
-                # NOTE: Windows doesn't support interface name
-                '' if os.name == 'nt' else interface,
-                ifaddresses(interface)[2][0].get('addr')
-            ))
-        except Exception:
-            pass
-
-    return returned_list
+    return [
+        (i.nice_name or '', i.ip)
+        for a in get_adapters()
+        for i in a.ips
+        if isinstance(i.ip, str) and i.ip.count('.') == 3
+    ]
 
 
 def is_port_available(ip, port):
@@ -344,6 +346,7 @@ def find(getter, to_iter):
             return i
 
 
+@functools.lru_cache
 def get_bp_endpoints(blueprint):
     '''Get blueprint endpoints.
 
@@ -360,7 +363,20 @@ def get_bp_endpoints(blueprint):
 
     temp_app.register_blueprint(blueprint)
 
-    return [str(p) for p in temp_app.url_map.iter_rules()]
+    return {str(p) for p in temp_app.url_map.iter_rules()}
+
+
+def check_iterator_empty(iterator):
+    i1, i2 = tee(iterator)
+    unique = object()
+    value = next(i2, unique)
+
+    return i1, value == unique
+
+
+@functools.lru_cache
+def in_records(id, records):
+    return id in {r.id for r in records}
 
 
 def create_default_records():
@@ -407,3 +423,40 @@ def getFolderSize(folder, safely=False):
 def solve_path(path):
     ''' fix path for window os '''
     return path.replace('/', '\\') if os.name == 'nt' else path
+
+
+def scan_port(ip, port):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  
+
+    try:   
+        r = s.connect_ex((ip, port))
+    except Exception:
+        pass
+
+    s.close()
+
+    if r == 0:
+        return ip, port 
+
+def find_lan_printers(ip: str):
+    printers = {}
+    ports = [9100, 515, 631, 80]
+    ips = [
+        '.'.join([*ip.split('.')[:-1], i])
+        for i in map(str, range(1, 257))
+    ]
+
+    socket.setdefaulttimeout(1)
+
+    with ProcessPoolExecutor() as e:
+        results = (
+            f.result() for f in wait(
+                e.submit(scan_port, ip, port)
+                for ip, port in product(ips, ports)
+            ).done
+        )
+
+    for r in results:
+        r and printers.setdefault(r[0], set()).add(r[1])
+
+    return printers

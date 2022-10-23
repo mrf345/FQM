@@ -3,8 +3,8 @@
 </p>
 
 <p align='center'>
-<a href='https://travis-ci.com/mrf345/FQM'>
-  <img src='https://travis-ci.com/mrf345/FQM.svg?branch=master'>
+<a href='https://github.com/mrf345/FQM/actions/workflows/ci.yml'>
+  <img src='https://github.com/mrf345/FQM/workflows/Build/badge.svg'>
 </a>
 <a href='https://github.com/mrf345/FQM/releases'>
   <img src='https://img.shields.io/github/v/release/mrf345/FQM.svg' alt='release'>
@@ -12,8 +12,8 @@
 </p>
 
 <p align='center'>
-<a href='https://coveralls.io/github/mrf345/FQM?branch=master'>
-  <img src='https://coveralls.io/repos/github/mrf345/FQM/badge.svg?branch=master' alt='Coverage Status' />
+<a href='https://github.com/mrf345/FQM/actions/workflows/ci.yml'>
+  <img src='https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/mrf345/bc746d7bfe356b54fbb93b2ea5d0d2a4/raw/FQM__heads_master.json' alt='Coverage Percentage' />
 </a>
 <a href='https://www.python.org/dev/peps/pep-0008/'>
   <img src='https://img.shields.io/badge/code%20style-PEP8-orange.svg' alt='Code Style PEP8' />
@@ -34,7 +34,12 @@
 
 ### Setup:
 
-#### - With executable:
+#### - From the source:
+
+- Docker setup for production, follow this [guide](./docs/setup.md#1-docker-setup)
+- Standard python setup (legacy), follow this [guide](./docs/setup.md#2-standard-python-setup)
+
+#### - With executable [no longer supported]:
 
 You can find an executable that's suitable to your OS from :
 
@@ -42,59 +47,6 @@ You can find an executable that's suitable to your OS from :
 - [Github Release](https://github.com/mrf345/FQM/releases/)
 - [Sourceforge](https://sourceforge.net/projects/free-queue-manager/)
 
-#### - From the source:
-
-- Make sure to install and use **Python 3.7** or **3.8**
-- Execute the following commands in a terminal window:
-
-1. `git clone https://github.com/mrf345/FQM.git`
-2. `cd FQM`
-3. `python -m pip install -r requirements/deploy.txt`
-4. `python run.py --cli`
-
-- To checkout the supported command-line options `python run.py --help`:
-
-```bash
-Usage: run.py [OPTIONS]
-
-  FQM command-line interface (CLI):
-
-  * If `--cli` is not used, initializing GUI will be attempted.
-
-  * If no `ip` is passed it will default to `127.0.0.1`.
-
-  * If no `port` is passed it will default to a random port.
-
-Options:
-  --cli        To use commandline interface instead of GUI.
-  --quiet      To silence web server logs.
-  --reset      Reset admin default password.
-  --ip TEXT    IP address to stream the service on.
-  --port TEXT  Port to stream the service through.
-  --help       Show this message and exit.
-```
-
-#### - For development on Linux\MacOS:
-
-- Make sure to install and use **Python 3.7**
-- Execute the following commands in a terminal window:
-
-1. `chmod +x installer.sh`
-2. `./installer.sh --install`
-3. `./installer.sh --run`
-
-- To checkout the supported command-line options `./installer.sh --help`:
-
-```bash
-./installer.sh --help: Examples
-
-    ./installer.sh --install        to install packages required
-    ./installer.sh --uninstall      to remove packages installed
-    ./installer.sh --run            to run FQM
-    ./installer.sh --test           to run FQM tests
-    ./installer.sh --migration      to run FQM migration
-    ./installer.sh --help           to print out this message
-```
 
 #### - Database migration:
 

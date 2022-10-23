@@ -27,6 +27,7 @@
 		auto_start: true,
 		autoplay_warning: playAudioNotification || playAnnouncements,
 	})
+	var processedRepeats = {};
 
 	function play (files) {
 		if (files.length) {
@@ -90,8 +91,19 @@
 	})
 
 	var watcher = setInterval(function () {
-		$.get('/repeat_announcement')
-			.then(function (j) { if (j.status) play(Player.files) })
+		var url = '/repeat_announcement'
+		var officeId = '{{ office_id }}'
+
+		if (officeId !== 'None') url += '/' + officeId
+
+		$.get(url)
+			.then(function (j) {
+				if (j.status && !processedRepeats[j.id]) {
+					console.log(processedRepeats);
+					play(Player.files)
+					processedRepeats[j.id] = true
+				}
+			})
 			.fail(function (e) { console.log(e) })
 	}, refreshRate / 2)
 
