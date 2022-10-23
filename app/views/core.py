@@ -258,14 +258,15 @@ def pull(o_id=None, ofc_id=None):
         flash('Error: operators are not allowed to access the page ', 'danger')
         return redirect(url_for('core.root'))
 
-    strict_pulling = data.Settings.get().strict_pulling
-    single_row = data.Settings.get().single_row
+    settings = data.Settings.get()
+    strict_pulling = settings.strict_pulling
+    single_row = settings.single_row
     task = data.Task.get(0 if single_row else o_id)
     office = data.Office.get(0 if single_row else ofc_id)
     global_pull = not bool(o_id and ofc_id)
-    general_redirection = redirect(url_for('manage_app.all_offices')
-                                   if global_pull or single_row else
-                                   url_for('manage_app.task', ofc_id=ofc_id, o_id=o_id))
+    redirection_url = (url_for('manage_app.all_offices')
+                       if global_pull or single_row else
+                       url_for('manage_app.task', ofc_id=ofc_id, o_id=o_id))
 
     if global_pull:
         if not single_row and is_operator():
@@ -285,11 +286,11 @@ def pull(o_id=None, ofc_id=None):
 
     if not next_ticket:
         flash('Error: no tickets left to pull from ..', 'danger')
-        return general_redirection
+        return redirect(redirection_url)
 
     next_ticket.pull(office and office.id or next_ticket.office_id)
     flash('Notice: Ticket has been pulled ..', 'info')
-    return general_redirection
+    return redirect(redirection_url)
 
 
 @core.route('/pull_unordered/<ticket_id>/<redirect_to>', defaults={'office_id': None})

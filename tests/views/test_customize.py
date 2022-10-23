@@ -1,3 +1,4 @@
+import os
 import pytest
 import io
 import usb.core
@@ -447,6 +448,10 @@ def test_aliases(c):
         assert getattr(Aliases.get(), key, None) == value
 
 
+@pytest.mark.skipif(
+    bool(os.getenv('DOCKER')),
+    reason='Not supported in docker setup',
+)
 @pytest.mark.usefixtures('c', 'get_bg_task')
 def test_background_tasks_cache_tts(c, get_bg_task, monkeypatch):
     mock_gTTs = MagicMock()
@@ -470,6 +475,10 @@ def test_background_tasks_cache_tts(c, get_bg_task, monkeypatch):
     assert mock_gTTs.say.called is True
 
 
+@pytest.mark.skipif(
+    bool(os.getenv('DOCKER')),
+    reason='Not supported in docker setup',
+)
 @pytest.mark.usefixtures('c', 'get_bg_task')
 def test_background_tasks_delete_tickets(c, get_bg_task):
     task_enabled = True

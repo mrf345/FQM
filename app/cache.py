@@ -30,7 +30,7 @@ def cache_call(resp_type='html'):
             resp = wrapped(*args, **kwargs)
 
             if 'DOCKER' in os.environ:
-                if resp_type == 'html':
+                if resp_type == 'html' and type(resp) in {str, bytes}:
                     redis.set(key, resp)
                 else:
                     redis.set(key, pickle.dumps(resp))
