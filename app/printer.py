@@ -177,7 +177,7 @@ def printit(printer, ticket, office, tnumber,
     printer.text(f"{header}\n")
     printer.set(align='center', **get_font_height_width('regular', scale))
     printer.text(get_translation('Version ', lang) + VERSION)
-    printer.set(align='center', font='a', underline=1, **get_font_height_width('regular', scale))
+    printer.set(align='center', font='a', **get_font_height_width('regular', scale))
     printer.text(f"\n{site}\n")
     printer.set(align='center', **get_font_height_width('spacer', scale))
     printer.text("\n" + '-' * 15 + "\n")

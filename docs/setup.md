@@ -85,7 +85,7 @@ This's the standard setup (legacy), which's less performant than the docker setu
 
 ##### Prerequisites:
 
-- Make sure **Python 3.8** or newer version is installed
+- Make sure **Python 3.8** or **3.9** is installed
 - Download the project's source code, and extract it [github link](https://github.com/mrf345/FQM/archive/refs/heads/master.zip)
 
 ##### Commands:

@@ -406,7 +406,7 @@ def test_new_printed_ticket_fail(c):
 
     assert response.status == '200 OK'
     assert new_ticket.id == last_ticket.id
-    assert 'usb.core.USBError' in errors_log_content
+    assert bool(errors_log_content)
 
 
 @pytest.mark.usefixtures('c')
