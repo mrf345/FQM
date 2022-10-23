@@ -28,4 +28,4 @@ jobs:
           python -m flake8 app/**/**/** tests/**/**/**
       - name: Tests
         run: |
-          python -m pytest -vv tests/*/* --cov=./app
+          python -m pytest -vv tests/ --cov=./app

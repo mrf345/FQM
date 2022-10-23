@@ -1,11 +1,5 @@
-# number of test repeats
-r?=2
-
 start:
 	docker-compose up
-
-start-opt:
-	docker-compose -f docker-compose.yml -f docker-compose.opt.yml up
 
 start-debug:
 	docker-compose -f docker-compose.yml up -d
@@ -17,17 +11,13 @@ start-debug:
 test:
 	docker-compose exec -it app pip install -r requirements/test.txt
 	docker-compose exec -it app python -m flake8 app/**/**/** tests/**/**/**
-	docker-compose exec -it app rm -rf tests/__pycache__/
-	docker-compose exec -it app python -m pytest -vv tests/*/* --cov=./app
+	docker-compose exec -it app python -m pytest -vv --cov=./app
 
 rebuild:
 	docker-compose up --build --force-recreate
 
 rebuild-app:
 	docker-compose build app
-
-rebuild-opt:
-	docker-compose -f docker-compose.yml -f docker-compose.opt.yml build app
 
 migrate:
 	docker-compose exec app python run_migrations.py

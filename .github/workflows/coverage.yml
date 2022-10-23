@@ -1,0 +1,35 @@
+name: Generate Coverage Badge
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: pip install -r requirements/test.txt
+      - name: Set coverage percentage
+        run: |
+          echo "COVERAGE=$(pytest | awk '$1 == "TOTAL" {print $NF+0}')%" >> $GITHUB_ENV
+          REF=${{ github.ref }}
+          IFS='/' read -ra PATHS <<< "$REF"
+          BRANCH_NAME="${PATHS[1]}_${PATHS[2]}"
+          echo "BRANCH=$(echo ${BRANCH_NAME})" >> $GITHUB_ENV
+      - name: Generate coverage badge
+        uses: schneegans/dynamic-badges-action@v1.1.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: bc746d7bfe356b54fbb93b2ea5d0d2a4
+          filename: FQM__${{ env.BRANCH }}.json
+          label: coverage
+          message: ${{ env.COVERAGE }}
+          color: green
+          namedLogo: pytest
