@@ -21,8 +21,8 @@ TOUCH_TEMPLATES = [(0, 'First Template'), (1, 'Second Template'), (2, 'Third Tem
 DISPLAY_TEMPLATES = TOUCH_TEMPLATES + [(3, 'Fourth Template')]
 
 
-BOOLEAN_SELECT = [(1, 'Enable'), (0, 'Disable')]
-BOOLEAN_SELECT_1 = [(1, 'Enable'), (2, 'Disable')]
+BOOLEAN_SELECT = [(1, 'Activated'), (0, 'Deactivated')]
+BOOLEAN_SELECT_1 = [(1, 'Activated'), (2, 'Deactivated')]
 
 VISUAL_EFFECTS = [('fade', 'fade'), ('blind', 'blind'), ('bounce', 'bounce'),
                   ('clip', 'clip'), ('drop', 'drop'), ('explode', 'explode'),
