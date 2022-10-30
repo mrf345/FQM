@@ -113,7 +113,9 @@ migrate = Migrate(directory=MIGRATION_FOLDER, compare_type=True)
 login_manager = LoginManager()
 login_manager.login_view = "login"
 files = UploadSet('files', ALL)
-gtranslator = translator(cache=True, skip_app=True, fail_safe=True)
+gtranslator = translator(cache=True,
+                         skip_app=True,
+                         service_urls=['translate.googleapis.com'])
 gTTs = RedisGtts(route=True, failsafe=True, logging=False)
 celery_app = LazyCelery()
 redis = Redis('redis', db=3)

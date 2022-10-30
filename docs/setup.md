@@ -5,10 +5,14 @@ This doc goes over the different ways which you can setup the project, and cover
 ### 1. Docker setup
 
 This's the recommended way for running the app in production environments with heavy traffic, main features:
-    - `gunicorn`: takes advantage of multi-core processors to distribute the load onto separate processes
-    - `celery`: running scheduled tasks efficiently in a separate container, for better performance
-    - `redis`: efficient caching, specially with multi-processes setup that Gunicorn enables
-    - `postgresql` (TODO): better performance for async operations (currently blocked by import/export feature)
+
+- `gunicorn`: takes advantage of multi-core processors to distribute the load onto separate processes
+
+- `celery`: running scheduled tasks efficiently in a separate container, for better performance
+
+- `redis`: efficient caching, specially with multi-processes setup that Gunicorn enables
+
+- `postgresql` (TODO): better performance for async operations (currently blocked by import/export feature)
 
 Note that this setup is supported on **Linux only**
 
