@@ -32,3 +32,4 @@ WTForms_Components
 redis==4.3.4
 celery==5.2.7
 gTTS==2.2.4
+googletrans==3.1.0a0
