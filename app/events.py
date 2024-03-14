@@ -8,10 +8,11 @@ def setup_events(db):
         get_number_of_active_tickets_cached,
         get_number_of_active_tickets_office_cached,
         get_number_of_active_tickets_task_cached,
+        is_user_office_operator,
     )
     from app.database import (
         Serial, Display_store, Settings, Aliases, Touch_store, Task,
-        Slides_c, Slides, Vid, Office, Settings,
+        Slides_c, Slides, Vid, Office, Settings, User,
     )
 
     serial_funcs = [
@@ -23,7 +24,7 @@ def setup_events(db):
 
     model_action_func_map = {
         (Office, 'insert'): [repeat_announcement, get_all_offices_cached],
-        (Office, 'delete'): [repeat_announcement, get_all_offices_cached],
+        (Office, 'delete'): [repeat_announcement, get_all_offices_cached, is_user_office_operator],
         (Serial, 'update'): serial_funcs,
         (Serial, 'insert'): serial_funcs,
         (Serial, 'delete'): serial_funcs,
@@ -40,6 +41,9 @@ def setup_events(db):
         (Slides, 'insert'): [display],
         (Slides, 'delete'): [display],
         (Settings, 'update'): [get_settings_cached],
+        (User, 'update'): [is_user_office_operator],
+        (User, 'insert'): [is_user_office_operator],
+        (User, 'delete'): [is_user_office_operator],
     }
 
     def clear_cache(session):

@@ -68,7 +68,7 @@
 			<!-- Dropdown--> 
 			{% if not settings.single_row %}
 			{% for office in offices %}
-			{% if getattr(current_user, 'role_id', None) != 3 or checkId(current_user.id, office.operators) %}
+			{% if getattr(current_user, 'role_id', None) != 3 or is_office_operator(current_user, office) %}
 			<li class="panel panel-default da{{ office.id+3 }} {% if ar %} ar1 {% endif %}" id="dropdown">
 			    <a data-toggle="collapse" href="#dropdown-lvl{{ office.id }}">
 				<span class="fa fa-desktop"></span>
