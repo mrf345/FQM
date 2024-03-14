@@ -374,11 +374,6 @@ def check_iterator_empty(iterator):
     return i1, value == unique
 
 
-@functools.lru_cache
-def in_records(id, records):
-    return id in {r.id for r in records}
-
-
 def create_default_records():
     ''' create database necessary records, if not existing. '''
     tables = [data.Display_store, data.Touch_store, data.Slides_c,

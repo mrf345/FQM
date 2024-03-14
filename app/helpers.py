@@ -445,3 +445,7 @@ def get_number_of_active_tickets_task_cached(*args, **kwargs):
         .filter_by(p=False)
         .count()
     )
+
+@cache_call(None)
+def is_user_office_operator(user, office):
+    return user and user.id in {o.id for o in office.operators}

@@ -23,8 +23,8 @@ from app.views.administrate import administrate
 from app.views.core import core
 from app.views.customize import cust_app
 from app.views.manage import manage_app
-from app.utils import (absolute_path, log_error, create_default_records, get_bp_endpoints,
-                       in_records)
+from app.utils import (absolute_path, log_error, create_default_records, get_bp_endpoints)
+from app.helpers import is_user_office_operator
 from app.database import Serial
 from app.tasks import start_tasks
 from app.api.setup import setup_api
@@ -208,7 +208,7 @@ def bundle_app(config={}):
             get_active_tickets_task=get_number_of_active_tickets_task_cached,
             next=next,
             it=iter,
-            checkId=in_records,
+            is_office_operator=is_user_office_operator,
             offices=get_all_offices_cached(),
             moment_wrapper=moment_wrapper,
             current_path=quote(path, safe=''),
