@@ -49,7 +49,7 @@
                     localStorage.redWallIndex = undefined
                     sessionStorage.toClear = 'yes'
                 }
-                {{ wallpapers('.widw', enable_reddit=settings.visual_effects) }}
+                {{ wallpapers('.widw', enable_reddit=False) }}
                 disciple({
                     identifier: '.disciple',
                     msg_text: "{{ translate('You made changes on the previous form without submitting. Do you wish to restore it ?', 'en', [defLang]) }}",
