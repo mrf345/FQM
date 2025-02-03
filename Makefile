@@ -3,8 +3,7 @@ start:
 
 start-debug:
 	docker-compose -f docker-compose.yml up -d
-	docker-compose exec app pip show ipython || pip install ipython --quiet
-	docker-compose exec app pip show pudb || pip install pudb --quiet
+	docker-compose exec app pip install ipython pudb --quiet
 	docker-compose exec -it app gunicorn -w 1 --worker-class sync --timeout 1000000 -b 0.0.0.0:5050 app:app --reload
 	docker-compose -f docker-compose.yml down
 
