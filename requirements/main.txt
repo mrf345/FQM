@@ -2,7 +2,7 @@ arabic_reshaper==2.0.8
 click==8.1.3
 escpos==1.9
 # FIXME: newer verion available but breaks it flask_restx-0.5.1
-Werkzeug==2.1.2
+Werkzeug==3.0.6
 Flask==2.1.2
 ###############################################################
 Flask_Colorpicker==0.9
