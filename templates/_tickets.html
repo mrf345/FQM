@@ -19,7 +19,7 @@
         <span class="mr-1 fa fa-pencil text-warning"></span>
     </a>
     {% if not ticket.on_hold %}
-    <a href="{{ url_for('core.pull_unordered', ticket_id=ticket.id, redirect_to=current_path) }}"
+    <a href="{{ url_for('core.pull_unordered', ticket_id=ticket.id, office_id=o_id, redirect_to=current_path) }}"
        data-toggle="tooltip" title="{{ translate('Pull', 'en', [defLang]) }}"
     >
           <span class="fa fa-minus text-primary"></span>
