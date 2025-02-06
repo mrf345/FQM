@@ -9,7 +9,7 @@
     "\nCurrent ticket : ": {
         "en": "Current ticket :",
         "es": "billete actual:",
-        "fr": "billet actuel:",
+        "fr": "ticket actuel:",
         "it": "attuali del biglietto:"
     },
     "\nOffice : ": {
@@ -27,7 +27,7 @@
     "\nTickets ahead : ": {
         "en": "Tickets ahead :",
         "es": "Boletos con anticipaci\u00f3n:",
-        "fr": "Billets \u00e0 venir:",
+        "fr": "tickets \u00e0 venir:",
         "it": "Biglietti in anticipo:"
     },
     " Opps, a critical error has occurred, we will be ": {
@@ -69,7 +69,7 @@
         "ar": "1 \u0645\u0631\u0629",
         "en": "1 time",
         "es": "1 vez",
-        "fr": "Une fois",
+        "fr": "1 fois",
         "it": "1 volta"
     },
     "10 times": {
@@ -139,14 +139,14 @@
         "ar": "\u0646\u063a\u0645\u0629 \u0635\u0648\u062a \u064a\u062a\u0645 \u062a\u0634\u063a\u064a\u0644\u0647\u0627 \u0639\u0646\u062f\u0645\u0627 \u064a\u062e\u062a\u0627\u0631 \u0627\u0644\u0639\u0645\u064a\u0644 \u0645\u0647\u0645\u0629 \u0645\u0646 \u0627\u062e\u062a\u064a\u0627\u0631\u0647",
         "en": "A sound tune that will be played whenever the customer select a task of his choice",
         "es": "Una canci\u00f3n sonora que se reproducir\u00e1 siempre que el cliente seleccione una tarea de su elecci\u00f3n",
-        "fr": "Une m\u00e9lodie sonore qui sera jou\u00e9e chaque fois que le client choisit une t\u00e2che de son choix",
+        "fr": "Une m\u00e9lodie sonore sera jou\u00e9e chaque fois que le client choisit une t\u00e2che de son choix",
         "it": "Una melodia che verr\u00e0 riprodotta ogni volta che il cliente seleziona un compito a sua scelta"
     },
     "A sound tune that will be played whenever the customer ticket has been pulled . As well as a text to speech announcement which will be played in the language selected": {
         "ar": "\u0646\u063a\u0645\u0629 \u0635\u0648\u062a \u0633\u062a\u0644\u0639\u0628 \u0643\u0644\u0645\u0627 \u062a\u0645 \u0633\u062d\u0628 \u062a\u0630\u0643\u0631\u0629 \u0627\u0644\u0639\u0645\u064a\u0644. \u0641\u0636\u0644\u0627 \u0639\u0646 \u0625\u0639\u0644\u0627\u0646 \u0627\u0644\u0646\u0635 \u0625\u0644\u0649 \u0627\u0644\u062e\u0637\u0627\u0628 \u0627\u0644\u0630\u064a \u0633\u064a\u062a\u0645 \u0644\u0639\u0628\u0647 \u0628\u0627\u0644\u0644\u063a\u0629 \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629",
         "en": "A sound tune that will be played whenever the customer ticket has been pulled . As well as a text to speech announcement which will be played in the language selected",
         "es": "Una melod\u00eda sonora que se reproducir\u00e1 cada vez que se retire el ticket del cliente. Adem\u00e1s de un anuncio de texto a discurso que se reproducir\u00e1 en el idioma seleccionado",
-        "fr": "Un morceau sonore qui sera jou\u00e9 chaque fois que le ticket client a \u00e9t\u00e9 tir\u00e9. Ainsi qu'une annonce texte-discours qui sera jou\u00e9e dans la langue s\u00e9lectionn\u00e9e",
+        "fr": "Un m\u00e9lodie sonore sera jou\u00e9 chaque fois que le ticket client a \u00e9t\u00e9 appel\u00e9. Ainsi qu'une annonce texte-discours qui sera jou\u00e9e dans la langue s\u00e9lectionn\u00e9e",
         "it": "Una melodia che verr\u00e0 riprodotta ogni volta che viene estratto il ticket del cliente. Cos\u00ec come un annuncio di sintesi vocale che verr\u00e0 riprodotto nella lingua selezionata"
     },
     "API": {
@@ -174,7 +174,7 @@
         "ar": "\u0623\u0641\u0639\u0627\u0644",
         "en": "Actions",
         "es": "Comportamiento",
-        "fr": "actes",
+        "fr": "Actions",
         "it": "Azioni"
     },
     "Activated": {
@@ -251,7 +251,7 @@
         "ar": "\u0625\u0636\u0627\u0641\u0629 \u0631\u0645\u0632",
         "en": "Add token",
         "es": "A\u00f1adir s\u00edmbolo",
-        "fr": "Ajouter jeton",
+        "fr": "Ajouter un jeton",
         "it": "Aggiungere Token"
     },
     "Add user": {
@@ -265,7 +265,7 @@
         "ar": "\u062a\u0641\u0636\u064a\u0644\u0627\u062a \u0648\u0625\u0639\u062f\u0627\u062f\u0627\u062a \u0625\u0636\u0627\u0641\u064a\u0629 \u0644\u0644\u0633\u064a\u0637\u0631\u0629 \u0639\u0644\u0649 \u0645\u064a\u0632\u0627\u062a \u0645\u0639\u064a\u0646\u0629 \u0641\u064a \u0634\u0627\u0634\u0629 \u0627\u0644\u0639\u0631\u0636",
         "en": "Additional preferences and settings to control certain features within the display screen",
         "es": "preferencias y ajustes adicionales para controlar ciertas funciones dentro de la pantalla de visualizaci\u00f3n",
-        "fr": "pr\u00e9f\u00e9rences et param\u00e8tres suppl\u00e9mentaires pour contr\u00f4ler certaines fonctions au sein de l'\u00e9cran d'affichage",
+        "fr": "Pr\u00e9f\u00e9rences et param\u00e8tres suppl\u00e9mentaires pour contr\u00f4ler certaines fonctions de l'\u00e9cran d'affichage",
         "it": "preferenze e le impostazioni aggiuntive per controllare alcune funzioni all'interno dello schermo di visualizzazione"
     },
     "Administration": {
@@ -286,21 +286,21 @@
         "ar": "\u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0645\u0633\u062a\u0639\u0627\u0631: \u064a\u0645\u0646\u062d\u0643 \u0627\u0644\u0642\u062f\u0631\u0629 \u0639\u0644\u0649 \u062a\u063a\u064a\u064a\u0631 \u0627\u0644\u062a\u0633\u0645\u064a\u0629 \u0627\u0644\u0627\u0641\u062a\u0631\u0627\u0636\u064a\u0629 \u0644\u0644\u0645\u0643\u0648\u0646\u0627\u062a \u0627\u0644\u0631\u0626\u064a\u0633\u064a\u0629 \u0625\u0644\u0649 \u0634\u064a\u0621 \u0630\u064a \u0635\u0644\u0629 \u0628\u0628\u064a\u0626\u062a\u0643. \u0633\u062a\u0624\u062b\u0631 \u0627\u0644\u062a\u063a\u064a\u064a\u0631\u0627\u062a \u0639\u0644\u0649 \u0627\u0644\u0646\u0634\u0631\u0627\u062a \u0627\u0644\u0645\u0637\u0628\u0648\u0639\u0629 \u0648\u0627\u0644\u0645\u0633\u062c\u0644\u0629 \u0648\u0625\u0639\u0644\u0627\u0646\u0627\u062a \u062a\u062d\u0648\u064a\u0644 \u0627\u0644\u0646\u0635 \u0625\u0644\u0649 \u0643\u0644\u0627\u0645.",
         "en": "Alias : gives you the ability to change the default naming of the main components into something relevant to your environment. Changes will effect printed, registered tickets and text-to-speech announcements.",
         "es": "Alias: le da la capacidad de cambiar el nombre predeterminado de los componentes principales en algo relevante para su entorno. Los cambios afectar\u00e1n los boletos impresos, registrados y los anuncios de texto a voz.",
-        "fr": "Alias: vous permet de modifier la d\u00e9nomination par d\u00e9faut des composants principaux en quelque chose de pertinent pour votre environnement. Les changements auront une incidence sur les billets imprim\u00e9s et enregistr\u00e9s et les annonces textuelles.",
+        "fr": "Alias: vous permet de modifier la d\u00e9nomination par d\u00e9faut des composants principaux en quelque chose de pertinent pour votre environnement. Les changements auront une incidence sur les tickets imprim\u00e9s et enregistr\u00e9s et les annonces textuelles.",
         "it": "Alias: ti d\u00e0 la possibilit\u00e0 di cambiare la denominazione predefinita dei componenti principali in qualcosa di rilevante per il tuo ambiente. Le modifiche avranno effetto su biglietti stampati, registrati e annunci da testo a voce."
     },
     "Alias must be at least of 2 and at most 10 letters": {
         "ar": "\u064a\u062c\u0628 \u0623\u0646 \u064a\u0643\u0648\u0646 \u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0645\u0633\u062a\u0639\u0627\u0631 2 \u0639\u0644\u0649 \u0627\u0644\u0623\u0642\u0644 \u0648\u0639\u0644\u0649 \u0627\u0644\u0623\u0643\u062b\u0631 10 \u0623\u062d\u0631\u0641",
         "en": "Alias must be at least of 2 and at most 10 letters",
         "es": "Alias \u200b\u200bdebe tener al menos 2 y como m\u00e1ximo 10 letras",
-        "fr": "L'alias doit \u00eatre au moins de 2 et au plus 10 lettres",
+        "fr": "L'alias doit faire entre 2 et 10 caract\u00e8res",
         "it": "L'alias deve essere almeno di 2 e al massimo 10 lettere"
     },
     "Alias template": {
         "ar": "\u0642\u0627\u0644\u0628 \u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0645\u0633\u062a\u0639\u0627\u0631",
         "en": "Alias template",
         "es": "Plantilla Alias",
-        "fr": "Alias \u200b\u200bmod\u00e8le",
+        "fr": "Mod\u00e8le d'alias",
         "it": "Modello alias"
     },
     "Aliases": {
@@ -328,7 +328,7 @@
         "ar": "\u062c\u0645\u064a\u0639 \u0627\u0644\u062a\u0630\u0627\u0643\u0631",
         "en": "All tickets",
         "es": "Todos los boletos",
-        "fr": "Tous les billets",
+        "fr": "Tous les tickets",
         "it": "Tutti i biglietti"
     },
     "All users": {
@@ -342,14 +342,14 @@
         "ar": "\u0627\u0644\u0633\u0645\u0627\u062d \u0644\u0644\u0645\u0633\u0626\u0648\u0644\u064a\u0646 \u0648\u0627\u0644\u0645\u0634\u063a\u0644\u064a\u0646 \u0627\u0644\u0645\u0639\u064a\u0646\u064a\u0646 \u0644\u0647 \u0628\u0625\u062f\u0627\u0631\u0629 \u062a\u062f\u0641\u0642 \u0627\u0644\u062a\u0630\u0627\u0643\u0631 \u060c \u0639\u0646 \u0637\u0631\u064a\u0642 \u0625\u0636\u0627\u0641\u0629 \u0648\u062a\u0639\u062f\u064a\u0644 \u0627\u0644\u0645\u0643\u0627\u062a\u0628 \u0648\u0627\u0644\u0645\u0647\u0627\u0645 \u0627\u0644\u062a\u064a \u062a\u0645\u062b\u0644 \u0627\u0644\u062a\u0645\u062b\u064a\u0644 \u0627\u0644\u0627\u0641\u062a\u0631\u0627\u0636\u064a \u0644\u0644\u0645\u0643\u0627\u062a\u0628 \u0627\u0644\u0641\u0639\u0644\u064a\u0629 \u060c \u0648\u0633\u064a\u062a\u0645 \u062a\u062e\u0632\u064a\u0646 \u0627\u0644\u0645\u0647\u0627\u0645 \u0627\u0644\u062a\u064a \u064a\u062a\u0645 \u062a\u062e\u0632\u064a\u0646 \u0627\u0644\u062a\u0630\u0627\u0643\u0631 \u0639\u0644\u064a\u0647\u0627 \u0648\u0633\u062d\u0628\u0647\u0627 \u0644\u062a\u0633\u0647\u064a\u0644 \u0639\u0645\u0644\u064a\u0629 \u0627\u0644\u062a\u0639\u0627\u0645\u0644 \u0645\u0639 \u0627\u0644\u0637\u0627\u0628\u0648\u0631 \u0625\u062f\u0627\u0631\u0629.",
         "en": "Allowing the admin and his assigned operators to manage the flow of tickets, by adding, modifying offices and task which are the virtual representation of the actual offices, tasks on-which tickets will be stored and pulled from to ease the process of dealing with queue management.",
         "es": "Permitir que el administrador y sus operadores asignados administren el flujo de tickets, agregando, modificando oficinas y tareas, que son la representaci\u00f3n virtual de las oficinas reales, tareas en las cuales se almacenar\u00e1n y extraer\u00e1n tickets para facilitar el proceso de hacer frente a la cola administraci\u00f3n.",
-        "fr": "Permettre \u00e0 l'administrateur et \u00e0 ses op\u00e9rateurs assign\u00e9s de g\u00e9rer le flux de tickets, en ajoutant, en modifiant les bureaux et les t\u00e2ches qui sont la repr\u00e9sentation virtuelle des bureaux r\u00e9els, les t\u00e2ches sur lesquelles les tickets seront stock\u00e9s et retir\u00e9s pour faciliter le traitement de la file la gestion.",
+        "fr": "Permettre aux administrateurs et \u00e0 ses op\u00e9rateurs assign\u00e9s de g\u00e9rer le flux des tickets en : ajoutant et/ou en modifiant les bureaux et les t\u00e2ches. Ces t\u00e2ches sont la repr\u00e9sentation virtuelle des bureaux r\u00e9els. Les tickets seront stock\u00e9s dans ces m\u00eames t\u00e2ches et pourront \u00eatre retir\u00e9s pour faciliter la gestion de la file d'attente.",
         "it": "Consentire all'amministratore e ai suoi operatori assegnati di gestire il flusso di biglietti, aggiungendo, modificando uffici e attivit\u00e0 che rappresentano la rappresentazione virtuale degli uffici effettivi, attivit\u00e0 su cui i ticket verranno archiviati e prelevati per facilitare il processo di gestione della coda gestione."
     },
     "Allowing the admin and his permitted operators to add an office, that will later on contain multiple task and tickets, that will be always referenced to the created office via its chosen unique number and prefix, which will be used as a visual key code to reference tickets to their offices.": {
         "ar": "\u0627\u0644\u0633\u0645\u0627\u062d \u0644\u0644\u0645\u0633\u0624\u0648\u0644 \u0648\u0645\u0634\u063a\u0644\u064a\u0647 \u0627\u0644\u0645\u0633\u0645\u0648\u062d \u0644\u0647\u0645 \u0628\u0625\u0636\u0627\u0641\u0629 \u0645\u0643\u062a\u0628 \u060c \u0648\u0627\u0644\u0630\u064a \u0633\u064a\u062d\u062a\u0648\u064a \u0644\u0627\u062d\u0642\u064b\u0627 \u0639\u0644\u0649 \u0645\u0647\u0627\u0645 \u0648\u062a\u0630\u0627\u0643\u0631 \u0645\u062a\u0639\u062f\u062f\u0629 \u060c \u0648\u0627\u0644\u062a\u064a \u0633\u064a\u062a\u0645 \u0627\u0644\u0631\u062c\u0648\u0639 \u0625\u0644\u064a\u0647\u0627 \u062f\u0627\u0626\u0645\u064b\u0627 \u0625\u0644\u0649 \u0627\u0644\u0645\u0643\u062a\u0628 \u0627\u0644\u0630\u064a \u062a\u0645 \u0625\u0646\u0634\u0627\u0624\u0647 \u0639\u0646 \u0637\u0631\u064a\u0642 \u0627\u0644\u0631\u0642\u0645 \u0648\u0627\u0644\u0641\u0631\u064a\u062f \u0627\u0644\u0644\u0630\u064a\u0646 \u062a\u0645 \u0627\u062e\u062a\u064a\u0627\u0631\u0647\u0645\u0627 \u060c \u0648\u0627\u0644\u0630\u064a \u0633\u064a\u062a\u0645 \u0627\u0633\u062a\u062e\u062f\u0627\u0645\u0647 \u0643\u0631\u0645\u0632 \u0645\u0641\u062a\u0627\u062d \u0645\u0631\u0626\u064a \u0644\u0644\u0625\u0634\u0627\u0631\u0629 \u0625\u0644\u064a\u0647 \u062a\u0630\u0627\u0643\u0631 \u0644\u0645\u0643\u0627\u062a\u0628\u0647\u0645.",
         "en": "Allowing the admin and his permitted operators to add an office, that will later on contain multiple task and tickets, that will be always referenced to the created office via its chosen unique number and prefix, which will be used as a visual key code to reference tickets to their offices.",
         "es": "Permitir que el administrador y sus operadores permitidos agreguen una oficina, que luego contendr\u00e1 m\u00faltiples tareas y tickets, que siempre ser\u00e1n referenciados a la oficina creada a trav\u00e9s de su n\u00famero exclusivo y prefijo, que se usar\u00e1 como un c\u00f3digo de tecla visual para referencia entradas a sus oficinas.",
-        "fr": "Permettre \u00e0 l'administrateur et \u00e0 ses op\u00e9rateurs autoris\u00e9s d'ajouter un bureau, qui contiendra plus tard plusieurs t\u00e2ches et tickets, qui seront toujours r\u00e9f\u00e9renc\u00e9s au bureau cr\u00e9\u00e9 via son num\u00e9ro unique choisi et son pr\u00e9fixe, qui servira de code visuel pour r\u00e9f\u00e9rence des billets pour leurs bureaux.",
+        "fr": "Permettre \u00e0 l'administrateur et \u00e0 ses op\u00e9rateurs autoris\u00e9s d'ajouter un bureau. Celui-ci peut par la suite contenir plusieurs t\u00e2ches et tickets, qui seront toujours r\u00e9f\u00e9renc\u00e9s au bureau cr\u00e9\u00e9 via son num\u00e9ro unique choisi et son pr\u00e9fixe. Ils serviront de code visuel pour r\u00e9f\u00e9renc\u00e9 ces tickets aux bureaux qui leurs sont propres.",
         "it": "Consentendo all'amministratore e ai suoi operatori autorizzati di aggiungere un ufficio, che in seguito includer\u00e0 pi\u00f9 attivit\u00e0 e ticket, verr\u00e0 sempre fatto riferimento all'ufficio creato tramite il numero e il prefisso univoci scelti, che verranno utilizzati come codice di riferimento visivo per riferimento biglietti per i loro uffici."
     },
     "Allowing the admin and his permitted operators to replay the chosen audio announcements on the display screen.": {
@@ -370,21 +370,21 @@
         "ar": "\u064a\u0633\u0645\u062d \u0644\u0644\u0645\u0634\u0631\u0641 \u060c \u0627\u0644\u0645\u0633\u0645\u0648\u062d \u0628\u0647 \u0645\u0646 \u0642\u0650\u0628\u0644 \u0645\u0634\u063a\u0644\u064a \u0627\u0644\u0645\u0634\u0631\u0641 \u0628\u0627\u0644\u0628\u062d\u062b \u0628\u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0645\u0639\u0644\u0645\u0627\u062a \u0645\u0639\u064a\u0646\u0629 \u0645\u0646 \u0631\u0642\u0645 \u0627\u0644\u062a\u0630\u0643\u0631\u0629 \u060c \u0648\u0628\u0637\u0627\u0642\u0629 \u0627\u0644\u062a\u0630\u0643\u0631\u0629 \u060c \u0623\u0648 \u062a\u0627\u0631\u064a\u062e \u0627\u0644\u062a\u0630\u0643\u0631\u0629 \u0644\u0644\u0648\u0635\u0648\u0644 \u0625\u0644\u0649 \u0627\u0644\u0628\u0637\u0627\u0642\u0629 \u0627\u0644\u0645\u062d\u062f\u062f\u0629 \u0627\u0644\u062a\u064a \u064a\u064f\u0641\u062a\u0631\u0636 \u0623\u0646 \u064a\u062a\u0645 \u0627\u0644\u0628\u062d\u062b \u0639\u0646\u0647\u0627 \u0628\u0637\u0631\u064a\u0642\u0629 \u062f\u064a\u0646\u0627\u0645\u064a\u0643\u064a\u0629 \u0642\u0627\u0628\u0644\u0629 \u0644\u0644\u062a\u062b\u0628\u064a\u062a \u060c \u0648\u0627\u0644\u062a\u064a \u0643\u0627\u0646\u062a \u0645\u0635\u0645\u0645\u0629 \u062c\u064a\u062f\u064b\u0627 \u0641\u064a \u0627\u0644\u062a\u0635\u0645\u064a\u0645.",
         "en": "Allows the admin, permitted by admin operators to search with given parameters of ticket number, ticket prefix and or ticket date to reach to the specific ticket meant to be searched in a dynamic and fixable manner, that was well intended in design.",
         "es": "Permite al administrador, permitido por los operadores administrativos, buscar con par\u00e1metros determinados de n\u00famero de ticket, prefijo de ticket y / o fecha del ticket para llegar al ticket espec\u00edfico destinado a ser buscado de una manera din\u00e1mica y reparable, que fue bien intencionado en el dise\u00f1o.",
-        "fr": "Permet \u00e0 l'administrateur, autoris\u00e9 par les op\u00e9rateurs admin de rechercher avec des param\u00e8tres donn\u00e9s du num\u00e9ro de ticket, du pr\u00e9fixe de ticket et / ou de la date du ticket pour atteindre le ticket sp\u00e9cifique destin\u00e9 \u00e0 \u00eatre recherch\u00e9 de mani\u00e8re dynamique et r\u00e9parable.",
+        "fr": "Permet \u00e0 l'administrateur et aux op\u00e9rateurs autoris\u00e9 par l'admin de rechercher avec des param\u00e8tres donn\u00e9s (les num\u00e9ros de tickets, le pr\u00e9fixe du ticket et/ou la date du ticket) un ticket sp\u00e9cifique.",
         "it": "Consente all'amministratore, autorizzato dagli amministratori, di cercare con determinati parametri il numero del biglietto, il prefisso del biglietto e la data del biglietto per raggiungere lo specifico biglietto destinato alla ricerca in modo dinamico e risolvibile, che era ben inteso nel design."
     },
     "Alternative printer driver": {
         "ar": "\u0628\u0631\u0646\u0627\u0645\u062c \u062a\u0634\u063a\u064a\u0644 \u0627\u0644\u0637\u0627\u0628\u0639\u0629 \u0627\u0644\u0628\u062f\u064a\u0644",
         "en": "Alternative printer driver",
         "es": "controlador de impresora Alternativa",
-        "fr": "pilote d'imprimante alternatif",
+        "fr": "Pilote d'imprimante alternatif",
         "it": "driver di stampa alternativo"
     },
     "Always show ticket number: ": {
         "ar": "\u062a\u0638\u0647\u0631 \u062f\u0627\u0626\u0645\u0627 \u0631\u0642\u0645 \u0627\u0644\u062a\u0630\u0643\u0631\u0629:",
         "en": "Always show ticket number:",
         "es": "Siempre mostrar el n\u00famero del billete:",
-        "fr": "Toujours afficher le num\u00e9ro de billet:",
+        "fr": "Toujours afficher le num\u00e9ro de ticket:",
         "it": "Mostra sempre il numero del biglietto:"
     },
     "Apply": {
@@ -398,7 +398,7 @@
         "ar": "\u0639\u0631\u0628\u0649",
         "en": "Arabic",
         "es": "Ar\u00e1bica",
-        "fr": "arabe",
+        "fr": "Arabe",
         "it": "Arabo"
     },
     "Are you really sure, you want to exit ?": {
@@ -412,7 +412,7 @@
         "ar": "\u0625\u0631\u0641\u0627\u0642 \u062e\u0637\u0627\u0628 \u0645\u0643\u062a\u0628 \u0627\u0644\u0628\u0627\u062f\u0626\u0629:",
         "en": "Attach prefix office letter:",
         "es": "Adjuntar la letra de la oficina de prefijo:",
-        "fr": "Joindre la lettre du pr\u00e9fixe:",
+        "fr": "Joindre la lettre du pr\u00e9fixe du bureau:",
         "it": "Allega la lettera dell'ufficio prefisso:"
     },
     "Audio file": {
@@ -433,28 +433,28 @@
         "ar": "\u0627\u0644\u0631\u0645\u0648\u0632 \u0645\u0635\u0627\u062f\u0642\u0629",
         "en": "Authentication tokens",
         "es": "tokens de autenticaci\u00f3n",
-        "fr": "jetons d'authentification",
+        "fr": "Jetons d'authentification",
         "it": "token di autenticazione"
     },
     "Auto reload": {
         "ar": "\u0625\u0639\u0627\u062f\u0629 \u062a\u062d\u0645\u064a\u0644 \u062a\u0644\u0642\u0627\u0626\u064a",
         "en": "Auto reload",
         "es": "Recarga autom\u00e1tica",
-        "fr": "Rechargement automatique",
+        "fr": "Rafraichissement automatique",
         "it": "Ricarica automatica"
     },
     "Auto replaying the video : ": {
         "ar": "\u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u062a\u0634\u063a\u064a\u0644 \u0627\u0644\u062a\u0644\u0642\u0627\u0626\u064a \u0644\u0644\u0641\u064a\u062f\u064a\u0648:",
         "en": "Auto replaying the video :",
         "es": "Reproducci\u00f3n autom\u00e1tica del video:",
-        "fr": "Lecture automatique de la vid\u00e9o:",
+        "fr": "Lecture en boucle de la vid\u00e9o:",
         "it": "Riproduzione automatica del video:"
     },
     "Background": {
         "ar": "\u062e\u0644\u0641\u064a\u0629",
         "en": "Background",
         "es": "Fondo",
-        "fr": "Contexte",
+        "fr": "Fond",
         "it": "sfondo"
     },
     "Background Tasks": {
@@ -471,18 +471,22 @@
         "fr": "T\u00e2ches d'arri\u00e8re-plan",
         "it": "attivit\u00e0 in background"
     },
-    "Background tasks : gives you the ability to to automate some predefined repetitive but needed processes. Changes on the settings will effect ongoing background tasks, and will reset them accordingly.": {
+    "Background tasks : gives you the ability to automate some predefined repetitive but needed processes. Changes on the settings will effect ongoing background tasks, and will reset them accordingly.": {
         "ar": "\u0645\u0647\u0627\u0645 \u0627\u0644\u062e\u0644\u0641\u064a\u0629: \u064a\u0645\u0646\u062d\u0643 \u0627\u0644\u0642\u062f\u0631\u0629 \u0639\u0644\u0649 \u0623\u062a\u0645\u062a\u0629 \u0628\u0639\u0636 \u0627\u0644\u0639\u0645\u0644\u064a\u0627\u062a \u0627\u0644\u0645\u062a\u0643\u0631\u0631\u0629 \u0648\u0644\u0643\u0646 \u0647\u0646\u0627\u0643 \u062d\u0627\u062c\u0629 \u0645\u062d\u062f\u062f\u0629 \u0645\u0633\u0628\u0642\u0627. \u0633\u0648\u0641 \u062a\u063a\u064a\u064a\u0631\u0627\u062a \u0639\u0644\u0649 \u0625\u0639\u062f\u0627\u062f\u0627\u062a \u062a\u0624\u062b\u0631 \u0645\u0647\u0627\u0645 \u0627\u0644\u062e\u0644\u0641\u064a\u0629 \u0627\u0644\u062c\u0627\u0631\u064a\u0629\u060c \u0648\u0633\u0648\u0641 \u0625\u0639\u0627\u062f\u0629 \u062a\u0639\u064a\u064a\u0646 \u0648\u0641\u0642\u0627 \u0644\u0630\u0644\u0643.",
         "en": "Background tasks : gives you the ability to to automate some predefined repetitive but needed processes. Changes on the settings will effect ongoing background tasks, and will reset them accordingly.",
         "es": "tareas en segundo plano: le da la capacidad de automatizar algunos procesos repetitivos, pero necesarios predefinidos. Los cambios en los ajustes afectar\u00e1n a las tareas de fondo en curso y se restablecer\u00e1 en consecuencia.",
-        "fr": "Des t\u00e2ches de fond: vous donne la possibilit\u00e9 de d'automatiser certains processus r\u00e9p\u00e9titifs mais n\u00e9cessaires pr\u00e9d\u00e9finis. Les changements sur les r\u00e9glages effectuer les t\u00e2ches de fond en cours et seront les remettre en cons\u00e9quence.",
+        "fr": "T\u00e2ches de fond: vous donne la possibilit\u00e9 d'automatiser certains processus r\u00e9p\u00e9titifs mais n\u00e9cessaires pr\u00e9d\u00e9finis. Les changements sur les r\u00e9glages affecteront les t\u00e2ches de fond en cours.Ces t\u00e2ches seront red\u00e9marr\u00e9es en cons\u00e9quence.",
         "it": "attivit\u00e0 in background: ti d\u00e0 la possibilit\u00e0 di automatizzare alcuni processi ripetitivi ma necessari predefiniti. Le modifiche sulle impostazioni influenzeranno le operazioni in background in corso, e li resettare conseguenza."
+    },
+    "Background tasks : gives you the ability to to automate some predefined repetitive but needed processes. Changes on the settings will effect ongoing background tasks, and will reset them accordingly.": {
+        "en": "Background tasks : gives you the ability to to automate some predefined repetitive but needed processes. Changes on the settings will effect ongoing background tasks, and will reset them accordingly.",
+        "fr": "T\u00e2ches d'arri\u00e8re-plan: vous donne la possibilit\u00e9 d'automatiser certains processus r\u00e9p\u00e9titifs mais n\u00e9cessaires. Les modifications des param\u00e8tres affecteront les t\u00e2ches de fond en cours et les r\u00e9initialiseront en cons\u00e9quence."
     },
     "Background tasks: allows you to automate some repetitive but needed processes": {
         "ar": "\u0645\u0647\u0627\u0645 \u0627\u0644\u062e\u0644\u0641\u064a\u0629: \u064a\u0633\u0645\u062d \u0644\u0643 \u0644\u0623\u062a\u0645\u062a\u0629 \u0628\u0639\u0636 \u0627\u0644\u0639\u0645\u0644\u064a\u0627\u062a \u0627\u0644\u0645\u062a\u0643\u0631\u0631\u0629 \u0648\u0644\u0643\u0646 \u0647\u0646\u0627\u0643 \u062d\u0627\u062c\u0629",
         "en": "Background tasks: allows you to automate some repetitive but needed processes",
         "es": "tareas en segundo plano: permite automatizar algunos procesos repetitivos, pero necesarios",
-        "fr": "Des t\u00e2ches de fond: vous permet d'automatiser certains processus r\u00e9p\u00e9titifs mais n\u00e9cessaires",
+        "fr": "T\u00e2ches de fond: vous permet d'automatiser certains processus r\u00e9p\u00e9titifs mais n\u00e9cessaires",
         "it": "attivit\u00e0 in background: consente di automatizzare alcuni processi ripetitivi, ma necessari"
     },
     "Blue": {
@@ -590,7 +594,7 @@
         "ar": "\u0646\u0633\u062e\u0629 \u0631\u0645\u0632\u064a\u0629",
         "en": "Copy token",
         "es": "token de copia",
-        "fr": "jeton de copie",
+        "fr": "Jeton de copie",
         "it": "Copia Token"
     },
     "Created": {
@@ -604,7 +608,7 @@
         "ar": "\u062e\u0637\u0623 \u0641\u064a \u0627\u0644\u062a\u0634\u063a\u064a\u0644",
         "en": "Critical Error",
         "es": "error cr\u00edtico",
-        "fr": "erreur critique",
+        "fr": "Erreur critique",
         "it": "errore critico"
     },
     "Current office": {
@@ -618,27 +622,27 @@
         "ar": "\u064a\u0639\u062a\u0632\u0645 \u0627\u0644\u0645\u0643\u062a\u0628 \u0627\u0644\u062d\u0627\u0644\u064a \u0644\u0639\u0631\u0636 \u062a\u0641\u0627\u0635\u064a\u0644 \u0627\u0644\u0645\u0643\u062a\u0628 \u0627\u0644\u0645\u0633\u0624\u0648\u0644 \u0641\u064a \u0646\u0647\u0627\u064a\u0629 \u0627\u0644\u0645\u0637\u0627\u0641 \u0645\u0646 \u0633\u062d\u0628 \u062a\u0630\u0643\u0631\u0629 \u0644\u0644\u0645\u0639\u0627\u0644\u062c\u0629",
         "en": "Current office meant to display the details of the lastly responsible office of pulling a ticket for processing",
         "es": "La oficina actual tiene la intenci\u00f3n de mostrar los detalles de la \u00faltima oficina responsable de tirar un ticket para procesar",
-        "fr": "Bureau actuel destin\u00e9 \u00e0 afficher les d\u00e9tails du dernier bureau responsable de tirer un ticket pour le traitement",
+        "fr": "Le bureau actuel a pour but d'afficher les d\u00e9tails du dernier bureau qui \u00e2 appeler un ticket pour le traitement",
         "it": "L'ufficio corrente intendeva mostrare i dettagli dell'ultimo ufficio responsabile per l'estrazione di un biglietto per l'elaborazione"
     },
     "Current ticket": {
         "ar": "\u0627\u0644\u062a\u0630\u0643\u0631\u0629 \u0627\u0644\u062d\u0627\u0644\u064a\u0629",
         "en": "Current ticket",
         "es": "Boleto actual",
-        "fr": "Billet actuel",
+        "fr": "Ticket actuel",
         "it": "Biglietto corrente"
     },
     "Current ticket : ": {
         "en": "Current ticket : ",
         "es": "Billete actual : ",
-        "fr": "Billet actuel : ",
+        "fr": "Ticket actuel : ",
         "it": "Biglietto corrente: "
     },
     "Current ticket meant to display the lastly pulled ticket by an office and it displays the ticket , its holder specified details": {
         "ar": "\u0627\u0644\u062a\u0630\u0643\u0631\u0629 \u0627\u0644\u062d\u0627\u0644\u064a\u0629 \u062a\u0639\u0646\u064a \u0639\u0631\u0636 \u0627\u0644\u062a\u0630\u0643\u0631\u0629 \u0627\u0644\u062a\u064a \u0633\u062d\u0628\u062a \u0623\u062e\u064a\u0631\u064b\u0627 \u0645\u0646 \u0623\u062d\u062f \u0627\u0644\u0645\u0643\u0627\u062a\u0628 \u0648\u062a\u0639\u0631\u0636 \u0627\u0644\u062a\u0630\u0643\u0631\u0629 \u060c \u0648\u062d\u062f\u062f \u0635\u0627\u062d\u0628\u0647\u0627 \u0627\u0644\u062a\u0641\u0627\u0635\u064a\u0644",
         "en": "Current ticket meant to display the lastly pulled ticket by an office and it displays the ticket , its holder specified details",
         "es": "Boleto actual destinado a mostrar el \u00faltimo boleto extra\u00eddo por una oficina y muestra el boleto, su titular especific\u00f3 detalles",
-        "fr": "Billet en cours destin\u00e9 \u00e0 afficher le dernier billet tir\u00e9 par un bureau et il affiche le billet, son titulaire sp\u00e9cifi\u00e9 d\u00e9tails",
+        "fr": "Ticket en cours a pour but d'afficher le dernier ticket appel\u00e9 par un bureau. Il affiche le ticket et les d\u00e9tails sp\u00e9cifi\u00e9 de son propri\u00e9taire",
         "it": "Biglietto attuale destinato a visualizzare l'ultimo biglietto estratto da un ufficio e visualizza il biglietto, i dettagli specificati dal titolare"
     },
     "Customization": {
@@ -769,14 +773,14 @@
         "ar": "\u064a\u0639\u0631\u0636 \u062c\u0645\u064a\u0639 \u0627\u0644\u062a\u0630\u0627\u0643\u0631 \u0627\u0644\u062d\u0627\u0644\u064a\u0629 \u0645\u0646 \u062c\u0645\u064a\u0639 \u0627\u0644\u0645\u0643\u0627\u062a\u0628 \u0628\u062a\u0631\u062a\u064a\u0628 \u062a\u0646\u0627\u0632\u0644\u064a \u0645\u0646 \u0627\u0644\u0623\u062d\u062f\u062b \u0625\u0644\u0649 \u0627\u0644\u0623\u0642\u062f\u0645 \u060c \u0645\u0639 \u0625\u0639\u0637\u0627\u0621 \u0627\u0644\u0645\u0634\u0631\u0641\u064a\u0646 \u0648\u0627\u0644\u0645\u0634\u0631\u0641\u064a\u0646 \u0627\u0644\u0645\u0633\u0645\u0648\u062d \u0644\u0647\u0645 \u062e\u064a\u0627\u0631\u0627\u062a \u0625\u0639\u0627\u062f\u0629 \u062a\u0639\u064a\u064a\u0646 \u0623\u0648 \u062d\u0630\u0641 \u062c\u0645\u064a\u0639 \u0627\u0644\u0645\u0643\u0627\u062a\u0628 \u0628\u0634\u0643\u0644 \u0635\u062d\u064a\u062d. \u0628\u0627\u0644\u0625\u0636\u0627\u0641\u0629 \u0625\u0644\u0649 \u0639\u062f\u062f \u0642\u0644\u064a\u0644 \u0645\u0646 \u0627\u0644\u0645\u0624\u0634\u0631\u0627\u062a \u0648\u0627\u0644\u0639\u062f\u0627\u062f\u0627\u062a \u0627\u0644\u062a\u064a \u062a\u0639\u0631\u0636 \u0639\u062f\u062f \u0627\u0644\u0645\u0643\u0627\u062a\u0628 \u0648\u062a\u062c\u0627\u0631\u0628\u0647\u0627 \u0627\u0644\u0625\u062c\u0645\u0627\u0644\u064a\u0629 \u0648\u0645\u0639\u0627\u0644\u062c\u062a\u0647\u0627 \u0648\u062a\u0646\u062a\u0638\u0631\u0647\u0627 \u0648\u0641\u0642\u0627\u064b \u0644\u0630\u0644\u0643.",
         "en": "Displays all existing tickets from all offices in a descending order from the newest to the oldest, and given the admin and permitted operators the options of resetting to zero or deleting all offices properly. As well as few indicators and counters that displays the number of offices, total, processed and waiting tickets accordingly.",
         "es": "Muestra todos los tickets existentes de todas las oficinas en orden descendente desde el m\u00e1s nuevo al m\u00e1s antiguo, y le da al administrador y a los operadores permitidos las opciones de restablecer a cero o eliminar todas las oficinas de manera adecuada. Adem\u00e1s de algunos indicadores y contadores que muestran la cantidad de oficinas, totales, procesadas y listas de espera en consecuencia.",
-        "fr": "Affiche tous les tickets existants de tous les bureaux dans un ordre d\u00e9croissant du plus r\u00e9cent au plus ancien, et donne \u00e0 l'administrateur et aux op\u00e9rateurs autoris\u00e9s les options de remise \u00e0 z\u00e9ro ou de suppression de tous les bureaux correctement. Ainsi que peu d'indicateurs et de compteurs qui affichent le nombre de bureaux, le total, les tickets trait\u00e9s et en attente en cons\u00e9quence.",
+        "fr": "Affiche tous les tickets existants de tous les bureaux dans un ordre d\u00e9croissant (du plus r\u00e9cent au plus ancien) et donne \u00e0 l'administrateur et aux op\u00e9rateurs autoris\u00e9s la possibilit\u00e9 de remettre \u00e0 z\u00e9ro ou de supprimer tous les bureaux proprement. Il y a \u00e9galement quelques indicateurs et compteurs qui affichent le nombre de bureaux au total ainsi que les tickets trait\u00e9s et en attente.",
         "it": "Visualizza tutti i biglietti esistenti da tutti gli uffici in ordine decrescente dal pi\u00f9 recente al pi\u00f9 vecchio, e fornisce all'amministratore e agli operatori autorizzati le opzioni di ripristino a zero o l'eliminazione corretta di tutti gli uffici. Oltre a pochi indicatori e contatori che visualizzano il numero di uffici, biglietti totali, elaborati e in attesa di conseguenza."
     },
     "Do not assign video": {
         "ar": "\u0647\u0644 \u0627\u0644\u0641\u064a\u062f\u064a\u0648 \u0639\u062f\u0645 \u062a\u0639\u064a\u064a\u0646",
         "en": "Do not assign video",
         "es": "Hacer v\u00eddeo no asignar",
-        "fr": "Ne vid\u00e9o pas assign",
+        "fr": "Ne pas assign\u00e9 de vid\u00e9o",
         "it": "Fare video non assegnazione"
     },
     "Duration": {
@@ -790,7 +794,7 @@
         "ar": "\u0643\u0644: \u0644\u062a\u0643\u0631\u0627\u0631 \u0643\u0644 \u0625\u0639\u0644\u0627\u0646 \u0648\u0627\u0644\u0625\u062e\u0637\u0627\u0631",
         "en": "Each: to repeat each announcement and notification",
         "es": "Cada uno: para repetir cada anuncio y notificaci\u00f3n",
-        "fr": "Chacun: pour r\u00e9p\u00e9ter chaque annonce et notification",
+        "fr": "Chacun: r\u00e9p\u00e9ter chaque annonce et notification",
         "it": "Ciascuno: ripetere ogni annuncio e notifica"
     },
     "Eight seconds": {
@@ -825,7 +829,7 @@
         "ar": "\u062a\u0645\u0643\u064a\u0646 \u062d\u0630\u0641 \u0627\u0644\u062a\u0630\u0627\u0643\u0631:",
         "en": "Enable deleting tickets :",
         "es": "Habilitar eliminaci\u00f3n de entradas:",
-        "fr": "Activer la suppression de billets:",
+        "fr": "Activer la suppression des tickets:",
         "it": "Attiva l'eliminazione di biglietti:"
     },
     "Enable or disable video : ": {
@@ -853,62 +857,64 @@
         "ar": "\u0623\u062f\u062e\u0644 \u0645\u062f\u0629 \u0628\u0627\u0644\u062b\u0648\u0627\u0646\u064a \u0644\u0625\u0639\u0627\u062f\u0629 \u062a\u062d\u0645\u064a\u0644 \u0627\u0644\u0635\u0641\u062d\u0629 \u062a\u0644\u0642\u0627\u0626\u064a\u064b\u0627 \u0641\u064a:",
         "en": "Enter a duration in seconds to auto-reload the page in :",
         "es": "Ingrese una duraci\u00f3n en segundos para volver a cargar autom\u00e1ticamente la p\u00e1gina en:",
-        "fr": "Entrez une dur\u00e9e en secondes pour recharger automatiquement la page dans:",
+        "fr": "Saisir une dur\u00e9e en secondes pour rafraichir automatiquement la page dans:",
         "it": "Inserisci una durata in secondi per ricaricare automaticamente la pagina in:"
     },
     "Enter a notification message :": {
         "ar": "\u0623\u062f\u062e\u0644 \u0631\u0633\u0627\u0644\u0629 \u0625\u0639\u0644\u0627\u0645:",
         "en": "Enter a notification message :",
         "es": "Ingrese un mensaje de notificaci\u00f3n:",
-        "fr": "Entrez un message de notification:",
+        "fr": "Saisir un message de notification:",
         "it": "Inserisci un messaggio di notifica:"
     },
     "Enter a slide title :": {
         "ar": "\u0623\u062f\u062e\u0644 \u0639\u0646\u0648\u0627\u0646 \u0634\u0631\u064a\u062d\u0629:",
         "en": "Enter a slide title :",
         "es": "Ingrese un t\u00edtulo de diapositiva:",
-        "fr": "Entrez un titre de diapositive:",
+        "fr": "Saisir un titre de diapositive:",
         "it": "Inserisci un titolo della diapositiva:"
     },
     "Enter a subtitle :": {
         "ar": "\u0623\u062f\u062e\u0644 \u0639\u0646\u0648\u0627\u0646\u064b\u0627 \u0641\u0631\u0639\u064a\u064b\u0627:",
         "en": "Enter a subtitle :",
         "es": "Ingresa un subt\u00edtulo:",
-        "fr": "Entrez un sous-titre:",
+        "fr": "Saisir un sous-titre:",
         "it": "Inserisci un sottotitolo:"
     },
     "Enter a text header : ": {
-        "en": "Enter a text header : "
+        "en": "Enter a text header : ",
+        "fr": "Entrez un en-t\u00eate de texte:"
     },
     "Enter a text sub-header : ": {
-        "en": "Enter a text sub-header : "
+        "en": "Enter a text sub-header : ",
+        "fr": "Entrez un sous-chef de texte:"
     },
     "Enter a title :": {
         "ar": "\u0623\u062f\u062e\u0644 \u0627\u0644\u0639\u0646\u0648\u0627\u0646:",
         "en": "Enter a title :",
         "es": "Ingresa un t\u00edtulo:",
-        "fr": "Entrez un titre:",
+        "fr": "Saisir un titre:",
         "it": "Inserisci un titolo:"
     },
     "Enter a title : ": {
         "ar": "\u0623\u062f\u062e\u0644 \u0627\u0644\u0639\u0646\u0648\u0627\u0646:",
         "en": "Enter a title :",
         "es": "Ingresa un t\u00edtulo:",
-        "fr": "Entrez un titre:",
+        "fr": "Saisir un titre:",
         "it": "Inserisci un titolo:"
     },
     "Enter a unique office name : ": {
         "ar": "\u0625\u062f\u062e\u0627\u0644 \u0627\u0633\u0645 \u0627\u0644\u0645\u0643\u062a\u0628 \u0641\u0631\u064a\u062f\u0629 \u0645\u0646 \u0646\u0648\u0639\u0647\u0627:",
         "en": "Enter a unique office name :",
         "es": "Introduzca un nombre de la oficina \u00fanico:",
-        "fr": "Entrez un nom de bureau unique:",
+        "fr": "Saisir un nom de bureau unique:",
         "it": "Inserire un nome ufficio unico:"
     },
     "Enter a unique user name : ": {
         "ar": "\u0623\u062f\u062e\u0644 \u0627\u0633\u0645 \u0645\u0633\u062a\u062e\u062f\u0645 \u0641\u0631\u064a\u062f:",
         "en": "Enter a unique user name :",
         "es": "Ingrese un nombre de usuario \u00fanico:",
-        "fr": "Entrez un nom d'utilisateur unique:",
+        "fr": "Saisir un nom d'utilisateur unique:",
         "it": "Inserisci un nome utente univoco:"
     },
     "Enter alias for Name : ": {
@@ -939,63 +945,63 @@
         "ar": "\u0623\u062f\u062e\u0644 \u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0645\u0633\u062a\u0639\u0627\u0631 \u0644\u0644\u0627\u0633\u0645:",
         "en": "Enter alias for name :",
         "es": "Ingresa un alias para el nombre:",
-        "fr": "Entrez l'alias pour le nom:",
+        "fr": "Saisir un alias pour le nom:",
         "it": "Inserisci alias per nome:"
     },
     "Enter alias for number : ": {
         "ar": "\u0623\u062f\u062e\u0644 \u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0645\u0633\u062a\u0639\u0627\u0631 \u0644\u0644\u0631\u0642\u0645:",
         "en": "Enter alias for number :",
         "es": "Ingresa un alias para el n\u00famero:",
-        "fr": "Entrez un alias pour le num\u00e9ro:",
+        "fr": "Saisir un alias pour le num\u00e9ro:",
         "it": "Inserisci un alias per il numero:"
     },
     "Enter alias for office : ": {
         "ar": "\u0623\u062f\u062e\u0644 \u0627\u0633\u0645\u064b\u0627 \u0645\u0633\u062a\u0639\u0627\u0631\u064b\u0627 \u0644\u0644\u0645\u0643\u062a\u0628:",
         "en": "Enter alias for office :",
         "es": "Ingresa un alias para la oficina:",
-        "fr": "Entrez l'alias pour le bureau:",
+        "fr": "Saisir un alias pour le bureau:",
         "it": "Inserisci un alias per l'ufficio:"
     },
     "Enter alias for task : ": {
         "ar": "\u0623\u062f\u062e\u0644 \u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0645\u0633\u062a\u0639\u0627\u0631 \u0644\u0644\u0645\u0647\u0645\u0629:",
         "en": "Enter alias for task :",
         "es": "Ingresa un alias para la tarea:",
-        "fr": "Entrez un alias pour la t\u00e2che:",
+        "fr": "Saisir un alias pour la t\u00e2che:",
         "it": "Inserisci un alias per l'attivit\u00e0:"
     },
     "Enter alias for ticket : ": {
         "ar": "\u0623\u062f\u062e\u0644 \u0627\u0633\u0645\u064b\u0627 \u0645\u0633\u062a\u0639\u0627\u0631\u064b\u0627 \u0644\u0644\u062a\u0630\u0643\u0631\u0629:",
         "en": "Enter alias for ticket :",
         "es": "Ingresa un alias para el ticket:",
-        "fr": "Entrez un alias pour le ticket:",
+        "fr": "Saisir un alias pour le ticket:",
         "it": "Inserisci l'alias per il ticket:"
     },
     "Enter password : ": {
         "ar": "\u0623\u062f\u062e\u0644 \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631:",
         "en": "Enter password :",
         "es": "Introducir la contrase\u00f1a :",
-        "fr": "Entrer le mot de passe :",
+        "fr": "Saisir le mot de passe :",
         "it": "Inserire la password :"
     },
     "Enter token description : ": {
         "ar": "\u0623\u062f\u062e\u0644 \u0648\u0635\u0641 \u0631\u0645\u0632\u064a:",
         "en": "Enter token description :",
         "es": "Rellena el texto del token:",
-        "fr": "Saisir le jeton:",
+        "fr": "Saisir la description du jeton:",
         "it": "Inserisci descrizione token:"
     },
     "Enter token name : ": {
         "ar": "\u0623\u062f\u062e\u0644 \u0627\u0633\u0645 \u0631\u0645\u0632\u064a:",
         "en": "Enter token name :",
         "es": "Introduce el nombre del token:",
-        "fr": "Entrez le nom symbolique:",
+        "fr": "Saisir le nom du jeton:",
         "it": "Inserisci il nome del token:"
     },
     "Enter unique title for the task : ": {
         "ar": "\u0623\u062f\u062e\u0644 \u0639\u0646\u0648\u0627\u0646\u064b\u0627 \u0641\u0631\u064a\u062f\u064b\u0627 \u0644\u0644\u0645\u0647\u0645\u0629:",
         "en": "Enter unique title for the task :",
         "es": "Ingrese un t\u00edtulo \u00fanico para la tarea:",
-        "fr": "Entrez un titre unique pour la t\u00e2che:",
+        "fr": "Saisir un titre unique pour la t\u00e2che:",
         "it": "Immettere un titolo univoco per l'attivit\u00e0:"
     },
     "Enter user name : ": {
@@ -1009,7 +1015,7 @@
         "ar": "\u062e\u0637\u0623: \u0644\u0627 \u062a\u0648\u062c\u062f \u0645\u0643\u0627\u062a\u0628 \u0644\u062d\u0630\u0641\u0647\u0627",
         "en": "Error: No offices exist to delete",
         "es": "Error: no existen oficinas para eliminar",
-        "fr": "Erreur: Aucun bureau n'existe pour supprimer",
+        "fr": "Erreur: Aucun bureau \u00e2 supprimer",
         "it": "Errore: non esistono uffici da eliminare"
     },
     "Error: No tasks exist to be resetted": {
@@ -1022,7 +1028,7 @@
         "ar": "\u062e\u0637\u0623: \u0645\u0643\u062a\u0628 \u0627\u0644\u0645\u062d\u062f\u062f \u0644\u0627 \u0648\u062c\u0648\u062f \u0644\u0647!",
         "en": "Error: Office selected does not exist!",
         "es": "Error: Oficina seleccionado no existe!",
-        "fr": "Erreur: Office n'existe pas!",
+        "fr": "Erreur: Le bureau choisi n'existe pas!",
         "it": "Errore: Ufficio selezionato non esiste!"
     },
     "Error: failed to repeat announcement.": {
@@ -1036,7 +1042,7 @@
         "ar": "\u062e\u0637\u0623: \u062e\u0637\u0623 \u0641\u064a \u0645\u0639\u0644\u0645\u0627\u062a \u0627\u0644\u0628\u062d\u062b",
         "en": "Error: fault in search parameters",
         "es": "Error: error en los par\u00e1metros de b\u00fasqueda",
-        "fr": "Erreur: erreur dans les param\u00e8tres de recherche",
+        "fr": "Erreur: Erreur dans les param\u00e8tres de recherche",
         "it": "Errore: errore nei parametri di ricerca"
     },
     "Error: file uploaded is too large ": {
@@ -1053,13 +1059,14 @@
         "it": "Errore: impostazione bandiera single_row deve essere disabilitata"
     },
     "Error: flag setting single_row must be enabled": {
-        "en": "Error: flag setting single_row must be enabled"
+        "en": "Error: flag setting single_row must be enabled",
+        "fr": "Erreur: le param\u00e8tres single_row doit \u00eatre activ\u00e9"
     },
     "Error: invalid authentication token data.": {
         "ar": "\u062e\u0637\u0623: \u0627\u0644\u0645\u0635\u0627\u062f\u0642\u0629 \u063a\u064a\u0631 \u0635\u0627\u0644\u062d\u0629 \u0627\u0644\u0628\u064a\u0627\u0646\u0627\u062a \u0631\u0645\u0632\u064a\u0629.",
         "en": "Error: invalid authentication token data.",
         "es": "Error: la autenticaci\u00f3n no v\u00e1lida testigo de datos.",
-        "fr": "Erreur: donn\u00e9es jeton d'authentification non valide.",
+        "fr": "Erreur: donn\u00e9es du jeton d'authentification non valide.",
         "it": "Errore: l'autenticazione non validi i dati token."
     },
     "Error: login is required to access the page": {
@@ -1081,26 +1088,26 @@
     "Error: must disable slide-show before using video": {
         "ar": "\u062e\u0637\u0623: \u064a\u062c\u0628 \u062a\u0639\u0637\u064a\u0644 \u0639\u0631\u0636 \u0627\u0644\u0634\u0631\u0627\u0626\u062d \u0642\u0628\u0644 \u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0627\u0644\u0641\u064a\u062f\u064a\u0648",
         "es": "Error: debe deshabilitar slide-show antes de usar video",
-        "fr": "Erreur: doit d\u00e9sactiver le diaporama avant d'utiliser la vid\u00e9o",
+        "fr": "Erreur: le diaporama doit \u00eatre d\u00e9sactiver avant d'utiliser la vid\u00e9o",
         "it": "Errore: deve disabilitare lo slide-show prima di usare il video"
     },
     "Error: must disable video before using slide-show": {
         "ar": "\u062e\u0637\u0623: \u064a\u062c\u0628 \u062a\u0639\u0637\u064a\u0644 \u0627\u0644\u0641\u064a\u062f\u064a\u0648 \u0642\u0628\u0644 \u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0639\u0631\u0636 \u0627\u0644\u0634\u0631\u0627\u0626\u062d",
         "es": "Error: debe deshabilitar el video antes de usar slide-show",
-        "fr": "Erreur: doit d\u00e9sactiver la vid\u00e9o avant d'utiliser le diaporama",
+        "fr": "Erreur: la vid\u00e9o doit \u00eatre d\u00e9sactiver  avant d'utiliser le diaporama",
         "it": "Errore: deve disabilitare il video prima di usare lo slide-show"
     },
     "Error: must unassigned user to an office before updating it !": {
         "ar": "\u062e\u0637\u0623: \u064a\u062c\u0628 \u0639\u062f\u0645 \u062a\u0639\u064a\u064a\u0646 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0625\u0644\u0649 \u0645\u0643\u062a\u0628 \u0642\u0628\u0644 \u062a\u062d\u062f\u064a\u062b\u0647!",
         "es": "Error: debe desasignar usuario a una oficina antes de actualizarlo!",
-        "fr": "Erreur: l'utilisateur non affect\u00e9 doit \u00eatre affect\u00e9 \u00e0 un bureau avant de le mettre \u00e0 jour!",
+        "fr": "Erreur: l'utilisateur doit \u00eatre d\u00e9sactiv\u00e9 du bureau avant de le mettre \u00e0 jour!",
         "it": "Errore: deve essere assegnato a un ufficio non assegnato prima di aggiornarlo!"
     },
     "Error: name is used by another one, choose another name": {
         "ar": "\u062e\u0637\u0623: \u064a\u062a\u0645 \u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0627\u0644\u0627\u0633\u0645 \u0628\u0648\u0627\u0633\u0637\u0629 \u0627\u0633\u0645 \u0622\u062e\u0631 \u060c \u0627\u062e\u062a\u0631 \u0627\u0633\u0645\u064b\u0627 \u0622\u062e\u0631",
         "en": "Error: name is used by another one, choose another name",
         "es": "Error: el nombre es usado por otro, elige otro nombre",
-        "fr": "Erreur: le nom est utilis\u00e9 par un autre, choisissez un autre nom",
+        "fr": "Erreur: le nom est d\u00e9j\u00e2 utilis\u00e9, choisissez un autre nom",
         "it": "Errore: il nome viene utilizzato da un altro, scegliere un altro nome"
     },
     "Error: no tickets left to pull from ..": {
@@ -1137,7 +1144,7 @@
     "Error: operator not assigned by admin yet !": {
         "ar": "\u062e\u0637\u0623: \u0644\u0645 \u064a\u062a\u0645 \u062a\u0639\u064a\u064a\u0646 \u0627\u0644\u0645\u0634\u063a\u0644 \u0645\u0646 \u0642\u0628\u0644 \u0627\u0644\u0625\u062f\u0627\u0631\u0629 \u0628\u0639\u062f!",
         "es": "Error: operador no asignado por el administrador todav\u00eda",
-        "fr": "Erreur: op\u00e9rateur non encore assign\u00e9 par admin!",
+        "fr": "Erreur: op\u00e9rateur pas encore assign\u00e9 par l'admin!",
         "it": "Errore: operatore non ancora assegnato dall'amministratore!"
     },
     "Error: operators are not allowed to access the page ": {
@@ -1217,7 +1224,7 @@
     "Error: you have reached the amount limit of multimedia files ": {
         "ar": "\u062e\u0637\u0623: \u0644\u0642\u062f \u0648\u0635\u0644\u062a \u0625\u0644\u0649 \u0627\u0644\u062d\u062f \u0627\u0644\u0645\u0633\u0645\u0648\u062d \u0628\u0647 \u0644\u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0648\u0633\u0627\u0626\u0637 \u0627\u0644\u0645\u062a\u0639\u062f\u062f\u0629",
         "es": "Error: ha alcanzado el l\u00edmite de cantidad de archivos multimedia",
-        "fr": "Erreur: vous avez atteint la limite de quantit\u00e9 de fichiers multim\u00e9dia",
+        "fr": "Erreur: vous avez atteint la quantit\u00e9 limite de fichiers multim\u00e9dia",
         "it": "Errore: hai raggiunto il limite di quantit\u00e0 di file multimediali"
     },
     "Error: you have reached the limit of capacity size allowed ": {
@@ -1230,7 +1237,7 @@
         "ar": "\u062e\u0637\u0623: \u064a\u062c\u0628 \u0623\u0646 \u064a\u0643\u0648\u0646 \u0644\u062f\u064a\u0643 \u0637\u0627\u0628\u0639\u0629 \u0645\u062a\u0648\u0641\u0631\u0629 \u060c \u0644\u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0627\u0644\u0637\u0628\u0627\u0639\u0629",
         "en": "Error: you must have available printer, to use printed",
         "es": "Error: debe tener una impresora disponible, para usar impresa",
-        "fr": "Erreur: vous devez disposer de l'imprimante disponible pour utiliser",
+        "fr": "Erreur: Vous devez avoir une imprimante disponible pour utiliser l'impression",
         "it": "Errore: \u00e8 necessario avere la stampante disponibile, da usare stampata"
     },
     "Error: you must reset it, before you delete it ": {
@@ -1244,7 +1251,7 @@
         "ar": "\u0623\u062e\u0637\u0627\u0621",
         "en": "Errors",
         "es": "Errores",
-        "fr": "les erreurs",
+        "fr": "Erreurs",
         "it": "Errori"
     },
     "Every eight seconds": {
@@ -1300,21 +1307,21 @@
         "ar": "\u062a\u0623\u0643\u064a\u062f \u0627\u0644\u062e\u0631\u0648\u062c",
         "en": "Exiting while running",
         "es": "salir",
-        "fr": "quitter",
+        "fr": "Quitter pendant le fonctionnement",
         "it": "uscire"
     },
     "Export": {
         "ar": "\u062a\u0635\u062f\u064a\u0631",
         "en": "Export",
         "es": "Exportar",
-        "fr": "Exportation",
+        "fr": "Exporter",
         "it": "Esportare"
     },
     "Export ": {
         "ar": "\u062a\u0635\u062f\u064a\u0631",
         "en": "Export ",
         "es": "Exportar",
-        "fr": "Exportation",
+        "fr": "Exporter",
         "it": "Esportare"
     },
     "Extract table": {
@@ -1363,7 +1370,7 @@
         "ar": "\u0627\u0646\u0633\u0649 \u0630\u0644\u0643",
         "en": "Forget it",
         "es": "Olv\u00eddalo",
-        "fr": "Oublie",
+        "fr": "Abandonne",
         "it": "Dimenticalo"
     },
     "Four seconds": {
@@ -1405,7 +1412,7 @@
         "ar": "\u062a\u0648\u0644\u064a\u062f \u062a\u0630\u0643\u0631\u0629",
         "en": "Generate a ticket",
         "es": "Generar un billete",
-        "fr": "G\u00e9n\u00e9rer un billet",
+        "fr": "G\u00e9n\u00e9rer un ticket",
         "it": "Genera un biglietto"
     },
     "German": {
@@ -1433,7 +1440,7 @@
         "ar": "\u0647\u0646\u0627 \u062d\u064a\u062b \u064a\u062a\u0645 \u062a\u0639\u064a\u064a\u0646 \u0646\u0648\u0639 \u0627\u0644\u062a\u0630\u0627\u0643\u0631 \u0627\u0644\u062a\u064a \u0633\u064a\u064f\u0646\u0634\u0626\u0647\u0627 \u0627\u0644\u0646\u0638\u0627\u0645 \u060c \u064a\u0643\u0648\u0646 \u0647\u0646\u0627\u0643 \u062e\u064a\u0627\u0631\u0627\u0646 \u0645\u062a\u0627\u062d\u0627\u0646 \u062d\u0627\u0644\u064a\u064b\u0627. 1. \u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062f\u062e\u0648\u0644 \u060c \u0648\u0627\u0644\u0630\u064a \u064a\u062f\u0631\u062c \u0641\u064a\u0647 \u0627\u0644\u0639\u0645\u064a\u0644 \u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0643\u0627\u0645\u0644 \u0628\u0639\u062f \u0627\u062e\u062a\u064a\u0627\u0631 \u0627\u0644\u0645\u0647\u0645\u0629 \u0627\u0644\u0645\u062d\u062f\u062f\u0629 \u060c \u0644\u0630\u0627 \u0633\u064a\u0642\u0648\u0645 \u0627\u0644\u0646\u0638\u0627\u0645 \u0641\u064a \u0648\u0642\u062a \u0644\u0627\u062d\u0642 \u0628\u0627\u0644\u0625\u0639\u0644\u0627\u0646 \u0639\u0646 \u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0645\u062f\u0631\u062c \u0643\u0644\u0645\u0627 \u0643\u0627\u0646 \u0628\u0633\u0628\u0628. 2. \u0637\u0628\u0639\u062a \u062a\u0630\u0643\u0631\u0629 \u0637\u0627\u0628\u0648\u0631 \u0645\u0631\u0642\u0645\u0629 \u0646\u0645\u0648\u0630\u062c\u064a\u0629 \u0645\u0637\u0628\u0648\u0639\u0629 \u060c \u0648\u0627\u0644\u062a\u064a \u062a\u062a\u0637\u0644\u0628 \u062a\u0648\u0635\u064a\u0644 \u0637\u0627\u0628\u0639\u0629 USB \u060c \u0648\u0627\u0644\u062a\u064a \u064a\u062a\u0645 \u062a\u0647\u064a\u0626\u062a\u0647\u0627 \u0648\u062a\u0639\u064a\u064a\u0646\u0647\u0627 \u0639\u0644\u0649 \u0627\u0644\u062a\u0630\u0627\u0643\u0631 \u0623\u064a\u0636\u064b\u0627.",
         "en": "Here where the type of tickets which the system will generate is set, two options currently are possible 1.Registered, in-which the customer inserts full name after choosing the specific task, so the system later on will announce the inserted name whenever it is due. 2.Printed the typical queue numbered printed ticket, that requires usb printer to be connected, with which it is configured and set on Tickets too .",
         "es": "Aqu\u00ed donde se establece el tipo de tickets que generar\u00e1 el sistema, actualmente hay dos opciones posibles: 1. Registrado, en el cual el cliente inserta el nombre completo despu\u00e9s de elegir la tarea espec\u00edfica, por lo que el sistema anunciar\u00e1 m\u00e1s adelante el nombre insertado siempre que sea debido. 2.Imprimi\u00f3 el boleto impreso numerado de la cola t\u00edpica, que requiere que se conecte la impresora del usb, con la cual se configura y se fija en boletos tambi\u00e9n.",
-        "fr": "Ici, o\u00f9 le type de tickets que le syst\u00e8me va g\u00e9n\u00e9rer est d\u00e9fini, deux options sont actuellement possibles: 1.Registered, dans lequel le client ins\u00e8re le nom complet apr\u00e8s avoir choisi la t\u00e2che sp\u00e9cifique, ainsi le syst\u00e8me annoncera le nom ins\u00e9r\u00e9 \u00e0 chaque fois qu'il est d\u00fb. 2.Imprim\u00e9 le billet imprim\u00e9 num\u00e9rot\u00e9 par file d'attente typique, qui exige que l'imprimante d'usb soit connect\u00e9e, avec laquelle il est configur\u00e9 et plac\u00e9 sur des billets aussi.",
+        "fr": "Ici, o\u00f9 le type de tickets que le syst\u00e8me va g\u00e9n\u00e9rer est d\u00e9fini, deux options sont actuellement possibles: 1.Enregistr\u00e9: l\u00e0 o\u00f9 le client ins\u00e8re son nom apr\u00e8s avoir choisi la t\u00e2che sp\u00e9cifique, ainsi le syst\u00e8me annoncera le nom ins\u00e9r\u00e9 \u00e0 chaque fois qu'il est d\u00fb. 2.Imprim\u00e9 : Impression d'un ticket typique de file d'attente, exige que l'imprimante usb avec laquelle il est configur\u00e9 soit connect\u00e9e,  et configur\u00e9 pour des tickets.",
         "it": "Qui, dove \u00e8 impostato il tipo di ticket che il sistema generer\u00e0, sono attualmente possibili due opzioni 1. Registrato, in cui il cliente inserisce il nome completo dopo aver scelto l'attivit\u00e0 specifica, quindi il sistema in seguito annuncer\u00e0 il nome inserito ogni volta che \u00e8 dovuto. 2. Stampato il tipico biglietto stampato numerato in coda, che richiede la connessione della stampante USB, con la quale \u00e8 configurato e impostato anche sui biglietti."
     },
     "Hide prefix office letter: ": {
@@ -1451,14 +1458,14 @@
         "ar": "\u0625\u062e\u0641\u0627\u0621 \u0627\u0644\u0631\u0642\u0645 \u0627\u0644\u0642\u064a\u0627\u0633\u064a \u062a\u0630\u0643\u0631\u0629:",
         "en": "Hide ticket index number:",
         "es": "Ocultar n\u00famero de \u00edndice de entradas:",
-        "fr": "Cacher num\u00e9ro d'index de billets:",
+        "fr": "Cacher le num\u00e9ro d'index des tickets:",
         "it": "Nascondi numero indice del biglietto:"
     },
     "ID . Name": {
         "ar": "\u0647\u0648\u064a\u0629 \u0634\u062e\u0635\u064a\u0629 . \u0627\u0633\u0645",
         "en": "ID . Name",
         "es": "CARN\u00c9 DE IDENTIDAD . Nombre",
-        "fr": "ID. pr\u00e9nom",
+        "fr": "ID. Pr\u00e9nom",
         "it": "ID. Nome"
     },
     "ID . Title": {
@@ -1493,21 +1500,21 @@
         "ar": "\u0645\u0639\u0644\u0648\u0645\u0627\u062a: \u064a\u062a\u0645 \u062d\u0630\u0641 \u0631\u0645\u0632 \u0627\u0644\u0645\u0635\u0627\u062f\u0642\u0629.",
         "en": "Info: authentication token is deleted.",
         "es": "Info: Se suprime el token de autenticaci\u00f3n.",
-        "fr": "Info: jeton d'authentification est supprim\u00e9.",
+        "fr": "Info: le jeton d'authentification a \u00e9t\u00e9 supprim\u00e9.",
         "it": "Info: token di autenticazione viene eliminato."
     },
     "Info: authentication token is updated.": {
         "ar": "\u0645\u0639\u0644\u0648\u0645\u0627\u062a: \u064a\u062a\u0645 \u062a\u062d\u062f\u064a\u062b \u0631\u0645\u0632 \u0627\u0644\u0645\u0635\u0627\u062f\u0642\u0629.",
         "en": "Info: authentication token is updated.",
         "es": "Info: token de autenticaci\u00f3n se actualiza.",
-        "fr": "Info: jeton d'authentification est mis \u00e0 jour.",
+        "fr": "Info: le jeton d'authentification a \u00e9t\u00e9 mis \u00e0 jour.",
         "it": "Info: token di autenticazione viene aggiornato."
     },
     "Info: authentication tokens are deleted.": {
         "ar": "\u0645\u0639\u0644\u0648\u0645\u0627\u062a: \u064a\u062a\u0645 \u062d\u0630\u0641 \u0627\u0644\u0631\u0645\u0648\u0632 \u0627\u0644\u0645\u0635\u0627\u062f\u0642\u0629.",
         "en": "Info: authentication tokens are deleted.",
         "es": "Informaci\u00f3n: se eliminan los tokens de autenticaci\u00f3n.",
-        "fr": "Info: jetons d'authentification sont supprim\u00e9s.",
+        "fr": "Info: Les jetons d'authentification ont \u00e9t\u00e9 supprim\u00e9s.",
         "it": "Info: token di autenticazione vengono cancellati."
     },
     "Inserisci un titolo:": {
@@ -1517,7 +1524,7 @@
     "Insert message to be displayed, when any task chooses :": {
         "ar": "\u0625\u062f\u0631\u0627\u062c \u0631\u0633\u0627\u0644\u0629 \u0644\u064a\u062a\u0645 \u0639\u0631\u0636\u0647\u0627 \u060c \u0639\u0646\u062f \u0627\u062e\u062a\u064a\u0627\u0631 \u0623\u064a \u0645\u0647\u0645\u0629:",
         "es": "Insertar mensaje para mostrar, cuando cualquier tarea elija:",
-        "fr": "Ins\u00e9rer un message \u00e0 afficher, lorsqu'une t\u00e2che choisit:",
+        "fr": "Ins\u00e9rer un message \u00e0 afficher, lorsqu'une t\u00e2che est choisit:",
         "it": "Inserisci messaggio da visualizzare, quando qualsiasi attivit\u00e0 sceglie:"
     },
     "Issued": {
@@ -1538,19 +1545,19 @@
         "ar": "\u0648\u0647\u064a \u0627\u0644\u0634\u0627\u0634\u0629 \u0627\u0644\u062a\u064a \u064a\u062a\u0645 \u0641\u064a\u0647\u0627 \u0639\u0631\u0636 \u0627\u0644\u062a\u0630\u0627\u0643\u0631 \u0641\u064a \u062a\u0633\u0644\u0633\u0644 \u0627\u0644\u0633\u062d\u0628 \u060c \u0628\u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0627\u0644\u062a\u063a\u0630\u064a\u0629 \u0627\u0644\u062d\u064a\u0629 \u0645\u0639 \u0643\u0644 \u062a\u0630\u0643\u0631\u0629 \u062a\u0630\u0643\u0631\u0629 \u0641\u0631\u064a\u062f\u0629 \u064a\u062a\u0645 \u0625\u0646\u0634\u0627\u0624\u0647\u0627 \u0645\u0646 \u0634\u0627\u0634\u0629 \u0627\u0644\u0644\u0645\u0633 \u0645\u0646 \u0642\u0628\u0644 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0648\u0633\u064a\u062a\u0645 \u062a\u0646\u0638\u064a\u0645\u0647\u0627 \u0628\u0645\u0648\u062c\u0628 \u062a\u0630\u0627\u0643\u0631 \u0627\u0644\u0627\u0646\u062a\u0638\u0627\u0631 \u0648\u0633\u064a\u062a\u0645 \u0648\u0636\u0639 \u0643\u0644 \u062a\u0630\u0643\u0631\u0629 \u064a\u0633\u062d\u0628\u0647\u0627 \u0645\u0634\u063a\u0644 \u0645\u0646 \u0623\u064a \u0645\u0643\u062a\u0628 \u0645\u0639\u064a\u0646 \u0627\u0644\u062a\u0630\u0643\u0631\u0629 \u0627\u0644\u062d\u0627\u0644\u064a\u0629. \u0643\u0644 \u0639\u0646\u0635\u0631 \u0645\u0646\u0647\u0645 \u0633\u064a\u0643\u0648\u0646 \u0644\u0647 \u0623\u0633\u0644\u0648\u0628\u0647 \u0627\u0644\u0641\u0631\u064a\u062f \u0641\u064a \u0625\u0628\u062f\u0627\u0621 \u0627\u0644\u0641\u0627\u0631\u0642 \u0628\u064a\u0646 \u0627\u0644\u0645\u0634\u0627\u0647\u062f \u0648\u0627\u0644\u0641\u0627\u0631\u0642 \u0628\u064a\u0646\u0647\u0645\u0627.",
         "en": "It is the screen in which tickets are displayed in sequence of pulling, utilizing live feed with each ticket unique ticket generated from the touch screen by user will be organized under waiting tickets and each ticket pulled by an operator of any given office will be positioned in current ticket. Each element of them will have its unique style to indelicate to the viewer the difference in-between each.",
         "es": "Es la pantalla en la que se muestran los boletos en secuencia de extracci\u00f3n, utilizando transmisi\u00f3n en vivo con cada ticket. El boleto \u00fanico generado por la pantalla t\u00e1ctil por el usuario se organizar\u00e1 bajo tickets de espera y cada boleto extra\u00eddo por un operador de cualquier oficina se colocar\u00e1 en boleto actual. Cada elemento de ellos tendr\u00e1 su estilo \u00fanico para indelicar al espectador la diferencia entre cada uno.",
-        "fr": "C'est l'\u00e9cran dans lequel les billets sont affich\u00e9s dans la s\u00e9quence de tirage, en utilisant le flux en direct avec chaque billet unique g\u00e9n\u00e9r\u00e9 par l'\u00e9cran tactile par l'utilisateur sera organis\u00e9 sous des tickets d'attente et chaque ticket tir\u00e9 par un op\u00e9rateur d'un bureau donn\u00e9 sera positionn\u00e9 dans ticket actuel. Chaque \u00e9l\u00e9ment aura son style unique pour ind\u00e9licater le spectateur de la diff\u00e9rence entre chacun.",
+        "fr": "C'est l'\u00e9cran sur lequel les tickets sont affich\u00e9s dans la s\u00e9quence de tirage, en utilisant le flux en direct, chaque ticket g\u00e9n\u00e9r\u00e9 par l'\u00e9cran tactile de mani\u00e8re unique  par l'utilisateur sera organis\u00e9 sous forme de tickets d'attente. Chaque ticket appel\u00e9 par un op\u00e9rateur d'un bureau donn\u00e9 sera positionn\u00e9 dans ticket actuel. Chaque \u00e9l\u00e9ment aura son style unique pour ind\u00e9quer au spectateur de la diff\u00e9rence entre chaque ticket.",
         "it": "\u00c8 lo schermo in cui i biglietti vengono visualizzati in sequenza di tiri, utilizzando il feed dal vivo con ogni ticket biglietto unico generato dal touch screen da parte dell'utente verr\u00e0 organizzato in attesa di biglietti e ogni biglietto tirato da un operatore di un determinato ufficio sar\u00e0 posizionato in biglietto corrente. Ogni elemento di essi avr\u00e0 il suo stile unico per indeliare allo spettatore la differenza tra ciascuno."
     },
     "It is the screen in-which tickets are displayed in sequence of pulling, utilizing live feed with each ticket unique ticket generated from the touch screen by user will be organized under waiting tickets and each ticket pulled by an operator of any given office will be positioned in current ticket. Each element of them will have its unique style to indelicate to the viewer the difference in-between each.": {
         "ar": "\u0625\u0646\u0647\u0627 \u0627\u0644\u0634\u0627\u0634\u0629 \u0627\u0644\u062a\u064a \u064a\u062a\u0645 \u0641\u064a\u0647\u0627 \u0639\u0631\u0636 \u0627\u0644\u062a\u0630\u0627\u0643\u0631 \u0641\u064a \u062a\u0633\u0644\u0633\u0644 \u0627\u0644\u0633\u062d\u0628 \u060c \u0628\u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0627\u0644\u062a\u063a\u0630\u064a\u0629 \u0627\u0644\u062d\u064a\u0629 \u0645\u0639 \u0643\u0644 \u062a\u0630\u0643\u0631\u0629 \u062a\u0630\u0643\u0631\u0629 \u0641\u0631\u064a\u062f\u0629 \u064a\u062a\u0645 \u0625\u0646\u0634\u0627\u0624\u0647\u0627 \u0645\u0646 \u0634\u0627\u0634\u0629 \u0627\u0644\u0644\u0645\u0633 \u0645\u0646 \u0642\u0628\u0644 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0648\u0633\u064a\u062a\u0645 \u062a\u0646\u0638\u064a\u0645\u0647\u0627 \u0628\u0645\u0648\u062c\u0628 \u062a\u0630\u0627\u0643\u0631 \u0627\u0644\u0627\u0646\u062a\u0638\u0627\u0631 \u0648\u0633\u064a\u062a\u0645 \u0648\u0636\u0639 \u0643\u0644 \u062a\u0630\u0643\u0631\u0629 \u064a\u0633\u062d\u0628\u0647\u0627 \u0645\u0634\u063a\u0644 \u0645\u0646 \u0623\u064a \u0645\u0643\u062a\u0628 \u0645\u0639\u064a\u0646 \u0641\u064a \u0627\u0644\u062a\u0630\u0643\u0631\u0629 \u0627\u0644\u062d\u0627\u0644\u064a\u0629. \u0643\u0644 \u0639\u0646\u0635\u0631 \u0645\u0646\u0647\u0645 \u0633\u064a\u0643\u0648\u0646 \u0644\u0647 \u0623\u0633\u0644\u0648\u0628\u0647 \u0627\u0644\u0641\u0631\u064a\u062f \u0641\u064a \u0625\u0628\u062f\u0627\u0621 \u0627\u0644\u0641\u0627\u0631\u0642 \u0628\u064a\u0646 \u0627\u0644\u0645\u0634\u0627\u0647\u062f \u0648\u0627\u0644\u0641\u0627\u0631\u0642 \u0628\u064a\u0646\u0647\u0645\u0627.",
         "en": "It is the screen in-which tickets are displayed in sequence of pulling, utilizing live feed with each ticket unique ticket generated from the touch screen by user will be organized under waiting tickets and each ticket pulled by an operator of any given office will be positioned in current ticket. Each element of them will have its unique style to indelicate to the viewer the difference in-between each.",
-        "fr": "C'est l'\u00e9cran dans lequel les tickets sont affich\u00e9s en s\u00e9quence de tirage, en utilisant le flux en direct avec chaque ticket unique g\u00e9n\u00e9r\u00e9 \u00e0 partir de l'\u00e9cran tactile par l'utilisateur sera organis\u00e9 sous des tickets d'attente et chaque ticket tir\u00e9 par un op\u00e9rateur d'un bureau donn\u00e9 sera positionn\u00e9 dans le billet actuel. Chaque \u00e9l\u00e9ment aura son style unique pour ind\u00e9licater le spectateur de la diff\u00e9rence entre chacun."
+        "fr": "C'est l'\u00e9cran dans lequel les tickets sont affich\u00e9s en s\u00e9quence de tirage, en utilisant le flux en direct avec chaque ticket unique g\u00e9n\u00e9r\u00e9 \u00e0 partir de l'\u00e9cran tactile par l'utilisateur sera organis\u00e9 sous des tickets d'attente et chaque ticket appel\u00e9 par un op\u00e9rateur d'un bureau donn\u00e9 sera positionn\u00e9 dans le ticket actuel. Chaque \u00e9l\u00e9ment aura son style unique pour ind\u00e9licater le spectateur de la diff\u00e9rence entre chacun."
     },
     "It is the screen with-which the customer chooses any given task from a list of managed tasks, That will generate a unique ticket with each click and display a response notification. Touch screen purpose can go beyond that simple use with additional features been added or special templates been chosen.": {
         "ar": "\u0625\u0646\u0647\u0627 \u0627\u0644\u0634\u0627\u0634\u0629 \u0627\u0644\u062a\u064a \u064a\u062e\u062a\u0627\u0631\u0647\u0627 \u0627\u0644\u0639\u0645\u064a\u0644 \u0644\u0623\u064a \u0645\u0647\u0645\u0629 \u0645\u062d\u062f\u062f\u0629 \u0645\u0646 \u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u0645\u0647\u0627\u0645 \u0627\u0644\u0645\u062f\u0627\u0631\u0629 \u060c \u0633\u064a\u0624\u062f\u064a \u0630\u0644\u0643 \u0625\u0644\u0649 \u0625\u0646\u0634\u0627\u0621 \u062a\u0630\u0643\u0631\u0629 \u0641\u0631\u064a\u062f\u0629 \u0645\u0639 \u0643\u0644 \u0646\u0642\u0631\u0629 \u0648\u0639\u0631\u0636 \u0625\u0634\u0639\u0627\u0631 \u0627\u0633\u062a\u062c\u0627\u0628\u0629. \u064a\u0645\u0643\u0646 \u0623\u0646 \u064a\u062a\u062c\u0627\u0648\u0632 \u0627\u0644\u063a\u0631\u0636 \u0645\u0646 \u0634\u0627\u0634\u0629 \u0627\u0644\u0644\u0645\u0633 \u0627\u0644\u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0627\u0644\u0628\u0633\u064a\u0637 \u0647\u0630\u0627 \u0645\u0639 \u0625\u0636\u0627\u0641\u0629 \u0645\u064a\u0632\u0627\u062a \u0625\u0636\u0627\u0641\u064a\u0629 \u0623\u0648 \u0627\u062e\u062a\u064a\u0627\u0631 \u0642\u0648\u0627\u0644\u0628 \u062e\u0627\u0635\u0629.",
         "en": "It is the screen with-which the customer chooses any given task from a list of managed tasks, That will generate a unique ticket with each click and display a response notification. Touch screen purpose can go beyond that simple use with additional features been added or special templates been chosen.",
         "es": "Es la pantalla con la que el cliente elige una tarea determinada de una lista de tareas administradas. Eso generar\u00e1 un ticket \u00fanico con cada clic y mostrar\u00e1 una notificaci\u00f3n de respuesta. El prop\u00f3sito de la pantalla t\u00e1ctil puede ir m\u00e1s all\u00e1 de ese simple uso, ya que se agregaron caracter\u00edsticas adicionales o se seleccionaron plantillas especiales.",
-        "fr": "C'est l'\u00e9cran avec lequel le client choisit une t\u00e2che donn\u00e9e \u00e0 partir d'une liste de t\u00e2ches g\u00e9r\u00e9es, qui g\u00e9n\u00e9rera un ticket unique \u00e0 chaque clic et affichera une notification de r\u00e9ponse. L'objectif de l'\u00e9cran tactile peut aller au-del\u00e0 de cette simple utilisation avec des fonctionnalit\u00e9s suppl\u00e9mentaires ajout\u00e9es ou des mod\u00e8les sp\u00e9ciaux ont \u00e9t\u00e9 choisis.",
+        "fr": "C'est l'\u00e9cran avec lequel le client choisit une t\u00e2che donn\u00e9e \u00e0 partir d'une liste de t\u00e2ches g\u00e9r\u00e9es, qui g\u00e9n\u00e9rera un ticket unique \u00e0 chaque clic et affichera une notification de r\u00e9ponse. L'objectif de l'\u00e9cran tactile peut aller au-del\u00e0 de cette simple utilisation avec des fonctionnalit\u00e9s suppl\u00e9mentaires ajout\u00e9es ou si des mod\u00e8les sp\u00e9ciaux ont \u00e9t\u00e9 choisis.",
         "it": "\u00c8 lo schermo con il quale il cliente sceglie una determinata attivit\u00e0 da un elenco di attivit\u00e0 gestite, che generer\u00e0 un ticket univoco con ciascun clic e visualizzer\u00e0 una notifica di risposta. Lo scopo del touch screen pu\u00f2 andare al di l\u00e0 di questo semplice utilizzo con funzionalit\u00e0 aggiuntive o modelli speciali scelti."
     },
     "Italian": {
@@ -1564,7 +1571,7 @@
         "ar": "\u0627\u062e\u0631 \u0638\u0647\u0648\u0631",
         "en": "Last seen",
         "es": "Ultima vez visto",
-        "fr": "Derni\u00e8re vue",
+        "fr": "Vue pour la derni\u00e8re fois",
         "it": "Ultima visualizzazione"
     },
     "Last ticket": {
@@ -1574,7 +1581,7 @@
         "ar": "\u062a\u0630\u0643\u0631\u0629 \u0627\u0644\u0645\u0627\u0636\u064a \u0633\u062d\u0628\u062a",
         "en": "Last ticket pulled",
         "es": "\u00daltimo billete tirado",
-        "fr": "Dernier ticket tir\u00e9",
+        "fr": "Dernier ticket appeler",
         "it": "Ultimo biglietto tirato"
     },
     "Later": {
@@ -1609,7 +1616,7 @@
         "ar": "\u0627\u0644\u062e\u0631\u0648\u062c",
         "en": "Logout",
         "es": "Cerrar sesi\u00f3n",
-        "fr": "Connectez - Out",
+        "fr": "Se d\u00e9connecter",
         "it": "Disconnettersi"
     },
     "Main text box that, can be used to showcase the company brand or describe the template displayed to the customers": {
@@ -1630,7 +1637,7 @@
         "ar": "\u0625\u062f\u0627\u0631\u0629",
         "en": "Management",
         "es": "administraci\u00f3n",
-        "fr": "La gestion",
+        "fr": "G\u00e9rer",
         "it": "Gestione"
     },
     "Management template": {
@@ -1665,49 +1672,49 @@
         "ar": "\u064a\u062c\u0628 \u0625\u062f\u062e\u0627\u0644 5 \u0623\u062d\u0631\u0641 \u0639\u0644\u0649 \u0627\u0644\u0623\u0642\u0644 \u0648\u064a\u062c\u0628 \u0623\u0646 \u064a\u0643\u0648\u0646 \u0627\u0644\u062d\u062f \u0627\u0644\u0623\u0642\u0635\u0649 300 \u062d\u0631\u0641.",
         "en": "Must enter at least 5 letter and Message should be maximum of 300 letters ..",
         "es": "Debe ingresar al menos 5 letras y el mensaje debe tener un m\u00e1ximo de 300 letras.",
-        "fr": "Doit entrer au moins 5 lettres et le message doit \u00eatre au maximum de 300 lettres.",
+        "fr": "La longueur du message doit \u00eatre comprise entre 5 et 300 caract\u00e8res.",
         "it": "Devi inserire almeno 5 lettere e il messaggio deve essere massimo di 300 lettere .."
     },
     "Must enter at least 5 letters and Title should be maximum of 300 letters": {
         "ar": "\u064a\u062c\u0628 \u0625\u062f\u062e\u0627\u0644 5 \u0623\u062d\u0631\u0641 \u0639\u0644\u0649 \u0627\u0644\u0623\u0642\u0644 \u0648\u064a\u062c\u0628 \u0623\u0646 \u064a\u0643\u0648\u0646 \u0627\u0644\u0639\u0646\u0648\u0627\u0646 300 \u062d\u0631\u0641\u064b\u0627 \u0643\u062d\u062f \u0623\u0642\u0635\u0649",
         "en": "Must enter at least 5 letters and Title should be maximum of 300 letters",
         "es": "Debe ingresar al menos 5 letras y el t\u00edtulo debe tener un m\u00e1ximo de 300 letras",
-        "fr": "Doit entrer au moins 5 lettres et le titre doit \u00eatre au maximum de 300 lettres",
+        "fr": "La longueur du tire doit \u00eatre comprise entre 5 et 300 caract\u00e8res.",
         "it": "Devi inserire almeno 5 lettere e il titolo deve essere massimo di 300 lettere"
     },
     "Mute sound : ": {
         "ar": "\u0635\u0648\u062a \u0645\u0646\u062e\u0641\u0636 :",
         "en": "Mute sound :",
         "es": "Sin sonido :",
-        "fr": "Son muet :",
+        "fr": "Coup\u00e9 le son :",
         "it": "Suono muto:"
     },
     "Name": {
         "ar": "\u0627\u0633\u0645",
         "en": "Name",
         "es": "Nombre",
-        "fr": "pr\u00e9nom",
+        "fr": "Pr\u00e9nom",
         "it": "Nome"
     },
     "Newest Processed Tickets": {
         "ar": "\u0623\u062d\u062f\u062b \u062a\u0630\u0627\u0643\u0631 \u0645\u0639\u0627\u0644\u062c\u062a\u0647\u0627",
         "en": "Newest Processed Tickets",
         "es": "Billetes procesados \u200b\u200bm\u00e1s nuevos",
-        "fr": "Nouveaux billets transform\u00e9s",
+        "fr": "Nouveaux tickets transform\u00e9s",
         "it": "I pi\u00f9 nuovi biglietti elaborati"
     },
     "Newest Tickets": {
         "ar": "\u0623\u062d\u062f\u062b \u062a\u0630\u0627\u0643\u0631",
         "en": "Newest Tickets",
         "es": "Boletos m\u00e1s nuevos",
-        "fr": "Nouveaux billets",
+        "fr": "Nouveaux tickets",
         "it": "Biglietti pi\u00f9 recenti"
     },
     "Next": {
         "ar": "\u0627\u0644\u062a\u0627\u0644\u0649",
         "en": "Next",
         "es": "Siguiente",
-        "fr": "Prochain",
+        "fr": "Suivant",
         "it": "Il prossimo"
     },
     "No": {
@@ -1721,14 +1728,14 @@
         "ar": "\u0644\u0627 \u062a\u0648\u062c\u062f \u0627\u0644\u0631\u0645\u0648\u0632 \u0627\u0644\u0645\u0635\u0627\u062f\u0642\u0629 \u0628\u0639\u062f \u0639\u0644\u0649 \u0639\u0631\u0636",
         "en": "No authentication tokens exist yet to display",
         "es": "sin embargo, no existen tokens de autenticaci\u00f3n para mostrar",
-        "fr": "Aucun jeton d'authentification existent encore pour afficher",
+        "fr": "Aucun jetons d'authentification \u00e0 afficher",
         "it": "Nessun token di autenticazione esiste ancora da visualizzare"
     },
     "No multimedia files exist to display": {
         "ar": "\u0644\u0627 \u062a\u0648\u062c\u062f \u0645\u0644\u0641\u0627\u062a \u0648\u0633\u0627\u0626\u0637 \u0645\u062a\u0639\u062f\u062f\u0629 \u0644\u0639\u0631\u0636\u0647\u0627",
         "en": "No multimedia files exist to display",
         "es": "No existen archivos multimedia para mostrar",
-        "fr": "Aucun fichier multim\u00e9dia n'existe \u00e0 afficher",
+        "fr": "Aucun fichiers multim\u00e9dia \u00e0 afficher",
         "it": "Nessun file multimediale esistente da visualizzare"
     },
     "No operators assigned yet": {
@@ -1755,28 +1762,28 @@
         "ar": "\u0644\u0627 \u062a\u0648\u062c\u062f \u0634\u0631\u0627\u0626\u062d \u0644\u0639\u0631\u0636\u0647\u0627",
         "en": "No slides exist to display",
         "es": "No hay diapositivas para mostrar",
-        "fr": "Aucune diapositive n'existe pour afficher",
+        "fr": "Aucune diapositives \u00e0 afficher",
         "it": "Non ci sono diapositive da mostrare"
     },
     "No tickets been issued yet to display": {
         "ar": "\u0644\u0645 \u064a\u062a\u0645 \u0625\u0635\u062f\u0627\u0631 \u0623\u064a \u062a\u0630\u0627\u0643\u0631 \u0628\u0639\u062f",
         "en": "No tickets been issued yet to display",
         "es": "A\u00fan no se han emitido boletos para mostrar",
-        "fr": "Aucun billet n'a encore \u00e9t\u00e9 publi\u00e9 \u00e0 afficher",
+        "fr": "Aucun ticket n'a encore \u00e9t\u00e9 publi\u00e9 pour \u00eatre afficher",
         "it": "Non sono ancora stati emessi biglietti da mostrare"
     },
     "No tickets exist to be displayed": {
         "ar": "\u0644\u0627 \u062a\u0648\u062c\u062f \u062a\u0630\u0627\u0643\u0631 \u0644\u064a\u062a\u0645 \u0639\u0631\u0636\u0647\u0627",
         "en": "No tickets exist to be displayed",
         "es": "No hay boletos para mostrar",
-        "fr": "Il n'y a pas de billets \u00e0 afficher",
+        "fr": "Il n'y a pas de tickets \u00e0 afficher",
         "it": "Non esistono biglietti da mostrare"
     },
     "No tickets were found": {
         "ar": "\u0644\u0645 \u064a\u062a\u0645 \u0627\u0644\u0639\u062b\u0648\u0631 \u0639\u0644\u0649 \u062a\u0630\u0627\u0643\u0631",
         "en": "No tickets were found",
         "es": "No se encontraron boletos",
-        "fr": "Aucun billet trouv\u00e9",
+        "fr": "Aucun ticket n'a \u00e9t\u00e9 trouv\u00e9",
         "it": "Non sono stati trovati biglietti"
     },
     "No users exist yet to display": {
@@ -1845,7 +1852,7 @@
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u062a\u0645 \u0625\u0636\u0627\u0641\u0629 \u0645\u0647\u0645\u0629 \u062c\u062f\u064a\u062f\u0629.",
         "en": "Notice: New task been added.",
         "es": "Aviso: Se ha agregado una nueva tarea.",
-        "fr": "Avis: Nouvelle t\u00e2che ajout\u00e9e.",
+        "fr": "Remarque: Nouvelle t\u00e2che ajout\u00e9e.",
         "it": "Avviso: \u00e8 stata aggiunta una nuova attivit\u00e0."
     },
     "Notice: Notification got Disabled successfully": {
@@ -1859,35 +1866,35 @@
         "ar": "\u0644\u0642\u062f \u062a\u063a\u064a\u0631 \u0627\u0644\u0648\u0636\u0639 \u0641\u064a \u0627\u0644\u0627\u0646\u062a\u0638\u0627\u0631 \u0628\u0646\u062c\u0627\u062d: \u0625\u0634\u0639\u0627\u0631",
         "en": "Notice: On-hold status has changed successfully",
         "es": "Aviso: el estado en espera ha cambiado correctamente",
-        "fr": "Avis: \u00e9tat sur attente a chang\u00e9 avec succ\u00e8s",
+        "fr": "Remarque: Le statut en attente a \u00e9t\u00e9 chang\u00e9 avec succ\u00e8s",
         "it": "Avviso: lo stato on-hold \u00e8 cambiato con successo"
     },
     "Notice: Setting got Disabled successfully.": {
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u0625\u0639\u062f\u0627\u062f \u062d\u0635\u0644\u062a \u0645\u0639\u0637\u0644 \u0628\u0646\u062c\u0627\u062d.",
         "en": "Notice: Setting got Disabled successfully.",
         "es": "Aviso: Ajuste qued\u00f3 inhabilitado satisfactoriamente.",
-        "fr": "Important: Le r\u00e9glage d\u00e9sactiv\u00e9 avec succ\u00e8s obtenu.",
+        "fr": "Important: Le param\u00e8tres a \u00e9t\u00e9 d\u00e9sactiv\u00e9 avec succ\u00e8s.",
         "it": "Avviso: Impostazione ottenuto disattivata con successo."
     },
     "Notice: Setting got Enabled successfully.": {
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u0625\u0639\u062f\u0627\u062f \u062d\u0635\u0644\u062a \u0639\u0644\u0649 \u062a\u0645\u0643\u064a\u0646 \u0628\u0646\u062c\u0627\u062d.",
         "en": "Notice: Setting got Enabled successfully.",
         "es": "Aviso: Ajuste consigui\u00f3 permitido con \u00e9xito.",
-        "fr": "Important: Le r\u00e9glage obtenu activ\u00e9 avec succ\u00e8s.",
+        "fr": "Important: Le param\u00e8tres obtenu activ\u00e9 avec succ\u00e8s.",
         "it": "Avviso: Impostazione ottenuto attivato con successo."
     },
     "Notice: Sorry, no matching results were found ": {
         "ar": "\u0645\u0644\u0627\u062d\u0638\u0629: \u0639\u0630\u0631\u064b\u0627 \u060c \u0644\u0645 \u064a\u062a\u0645 \u0627\u0644\u0639\u062b\u0648\u0631 \u0639\u0644\u0649 \u0646\u062a\u0627\u0626\u062c \u0645\u0637\u0627\u0628\u0642\u0629",
         "en": "Notice: Sorry, no matching results were found",
         "es": "Aviso: Lo sentimos, no se encontraron resultados coincidentes",
-        "fr": "Avis: D\u00e9sol\u00e9, aucun r\u00e9sultat correspondant n'a \u00e9t\u00e9 trouv\u00e9",
+        "fr": "Remarque: D\u00e9sol\u00e9, aucun r\u00e9sultat correspondant n'a \u00e9t\u00e9 trouv\u00e9",
         "it": "Avviso: scusa, non sono stati trovati risultati corrispondenti"
     },
     "Notice: Ticket details updated successfully": {
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u062a\u0641\u0627\u0635\u064a\u0644 \u062a\u0630\u0643\u0631\u0629 \u062a\u062c\u062f\u064a\u062f \u0628\u0646\u062c\u0627\u062d",
         "en": "Notice: Ticket details updated successfully",
         "es": "Aviso: Detalles del billete actualizado correctamente",
-        "fr": "Avis: les d\u00e9tails de billets mis \u00e0 jour avec succ\u00e8s",
+        "fr": "Remarque: Les d\u00e9tails des tickets ont \u00e9t\u00e9 mis \u00e0 jour avec succ\u00e8s",
         "it": "Avviso: i dettagli dei biglietti aggiornati correttamente"
     },
     "Notice: Ticket details updated were updated.": {
@@ -1897,7 +1904,7 @@
         "ar": "\u0645\u0644\u0627\u062d\u0638\u0629: \u062a\u0645 \u0633\u062d\u0628 \u0627\u0644\u062a\u0630\u0643\u0631\u0629 ..",
         "en": "Notice: Ticket has been pulled ..",
         "es": "Aviso: el boleto ha sido retirado ..",
-        "fr": "Avis: Le billet a \u00e9t\u00e9 tir\u00e9 ..",
+        "fr": "Remarque: Le ticket a \u00e9t\u00e9 appel\u00e9 ..",
         "it": "Avviso: il biglietto \u00e8 stato ritirato .."
     },
     "Notice: To enable slide show you must disable video": {
@@ -1956,35 +1963,35 @@
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u0645\u0647\u0627\u0645 \u0627\u0644\u062e\u0644\u0641\u064a\u0629 \u062d\u0635\u0644\u062a \u0639\u0644\u0649 \u062a\u062d\u062f\u064a\u062b \u0628\u0646\u062c\u0627\u062d.",
         "en": "Notice: background tasks got updated successfully.",
         "es": "Aviso: las tareas de fondo consiguieron actualizado correctamente.",
-        "fr": "Avis: t\u00e2ches de fond se sont mis \u00e0 jour.",
+        "fr": "Remarque: Les t\u00e2ches de fond se sont mises \u00e0 jour correctement.",
         "it": "Avviso: attivit\u00e0 in background ricevuti aggiornati correttamente."
     },
     "Notice: if you followed the rules, it should be uploaded ..": {
         "ar": "\u0645\u0644\u0627\u062d\u0638\u0629: \u0625\u0630\u0627 \u0627\u062a\u0628\u0639\u062a \u0627\u0644\u0642\u0648\u0627\u0639\u062f \u060c \u0641\u064a\u062c\u0628 \u062a\u062d\u0645\u064a\u0644\u0647\u0627 ..",
         "en": "Notice: if you followed the rules, it should be uploaded ..",
         "es": "Aviso: si sigui\u00f3 las reglas, deber\u00eda cargarse.",
-        "fr": "Remarque: si vous avez suivi les r\u00e8gles, il doit \u00eatre t\u00e9l\u00e9charg\u00e9.",
+        "fr": "Remarque: si vous avez suivi les r\u00e8gles, il devrait \u00eatre t\u00e9l\u00e9charg\u00e9.",
         "it": "Avviso: se hai seguito le regole, dovrebbe essere caricato .."
     },
     "Notice: logged-in and all good": {
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062f\u062e\u0648\u0644 \u0648\u0643\u0644 \u0634\u064a\u0621 \u062c\u064a\u062f",
         "en": "Notice: logged-in and all good",
         "es": "Aviso: conectado y todo bien",
-        "fr": "Avis: connect\u00e9 et tout va bien",
+        "fr": "Remarque: connection r\u00e9ussie",
         "it": "Avviso: loggato e tutto bene"
     },
     "Notice: logout is done.": {
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u064a\u062a\u0645 \u0627\u0644\u062e\u0631\u0648\u062c.",
         "en": "Notice: logout is done.",
         "es": "Aviso: el cierre de sesi\u00f3n est\u00e1 hecho.",
-        "fr": "Remarque: la d\u00e9connexion est termin\u00e9e.",
+        "fr": "Remarque: Vous avez \u00e9t\u00e9 d\u00e9connect\u00e9 avec succ\u00e8s.",
         "it": "Avviso: il logout \u00e8 terminato."
     },
     "Notice: make sure that printer is properly connected": {
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u062a\u0623\u0643\u062f \u0645\u0646 \u062a\u0648\u0635\u064a\u0644 \u0627\u0644\u0637\u0627\u0628\u0639\u0629 \u0628\u0634\u0643\u0644 \u0635\u062d\u064a\u062d",
         "en": "Notice: make sure that printer is properly connected",
         "es": "Aviso: aseg\u00farese de que la impresora est\u00e9 conectada correctamente",
-        "fr": "Avis: assurez-vous que l'imprimante est correctement connect\u00e9e",
+        "fr": "Remarque: assurez-vous que l'imprimante est correctement connect\u00e9e",
         "it": "Avviso: assicurarsi che la stampante sia collegata correttamente"
     },
     "Notice: multimedia file been removed.": {
@@ -1998,13 +2005,13 @@
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u062a\u0645\u062a \u0625\u0636\u0627\u0641\u0629 \u0645\u0643\u062a\u0628 \u062c\u062f\u064a\u062f.",
         "en": "Notice: new office been added .",
         "es": "Aviso: se ha agregado una nueva oficina.",
-        "fr": "Avis: nouveau bureau ajout\u00e9.",
+        "fr": "Remarque: Un nouveau bureau a \u00e9t\u00e9 ajout\u00e9.",
         "it": "Avviso: \u00e8 stato aggiunto un nuovo ufficio."
     },
     "Notice: new slide added. ": {
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u0625\u0636\u0627\u0641\u0629 \u0634\u0631\u064a\u062d\u0629 \u062c\u062f\u064a\u062f\u0629.",
         "es": "Aviso: nueva diapositiva agregada.",
-        "fr": "Avis: nouvelle diapositive ajout\u00e9e.",
+        "fr": "Remarque: nouvelle diapositive ajout\u00e9e.",
         "it": "Avviso: aggiunta nuova diapositiva."
     },
     "Notice: new video has been set.": {
@@ -2018,21 +2025,21 @@
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u062a\u0645 \u062d\u0630\u0641 \u0627\u0644\u0645\u0643\u062a\u0628 \u0648\u062c\u0645\u064a\u0639 \u0645\u0647\u0627\u0645\u0647",
         "en": "Notice: office and its all tasks been deleted",
         "es": "Aviso: la oficina y todas sus tareas han sido eliminadas",
-        "fr": "Avis: office et toutes ses t\u00e2ches ont \u00e9t\u00e9 supprim\u00e9es",
+        "fr": "Remarque: Le bureau et toutes ses t\u00e2ches ont \u00e9t\u00e9 supprim\u00e9es",
         "it": "Avviso: ufficio e tutte le attivit\u00e0 sono state cancellate"
     },
     "Notice: office has been resetted. ..": {
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u062a\u0645 \u0625\u0639\u0627\u062f\u0629 \u062a\u0639\u064a\u064a\u0646 \u0627\u0644\u0645\u0643\u062a\u0628. ..",
         "en": "Notice: office has been resetted. ..",
         "es": "Aviso: la oficina se ha restablecido. ..",
-        "fr": "Avis: le bureau a \u00e9t\u00e9 r\u00e9install\u00e9. ..",
+        "fr": "Remarque: le bureau a \u00e9t\u00e9 r\u00e9install\u00e9. ..",
         "it": "Avviso: l'ufficio \u00e8 stato reimpostato. .."
     },
     "Notice: office has been updated. ": {
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u062a\u0645 \u062a\u062d\u062f\u064a\u062b \u0627\u0644\u0645\u0643\u062a\u0628.",
         "en": "Notice: office has been updated.",
         "es": "Aviso: la oficina ha sido actualizada.",
-        "fr": "Avis: le bureau a \u00e9t\u00e9 mis \u00e0 jour.",
+        "fr": "Remarque: le bureau a \u00e9t\u00e9 mis \u00e0 jour.",
         "it": "Avviso: l'ufficio \u00e8 stato aggiornato."
     },
     "Notice: repeating announcement is issued.": {
@@ -2042,7 +2049,7 @@
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u062a\u0643\u0631\u0627\u0631 \u0627\u0644\u0625\u0639\u0644\u0627\u0646 \u0628\u0646\u062c\u0627\u062d.",
         "en": "Notice: repeating announcement successfully.",
         "es": "Aviso: repetir el anuncio con \u00e9xito.",
-        "fr": "Avis: r\u00e9p\u00e9ter l'annonce avec succ\u00e8s.",
+        "fr": "Remarque: Annonce r\u00e9p\u00e9ter avec succ\u00e8s.",
         "it": "Avviso: annuncio ripetuto con successo."
     },
     "Notice: settings have been updated .": {
@@ -2083,34 +2090,34 @@
         "ar": "\u0645\u0644\u0627\u062d\u0638\u0629: \u062a\u0645 \u062a\u062d\u062f\u064a\u062b \u0627\u0644\u0642\u0648\u0627\u0644\u0628.",
         "en": "Notice: templates been updated.",
         "es": "Aviso: las plantillas han sido actualizadas.",
-        "fr": "Avis: les mod\u00e8les ont \u00e9t\u00e9 mis \u00e0 jour.",
+        "fr": "Remarque: les mod\u00e8les ont \u00e9t\u00e9 mis \u00e0 jour.",
         "it": "Avviso: i modelli sono stati aggiornati."
     },
     "Notice: ticket has been issued . ..": {
         "ar": "\u0645\u0644\u0627\u062d\u0638\u0629: \u062a\u0645 \u0625\u0635\u062f\u0627\u0631 \u0627\u0644\u062a\u0630\u0643\u0631\u0629. ..",
         "es": "Aviso: el boleto ha sido emitido. ..",
-        "fr": "Avis: le billet a \u00e9t\u00e9 \u00e9mis. ..",
+        "fr": "Remarque: le ticket a \u00e9t\u00e9 \u00e9mis. ..",
         "it": "Avviso: il biglietto \u00e8 stato emesso. .."
     },
     "Notice: user has been added .": {
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u062a\u0645\u062a \u0625\u0636\u0627\u0641\u0629 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645.",
         "en": "Notice: user has been added .",
         "es": "Aviso: el usuario ha sido agregado.",
-        "fr": "Avis: l'utilisateur a \u00e9t\u00e9 ajout\u00e9.",
+        "fr": "Remarque: l'utilisateur a \u00e9t\u00e9 ajout\u00e9.",
         "it": "Avviso: l'utente \u00e8 stato aggiunto."
     },
     "Notice: user is deleted .": {
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u064a\u062a\u0645 \u062d\u0630\u0641 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645.",
         "en": "Notice: user is deleted .",
         "es": "Aviso: el usuario es eliminado.",
-        "fr": "Avis: l'utilisateur est supprim\u00e9.",
+        "fr": "Remarque: l'utilisateur est supprim\u00e9.",
         "it": "Avviso: l'utente \u00e8 cancellato."
     },
     "Notice: user is updated . ": {
         "ar": "\u0625\u0634\u0639\u0627\u0631: \u064a\u062a\u0645 \u062a\u062d\u062f\u064a\u062b \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645.",
         "en": "Notice: user is updated .",
         "es": "Aviso: el usuario est\u00e1 actualizado.",
-        "fr": "Avis: l'utilisateur est mis \u00e0 jour.",
+        "fr": "Remarque: l'utilisateur a \u00e9t\u00e9 mis \u00e0 jour.",
         "it": "Avviso: l'utente \u00e8 aggiornato."
     },
     "Notification": {
@@ -2137,7 +2144,7 @@
         "ar": "\u0625\u062e\u0637\u0627\u0631\u0627\u062a",
         "en": "Notifications",
         "es": "Notificaciones",
-        "fr": "Les notifications",
+        "fr": "Notifications",
         "it": "notifiche"
     },
     "Now": {
@@ -2185,14 +2192,14 @@
         "ar": "\u0627\u0644\u0645\u0643\u062a\u0628: \u0627\u0644\u062a\u0645\u062b\u064a\u0644 \u0627\u0644\u0627\u0641\u062a\u0631\u0627\u0636\u064a \u0644\u0644\u0645\u0643\u062a\u0628 \u0627\u0644\u0630\u064a \u064a\u062a\u0645 \u0633\u062d\u0628 \u0627\u0644\u062a\u0630\u0627\u0643\u0631 \u0648\u0625\u062f\u0627\u0631\u062a\u0647\u0627",
         "en": "Office : the virtual representation of an office on-which tickets are pulled and managed",
         "es": "Oficina: la representaci\u00f3n virtual de una oficina en la que se extraen y gestionan las entradas",
-        "fr": "Office: la repr\u00e9sentation virtuelle d'un bureau sur lequel les tickets sont tir\u00e9s et g\u00e9r\u00e9s",
+        "fr": "Office: la repr\u00e9sentation virtuelle d'un bureau sur lequel les tickets sont appel\u00e9s et g\u00e9r\u00e9s",
         "it": "Ufficio: la rappresentazione virtuale di un ufficio in cui vengono estratti e gestiti i ticket"
     },
     "Offices": {
         "ar": "\u0645\u0643\u0627\u062a\u0628",
         "en": "Offices",
         "es": "Oficinas",
-        "fr": "Des bureaux",
+        "fr": "Bureaux",
         "it": "uffici"
     },
     "Offices total": {
@@ -2213,7 +2220,7 @@
         "ar": "\u0623\u0642\u062f\u0645 \u062a\u0630\u0627\u0643\u0631",
         "en": "Oldest Tickets",
         "es": "Entradas m\u00e1s antiguas",
-        "fr": "Billets les plus anciens",
+        "fr": "Tickets les plus anciens",
         "it": "Biglietti pi\u00f9 antichi"
     },
     "On-Hold": {
@@ -2248,7 +2255,7 @@
         "ar": "\u0627\u0644\u0639\u0627\u0645\u0644\u064a\u0646",
         "en": "Operators",
         "es": "Operadores",
-        "fr": "Les op\u00e9rateurs",
+        "fr": "Op\u00e9rateurs",
         "it": "operatori"
     },
     "Operators list": {
@@ -2276,7 +2283,7 @@
         "ar": "\u064a\u062c\u0628 \u0623\u0646 \u062a\u0643\u0648\u0646 \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631 5 \u0639\u0644\u0649 \u0627\u0644\u0623\u0642\u0644 \u0648\u0639\u0644\u0649 \u0627\u0644\u0623\u0643\u062b\u0631 15 \u062d\u0631\u0641\u064b\u0627",
         "en": "Password must be at least of 5 and at most 15 letters",
         "es": "La contrase\u00f1a debe tener al menos 5 y como m\u00e1ximo 15 letras",
-        "fr": "Le mot de passe doit \u00eatre au moins de 5 et au plus de 15 lettres",
+        "fr": "Le mot de passe doit faire entre 5 et 15 caract\u00e8res maximum",
         "it": "La password deve essere di almeno 5 e al massimo 15 lettere"
     },
     "Play": {
@@ -2294,29 +2301,33 @@
         "it": "Si prega di inserire un numero di biglietto:"
     },
     "Please, enter the ID number to be registered along with your ticket": {
-        "en": "Please, enter the ID number to be registered along with your ticket"
+        "en": "Please, enter the ID number to be registered along with your ticket",
+        "fr": "Veuillez entrer l'ID du num\u00e9ro pour \u00eatre enregistr\u00e9 avec votre ticket"
     },
     "Please, enter the Number to be registered along with your ticket": {
-        "en": "Please, enter the Number to be registered along with your ticket"
+        "en": "Please, enter the Number to be registered along with your ticket",
+        "fr": "Veuillez entrer un nombre pour prendre un ticket"
     },
     "Please, enter the name to be registered along with your ticket": {
         "ar": "\u0645\u0646 \u0641\u0636\u0644\u0643 \u060c \u0623\u062f\u062e\u0644 \u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0630\u064a \u0633\u064a\u062a\u0645 \u062a\u0633\u062c\u064a\u0644\u0647 \u0645\u0639 \u062a\u0630\u0643\u0631\u062a\u0643",
         "en": "Please, enter the name to be registered along with your ticket",
         "es": "Por favor, ingrese el nombre para ser registrado junto con su boleto",
-        "fr": "S'il vous pla\u00eet, entrez le nom \u00e0 enregistrer avec votre billet",
+        "fr": "Entrez le nom \u00e0 enregistrer avec votre ticket s'il vous pla\u00eet",
         "it": "Per favore, inserisci il nome da registrare insieme al tuo biglietto"
     },
     "Please, enter the nick name to be registered along with your ticket": {
-        "en": "Please, enter the nick name to be registered along with your ticket"
+        "en": "Please, enter the nick name to be registered along with your ticket",
+        "fr": "Entrez un surnom pour \u00eatre enregistr\u00e9 avec votre ticket s'il vous pla\u00eet"
     },
     "Please, enter the number to be registered along with your ticket": {
-        "en": "Please, enter the number to be registered along with your ticket"
+        "en": "Please, enter the number to be registered along with your ticket",
+        "fr": "Entrez un nombre pour \u00eatre enregistr\u00e9 avec votre ticket s'il vous pla\u00eet"
     },
     "Preferences": {
         "ar": "\u062a\u0641\u0636\u064a\u0644\u0627\u062a",
         "en": "Preferences",
         "es": "preferencias",
-        "fr": "pr\u00e9f\u00e9rences",
+        "fr": "Pr\u00e9f\u00e9rences",
         "it": "Preferenze"
     },
     "Prefix": {
@@ -2351,14 +2362,14 @@
         "ar": "\u0634\u0631\u064a\u062d\u0629 \u0645\u0639\u0627\u064a\u0646\u0629",
         "en": "Preview slide",
         "es": "Vista previa",
-        "fr": "Extrait diapositive",
+        "fr": "Aper\u00e7u de diapositive",
         "it": "Anteprima diapositiva"
     },
     "Previous": {
         "ar": "\u0633\u0627\u0628\u0642",
         "en": "Previous",
         "es": "Anterior",
-        "fr": "pr\u00e9c\u00e9dent",
+        "fr": "Pr\u00e9c\u00e9dent",
         "it": "Precedente"
     },
     "Printed": {
@@ -2372,14 +2383,14 @@
         "ar": "\u0645\u0637\u0628\u0648\u0639\u0629: \u0631\u0642\u0645 \u062a\u0630\u0643\u0631\u0629 \u0627\u0644\u0639\u0645\u064a\u0644 \u0627\u0644\u0641\u0631\u064a\u062f \u0627\u0644\u0645\u0637\u0628\u0648\u0639 \u0627\u0644\u0646\u0645\u0648\u0630\u062c\u064a",
         "en": "Printed : the typical printed unique customer ticket number",
         "es": "Impreso: el n\u00famero de ticket de cliente \u00fanico impreso t\u00edpico",
-        "fr": "Imprim\u00e9: le num\u00e9ro de ticket client unique imprim\u00e9 typique",
+        "fr": "Imprim\u00e9: le ticket client classique avec num\u00e9ro de ticket unique ",
         "it": "Stampato: il tipico numero di biglietto del cliente unico stampato"
     },
     "Printied ticket :": {
         "ar": "\u062a\u0630\u0643\u0631\u0629 \u0627\u0644\u0645\u0637\u0628\u0648\u0639\u0629:",
         "en": "Printed ticket :",
         "es": "billete impreso:",
-        "fr": "billet imprim\u00e9:",
+        "fr": "Ticket imprim\u00e9:",
         "it": "biglietto stampato:"
     },
     "Processed": {
@@ -2393,21 +2404,21 @@
         "ar": "\u0633\u062d\u0628. \u0634\u062f",
         "en": "Pull",
         "es": "Halar",
-        "fr": "Tirer",
+        "fr": "Appeler",
         "it": "Tirare"
     },
     "Pull a ticket": {
         "ar": "\u0633\u062d\u0628 \u062a\u0630\u0643\u0631\u0629",
         "en": "Pull a ticket",
         "es": "Obtener un boleto",
-        "fr": "Tirez un ticket",
+        "fr": "Appeler un ticket",
         "it": "Tirare un biglietto"
     },
     "Pulled": {
         "ar": "\u0633\u062d\u0628\u062a",
         "en": "Pulled",
         "es": "Tirado",
-        "fr": "Tir\u00e9",
+        "fr": "Appel\u00e9",
         "it": "tirato"
     },
     "QR Code : Office": {
@@ -2428,28 +2439,28 @@
         "ar": "\u0631\u0645\u0632 \u0627\u0644\u0627\u0633\u062a\u062c\u0627\u0628\u0629 \u0627\u0644\u0633\u0631\u064a\u0639\u0629: \u062c\u0645\u064a\u0639 \u0627\u0644\u062a\u0630\u0627\u0643\u0631",
         "en": "QR code : All tickets",
         "es": "C\u00f3digo QR: Todos los boletos",
-        "fr": "QR code: Tous les billets",
+        "fr": "QR code: Tous les tickets",
         "it": "Codice QR: tutti i biglietti"
     },
     "QR code display screen": {
         "ar": "\u0634\u0627\u0634\u0629 \u0639\u0631\u0636 \u0631\u0645\u0632 \u0627\u0644\u0627\u0633\u062a\u062c\u0627\u0628\u0629 \u0627\u0644\u0633\u0631\u064a\u0639\u0629",
         "en": "QR code display screen",
         "es": "Pantalla de visualizaci\u00f3n del c\u00f3digo QR",
-        "fr": "\u00c9cran d'affichage du code QR",
+        "fr": "\u00c9cran d'affichage du QR code",
         "it": "Schermo di visualizzazione del codice QR"
     },
     "QR code main page": {
         "ar": "\u0635\u0641\u062d\u0629 QR code \u0627\u0644\u0631\u0626\u064a\u0633\u064a\u0629",
         "en": "QR code main page",
         "es": "P\u00e1gina principal del c\u00f3digo QR",
-        "fr": "Page principale du code QR",
+        "fr": "Page principale du QR code",
         "it": "Pagina principale del codice QR"
     },
     "QR code touch screen": {
         "ar": "\u0631\u0645\u0632 \u0627\u0644\u0627\u0633\u062a\u062c\u0627\u0628\u0629 \u0627\u0644\u0633\u0631\u064a\u0639\u0629 \u0644\u0645\u0633 \u0627\u0644\u0634\u0627\u0634\u0629",
         "en": "QR code touch screen",
         "es": "Pantalla t\u00e1ctil de c\u00f3digo QR",
-        "fr": "\u00c9cran tactile QR code",
+        "fr": "\u00c9cran tactile du QR code",
         "it": "Touch screen con codice QR"
     },
     "Queue management made easy and simple for all": {
@@ -2463,14 +2474,14 @@
         "ar": "\u0623\u062d\u0645\u0631",
         "en": "Red",
         "es": "rojo",
-        "fr": "rouge",
+        "fr": "Rouge",
         "it": "Rosso"
     },
     "Register": {
         "ar": "\u062a\u0633\u062c\u064a\u0644",
         "en": "Register",
         "es": "Registro",
-        "fr": "registre",
+        "fr": "Valider",
         "it": "Registrare"
     },
     "Registered": {
@@ -2484,28 +2495,28 @@
         "ar": "\u0627\u0644\u0645\u0633\u062c\u0644: \u064a\u0633\u0645\u062d \u0644\u0644\u0639\u0645\u064a\u0644 \u0628\u062a\u0633\u062c\u064a\u0644 \u0627\u0633\u0645\u0647 \u0648\u0633\u064a\u062a\u0645 \u0627\u0633\u062a\u062e\u062f\u0627\u0645\u0647 \u0644\u0644\u0625\u0634\u0627\u0631\u0629 \u0625\u0644\u064a\u0647 \u060c \u0628\u062f\u0644\u0627\u064b \u0645\u0646 \u062a\u0630\u0643\u0631\u0629 \u0645\u0637\u0628\u0648\u0639\u0629 \u0646\u0645\u0648\u0630\u062c\u064a\u0629",
         "en": "Registered : allows the customer to register his name and that will be used to refer by, instead of a typical printed ticket",
         "es": "Registrado: permite que el cliente registre su nombre y que se utilizar\u00e1 para referirse a \u00e9l, en lugar de un boleto impreso t\u00edpico",
-        "fr": "Enregistr\u00e9: permet au client d'enregistrer son nom et qui sera utilis\u00e9 pour se r\u00e9f\u00e9rer par, au lieu d'un ticket imprim\u00e9 typique",
+        "fr": "Enregistr\u00e9: permet au client d'enregistrer son nom qui sera utilis\u00e9 pour se l'identifier au lieu d'un ticket imprim\u00e9 typique",
         "it": "Registrato: consente al cliente di registrare il suo nome e che sar\u00e0 utilizzato per fare riferimento, invece di un tipico biglietto stampato"
     },
     "Registered ticket value :": {
         "ar": "\u0642\u064a\u0645\u0629 \u062a\u0630\u0643\u0631\u0629 \u0627\u0644\u0645\u0633\u062c\u0644\u0629:",
         "en": "Registered ticket value :",
         "es": "valor del boleto registrada:",
-        "fr": "valeur du billet enregistr\u00e9:",
+        "fr": "valeur du ticket enregistr\u00e9:",
         "it": "valore del biglietto Registrato:"
     },
     "Remeber me : ": {
         "ar": "\u062a\u0630\u0643\u0631\u0646\u0649 :",
         "en": "Remember me :",
         "es": "Recu\u00e9rdame :",
-        "fr": "Souviens-toi de moi :",
+        "fr": "Se souvenir de moi :",
         "it": "Ricordati di me :"
     },
     "Remember me : ": {
         "ar": "\u062a\u0630\u0643\u0631\u0646\u0649 :",
         "en": "Remember me :",
         "es": "Recu\u00e9rdame :",
-        "fr": "Souviens-toi de moi :",
+        "fr": "Rester connect\u00e9 :",
         "it": "Ricordati di me :"
     },
     "Reminder : aliases are only supported in English.": {
@@ -2523,7 +2534,7 @@
         "ar": "\u062a\u0630\u0643\u064a\u0631: \u064a\u062c\u0628 \u0639\u062f\u0645 \u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0645\u0644\u0641 \u0627\u0644\u0648\u0633\u0627\u0626\u0637 \u060c \u0627\u0644\u0630\u064a \u062a\u0631\u064a\u062f \u062d\u0630\u0641\u0647",
         "en": "Reminder : must not use the media file, that you want to delete it",
         "es": "Recordatorio: no debe usar el archivo multimedia, que desea eliminarlo",
-        "fr": "Rappel: ne doit pas utiliser le fichier m\u00e9dia, que vous voulez supprimer",
+        "fr": "Rappel: Le fichier m\u00e9dia que vous voulez supprimer ne doit pas \u00eatre utilis\u00e9",
         "it": "Promemoria: non utilizzare il file multimediale, che si desidera eliminare"
     },
     "Reminder : printing with languages other than English , is still under testing and might cause unintended errors": {
@@ -2558,14 +2569,14 @@
         "ar": "\u062a\u0630\u0643\u064a\u0631: \u0627\u0644\u0637\u0627\u0628\u0639\u0627\u062a \u0627\u0644\u0645\u0639\u062a\u0645\u062f\u0629 \u0641\u0642\u0637 \u0647\u064a \u0637\u0627\u0628\u0639\u0627\u062a USB \u0641\u0642\u0637",
         "en": "Reminder: Only supported printers currently are usb printers",
         "es": "Recordatorio: solo las impresoras compatibles actualmente son impresoras usb",
-        "fr": "Rappel: Actuellement, seules les imprimantes support\u00e9es sont des imprimantes usb",
+        "fr": "Rappel: Actuellement, les seules imprimantes support\u00e9es sont des imprimantes usb",
         "it": "Promemoria: al momento sono supportate solo le stampanti USB"
     },
     "Reminder: Touch screen meant to be displayed on different sized monitors so it supports it": {
         "ar": "\u062a\u0630\u0643\u064a\u0631: \u0634\u0627\u0634\u0629 \u062a\u0639\u0645\u0644 \u0628\u0627\u0644\u0644\u0645\u0633 \u064a\u0639\u0646\u064a \u0639\u0631\u0636\u0647\u0627 \u0639\u0644\u0649 \u0634\u0627\u0634\u0627\u062a \u0645\u062e\u062a\u0644\u0641\u0629 \u0627\u0644\u062d\u062c\u0645 \u0628\u062d\u064a\u062b \u062a\u062f\u0639\u0645\u0647\u0627",
         "en": "Reminder: Touch screen meant to be displayed on different sized monitors so it supports it",
         "es": "Recordatorio: la pantalla t\u00e1ctil debe mostrarse en monitores de diferentes tama\u00f1os para que sea compatible",
-        "fr": "Rappel: \u00e9cran tactile destin\u00e9 \u00e0 \u00eatre affich\u00e9 sur des moniteurs de diff\u00e9rentes tailles afin qu'il le supporte",
+        "fr": "Rappel: L'\u00e9cran tactile est destin\u00e9 \u00e0 \u00eatre affich\u00e9 sur des moniteurs de diff\u00e9rentes tailles",
         "it": "Promemoria: Touch screen pensato per essere visualizzato su monitor di dimensioni diverse in modo che lo supporti"
     },
     "Reminder: to use printed tickets you must assign available printer": {
@@ -2589,14 +2600,14 @@
         "ar": "\u0645\u0637\u0644\u0648\u0628 \u0644\u0627 \u064a\u0642\u0644 \u0639\u0646 5 \u0648\u0644\u0627 \u064a\u0632\u064a\u062f \u0639\u0646 200 \u062d\u0631\u0641",
         "en": "Required not less than 5 nor more than 200 letters",
         "es": "Requerido no menos de 5 ni m\u00e1s de 200 letras",
-        "fr": "Requis pas moins de 5 ni plus de 200 lettres",
+        "fr": "Nombre de caract\u00e8re compris entre 5 et 200",
         "it": "Richiesto non meno di 5 n\u00e9 pi\u00f9 di 200 lettere"
     },
     "Required not less than 5 nor more than 300 letters": {
         "ar": "\u0645\u0637\u0644\u0648\u0628 \u0644\u0627 \u064a\u0642\u0644 \u0639\u0646 5 \u0648\u0644\u0627 \u064a\u0632\u064a\u062f \u0639\u0646 300 \u062d\u0631\u0641",
         "en": "Required not less than 5 nor more than 300 letters",
         "es": "Requerido no menos de 5 ni m\u00e1s de 300 cartas",
-        "fr": "Requis pas moins de 5 ni plus de 300 lettres",
+        "fr": "Nombre de caract\u00e8re compris entre 5 et 200",
         "it": "Richiesto non meno di 5 n\u00e9 pi\u00f9 di 300 lettere"
     },
     "Reset": {
@@ -2616,7 +2627,7 @@
         "ar": "\u0625\u0639\u0627\u062f\u0629 \u0636\u0628\u0637 \u0627\u0644\u062c\u0645\u064a\u0639",
         "en": "Reset all",
         "es": "Resetear todo",
-        "fr": "Effacer tout",
+        "fr": "Tout r\u00e9initialiser",
         "it": "Resetta tutto"
     },
     "Restoring the form": {
@@ -2655,7 +2666,7 @@
         "ar": "\u0628\u062d\u062b",
         "en": "Search",
         "es": "Buscar",
-        "fr": "Chercher",
+        "fr": "Rechercher",
         "it": "Ricerca"
     },
     "Search results": {
@@ -2669,7 +2680,7 @@
         "ar": "\u062a\u0630\u0627\u0643\u0631 \u0627\u0644\u0628\u062d\u062b",
         "en": "Search tickets",
         "es": "Buscar boletos",
-        "fr": "Rechercher des billets",
+        "fr": "Rechercher des tickets",
         "it": "Cerca i biglietti"
     },
     "Second Template": {
@@ -2697,7 +2708,7 @@
         "ar": "\u0625\u062e\u062a\u0627\u0631 \u0645\u0646\u0641\u0630 \u0644\u064a\u062a\u0645 \u0628\u062b \u0627\u0644\u062e\u062f\u0645\u0629 \u0645\u0646 \u062e\u0644\u0627\u0644\u0647",
         "en": "Select a port, so the server runs through it",
         "es": "seleccione el puerto para el servidor",
-        "fr": "s\u00e9lectionnez un port pour le serveur",
+        "fr": "S\u00e9lectionnez un port pour le serveur",
         "it": "selezionare una porta per avviare il server"
     },
     "Select a role for the user : ": {
@@ -2732,14 +2743,14 @@
         "ar": "\u062d\u062f\u062f \u0644\u0648\u0646 \u062e\u0637 \u0627\u0644\u0639\u0646\u0648\u0627\u0646:",
         "en": "Select a title font color :",
         "es": "Seleccione un color de fuente de t\u00edtulo:",
-        "fr": "S\u00e9lectionnez une couleur de police de titre:",
+        "fr": "S\u00e9lectionnez une couleur de police pour le titre:",
         "it": "Seleziona un colore del carattere del titolo:"
     },
     "Select a title font size :": {
         "ar": "\u062d\u062f\u062f \u062d\u062c\u0645 \u062e\u0637 \u0627\u0644\u0639\u0646\u0648\u0627\u0646:",
         "en": "Select a title font size :",
         "es": "Seleccione un tama\u00f1o de letra de t\u00edtulo:",
-        "fr": "S\u00e9lectionnez une taille de police de titre:",
+        "fr": "S\u00e9lectionnez une taille de police pour le titre:",
         "it": "Seleziona una dimensione del carattere del titolo:"
     },
     "Select a usb printer : ": {
@@ -2788,14 +2799,14 @@
         "ar": "\u062d\u062f\u062f \u0642\u064a\u0627\u0633 \u0627\u0644\u062a\u062d\u062c\u064a\u0645 \u0627\u0644\u062e\u0637 \u0644\u0644\u062a\u0630\u0627\u0643\u0631 \u0627\u0644\u0645\u0637\u0628\u0648\u0639\u0629:",
         "en": "Select font scaling measurement for printed tickets :",
         "es": "Seleccione la fuente de medici\u00f3n de escala para los billetes impresos:",
-        "fr": "S\u00e9lectionnez la mesure de mise \u00e0 l'\u00e9chelle pour la police des billets imprim\u00e9s:",
+        "fr": "S\u00e9lectionnez la mesure de mise \u00e0 l'\u00e9chelle pour la police des tickets imprim\u00e9s:",
         "it": "Selezionare la misura ridimensionamento dei caratteri per i biglietti stampati:"
     },
     "Select heading background color :": {
         "ar": "\u0627\u062e\u062a\u0631 \u0644\u0648\u0646 \u062e\u0644\u0641\u064a\u0629 \u0627\u0644\u0639\u0646\u0648\u0627\u0646:",
         "en": "Select heading background color :",
         "es": "Seleccione el color de fondo del encabezado:",
-        "fr": "S\u00e9lectionnez la couleur d'arri\u00e8re-plan du cap:",
+        "fr": "S\u00e9lectionnez la couleur d'arri\u00e8re-plan de l'en-t\u00eate:",
         "it": "Seleziona il colore dello sfondo della direzione:"
     },
     "Select language of printed ticket : ": {
@@ -2809,7 +2820,7 @@
         "ar": "\u0625\u062e\u062a\u0631 \u0644\u063a\u0629 \u0644\u0648\u0627\u062c\u0647\u0629 \u0627\u0644\u0625\u0633\u062a\u062e\u062f\u0627\u0645",
         "en": "Select language to change the interface to",
         "es": "seleccionar idioma de la interfaz",
-        "fr": "s\u00e9lectionnez la langue de l'interface",
+        "fr": "S\u00e9lectionnez la langue de l'interface",
         "it": "selezionare la lingua dell'interfaccia"
     },
     "Select message background color :": {
@@ -2837,14 +2848,14 @@
         "ar": "\u0625\u062e\u062a\u0627\u0631 \u0639\u0646\u0648\u0627\u0646 IP \u0644\u064a\u062a\u0645 \u0628\u062b \u0627\u0644\u062e\u062f\u0645\u0629 \u0639\u0644\u064a\u0647",
         "en": "Select network interface with IP, so the server runs on it",
         "es": "seleccione la interfaz de red con la direcci\u00f3n IP del servidor",
-        "fr": "s\u00e9lectionnez l'interface r\u00e9seau avec IP pour le serveur",
+        "fr": "S\u00e9lectionnez l'interface r\u00e9seau avec IP pour le serveur",
         "it": "selezionare l'interfaccia di rete con l'indirizzo IP per avviare il server"
     },
     "Select office to assing the operator to : ": {
         "ar": "\u062d\u062f\u062f \u0645\u0643\u062a\u0628 \u0644\u062a\u0639\u064a\u064a\u0646 \u0627\u0644\u0645\u0634\u063a\u0644 \u0625\u0644\u0649:",
         "en": "Select office to assign the operator to :",
         "es": "Seleccione la oficina para asignar el operador a:",
-        "fr": "S\u00e9lectionnez le bureau pour affecter l'op\u00e9rateur \u00e0:",
+        "fr": "S\u00e9lectionnez le bureau auquel affecter l'op\u00e9rateur:",
         "it": "Seleziona ufficio per assegnare l'operatore a:"
     },
     "Select sub title color :": {
@@ -2865,7 +2876,7 @@
         "ar": "\u0627\u062e\u062a\u0631 \u0627\u0644\u062e\u0637 \u0627\u0644\u0641\u0631\u0639\u064a:",
         "en": "Select subtitle font :",
         "es": "Seleccionar fuente de subt\u00edtulos:",
-        "fr": "S\u00e9lectionnez la police de sous-titre:",
+        "fr": "S\u00e9lectionnez la police des sous-titres:",
         "it": "Seleziona il carattere dei sottotitoli:"
     },
     "Select subtitle font size :": {
@@ -2893,7 +2904,7 @@
         "ar": "\u062d\u062f\u062f \u062a\u0630\u0643\u0631\u0629 \u0627\u0644\u0648\u0636\u0639 \u0627\u0644\u062d\u0627\u0644\u064a:",
         "en": "Select ticket current status :",
         "es": "Elija un billete estado actual:",
-        "fr": "S\u00e9lectionnez billet d'\u00e9tat actuel:",
+        "fr": "S\u00e9lectionnez l'\u00e9tat actuel du ticket :",
         "it": "Acquista biglietti stato attuale:"
     },
     "Select ticket prefix : ": {
@@ -2975,14 +2986,14 @@
         "ar": "\u0645\u062c\u0645\u0648\u0639\u0629 \u062a\u0630\u0643\u0631\u0629",
         "en": "Set ticket",
         "es": "conjunto de entradas",
-        "fr": "billet Set",
+        "fr": "Mettre en place le ticket",
         "it": "set di biglietti"
     },
     "Set video": {
         "ar": "\u0645\u062c\u0645\u0648\u0639\u0629 \u0627\u0644\u0641\u064a\u062f\u064a\u0648",
         "en": "Set video",
         "es": "conjunto de v\u00eddeo",
-        "fr": "Set vid\u00e9o",
+        "fr": "Mettre en place la vid\u00e9o",
         "it": "set video"
     },
     "Settings": {
@@ -3003,21 +3014,21 @@
         "ar": "\u0635\u0641 \u0648\u0627\u062d\u062f \u0641\u064a \u0642\u0627\u0626\u0645\u0629 \u0627\u0646\u062a\u0638\u0627\u0631",
         "en": "Single Row Queuing",
         "es": "De una hilera de cola",
-        "fr": "Seule rang\u00e9e Queueing",
+        "fr": "Une seul file d'attente",
         "it": "Singolo Queuing Row"
     },
     "Slide effect": {
         "ar": "\u062a\u0623\u062b\u064a\u0631 \u0627\u0644\u0634\u0631\u064a\u062d\u0629",
         "en": "Slide effect",
         "es": "Efecto de diapositiva",
-        "fr": "Slide effet",
+        "fr": "Effet de diapositive",
         "it": "Effetto diapositiva"
     },
     "Slide images rotation :": {
         "ar": "\u062a\u062f\u0648\u064a\u0631 \u0635\u0648\u0631 \u0627\u0644\u0634\u0631\u0627\u0626\u062d:",
         "en": "Slide images rotation :",
         "es": "Deslice la rotaci\u00f3n de im\u00e1genes:",
-        "fr": "Faites glisser la rotation des images:",
+        "fr": "Faire glisser la rotation des images:",
         "it": "Rotazione delle immagini delle diapositive"
     },
     "Slide navigation bars :": {
@@ -3052,7 +3063,7 @@
         "ar": "\u0639\u0631\u0636 \u0627\u0644\u0634\u0631\u0627\u0626\u062d \u0647\u0648 \u0639\u0646\u0635\u0631 \u0645\u0636\u0627\u0641 \u0625\u0644\u0649 \u0634\u0627\u0634\u0629 \u0627\u0644\u0639\u0631\u0636 \u062d\u064a\u062b \u064a\u062a\u0645\u0643\u0646 \u0627\u0644\u0645\u0634\u0631\u0641 \u0645\u0646 \u0625\u0636\u0627\u0641\u0629 \u0623\u064a \u0639\u062f\u062f \u0645\u0639\u064a\u0646 \u0645\u0646 \u0627\u0644\u0634\u0631\u0627\u0626\u062d \u0645\u0639 \u0627\u0644\u062a\u0633\u0645\u064a\u0627\u062a \u0627\u0644\u062a\u0648\u0636\u064a\u062d\u064a\u0629 \u0644\u0623\u064a \u063a\u0631\u0636 \u0622\u062e\u0631 \u0644\u0644\u0625\u0639\u0644\u0627\u0646 \u0623\u0648 \u0644\u0639\u0631\u0636 \u0645\u0632\u064a\u062f \u0645\u0646 \u0627\u0644\u0645\u0639\u0644\u0648\u0645\u0627\u062a. \u064a\u0633\u0627\u0639\u062f \u0639\u0631\u0636 \u0627\u0644\u0634\u0631\u0627\u0626\u062d \u0639\u0644\u0649 \u0625\u062f\u0627\u0631\u0629 \u0645\u0643\u0648\u0646\u0627\u062a \u0627\u0644\u0634\u0631\u064a\u062d\u0629 \u0628\u0641\u0639\u0627\u0644\u064a\u0629 \u0648\u0633\u0647\u0648\u0644\u0629.",
         "en": "Slideshow is an added element to the display screen in which the admin is able to add any given amount of slides with their captions for any purpose wether to advertise or to display more info. Display Slideshow will help to manage slide components  effectively and easily.",
         "es": "La presentaci\u00f3n de diapositivas es un elemento agregado a la pantalla de visualizaci\u00f3n en el cual el administrador puede agregar cualquier cantidad dada de diapositivas con sus leyendas para cualquier prop\u00f3sito de publicitar o mostrar m\u00e1s informaci\u00f3n. La presentaci\u00f3n de diapositivas le ayudar\u00e1 a administrar los componentes de la diapositiva de manera f\u00e1cil y efectiva.",
-        "fr": "Diaporama est un \u00e9l\u00e9ment ajout\u00e9 \u00e0 l'\u00e9cran d'affichage dans lequel l'administrateur est en mesure d'ajouter une quantit\u00e9 donn\u00e9e de diapositives avec leurs l\u00e9gendes \u00e0 des fins de publicit\u00e9 ou d'afficher plus d'informations. Afficher le diaporama vous aidera \u00e0 g\u00e9rer les composants de la diapositive de mani\u00e8re efficace et simple.",
+        "fr": "Le diaporama est un \u00e9l\u00e9ment ajout\u00e9 \u00e0 \u00e2 l'\u00e9cran d'affichage dans lequel l'administrateur peut d'ajouter une quantit\u00e9 de diapositives avec leurs l\u00e9gendes \u00e0 des fins de publicit\u00e9 ou d'afficher plus d'informations. Afficher le diaporama vous aidera \u00e0 g\u00e9rer les composants de la diapositive de mani\u00e8re efficace et simple.",
         "it": "La presentazione \u00e8 un elemento aggiunto alla schermata di visualizzazione in cui l'amministratore \u00e8 in grado di aggiungere qualsiasi quantit\u00e0 di diapositive con le loro didascalie per qualsiasi scopo, sia per pubblicizzare che per visualizzare maggiori informazioni. Display Slideshow aiuter\u00e0 a gestire i componenti della diapositiva in modo efficace e semplice."
     },
     "Slideshow template": {
@@ -3087,21 +3098,21 @@
         "ar": "\u0632\u0645\u0646\u064a \u0645\u062d\u062f\u062f \u0644\u062a\u0646\u0641\u064a\u0630 \u0627\u0644\u0645\u0647\u0645\u0629 \u0641\u064a:",
         "en": "Specific time to execute the task in :",
         "es": "tiempo espec\u00edfico para ejecutar la tarea en:",
-        "fr": "Un temps sp\u00e9cifique pour ex\u00e9cuter la t\u00e2che:",
+        "fr": "Temps sp\u00e9cifique pour ex\u00e9cuter la t\u00e2che:",
         "it": "Tempo specifico per eseguire il compito in:"
     },
     "Start": {
         "ar": "\u062a\u0634\u063a\u064a\u0644",
         "en": "Start",
         "es": "iniciar",
-        "fr": "d\u00e9marrer",
+        "fr": "D\u00e9marrer",
         "it": "avvia"
     },
     "Start the server": {
         "ar": "\u0642\u0645 \u0628\u062a\u0634\u063a\u064a\u0644 \u0627\u0644\u062e\u0627\u062f\u0645\u0629",
         "en": "Start the server",
         "es": "iniciar el servidor",
-        "fr": "d\u00e9marrer le serveur",
+        "fr": "D\u00e9marrer le serveur",
         "it": "avvia il server"
     },
     "Status": {
@@ -3122,14 +3133,14 @@
         "ar": "\u0625\u064a\u0642\u0627\u0641",
         "en": "Stop",
         "es": "detener",
-        "fr": "arr\u00eate",
+        "fr": "Arr\u00eater",
         "it": "fermare"
     },
     "Stop the server": {
         "ar": "\u0642\u0645 \u0628\u0625\u0642\u0627\u0641 \u0627\u0644\u062e\u0627\u062f\u0645\u0629",
         "en": "Stop the server",
         "es": "detener el servidor",
-        "fr": "arr\u00eate le serveur",
+        "fr": "Arr\u00eater le serveur",
         "it": "fermare il server"
     },
     "Strict Tasks Pulling": {
@@ -3163,28 +3174,28 @@
     "Task : ": {
         "en": "Task : ",
         "es": "Tarea : ",
-        "fr": "Tache : ",
+        "fr": "T\u00e2che : ",
         "it": "Compito : "
     },
     "Task : the option that its title appears to the user on the Touch screen to choose from and dispatch a ticket for it": {
         "ar": "\u0627\u0644\u0645\u0647\u0645\u0629: \u0627\u0644\u062e\u064a\u0627\u0631 \u0627\u0644\u0630\u064a \u064a\u0638\u0647\u0631 \u0639\u0646\u0648\u0627\u0646\u0647 \u0644\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0639\u0644\u0649 \u0634\u0627\u0634\u0629 \u0627\u0644\u0644\u0645\u0633 \u0644\u0644\u0627\u062e\u062a\u064a\u0627\u0631 \u0645\u0646 \u0628\u064a\u0646\u0647\u0627 \u0648\u0625\u0631\u0633\u0627\u0644 \u062a\u0630\u0643\u0631\u0629 \u0644\u0647",
         "en": "Task : the option that its title appears to the user on the Touch screen to choose from and dispatch a ticket for it",
         "es": "Tarea: la opci\u00f3n de que su t\u00edtulo aparezca para el usuario en la pantalla t\u00e1ctil para elegir y enviar un ticket para \u00e9l",
-        "fr": "T\u00e2che: l'option que son titre appara\u00eet \u00e0 l'utilisateur sur l'\u00e9cran tactile \u00e0 choisir et envoyer un ticket pour celui-ci",
+        "fr": "T\u00e2che: l'option qui affiche le titre \u00e0 l'utilisateur sur l'\u00e9cran tactile ce qui lui permet de choisir un t\u00e2che et de prendre un ticket pour celle-ci",
         "it": "Compito: l'opzione che il suo titolo appare all'utente sullo schermo tattile tra cui scegliere e inviare un biglietto per esso"
     },
     "Tasks": {
         "ar": "\u0645\u0647\u0627\u0645",
         "en": "Tasks",
         "es": "Tareas",
-        "fr": "les t\u00e2ches",
+        "fr": "T\u00e2ches",
         "it": "Compiti"
     },
     "Tasks are the options that a the customer can select from and his unique ticket will be generated by": {
         "ar": "\u0627\u0644\u0645\u0647\u0627\u0645 \u0647\u064a \u0627\u0644\u062e\u064a\u0627\u0631\u0627\u062a \u0627\u0644\u062a\u064a \u064a\u0645\u0643\u0646 \u0644\u0644\u0639\u0645\u064a\u0644 \u0627\u0644\u0627\u062e\u062a\u064a\u0627\u0631 \u0645\u0646\u0647\u0627 \u0648\u0633\u064a\u062a\u0645 \u0625\u0646\u0634\u0627\u0621 \u062a\u0630\u0643\u0631\u0629 \u0641\u0631\u064a\u062f\u0629 \u0644\u0647",
         "en": "Tasks are the options that a the customer can select from and his unique ticket will be generated by",
         "es": "Las tareas son las opciones de las que el cliente puede seleccionar y su ticket \u00fanico ser\u00e1 generado por",
-        "fr": "Les t\u00e2ches sont les options que le client peut s\u00e9lectionner et son ticket unique sera g\u00e9n\u00e9r\u00e9 par",
+        "fr": "Les t\u00e2ches sont les options que le client peut s\u00e9lectionner et qui g\u00e9n\u00e9rera un ticket unique par",
         "it": "Le attivit\u00e0 sono le opzioni che un cliente pu\u00f2 selezionare e il suo biglietto unico sar\u00e0 generato da"
     },
     "Tasks total": {
@@ -3226,14 +3237,14 @@
         "ar": "\u0635\u0648\u0631\u0629 \u0627\u0644\u062e\u0644\u0641\u064a\u0629 \u0627\u0644\u062a\u064a \u062a\u0638\u0647\u0631 \u0639\u0644\u064a\u0647\u0627 \u062c\u0645\u064a\u0639 \u0639\u0646\u0627\u0635\u0631 \u0634\u0627\u0634\u0629 \u0627\u0644\u0644\u0645\u0633. \u064a\u0645\u0643\u0646\u0643 \u0627\u0644\u0627\u062e\u062a\u064a\u0627\u0631 \u0628\u064a\u0646 \u0645\u062c\u0645\u0648\u0639\u0629 \u0645\u062d\u062f\u0648\u062f\u0629 \u0645\u0646 \u0627\u0644\u0635\u0648\u0631 \u0627\u0644\u0627\u0641\u062a\u0631\u0627\u0636\u064a\u0629 \u0623\u0648 \u0644\u062a\u062d\u062f\u064a\u062f \u0644\u0648\u0646 \u0645\u0639\u064a\u0646 \u0648\u0623\u062e\u064a\u0631\u064b\u0627 \u064a\u0645\u0643\u0646\u0643 \u0623\u064a\u0636\u064b\u0627 \u0627\u062e\u062a\u064a\u0627\u0631 \u062a\u062d\u0645\u064a\u0644 \u0635\u0648\u0631\u0629 \u0627\u0644\u062e\u0644\u0641\u064a\u0629 \u0627\u0644\u062e\u0627\u0635\u0629 \u0628\u0643",
         "en": "The background image on-which all elements of the Touch Screen will be displayed on . You can choose between a limited variety of default images or to select a specific color and lastly you can as well chose to upload your own special background image",
         "es": "La imagen de fondo en la que se mostrar\u00e1n todos los elementos de la pantalla t\u00e1ctil. Puede elegir entre una variedad limitada de im\u00e1genes predeterminadas o seleccionar un color espec\u00edfico y, por \u00faltimo, tambi\u00e9n puede elegir cargar su propia imagen de fondo especial",
-        "fr": "L'image d'arri\u00e8re-plan sur laquelle tous les \u00e9l\u00e9ments de l'\u00e9cran tactile seront affich\u00e9s. Vous pouvez choisir entre une vari\u00e9t\u00e9 limit\u00e9e d'images par d\u00e9faut ou pour s\u00e9lectionner une couleur sp\u00e9cifique et, enfin, vous pouvez aussi choisir de t\u00e9l\u00e9charger votre propre image d'arri\u00e8re-plan sp\u00e9ciale",
+        "fr": "L'image d'arri\u00e8re-plan sur laquelle tous les \u00e9l\u00e9ments de l'\u00e9cran tactile seront affich\u00e9s. Vous pouvez choisir entre une vari\u00e9t\u00e9 limit\u00e9e d'images par d\u00e9faut ou pour s\u00e9lectionner une couleur sp\u00e9cifique et, enfin, vous pouvez aussi choisir de t\u00e9l\u00e9charger votre propre image d'arri\u00e8re-plan",
         "it": "L'immagine di sfondo su cui verranno visualizzati tutti gli elementi del Touch Screen. Puoi scegliere tra una variet\u00e0 limitata di immagini predefinite o selezionare un colore specifico e infine puoi anche scegliere di caricare la tua immagine di sfondo speciale"
     },
     "The background image on-which all elements of the display screen will appear. you can select a specific color or chose to select your own special background image from the multimedia uploaded images. And finally the refresh rate of the Display screen": {
         "ar": "\u0635\u0648\u0631\u0629 \u0627\u0644\u062e\u0644\u0641\u064a\u0629 \u0627\u0644\u062a\u064a \u062a\u0638\u0647\u0631 \u0639\u0644\u064a\u0647\u0627 \u062c\u0645\u064a\u0639 \u0639\u0646\u0627\u0635\u0631 \u0634\u0627\u0634\u0629 \u0627\u0644\u0639\u0631\u0636. \u064a\u0645\u0643\u0646\u0643 \u0627\u062e\u062a\u064a\u0627\u0631 \u0644\u0648\u0646 \u0645\u0639\u064a\u0646 \u0623\u0648 \u0627\u062e\u062a\u064a\u0627\u0631 \u0627\u062e\u062a\u064a\u0627\u0631 \u0635\u0648\u0631\u0629 \u0627\u0644\u062e\u0644\u0641\u064a\u0629 \u0627\u0644\u062e\u0627\u0635\u0629 \u0628\u0643 \u0645\u0646 \u0627\u0644\u0635\u0648\u0631 \u0627\u0644\u062a\u064a \u062a\u0645 \u062a\u062d\u0645\u064a\u0644\u0647\u0627 \u0641\u064a \u0627\u0644\u0648\u0633\u0627\u0626\u0637 \u0627\u0644\u0645\u062a\u0639\u062f\u062f\u0629. \u0648\u0623\u062e\u064a\u0631\u0627 \u0645\u0639\u062f\u0644 \u0627\u0644\u062a\u062d\u062f\u064a\u062b \u0645\u0646 \u0634\u0627\u0634\u0629 \u0627\u0644\u0639\u0631\u0636",
         "en": "The background image on-which all elements of the display screen will appear. you can select a specific color or chose to select your own special background image from the multimedia uploaded images. And finally the refresh rate of the Display screen",
         "es": "La imagen de fondo en la que aparecer\u00e1n todos los elementos de la pantalla. puede seleccionar un color espec\u00edfico o elegir su propia imagen de fondo especial a partir de las im\u00e1genes cargadas multimedia. Y finalmente, la frecuencia de actualizaci\u00f3n de la pantalla de visualizaci\u00f3n",
-        "fr": "L'image d'arri\u00e8re-plan sur laquelle tous les \u00e9l\u00e9ments de l'\u00e9cran d'affichage appara\u00eetront. vous pouvez s\u00e9lectionner une couleur sp\u00e9cifique ou choisir de s\u00e9lectionner votre propre image d'arri\u00e8re-plan sp\u00e9ciale \u00e0 partir des images t\u00e9l\u00e9charg\u00e9es multim\u00e9dia. Et enfin le taux de rafra\u00eechissement de l'\u00e9cran d'affichage",
+        "fr": "L'image d'arri\u00e8re-plan sur laquelle tous les \u00e9l\u00e9ments de l'\u00e9cran d'affichage appara\u00eetront. Vous pouvez s\u00e9lectionner une couleur sp\u00e9cifique ou choisir de s\u00e9lectionner votre propre image d'arri\u00e8re-plan \u00e0 partir des images t\u00e9l\u00e9charg\u00e9es dans multim\u00e9dia. Et enfin le taux de rafra\u00eechissement de l'\u00e9cran d'affichage",
         "it": "L'immagine di sfondo su cui appariranno tutti gli elementi dello schermo. \u00e8 possibile selezionare un colore specifico o scegliere di selezionare la propria immagine di sfondo speciale dalle immagini caricate multimediali. E infine la frequenza di aggiornamento della schermata di visualizzazione"
     },
     "The default account": {
@@ -3250,12 +3261,16 @@
         "fr": "L'image du mod\u00e8le est automatiquement remplac\u00e9e par celle s\u00e9lectionn\u00e9e",
         "it": "L'immagine del modello viene automaticamente modificata in quella selezionata"
     },
-    "The place where all multimedia files meant to be uploaded to, for the purpose of later use in other components which has the option to incorporate the uploaded multimedia files like jpg backgrounds instead of statically colored backgrounds and wav audio files to be incorporated withe visual notification message as well as png images to attach a transparent logo to slides for example.": {
+    "The place where all multimedia files meant to be uploaded to, for the purpose of later use in other components which has the option to incorporate the uploaded multimedia files like jpg backgrounds instead of statically colored backgrounds and wav audio files to be incorporated with visual notification message as well as png images to attach a transparent logo to slides for example.": {
         "ar": "\u0627\u0644\u0645\u0643\u0627\u0646 \u0627\u0644\u0630\u064a \u062a\u0645 \u0641\u064a\u0647 \u062a\u062d\u0645\u064a\u0644 \u062c\u0645\u064a\u0639 \u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0648\u0633\u0627\u0626\u0637 \u0627\u0644\u0645\u062a\u0639\u062f\u062f\u0629 \u0628\u063a\u0631\u0636 \u0627\u0633\u062a\u062e\u062f\u0627\u0645\u0647\u0627 \u0644\u0627\u062d\u0642\u064b\u0627 \u0641\u064a \u0627\u0644\u0645\u0643\u0648\u0646\u0627\u062a \u0627\u0644\u0623\u062e\u0631\u0649 \u0627\u0644\u062a\u064a \u062a\u062a\u0636\u0645\u0646 \u062e\u064a\u0627\u0631 \u062f\u0645\u062c \u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0648\u0633\u0627\u0626\u0637 \u0627\u0644\u0645\u062a\u0639\u062f\u062f\u0629 \u0627\u0644\u062a\u064a \u062a\u0645 \u062a\u062d\u0645\u064a\u0644\u0647\u0627 \u0645\u062b\u0644 \u062e\u0644\u0641\u064a\u0627\u062a jpg \u0628\u062f\u0644\u0627\u064b \u0645\u0646 \u0627\u0644\u062e\u0644\u0641\u064a\u0627\u062a \u0627\u0644\u0645\u0644\u0648\u0646\u0629 \u0628\u0634\u0643\u0644 \u062b\u0627\u0628\u062a \u0648\u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0635\u0648\u062a wav \u0644\u064a\u062a\u0645 \u062f\u0645\u062c\u0647\u0627 \u0645\u0639 \u0631\u0633\u0627\u0644\u0629 \u0625\u0639\u0644\u0627\u0645 \u0645\u0631\u0626\u064a\u0629 \u0628\u0627\u0644\u0625\u0636\u0627\u0641\u0629 \u0625\u0644\u0649 \u0635\u0648\u0631 png \u0644\u0625\u0631\u0641\u0627\u0642 \u0634\u0639\u0627\u0631 \u0634\u0641\u0627\u0641 \u0628\u0627\u0644\u0634\u0631\u0627\u0626\u062d \u0639\u0644\u0649 \u0633\u0628\u064a\u0644 \u0627\u0644\u0645\u062b\u0627\u0644.",
         "en": "The place where all multimedia files meant to be uploaded to, for the purpose of later use in other components which has the option to incorporate the uploaded multimedia files like jpg backgrounds instead of statically colored backgrounds and wav audio files to be incorporated withe visual notification message as well as png images to attach a transparent logo to slides for example.",
         "es": "El lugar donde se cargaron todos los archivos multimedia para su posterior uso en otros componentes que tiene la opci\u00f3n de incorporar los archivos multimedia cargados como fondos jpg en lugar de fondos est\u00e1ticos y archivos de audio wav para ser incorporados con un mensaje de notificaci\u00f3n visual as\u00ed como im\u00e1genes png para adjuntar un logotipo transparente a las diapositivas, por ejemplo.",
-        "fr": "L'endroit o\u00f9 tous les fichiers multim\u00e9dias devaient \u00eatre t\u00e9l\u00e9charg\u00e9s, en vue d'une utilisation ult\u00e9rieure dans d'autres composants, avec la possibilit\u00e9 d'incorporer les fichiers multim\u00e9dias t\u00e9l\u00e9charg\u00e9s comme les arri\u00e8re-plans jpg au lieu d'arri\u00e8re-plans statiques et les fichiers audio wav \u00e0 incorporer avec le message de notification visuelle ainsi que des images png pour attacher un logo transparent aux diapositives par exemple.",
+        "fr": "L'endroit o\u00f9 tous les fichiers multim\u00e9dias doivent \u00eatre t\u00e9l\u00e9charg\u00e9s en vue d'une utilisation ult\u00e9rieure, avec la possibilit\u00e9 d'incorporer les images (jpg par exemple) t\u00e9l\u00e9charg\u00e9s comme arri\u00e8re-plans au lieu d'arri\u00e8re-plans statique. Les fichiers audio wav peuvent \u00eatre utilis\u00e9 avec le message de notification visuelle ainsi que des images png pour attacher un logo transparent aux diapositives par exemple.",
         "it": "Il luogo in cui tutti i file multimediali destinati a essere caricati, per l'uso successivo in altri componenti che ha la possibilit\u00e0 di incorporare i file multimediali caricati come sfondi jpg invece di sfondi colorati staticamente e file audio wav da incorporare con il messaggio di notifica visiva ad esempio immagini in png per attaccare un logo trasparente alle diapositive."
+    },
+    "The place where all multimedia files meant to be uploaded to, for the purpose of later use in other components which has the option to incorporate the uploaded multimedia files like jpg backgrounds instead of statically colored backgrounds and wav audio files to be incorporated withe visual notification message as well as png images to attach a transparent logo to slides for example.": {
+        "en": "The place where all multimedia files meant to be uploaded to, for the purpose of later use in other components which has the option to incorporate the uploaded multimedia files like jpg backgrounds instead of statically colored backgrounds and wav audio files to be incorporated withe visual notification message as well as png images to attach a transparent logo to slides for example.",
+        "fr": "L'endroit o\u00f9 tous les fichiers multim\u00e9dias destin\u00e9s \u00e0 \u00eatre t\u00e9l\u00e9charg\u00e9s, dans le but d'une utilisation ult\u00e9rieure, dans d'autres composants, qui a la possibilit\u00e9 d'incorporer les fichiers multim\u00e9dias t\u00e9l\u00e9charg\u00e9s comme les arri\u00e8re-plans JPG au lieu d'arri\u00e8re-plans de couleur statique et de fichiers audio wav \u00e0 incorporer avec un message de notification visuelle ainsi que des images PNG pour attacher un logo transparent aux diapositives par exemple."
     },
     "Third Template": {
         "ar": "\u0627\u0644\u0642\u0627\u0644\u0628 \u0627\u0644\u062b\u0627\u0644\u062b",
@@ -3289,34 +3304,34 @@
         "ar": "\u062a\u0630\u0643\u0631\u0629",
         "en": "Ticket",
         "es": "Boleto",
-        "fr": "Billet",
+        "fr": "Ticket",
         "it": "Biglietto"
     },
     "Ticket type": {
         "ar": "\u0646\u0648\u0639 \u0627\u0644\u062a\u0630\u0643\u0631\u0629",
         "en": "Ticket type",
         "es": "Tipo de ticket",
-        "fr": "Type de billet",
+        "fr": "Type de ticket",
         "it": "Tipo di biglietto"
     },
     "Tickets": {
         "ar": "\u062a\u0630\u0627\u0643\u0631",
         "en": "Tickets",
         "es": "Entradas",
-        "fr": "Des billets",
+        "fr": "Tickets",
         "it": "Biglietti"
     },
     "Tickets ahead : ": {
         "en": "Tickets ahead : ",
         "es": "Billetes antes : ",
-        "fr": "Billets devant : ",
+        "fr": "En-t\u00eate des tickets : ",
         "it": "biglietti in anticipo : "
     },
     "Tickets pulled": {
         "ar": "\u0633\u062d\u0628\u062a \u062a\u0630\u0627\u0643\u0631",
         "en": "Tickets pulled",
         "es": "Entradas tiradas",
-        "fr": "Billets tir\u00e9s",
+        "fr": "Tickets appel\u00e9s",
         "it": "Biglietti tirati"
     },
     "Tickets template": {
@@ -3343,7 +3358,7 @@
         "ar": "\u0627\u0644\u0648\u0642\u062a \u062a\u062a\u0631\u0627\u0648\u062d \u062a\u0643\u0631\u0627\u0631 \u0627\u0644\u0645\u0647\u0645\u0629 \u0641\u064a \u063a\u0636\u0648\u0646:",
         "en": "Time range to repeat the task within :",
         "es": "Intervalo de tiempo para repetir la tarea dentro:",
-        "fr": "Temporis\u00e9es r\u00e9p\u00e9ter la t\u00e2che dans:",
+        "fr": "Intervalle de r\u00e9p\u00e9tition de la t\u00e2che:",
         "it": "Intervallo di tempo per ripetere l'operazione entro:"
     },
     "Title": {
@@ -3364,7 +3379,7 @@
         "ar": "\u064a\u062c\u0628 \u0623\u0646 \u064a\u0643\u0648\u0646 \u0627\u0644\u0639\u0646\u0648\u0627\u0646 300 \u062d\u0631\u0641\u064b\u0627 \u0643\u062d\u062f \u0623\u0642\u0635\u0649",
         "en": "Title should be maximum of 300 letters",
         "es": "El t\u00edtulo debe tener un m\u00e1ximo de 300 letras",
-        "fr": "Le titre doit avoir un maximum de 300 lettres",
+        "fr": "Le titre doit \u00eatre au maximum de 300 lettres",
         "it": "Il titolo dovrebbe essere al massimo di 300 lettere"
     },
     "Title text :": {
@@ -3377,7 +3392,7 @@
         "ar": "\u0644\u062a\u062d\u062f\u064a\u062f \u062e\u0644\u0641\u064a\u0629 \u064a\u062a\u0645 \u0639\u0631\u0636 \u0645\u062d\u062a\u0648\u0649 \u0627\u0644\u0634\u0631\u064a\u062d\u0629",
         "en": "To select a background on-which slide content be displayed",
         "es": "Para seleccionar un fondo en el que se mostrar\u00e1 el contenido de la diapositiva",
-        "fr": "Pour s\u00e9lectionner un arri\u00e8re-plan sur quel contenu de diapositive afficher",
+        "fr": "S\u00e9lectionner l'arri\u00e8re-plan de diapo",
         "it": "Per selezionare uno sfondo in cui visualizzare il contenuto della diapositiva"
     },
     "Token": {
@@ -3405,7 +3420,7 @@
         "ar": "\u0645\u062c\u0645\u0648\u0639 \u0627\u0644\u062a\u0630\u0627\u0643\u0631",
         "en": "Total tickets",
         "es": "Boletos totales",
-        "fr": "Total des billets",
+        "fr": "Total des tickets",
         "it": "Biglietti totali"
     },
     "Touch screen": {
@@ -3440,14 +3455,14 @@
         "ar": "\u0646\u0648\u0639 \u0627\u0644\u0625\u0639\u0644\u0627\u0646 \u0648\u062a\u0643\u0631\u0627\u0631 \u0627\u0644\u0625\u0634\u0639\u0627\u0631:",
         "en": "Type of announcement and notification repeating :",
         "es": "Tipo de anuncio y repetici\u00f3n de notificaci\u00f3n:",
-        "fr": "Type d'annonce et de notification r\u00e9p\u00e9tant:",
+        "fr": "Type d'annonce et de notification qui se r\u00e9p\u00e8tent:",
         "it": "Tipo di annuncio e notifica che si ripetono:"
     },
     "Unattended": {
         "ar": "\u063a\u064a\u0631 \u0627\u0644\u0645\u0631\u0627\u0642\u0628",
         "en": "Unattended",
         "es": "Desesperado",
-        "fr": "Unattended",
+        "fr": "Abandonn\u00e9",
         "it": "incustodito"
     },
     "Unused files": {
@@ -3489,35 +3504,35 @@
         "ar": "\u062a\u062d\u062f\u064a\u062b \u0627\u0644\u0645\u0643\u062a\u0628",
         "en": "Update office",
         "es": "Actualizar la oficina",
-        "fr": "Mettre le bureau",
+        "fr": "Mettre \u00e0 jour le bureau",
         "it": "Ufficio di aggiornamento"
     },
     "Update task": {
         "ar": "\u062a\u062d\u062f\u064a\u062b \u0627\u0644\u0645\u0647\u0645\u0629",
         "en": "Update task",
         "es": "Actualizar tarea",
-        "fr": "Mise \u00e0 jour",
+        "fr": "Mettre \u00e0 jour la t\u00e2che",
         "it": "Attivit\u00e0 di aggiornamento"
     },
     "Update ticket": {
         "ar": "\u062a\u062d\u062f\u064a\u062b \u062a\u0630\u0643\u0631\u0629",
         "en": "Update ticket",
         "es": "billete de actualizaci\u00f3n",
-        "fr": "billet de mise \u00e0 jour",
+        "fr": "Mise \u00e0 jour de ticket",
         "it": "biglietto di Aggiornamento"
     },
     "Update token": {
         "ar": "\u062a\u062d\u062f\u064a\u062b \u0631\u0645\u0632",
         "en": "Update token",
         "es": "token de actualizaci\u00f3n",
-        "fr": "jeton de mise \u00e0 jour",
+        "fr": "Jeton de mise \u00e0 jour",
         "it": "Aggiornamento Token"
     },
     "Update user": {
         "ar": "\u062a\u062d\u062f\u064a\u062b \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645",
         "en": "Update user",
         "es": "Actualizar usuario",
-        "fr": "Mettre \u00e0 jour",
+        "fr": "Mettre \u00e0 jour l'utilisateur",
         "it": "Aggiorna utente"
     },
     "Upload": {
@@ -3600,7 +3615,7 @@
         "ar": "\u0627\u0644\u0625\u0639\u0644\u0627\u0646 \u0627\u0644\u0644\u0641\u0638\u064a:",
         "en": "Verbal announcement :",
         "es": "Anuncio verbal:",
-        "fr": "Annonce verbale:",
+        "fr": "Annonce vocale:",
         "it": "Annuncio verbale:"
     },
     "Version ": {
@@ -3627,7 +3642,7 @@
         "ar": "\u0639\u0631\u0636 \u0627\u0644\u0641\u064a\u062f\u064a\u0648",
         "en": "Video display",
         "es": "Visualizaci\u00f3n de v\u00eddeo",
-        "fr": "affichage vid\u00e9o",
+        "fr": "Affichage vid\u00e9o",
         "it": "Display Video"
     },
     "Video file": {
@@ -3641,7 +3656,7 @@
         "ar": "\u064a\u0639\u062f \u0627\u0644\u0641\u064a\u062f\u064a\u0648 \u0639\u0646\u0635\u0631\u064b\u0627 \u0625\u0636\u0627\u0641\u064a\u064b\u0627 \u0644\u0634\u0627\u0634\u0629 \u0627\u0644\u0639\u0631\u0636 \u062d\u064a\u062b \u064a\u062a\u0645\u0643\u0646 \u0627\u0644\u0645\u0634\u0631\u0641 \u0645\u0646 \u0625\u0636\u0627\u0641\u0629 \u0623\u064a \u0641\u064a\u062f\u064a\u0648 \u062a\u0645 \u062a\u062d\u0645\u064a\u0644\u0647 \u0625\u0644\u0649 \u0627\u0644\u0648\u0633\u0627\u0626\u0637 \u0627\u0644\u0645\u062a\u0639\u062f\u062f\u0629 \u0644\u0623\u064a \u063a\u0631\u0636 \u064a\u0647\u062f\u0641 \u0644\u0644\u0625\u0639\u0644\u0627\u0646 \u0623\u0648 \u0644\u0639\u0631\u0636 \u0627\u0644\u0645\u0632\u064a\u062f \u0645\u0646 \u0627\u0644\u0645\u0639\u0644\u0648\u0645\u0627\u062a. \u0633\u064a\u0633\u0627\u0639\u062f \u0639\u0631\u0636 \u0627\u0644\u0641\u064a\u062f\u064a\u0648 \u0639\u0644\u0649 \u062a\u0643\u0648\u064a\u0646 \u0625\u0639\u062f\u0627\u062f\u0627\u062a \u0627\u0644\u0641\u064a\u062f\u064a\u0648 \u0628\u0641\u0639\u0627\u0644\u064a\u0629 \u0648\u0633\u0647\u0648\u0644\u0629.",
         "en": "Video is an added element to the display screen in which the admin is able to add any uploaded video to multimedia for any purpose wether to advertise or to display more info. Display video will help to configure video settings effectively and easily.",
         "es": "El video es un elemento agregado a la pantalla en el que el administrador puede agregar cualquier video cargado a multimedia para cualquier prop\u00f3sito, ya sea publicitar o mostrar m\u00e1s informaci\u00f3n. El video de pantalla lo ayudar\u00e1 a configurar los ajustes de video de manera efectiva y f\u00e1cil.",
-        "fr": "La vid\u00e9o est un \u00e9l\u00e9ment ajout\u00e9 \u00e0 l'\u00e9cran d'affichage dans lequel l'administrateur est en mesure d'ajouter toute vid\u00e9o t\u00e9l\u00e9charg\u00e9e au multim\u00e9dia \u00e0 des fins publicitaires ou pour afficher plus d'informations. Afficher la vid\u00e9o vous aidera \u00e0 configurer les param\u00e8tres vid\u00e9o de mani\u00e8re efficace et simple.",
+        "fr": "La vid\u00e9o est un \u00e9l\u00e9ment ajout\u00e9 \u00e0 l'\u00e9cran d'affichage dans lequel l'administrateur est en mesure d'ajouter toute vid\u00e9o t\u00e9l\u00e9charg\u00e9e dans multim\u00e9dia \u00e0 des fins publicitaires ou pour afficher plus d'informations. Afficher la vid\u00e9o vous aidera \u00e0 configurer les param\u00e8tres vid\u00e9o de mani\u00e8re efficace et simple.",
         "it": "Il video \u00e8 un elemento aggiunto allo schermo di visualizzazione in cui l'amministratore \u00e8 in grado di aggiungere qualsiasi video caricato a multimedia per qualsiasi scopo, sia per pubblicizzare o per visualizzare maggiori informazioni. Mostra video ti aiuter\u00e0 a configurare le impostazioni video in modo efficace e semplice."
     },
     "Video template": {
@@ -3669,7 +3684,7 @@
         "ar": "\u0627\u0646\u062a\u0638\u0631 \u0627\u0644\u0627\u0639\u0644\u0627\u0646 \u0627\u0644\u0649 \u0627\u0644\u0646\u0647\u0627\u064a\u0629:",
         "en": "Wait for announcement to finish:",
         "es": "Esperar a que el anuncio hasta el final:",
-        "fr": "Attendez l'annonce \u00e0 la fin:",
+        "fr": "Attendez que l'annonce se finisse:",
         "it": "Attendere che l'annuncio alla fine:"
     },
     "Waiting": {
@@ -3690,7 +3705,7 @@
         "ar": "\u0641\u064a \u0627\u0646\u062a\u0638\u0627\u0631 \u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u062a\u0630\u0627\u0643\u0631 \u0627\u0644\u062a\u064a \u062a\u0647\u062f\u0641 \u0625\u0644\u0649 \u0639\u0631\u0636 \u060c \u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u062a\u0630\u0627\u0643\u0631 \u0641\u064a \u0627\u0644\u0627\u0646\u062a\u0638\u0627\u0631 \u0644\u062a\u062a\u0645 \u0645\u0639\u0627\u0644\u062c\u062a\u0647\u0627 \u0645\u0646 \u0642\u0628\u0644 \u0623\u062d\u062f \u0627\u0644\u0645\u0643\u0627\u062a\u0628",
         "en": "Waiting list of tickets which meant to display , the list of tickets on wait to be processed by one of the offices",
         "es": "Lista de espera de boletos que significaba mostrar, la lista de boletos en espera ser\u00e1 procesada por una de las oficinas",
-        "fr": "Liste d'attente des tickets devant s'afficher, la liste des tickets en attente d'\u00eatre trait\u00e9e par l'un des bureaux",
+        "fr": "La liste d'attente des tickets devant s'afficher, la liste des tickets en attente d'\u00eatre trait\u00e9e par l'un des bureaux",
         "it": "In lista d'attesa dei biglietti che intendevano mostrare, l'elenco dei biglietti in attesa di essere elaborati da uno degli uffici"
     },
     "Waiting tickets": {
@@ -3718,7 +3733,7 @@
         "ar": "\u062a\u062d\u0630\u064a\u0631: \u062d\u0630\u0641 \u0627\u0644\u0643\u0644",
         "en": "Warning : Delete all",
         "es": "Advertencia: Eliminar todo",
-        "fr": "Avertissement: Supprimer tout",
+        "fr": "Avertissement: Tout supprimer",
         "it": "Attenzione: cancella tutto"
     },
     "Warning : Delete office": {
@@ -3739,7 +3754,7 @@
         "ar": "\u062a\u062d\u0630\u064a\u0631: \u0631\u0645\u0632 \u0627\u0644\u062d\u0630\u0641",
         "en": "Warning : Delete token",
         "es": "Advertencia: token Eliminar",
-        "fr": "Attention: jeton Supprimer",
+        "fr": "Attention: Supprimer le jeton",
         "it": "Attenzione: Token Delete"
     },
     "Warning : Delete user": {
@@ -3753,35 +3768,35 @@
         "ar": "\u062a\u062d\u0630\u064a\u0631: \u062d\u0630\u0641 \u0627\u0644\u0643\u0644",
         "en": "Warning : Deleting all",
         "es": "Advertencia: borrar todo",
-        "fr": "Avertissement: Supprimer tout",
+        "fr": "Attention: Tout supprimer",
         "it": "Avviso: eliminazione di tutti"
     },
     "Warning : Resetting all": {
         "ar": "\u062a\u062d\u0630\u064a\u0631: \u0625\u0639\u0627\u062f\u0629 \u062a\u0639\u064a\u064a\u0646 \u0627\u0644\u0643\u0644",
         "en": "Warning : Resetting all",
         "es": "Advertencia: restablecer todo",
-        "fr": "Attention: r\u00e9initialiser tout",
+        "fr": "Attention: Tout r\u00e9initialiser",
         "it": "Attenzione: ripristino di tutti"
     },
     "Warning : Rest all tasks": {
         "ar": "\u062a\u062d\u0630\u064a\u0631: \u0627\u0633\u062a\u0631\u0627\u062d\u0629 \u062c\u0645\u064a\u0639 \u0627\u0644\u0645\u0647\u0627\u0645",
         "en": "Warning : Rest all tasks",
         "es": "Advertencia: Descanse todas las tareas",
-        "fr": "Attention: Reste toutes les t\u00e2ches",
+        "fr": "Attention: R\u00e9initialiser toutes les t\u00e2ches",
         "it": "Avviso: riposa tutte le attivit\u00e0"
     },
     "Warning : Rest task": {
         "ar": "\u062a\u062d\u0630\u064a\u0631: \u0645\u0647\u0645\u0629 \u0627\u0644\u0631\u0627\u062d\u0629",
         "en": "Warning : Rest task",
         "es": "Advertencia: tarea de descanso",
-        "fr": "Attention: t\u00e2che de repos",
+        "fr": "Attention: T\u00e2che de repos",
         "it": "Avvertenza: attivit\u00e0 di riposo"
     },
     "White": {
         "ar": "\u0623\u0628\u064a\u0636",
         "en": "White",
         "es": "Blanco",
-        "fr": "blanc",
+        "fr": "Blanc",
         "it": "bianca"
     },
     "Whole: to repeat all the announcements and notification as whole": {
@@ -3802,6 +3817,7 @@
         "ar": "\u062a\u0630\u0627\u0643\u0631 Witing",
         "en": "Witing tickets",
         "es": "Boletos de Witing",
+        "fr": "Tickets en cours d'\u00e9criture",
         "it": "Biglietti d'ingresso"
     },
     "Yes": {
@@ -3815,98 +3831,98 @@
         "ar": "\u0625\u0646\u0643 \u062a\u062d\u0627\u0648\u0644 \u062d\u0630\u0641 \u0627\u0644\u0645\u0644\u0641 \u0627\u0644\u0630\u064a \u0644\u0646 \u064a\u0643\u0648\u0646 \u0642\u0627\u0628\u0644\u0627 \u0644\u0644\u0627\u0633\u062a\u0631\u062c\u0627\u0639\u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
         "en": "You are attempting to delete a file which won't be retrievable , Are you sure of that ?",
         "es": "Est\u00e1 intentando eliminar un archivo que no ser\u00e1 recuperable, \u00bfEst\u00e1s seguro de eso?",
-        "fr": "Vous essayez de supprimer un fichier qui ne sera pas r\u00e9cup\u00e9rable, Etes-vous s\u00fbr de cela?",
+        "fr": "Vous essayez de supprimer un fichier qui ne sera pas r\u00e9cup\u00e9rable, \u00eates-vous s\u00fbr?",
         "it": "Si sta tentando di eliminare un file che non sar\u00e0 recuperabile, Sei sicuro di questo?"
     },
     "You are attempting to delete a slide which will not be retrievable , Are you sure of that ?": {
         "ar": "\u0623\u0646\u062a \u062a\u062d\u0627\u0648\u0644 \u062d\u0630\u0641 \u0634\u0631\u064a\u062d\u0629 \u0644\u0627 \u064a\u0645\u0643\u0646 \u0627\u0633\u062a\u0631\u062c\u0627\u0639\u0647\u0627 \u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
         "en": "You are attempting to delete a slide which will not be retrievable , Are you sure of that ?",
         "es": "Est\u00e1 intentando eliminar una diapositiva que no ser\u00e1 recuperable. \u00bfEst\u00e1 seguro de eso?",
-        "fr": "Vous essayez de supprimer une diapositive qui ne sera pas r\u00e9cup\u00e9rable. \u00cates-vous s\u00fbr de cela?",
+        "fr": "Vous essayez de supprimer une diapositive qui ne sera pas r\u00e9cup\u00e9rable, \u00cates-vous s\u00fbr?",
         "it": "Stai tentando di eliminare una diapositiva che non sar\u00e0 recuperabile, ne sei sicuro?"
     },
     "You are attempting to delete a task whit its all tickets which will not be retrievable , Are you sure of that ?": {
         "ar": "\u0623\u0646\u062a \u062a\u062d\u0627\u0648\u0644 \u062d\u0630\u0641 \u0645\u0647\u0645\u0629 \u0645\u0639 \u062c\u0645\u064a\u0639 \u062a\u0630\u0627\u0643\u0631\u0647\u0627 \u0627\u0644\u062a\u064a \u0644\u0646 \u062a\u0643\u0648\u0646 \u0642\u0627\u0628\u0644\u0629 \u0644\u0644\u0625\u0633\u062a\u0631\u062c\u0627\u0639 \u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
         "en": "You are attempting to delete a task whit its all tickets which will not be retrievable , Are you sure of that ?",
         "es": "Est\u00e1 intentando eliminar una tarea con todos sus tickets que no ser\u00e1n recuperables. \u00bfEst\u00e1 seguro de eso?",
-        "fr": "Vous essayez de supprimer une t\u00e2che avec tous ses tickets qui ne seront pas r\u00e9cup\u00e9rables. \u00cates-vous s\u00fbr de cela?",
+        "fr": "Vous essayez de supprimer une t\u00e2che avec tous ses tickets qui ne seront pas r\u00e9cup\u00e9rables, \u00cates-vous s\u00fbr?",
         "it": "Stai tentando di eliminare un'attivit\u00e0 con tutti i ticket che non saranno recuperabili, ne sei sicuro?"
     },
     "You are attempting to delete a user which will not be retrievable , Are you sure of that ?": {
         "ar": "\u0623\u0646\u062a \u062a\u062d\u0627\u0648\u0644 \u062d\u0630\u0641 \u0645\u0633\u062a\u062e\u062f\u0645 \u0644\u0627 \u064a\u0645\u0643\u0646 \u0627\u0633\u062a\u0639\u0627\u062f\u062a\u0647 \u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
         "en": "You are attempting to delete a user which will not be retrievable , Are you sure of that ?",
         "es": "Est\u00e1 intentando eliminar un usuario que no ser\u00e1 recuperable. \u00bfEst\u00e1 seguro de eso?",
-        "fr": "Vous essayez de supprimer un utilisateur qui ne sera pas r\u00e9cup\u00e9rable, \u00cates-vous s\u00fbr de cela?",
+        "fr": "Vous essayez de supprimer un utilisateur qui ne sera pas r\u00e9cup\u00e9rable, \u00cates-vous s\u00fbr?",
         "it": "Stai tentando di eliminare un utente che non sar\u00e0 recuperabile, ne sei sicuro?"
     },
     "You are attempting to delete all authentication tokens. that will not be retrievable, Are you sure of that ?": {
         "ar": "\u0625\u0646\u0643 \u062a\u062d\u0627\u0648\u0644 \u062d\u0630\u0641 \u0643\u0644 \u0627\u0644\u0631\u0645\u0648\u0632 \u0627\u0644\u0645\u0635\u0627\u062f\u0642\u0629. \u0644\u0646 \u064a\u0643\u0648\u0646 \u0627\u0633\u062a\u0631\u062c\u0627\u0639\u0647\u0627\u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
         "en": "You are attempting to delete all authentication tokens. that will not be retrievable, Are you sure of that ?",
         "es": "Usted est\u00e1 intentando eliminar todos los tokens de autenticaci\u00f3n. que no ser\u00e1 recuperable, \u00bfEst\u00e1s seguro de eso?",
-        "fr": "Vous essayez de supprimer tous les jetons d'authentification. ce ne sera pas r\u00e9cup\u00e9rable, Etes-vous s\u00fbr de cela?",
+        "fr": "Vous essayez de supprimer tous les jetons d'authentification. Cette action est irr\u00e9versible, \u00cates-vous s\u00fbr?",
         "it": "Si sta tentando di eliminare tutti i token di autenticazione. che non sar\u00e0 recuperabile, Sei sicuro di questo?"
     },
     "You are attempting to delete all multimedia files which will not be retrievable , Are you sure of that ?": {
         "ar": "\u0623\u0646\u062a \u062a\u062d\u0627\u0648\u0644 \u062d\u0630\u0641 \u062c\u0645\u064a\u0639 \u0645\u0644\u0641\u0627\u062a \u0627\u0644\u0648\u0633\u0627\u0626\u0637 \u0627\u0644\u0645\u062a\u0639\u062f\u062f\u0629 \u0627\u0644\u062a\u064a \u0644\u0646 \u062a\u0643\u0648\u0646 \u0642\u0627\u0628\u0644\u0629 \u0644\u0644\u0625\u0633\u062a\u0631\u062c\u0627\u0639 \u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
         "en": "You are attempting to delete all multimedia files which will not be retrievable , Are you sure of that ?",
         "es": "Est\u00e1 intentando eliminar todos los archivos multimedia que no ser\u00e1n recuperables. \u00bfEst\u00e1 seguro de eso?",
-        "fr": "Vous essayez de supprimer tous les fichiers multim\u00e9dias qui ne seront pas r\u00e9cup\u00e9rables. \u00cates-vous s\u00fbr de cela?",
+        "fr": "Vous essayez de supprimer tous les fichiers multim\u00e9dias.Cette actione est irr\u00e9versible. \u00cates-vous s\u00fbr?",
         "it": "Stai tentando di eliminare tutti i file multimediali che non saranno recuperabili, ne sei sicuro?"
     },
     "You are attempting to delete all slides which will not be retrievable, Are you sure of that ?": {
         "ar": "\u0623\u0646\u062a \u062a\u062d\u0627\u0648\u0644 \u062d\u0630\u0641 \u0643\u0644 \u0627\u0644\u0634\u0631\u0627\u0626\u062d \u0627\u0644\u062a\u064a \u0644\u0646 \u062a\u0643\u0648\u0646 \u0642\u0627\u0628\u0644\u0629 \u0644\u0644\u0625\u0633\u062a\u0631\u062c\u0627\u0639 \u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
         "en": "You are attempting to delete all slides which will not be retrievable, Are you sure of that ?",
         "es": "Est\u00e1 intentando eliminar todas las diapositivas que no ser\u00e1n recuperables. \u00bfEst\u00e1 seguro de eso?",
-        "fr": "Vous essayez de supprimer toutes les diapositives qui ne seront pas r\u00e9cup\u00e9rables. \u00cates-vous s\u00fbr de cela?",
+        "fr": "Vous essayez de supprimer toutes les diapositives qui ne seront pas r\u00e9cup\u00e9rables, \u00cates-vous s\u00fbr?",
         "it": "Stai tentando di eliminare tutte le diapositive che non saranno recuperabili, ne sei sicuro?"
     },
     "You are attempting to delete all users except Admin. that will not be retrievable, Are you sure of that ?": {
         "ar": "\u0623\u0646\u062a \u062a\u062d\u0627\u0648\u0644 \u062d\u0630\u0641 \u062c\u0645\u064a\u0639 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u064a\u0646 \u0628\u0627\u0633\u062a\u062b\u0646\u0627\u0621 \u0627\u0644\u0645\u0633\u0624\u0648\u0644. \u0644\u0627 \u064a\u0645\u0643\u0646 \u0627\u0633\u062a\u0631\u062c\u0627\u0639\u0647\u0627 \u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
         "en": "You are attempting to delete all users except Admin. that will not be retrievable, Are you sure of that ?",
         "es": "Est\u00e1 intentando eliminar todos los usuarios excepto Admin. eso no ser\u00e1 recuperable, \u00bfest\u00e1s seguro de eso?",
-        "fr": "Vous essayez de supprimer tous les utilisateurs sauf Admin. ce ne sera pas r\u00e9cup\u00e9rable, \u00cates-vous s\u00fbr de cela?",
+        "fr": "Vous allez supprimer tous les utilisateurs sauf Admin. Cette action est irr\u00e9versible, \u00cates-vous s\u00fbr?",
         "it": "Stai tentando di eliminare tutti gli utenti tranne l'amministratore. che non sar\u00e0 recuperabile, ne sei sicuro?"
     },
     "You are attempting to delete an authentication token which will not be retrievable , Are you sure of that ?": {
         "ar": "\u0625\u0646\u0643 \u062a\u062d\u0627\u0648\u0644 \u062d\u0630\u0641 \u0645\u0635\u0627\u062f\u0642\u0629 \u0633\u0648\u0641 \u0627\u0644\u0645\u0646\u0648\u0627\u0644 \u0627\u0644\u0630\u064a \u0644\u0627 \u064a\u0643\u0648\u0646 \u0642\u0627\u0628\u0644\u0627 \u0644\u0644\u0627\u0633\u062a\u0631\u062c\u0627\u0639\u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
         "en": "You are attempting to delete an authentication token which will not be retrievable , Are you sure of that ?",
         "es": "Est\u00e1 intentando eliminar un token de autenticaci\u00f3n que no ser\u00e1 recuperable, \u00bfEst\u00e1s seguro de eso?",
-        "fr": "Vous essayez de supprimer un jeton d'authentification qui ne sera pas r\u00e9cup\u00e9rable, Etes-vous s\u00fbr de cela?",
+        "fr": "Vous essayez de supprimer un jeton d'authentification qui ne sera pas r\u00e9cup\u00e9rable, \u00cates-vous s\u00fbr?",
         "it": "Si sta tentando di eliminare un token di autenticazione che non sar\u00e0 recuperabile, Sei sicuro di questo?"
     },
     "You are attempting to delete an office with its all tickets which will not be retrievable , Are you sure of that ?": {
         "ar": "\u0623\u0646\u062a \u062a\u062d\u0627\u0648\u0644 \u062d\u0630\u0641 \u0645\u0643\u062a\u0628 \u0628\u0647 \u062c\u0645\u064a\u0639 \u062a\u0630\u0627\u0643\u0631\u0647 \u0627\u0644\u062a\u064a \u0644\u0646 \u062a\u0643\u0648\u0646 \u0642\u0627\u0628\u0644\u0629 \u0644\u0644\u0625\u0633\u062a\u0631\u062c\u0627\u0639 \u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
         "en": "You are attempting to delete an office with its all tickets which will not be retrievable , Are you sure of that ?",
         "es": "Est\u00e1 intentando eliminar una oficina con todas sus entradas, que no ser\u00e1n recuperables. \u00bfEst\u00e1 seguro de eso?",
-        "fr": "Vous essayez de supprimer un bureau avec tous ses billets qui ne seront pas r\u00e9cup\u00e9rables. \u00cates-vous s\u00fbr de cela?",
+        "fr": "Vous essayez de supprimer un bureau avec tous ses tickets, cette action est irr\u00e9versible. \u00cates-vous s\u00fbr?",
         "it": "Stai tentando di eliminare un ufficio con tutti i ticket che non saranno recuperabili, ne sei sicuro?"
     },
     "You are attempting to delete every office and task under it with all tickets, which won't be retrievable , Are you sure of that ?": {
         "ar": "\u0623\u0646\u062a \u062a\u062d\u0627\u0648\u0644 \u062d\u0630\u0641 \u0643\u0644 \u0645\u0643\u062a\u0628 \u0648\u0645\u0647\u0645\u0629 \u062a\u062d\u062a\u0647 \u0645\u0639 \u062c\u0645\u064a\u0639 \u0627\u0644\u062a\u0630\u0627\u0643\u0631 \u060c \u0648\u0627\u0644\u062a\u064a \u0644\u0646 \u062a\u0643\u0648\u0646 \u0642\u0627\u0628\u0644\u0629 \u0644\u0644\u0625\u0633\u062a\u0631\u062c\u0627\u0639 \u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
         "en": "You are attempting to delete every office and task under it with all tickets, which won't be retrievable , Are you sure of that ?",
         "es": "Est\u00e1 intentando eliminar todas las oficinas y tareas debajo de \u00e9l con todos los tickets, que no ser\u00e1n recuperables. \u00bfEst\u00e1 seguro de eso?",
-        "fr": "Vous essayez de supprimer tous les bureaux et les t\u00e2ches qui s'y trouvent avec tous les billets, qui ne seront pas r\u00e9cup\u00e9rables. \u00cates-vous s\u00fbr de cela?",
+        "fr": "Vous essayez de supprimer tous les bureaux, les t\u00e2ches qui s'y trouvent ainsi que tous les tickets associ\u00e9. Cette action est irr\u00e9versible, \u00cates-vous s\u00fbr?",
         "it": "Stai tentando di eliminare tutti gli uffici e le attivit\u00e0 sottostanti con tutti i ticket, che non saranno recuperabili, ne sei sicuro?"
     },
     "You are attempting to reset a task to zero, with its all tickets been deleted and will not be retrievable , Are you sure of that ?": {
         "ar": "\u0623\u0646\u062a \u062a\u062d\u0627\u0648\u0644 \u0625\u0639\u0627\u062f\u0629 \u062a\u0639\u064a\u064a\u0646 \u0645\u0647\u0645\u0629 \u0625\u0644\u0649 \u0635\u0641\u0631 \u060c \u0645\u0639 \u062d\u0630\u0641 \u062c\u0645\u064a\u0639 \u062a\u0630\u0627\u0643\u0631\u0647\u0627 \u0648\u0644\u0646 \u064a\u0645\u0643\u0646 \u0627\u0633\u062a\u0631\u062c\u0627\u0639\u0647\u0627 \u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
         "en": "You are attempting to reset a task to zero, with its all tickets been deleted and will not be retrievable , Are you sure of that ?",
         "es": "Est\u00e1 intentando restablecer una tarea a cero, con todos sus tickets eliminados y no ser\u00e1 recuperable, \u00bfest\u00e1 seguro de eso?",
-        "fr": "Vous essayez de r\u00e9initialiser une t\u00e2che \u00e0 z\u00e9ro, avec tous ses billets ont \u00e9t\u00e9 supprim\u00e9s et ne seront pas r\u00e9cup\u00e9rables, \u00cates-vous s\u00fbr de cela?",
+        "fr": "Vous essayez de r\u00e9initialiser une t\u00e2che \u00e0 z\u00e9ro, tous ses tickets vont \u00e9t\u00e9 supprim\u00e9s et ne seront pas r\u00e9cup\u00e9rables, \u00cates-vous s\u00fbr?",
         "it": "Stai tentando di ripristinare un'attivit\u00e0 a zero, con tutti i ticket cancellati e non recuperabili, ne sei sicuro?"
     },
     "You are attempting to reset an office to zero, with its all tickets been deleted and will not be retrievable , Are you sure of that ?": {
         "ar": "\u0623\u0646\u062a \u062a\u062d\u0627\u0648\u0644 \u0625\u0639\u0627\u062f\u0629 \u062a\u0639\u064a\u064a\u0646 \u0645\u0643\u062a\u0628 \u0625\u0644\u0649 \u0635\u0641\u0631 \u060c \u0645\u0639 \u062d\u0630\u0641 \u062c\u0645\u064a\u0639 \u062a\u0630\u0627\u0643\u0631\u0647 \u0648\u0644\u0646 \u064a\u0643\u0648\u0646 \u0642\u0627\u0628\u0644\u0627\u064b \u0644\u0644\u0627\u0633\u062a\u0631\u062f\u0627\u062f \u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
         "en": "You are attempting to reset an office to zero, with its all tickets been deleted and will not be retrievable , Are you sure of that ?",
         "es": "Est\u00e1 intentando restablecer una oficina a cero, con todos sus tickets eliminados y no ser\u00e1 recuperable. \u00bfEst\u00e1 seguro de eso?",
-        "fr": "Vous essayez de r\u00e9initialiser un bureau \u00e0 z\u00e9ro, avec tous ses billets ont \u00e9t\u00e9 supprim\u00e9s et ne seront pas r\u00e9cup\u00e9rables, \u00cates-vous s\u00fbr de cela?",
+        "fr": "Vous essayez de r\u00e9initialiser un bureau \u00e0 z\u00e9ro, tous ses tickets vont \u00e9t\u00e9 supprim\u00e9s et ne seront pas r\u00e9cup\u00e9rables, \u00cates-vous s\u00fbr?",
         "it": "Stai tentando di ripristinare un ufficio a zero, con tutti i ticket cancellati e non recuperabili, ne sei sicuro?"
     },
     "You are attempting to reset every office and task to zero, with all tickets erased, that won't be retrievable , Are you sure of that ?": {
         "ar": "\u0623\u0646\u062a \u062a\u062d\u0627\u0648\u0644 \u0625\u0639\u0627\u062f\u0629 \u062a\u0639\u064a\u064a\u0646 \u0643\u0644 \u0645\u0643\u062a\u0628 \u0648\u0645\u0647\u0645\u0629 \u0625\u0644\u0649 \u0627\u0644\u0635\u0641\u0631 \u060c \u0645\u0639 \u0645\u062d\u0648 \u062c\u0645\u064a\u0639 \u0627\u0644\u062a\u0630\u0627\u0643\u0631 \u060c \u0627\u0644\u062a\u064a \u0644\u0646 \u062a\u0643\u0648\u0646 \u0642\u0627\u0628\u0644\u0629 \u0644\u0644\u0625\u0633\u062a\u0631\u062c\u0627\u0639 \u060c \u0647\u0644 \u0623\u0646\u062a \u0645\u062a\u0623\u0643\u062f \u0645\u0646 \u0630\u0644\u0643\u061f",
         "en": "You are attempting to reset every office and task to zero, with all tickets erased, that won't be retrievable , Are you sure of that ?",
         "es": "Est\u00e1 intentando restablecer todas las oficinas y tareas a cero, con todos los tickets borrados, eso no ser\u00e1 recuperable, \u00bfest\u00e1 seguro de eso?",
-        "fr": "Vous essayez de r\u00e9initialiser tous les bureaux et t\u00e2ches \u00e0 z\u00e9ro, avec tous les billets effac\u00e9s, qui ne seront pas r\u00e9cup\u00e9rables, \u00cates-vous s\u00fbr de cela?",
+        "fr": "Vous essayez de r\u00e9initialiser tous les bureaux et toutes les t\u00e2ches \u00e0 z\u00e9ro. Tous les tickets vont \u00e9t\u00e9 supprim\u00e9s et ne seront pas r\u00e9cup\u00e9rables, \u00cates-vous s\u00fbr?",
         "it": "Stai tentando di ripristinare tutti gli uffici e le attivit\u00e0 a zero, con tutti i ticket cancellati, che non saranno recuperabili, ne sei sicuro?"
     },
     "You are not using Firefox browser, which this project is designed and most suited for.": {
@@ -3969,7 +3985,7 @@
         "ar": "\u0627\u0644\u0625\u0635\u062f\u0627\u0631 \u0627\u0644\u062d\u0627\u0644\u064a \u0645\u0646 \u0627\u0644\u0628\u0631\u0646\u0627\u0645\u062c \u0647\u0648 \u0639\u0641\u0627 \u0639\u0644\u064a\u0647\u0627 \u0627\u0644\u0632\u0645\u0646\u060c \u064a\u0631\u062c\u0649 \u0632\u064a\u0627\u0631\u0629 \u0627\u0644\u0645\u0648\u0642\u0639 \u0644\u062a\u062d\u0645\u064a\u0644 \u0646\u0633\u062e\u0629 \u062c\u062f\u064a\u062f\u0629.",
         "en": "Your current version of the software is outdated, please visit the website to downloaded a new version.",
         "es": "Su versi\u00f3n actual del software est\u00e1 actualizado, por favor visite el sitio web para descargar una nueva versi\u00f3n.",
-        "fr": "Votre version actuelle du logiciel est obsol\u00e8te, s'il vous pla\u00eet visitez le site Web pour t\u00e9l\u00e9charger une nouvelle version.",
+        "fr": "Votre version actuelle du logiciel est obsol\u00e8te, visitez le site Web pour t\u00e9l\u00e9charger une nouvelle version.",
         "it": "La versione corrente del software non \u00e8 aggiornato, si prega di visitare il sito web per scaricare una nuova versione."
     },
     "blind": {
@@ -3997,49 +4013,49 @@
         "ar": "\u0627\u062e\u062a\u0631 \u062e\u0637\u064b\u0627 \u0644\u0644\u0639\u0646\u0648\u0627\u0646:",
         "en": "choose a font for title :",
         "es": "elige una fuente para el t\u00edtulo:",
-        "fr": "choisissez une police pour le titre:",
+        "fr": "Choisissez une police pour le titre:",
         "it": "scegli un font per il titolo:"
     },
     "choose main heading office color : ": {
         "ar": "\u0627\u062e\u062a\u0631 \u0644\u0648\u0646 \u0645\u0643\u062a\u0628 \u0627\u0644\u0639\u0646\u0648\u0627\u0646 \u0627\u0644\u0631\u0626\u064a\u0633\u064a:",
         "en": "choose main heading office color :",
         "es": "elegir el color principal de la oficina del t\u00edtulo:",
-        "fr": "choisissez la couleur principale du bureau:",
+        "fr": "Choisissez la couleur principale du bureau:",
         "it": "scegli il colore dell'ufficio principale:"
     },
     "choose main heading office font : ": {
         "ar": "\u0627\u062e\u062a\u0631 \u062e\u0637 \u0627\u0644\u0639\u0646\u0648\u0627\u0646 \u0627\u0644\u0631\u0626\u064a\u0633\u064a \u0627\u0644\u0631\u0626\u064a\u0633\u064a:",
         "en": "choose main heading office font :",
         "es": "elegir la fuente principal de la oficina del t\u00edtulo:",
-        "fr": "choisissez la police principale du bureau:",
+        "fr": "Choisissez la police principale du bureau:",
         "it": "scegli il carattere principale della rubrica:"
     },
     "choose main heading office font size :": {
         "ar": "\u0627\u062e\u062a\u0631 \u062d\u062c\u0645 \u0627\u0644\u062e\u0637 \u0627\u0644\u0631\u0626\u064a\u0633\u064a \u0644\u062d\u062c\u0645 \u0627\u0644\u0645\u0643\u062a\u0628:",
         "en": "choose main heading office font size :",
         "es": "elegir el tama\u00f1o principal de la fuente de la oficina del encabezado:",
-        "fr": "choisissez la taille de police du bureau principal:",
+        "fr": "Choisissez la taille de police du bureau principal:",
         "it": "scegli la dimensione del carattere dell'ufficio principale:"
     },
     "choose main heading ticket color : ": {
         "ar": "\u0627\u062e\u062a\u0631 \u0644\u0648\u0646 \u062a\u0630\u0643\u0631\u0629 \u0627\u0644\u0639\u0646\u0648\u0627\u0646 \u0627\u0644\u0631\u0626\u064a\u0633\u064a:",
         "en": "choose main heading ticket color :",
         "es": "elija el color principal del boleto del t\u00edtulo:",
-        "fr": "choisissez la couleur du billet d'en-t\u00eate principal:",
+        "fr": "Choisissez la couleur de l'en-t\u00eate principal du ticket :",
         "it": "scegli il colore del biglietto dell'intestazione principale:"
     },
     "choose main heading ticket font : ": {
         "ar": "\u0627\u062e\u062a\u0631 \u0627\u0644\u062e\u0637 \u0627\u0644\u0631\u0626\u064a\u0633\u064a \u0644\u062a\u0630\u0643\u0631\u0629 \u0627\u0644\u0639\u0646\u0648\u0627\u0646:",
         "en": "choose main heading ticket font :",
         "es": "elegir la fuente del ticket del t\u00edtulo principal:",
-        "fr": "choisissez la police de titre de titre principal:",
+        "fr": "choisissez la police principal du titre du ticket:",
         "it": "scegli il carattere del biglietto principale:"
     },
     "choose main heading ticket font size :": {
         "ar": "\u0627\u062e\u062a\u064a\u0627\u0631 \u0627\u0644\u0631\u0626\u064a\u0633\u064a\u0629 \u062d\u062c\u0645 \u062a\u0630\u0643\u0631\u0629 \u0639\u0646\u0648\u0627\u0646 \u0627\u0644\u062e\u0637:",
         "en": "choose main heading ticket font size :",
         "es": "elegir el tama\u00f1o de la fuente principal de entradas t\u00edtulo:",
-        "fr": "choisir la taille principale de police billet intitul\u00e9:",
+        "fr": "choisissez la taille de police du titre principal:",
         "it": "sceglie il formato principale del carattere intestazione biglietto:"
     },
     "choose main heading ticket font size : ": {
@@ -4052,35 +4068,35 @@
     "choose message font : ": {
         "ar": "\u0627\u062e\u062a\u0631 \u062e\u0637 \u0627\u0644\u0631\u0633\u0627\u0644\u0629:",
         "es": "elegir la fuente del mensaje:",
-        "fr": "choisissez la police de message:",
+        "fr": "choisissez la police du message:",
         "it": "scegli il carattere del messaggio:"
     },
     "choose message font size :": {
         "ar": "\u0627\u062e\u062a\u064a\u0627\u0631 \u062d\u062c\u0645 \u0627\u0644\u062e\u0637 \u0627\u0644\u0631\u0633\u0627\u0644\u0629:",
         "en": "choose message font size :",
         "es": "elegir el tama\u00f1o de fuente del mensaje:",
-        "fr": "choisissez la taille de police de message:",
+        "fr": "choisissez la taille de police du message:",
         "it": "scegli la dimensione del carattere del messaggio:"
     },
     "choose motion effect duration of appearing :": {
         "ar": "\u0627\u062e\u062a\u0631 \u0645\u062f\u0629 \u062a\u0623\u062b\u064a\u0631 \u0627\u0644\u062d\u0631\u0643\u0629 \u0644\u0644\u0638\u0647\u0648\u0631:",
         "en": "choose motion effect duration of appearing :",
         "es": "elija la duraci\u00f3n del efecto de movimiento que aparece:",
-        "fr": "choisissez la dur\u00e9e de l'effet de mouvement d'appara\u00eetre:",
+        "fr": "choisissez la dur\u00e9e d'apparition de l'effet de mouvement:",
         "it": "scegli la durata dell'effetto movimento visualizzata:"
     },
     "choose motion effect duration of appearing : ": {
         "ar": "\u0627\u062e\u062a\u0631 \u0645\u062f\u0629 \u062a\u0623\u062b\u064a\u0631 \u0627\u0644\u062d\u0631\u0643\u0629 \u0644\u0644\u0638\u0647\u0648\u0631:",
         "en": "choose motion effect duration of appearing :",
         "es": "elija la duraci\u00f3n del efecto de movimiento que aparece:",
-        "fr": "choisissez la dur\u00e9e de l'effet de mouvement d'appara\u00eetre:",
+        "fr": "choisissez la dur\u00e9e d'apparition de l'effet de mouvement:",
         "it": "scegli la durata dell'effetto movimento visualizzata:"
     },
     "choose motion effect number of repeats : ": {
         "ar": "\u0627\u062e\u062a\u064a\u0627\u0631 \u062a\u0623\u062b\u064a\u0631 \u0627\u0644\u062d\u0631\u0643\u0629 \u0639\u062f\u062f \u0627\u0644\u062a\u0643\u0631\u0627\u0631\u0627\u062a:",
         "en": "choose motion effect number of repeats :",
         "es": "elegir el efecto de movimiento n\u00famero de repeticiones:",
-        "fr": "choisissez l'effet de mouvement nombre de r\u00e9p\u00e9titions:",
+        "fr": "choisissez le nombre de r\u00e9p\u00e9titions de l'effet de mouvement:",
         "it": "scegli il numero dell'effetto di movimento delle ripetizioni:"
     },
     "choose page refresh rate : ": {
@@ -4115,7 +4131,7 @@
         "ar": "\u0627\u062e\u062a\u0631 \u062d\u062c\u0645 \u062e\u0637 \u0627\u0644\u0645\u0647\u0645\u0629:",
         "en": "choose task font size :",
         "es": "elige el tama\u00f1o de fuente de la tarea:",
-        "fr": "choisissez la taille de police de t\u00e2che:",
+        "fr": "choisissez la taille de police des t\u00e2ches:",
         "it": "scegli la dimensione del carattere dell'attivit\u00e0:"
     },
     "choose tasks color :": {
@@ -4129,7 +4145,7 @@
         "ar": "\u0627\u062e\u062a\u0631 \u062e\u0637 \u0627\u0644\u0645\u0647\u0627\u0645:",
         "en": "choose tasks font :",
         "es": "elige la fuente de tareas:",
-        "fr": "choisissez la police de t\u00e2ches:",
+        "fr": "choisissez la police des t\u00e2ches:",
         "it": "scegli il carattere delle attivit\u00e0:"
     },
     "choose visual motion effect for notification : ": {
@@ -4150,7 +4166,7 @@
         "ar": "\u064a\u0648\u0645",
         "en": "day",
         "es": "d\u00eda",
-        "fr": "journ\u00e9e",
+        "fr": "jour",
         "it": "giorno"
     },
     "drop": {
@@ -4192,14 +4208,14 @@
         "ar": "\u0644\u062f\u064a\u0647 \u0623\u0630\u0648\u0646\u0627\u062a \u0645\u062d\u062f\u0648\u062f\u0629 \u0641\u0642\u0637 \u0644\u0644\u0648\u0635\u0648\u0644 \u0625\u0644\u0649 \u0648\u0645\u0631\u0627\u0642\u0628\u0629 \u0627\u0644\u0645\u0643\u062a\u0628 \u0627\u0644\u0645\u0639\u064a\u0646 \u0644",
         "en": "has limited permissions only to access and monitor the office assigned to",
         "es": "tiene permisos limitados solo para acceder y monitorear la oficina asignada a",
-        "fr": "a des autorisations limit\u00e9es seulement pour acc\u00e9der et surveiller le bureau affect\u00e9 \u00e0",
+        "fr": "a des autorisations limit\u00e9es. Peut seulement acc\u00e9der et surveiller le bureau auquel il est affect\u00e9",
         "it": "ha autorizzazioni limitate solo per accedere e monitorare l'ufficio assegnato a"
     },
     "has permissions to monitor and access everything except Administrate": {
         "ar": "\u0644\u062f\u064a\u0647 \u0623\u0630\u0648\u0646\u0627\u062a \u0644\u0645\u0631\u0627\u0642\u0628\u0629 \u0648\u0627\u0644\u0648\u0635\u0648\u0644 \u0625\u0644\u0649 \u0643\u0644 \u0634\u064a\u0621 \u0628\u0627\u0633\u062a\u062b\u0646\u0627\u0621 \u0627\u0644\u0625\u062f\u0627\u0631\u0629",
         "en": "has permissions to monitor and access everything except Administrate",
         "es": "tiene permisos para monitorear y acceder a todo, excepto Administrar",
-        "fr": "a des autorisations pour surveiller et acc\u00e9der \u00e0 tout sauf Administrer",
+        "fr": "a les autorisations pour surveiller et acc\u00e9der \u00e0 tout sauf Administrer",
         "it": "ha le autorizzazioni per monitorare e accedere a tutto tranne che ad Amministrare"
     },
     "has the permissions to access and monitor everything": {
@@ -4241,7 +4257,7 @@
         "ar": "\u0644\u0646\u0628\u062f\u0623",
         "en": "let's start",
         "es": "Empecemos",
-        "fr": "commen\u00e7ons",
+        "fr": "Connexion",
         "it": "Iniziamo"
     },
     "login": {
@@ -4345,7 +4361,7 @@
         "ar": "\u0627\u0644\u0627\u0646\u0632\u0644\u0627\u0642",
         "en": "slide",
         "es": "diapositiva",
-        "fr": "faire glisser",
+        "fr": "Diapo",
         "it": "diapositiva"
     },
     "small": {
@@ -4373,13 +4389,14 @@
         "ar": "\u0627\u0644\u0633\u0645\u0629 \u0627\u0644\u0648\u062d\u064a\u062f\u0629 \u0627\u0644\u0642\u0627\u0628\u0644\u0629 \u0644\u0644\u062a\u062d\u062f\u064a\u062b \u0625\u0644\u0649 \u062d\u0633\u0627\u0628 \u0627\u0644\u0645\u0634\u0631\u0641 \u0627\u0644\u0631\u0626\u064a\u0633\u064a \u0647\u064a \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631",
         "en": "the only update-able attribute to the main admin account is password",
         "es": "el \u00fanico atributo de actualizaci\u00f3n para la cuenta de administrador principal es contrase\u00f1a",
-        "fr": "le seul attribut pouvant \u00eatre mis \u00e0 jour sur le compte administrateur principal est le mot de passe",
+        "fr": "la seule option pouvant \u00eatre mis \u00e0 jour sur le compte administrateur principal est le mot de passe",
         "it": "l'unico attributo aggiornabile all'account amministratore principale \u00e8 la password"
     },
     "the role is disabled, it will be enabled once you add a new office": {
         "ar": "\u0647\u0648 \u062f\u0648\u0631 \u0627\u0644\u0645\u0639\u0648\u0642\u064a\u0646\u060c \u0641\u0625\u0646\u0647 \u0633\u064a\u062a\u0645 \u062a\u0645\u0643\u064a\u0646 \u0628\u0645\u062c\u0631\u062f \u0625\u0636\u0627\u0641\u0629 \u0645\u0643\u062a\u0628\u0627 \u062c\u062f\u064a\u062f\u0627",
         "en": "the role is disabled, it will be enabled once you add a new office",
         "es": "el papel est\u00e1 desactivado, se activar\u00e1 una vez que se agrega una nueva oficina",
+        "fr": "Le r\u00f4le est d\u00e9sactiv\u00e9, il sera activ\u00e9 quand le premier bureau sera ajout\u00e9",
         "it": "il ruolo \u00e8 disattivato, esso verr\u00e0 attivato una volta che si aggiunge un nuovo ufficio"
     },
     "the role is disabled, it will be enabled once you create an office": {
@@ -4389,7 +4406,7 @@
         "ar": "\u0644\u0645 \u064a\u062a\u0645 \u062a\u0645\u0643\u064a\u0646 \u062f\u0648\u0631\u060c \u0641\u0625\u0646\u0647 \u0633\u064a\u062a\u0645 \u062a\u0645\u0643\u064a\u0646 \u0628\u0645\u062c\u0631\u062f \u0625\u0636\u0627\u0641\u0629 \u0645\u0643\u062a\u0628\u0627 \u062c\u062f\u064a\u062f\u0627",
         "en": "the role is not enabled, it will be enabled once you add a new office",
         "es": "el papel no est\u00e1 activado, s\u00f3lo se activar\u00e1 una vez que se agrega una nueva oficina",
-        "fr": "le r\u00f4le n'est pas activ\u00e9, il sera activ\u00e9 une fois que vous ajoutez un nouveau bureau",
+        "fr": "Le r\u00f4le est d\u00e9sactiv\u00e9, il sera activ\u00e9 quand le premier bureau sera ajout\u00e9",
         "it": "il ruolo non \u00e8 abilitata, verr\u00e0 attivato una volta che si aggiunge un nuovo ufficio"
     },
     "thursday": {
@@ -4424,7 +4441,7 @@
         "ar": "\u0645\u0648\u0642\u0639 \u0627\u0644\u0643\u062a\u0631\u0648\u0646\u064a",
         "en": "website",
         "es": "sitio web",
-        "fr": "site Internet",
+        "fr": "Site internet",
         "it": "sito web"
     },
     "wednesday": {
