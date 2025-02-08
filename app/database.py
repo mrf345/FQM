@@ -167,7 +167,12 @@ class Task(db.Model, Mixin):
         return cls.query.filter(cls.offices.contains(Office.get(office_id)))
 
     def least_tickets_office(self):
-        self.offices.sort(key=lambda o: Serial.query.filter_by(office_id=o.id).count())
+        self.offices.sort(
+            key=lambda o: Serial.query.filter_by(
+                office_id=o.id,
+                status=TICKET_WAITING,
+            ).count()
+        )
         return self.offices[0]
 
     @property
