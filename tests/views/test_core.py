@@ -246,7 +246,7 @@ def test_new_printed_ticket_arabic(c, monkeypatch):
     last_ticket = None
     mock_printer = MagicMock()
     mock_pil = MagicMock()
-    mock_pil.truetype().getsize.return_value = (0, 0)
+    mock_pil.truetype().getbbox.return_value = (0, 0, 0, 0)
     mock_pos = MagicMock()
     mock_pos().output = b''
     monkeypatch.setattr(escpos.printer, 'Usb', mock_printer)
@@ -299,7 +299,7 @@ def test_new_printed_ticket_windows_arabic(c, monkeypatch):
     mock_os.name = 'nt'
     mock_system = MagicMock()
     mock_pil = MagicMock()
-    mock_pil.truetype().getsize.return_value = (0, 0)
+    mock_pil.truetype().getbbox.return_value = (0, 0, 0, 0)
     mock_pos = MagicMock()
     mock_pos().output = b''
     monkeypatch.setattr(app.printer, 'os', mock_os)
@@ -350,7 +350,7 @@ def test_new_printed_ticket_lp_arabic(c, monkeypatch):
     mock_os.name = 'linux'
     mock_system = MagicMock()
     mock_pil = MagicMock()
-    mock_pil.truetype().getsize.return_value = (0, 0)
+    mock_pil.truetype().getbbox.return_value = (0, 0, 0, 0)
     mock_pos = MagicMock()
     mock_pos().output = b''
     monkeypatch.setattr(app.views.core, 'os', mock_os)

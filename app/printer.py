@@ -253,10 +253,10 @@ def print_ticket_cli(printer, ticket, office, tickets_ahead, task, current_ticke
 def printit_ar(pname, ti, ofc, tnu, tas, cticket, **kwargs):
     def fsizeit(text, t, f):
         ltxt = "A" * len(t)
-        return f.getsize(t)
+        return f.getbbox(t)
 
     def center(text, t, f):
-        fs1, fs2 = fsizeit(text, t, f)
+        _, _, fs1, fs2 = fsizeit(text, t, f)
         return ((text.size[0] - fs1) / 2, (text.size[1] - fs2) / 2)
     if name == 'nt':
         fpath = absolute_path('static\\gfonts\\arial.ttf')
@@ -378,10 +378,10 @@ def print_ticket_cli_ar(pname, ti, ofc, tnu, tas, cticket, host='localhost', **k
     from escpos.printer import Dummy
 
     def fsizeit(text, t, f):
-        return f.getsize(t)
+        return f.getbbox(t)
 
     def center(text, t, f):
-        fs1, fs2 = fsizeit(text, t, f)
+        _, _, fs1, fs2 = fsizeit(text, t, f)
         return ((text.size[0] - fs1) / 2, (text.size[1] - fs2) / 2)
 
     fpath = absolute_path('static/gfonts/arial.ttf')
@@ -644,7 +644,7 @@ class PrintedTicket:
     def _generate_image(self):
         # TODO: cleanup this mess
         def center(text, t, f):
-            fs1, fs2 = f.getsize(t)
+            _, _, fs1, fs2 = f.getbbox(t)
             return ((text.size[0] - fs1) / 2, (text.size[1] - fs2) / 2)
 
         fpath = absolute_path('static/gfonts/arial.ttf')
