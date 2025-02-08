@@ -1,4 +1,3 @@
-import functools
 import os
 import pickle
 from sys import platform
@@ -14,8 +13,8 @@ from app.forms.core import LoginForm, TouchSubmitForm
 from app.helpers import (reject_no_offices, reject_operator, is_operator, reject_not_admin,
                          is_office_operator, is_common_task_operator, decode_links,
                          reject_setting, get_or_reject)
-from app.cache import cache_call
-
+from app.cache import cache_call, clear_funcs_cache
+from app.events import get_cached_serial_funcs
 
 core = Blueprint('core', __name__)
 
@@ -182,6 +181,7 @@ def serial(task, office_id=None):
 @core.route('/serial_r/<int:o_id>')
 @login_required
 @get_or_reject(o_id=data.Office)
+@clear_funcs_cache(get_cached_serial_funcs)
 def serial_r(office):
     ''' reset by removing tickets of a given office. '''
     single_row = data.Settings.get().single_row
@@ -208,6 +208,7 @@ def serial_r(office):
 @reject_operator
 @reject_no_offices
 @reject_setting('single_row', True)
+@clear_funcs_cache(get_cached_serial_funcs)
 def serial_ra():
     ''' reset all offices by removing all tickets. '''
     tickets = data.Serial.query.filter(data.Serial.number != 100)
@@ -227,6 +228,7 @@ def serial_ra():
 @login_required
 @reject_setting('single_row', True)
 @get_or_reject(t_id=data.Task)
+@clear_funcs_cache(get_cached_serial_funcs)
 def serial_rt(task, ofc_id=None):
     ''' reset a given task by removing its tickets. '''
     if is_operator() and not is_common_task_operator(task.id):

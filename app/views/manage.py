@@ -9,6 +9,8 @@ from app.helpers import (reject_operator, reject_no_offices, is_operator, is_off
                          ticket_orders)
 from app.forms.manage import OfficeForm, TaskForm, SearchForm, ProcessedTicketForm
 from app.constants import TICKET_WAITING
+from app.cache import clear_funcs_cache
+from app.events import get_cached_serial_funcs, get_cached_task_funcs
 
 
 manage_app = Blueprint('manage_app', __name__)
@@ -165,6 +167,7 @@ def office_a():
 @reject_operator
 @reject_setting('single_row', True)
 @get_or_reject(o_id=data.Office)
+@clear_funcs_cache(get_cached_serial_funcs)
 def office_d(office):
     ''' delete office and its belongings. '''
     if office.tickets.count():
@@ -181,6 +184,7 @@ def office_d(office):
 @reject_operator
 @reject_no_offices
 @reject_setting('single_row', True)
+@clear_funcs_cache(get_cached_serial_funcs)
 def office_da():
     ''' delete all offices and their belongings.'''
     if data.Serial.query.filter(data.Serial.number != 100).count():
@@ -336,6 +340,7 @@ def task(task, ofc_id, order_by, order_kwargs):
 @login_required
 @reject_setting('single_row', True)
 @get_or_reject(t_id=data.Task)
+@clear_funcs_cache(get_cached_task_funcs)
 def task_d(task, ofc_id):
     ''' to delete a task '''
     if is_operator() and not is_common_task_operator(task.id):
