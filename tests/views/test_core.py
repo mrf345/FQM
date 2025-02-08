@@ -11,6 +11,7 @@ import app.utils
 from .. import NAMES, TEST_REPEATS, fill_tickets, do_until_truthy
 from app.middleware import db
 from app.utils import absolute_path
+from app.constants import TICKET_WAITING
 from app.database import (Task, Office, Serial, Settings, Touch_store, Display_store,
                           Printer, Aliases)
 
@@ -494,6 +495,28 @@ def test_pull_tickets_from_all(_, c):
     assert ticket_to_be_pulled.p is False
     assert Serial.get(ticket_to_be_pulled.id).number == ticket_to_be_pulled.number
     assert Serial.get(ticket_to_be_pulled.id).p is True
+
+
+@pytest.mark.usefixtures('c')
+def test_office_assigned_for_common_task_ticket(c):
+    task = Task.get_first_common()
+    data = {'name': 'TESTING PRINTED TICKET'}
+    office_with_least_waiting_tickets = next(iter(sorted(
+        task.offices,
+        key=lambda o: Serial.query\
+            .filter_by(office_id=o.id, status=TICKET_WAITING)\
+            .count()
+    )), None)
+
+    response = c.post(f'/serial/{task.id}', data=data, follow_redirects=True)
+    new_ticket = Serial.query.filter_by(task_id=task.id)\
+        .order_by(Serial.number.desc()).first()
+
+    assert response.status_code == 200
+    assert office_with_least_waiting_tickets is not None
+    assert new_ticket is not None
+    assert new_ticket.office_id == office_with_least_waiting_tickets.id
+    assert new_ticket.task_id == task.id
 
 
 @pytest.mark.parametrize('_', range(TEST_REPEATS))
