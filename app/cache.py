@@ -56,3 +56,14 @@ def cache_call(resp_type='html'):
 
     return decorator
 
+def clear_funcs_cache(cached_funcs_getter):
+    def decorator(wrapped):
+        @functools.wraps(wrapped)
+        def wrapper(*args, **kwargs):
+            for func in cached_funcs_getter():
+                func.cache_clear()
+
+            return wrapped(*args, **kwargs)
+    
+        return wrapper
+    return decorator
