@@ -17,7 +17,7 @@ Flask_Moment==1.0.4
 Flask_QRcode==1.0.1
 flask_restx==0.5.1
 Flask_SQLAlchemy==2.5.1
-Flask_Reuploaded==1.2.0
+Flask_Reuploaded==1.5.0
 Flask_WTF==1.0.1
 ifaddr==0.2.0
 Pillow==10.2.0
